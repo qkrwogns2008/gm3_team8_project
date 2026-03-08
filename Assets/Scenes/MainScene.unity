@@ -313,7 +313,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 12
+  m_text: "\uB2E4\uB4E4 \uD654\uC774\uD305\uC785\uB2C8\uB2E4..!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 983afcd3e6cd0cf49be833cde7d53caf, type: 2}
   m_sharedMaterial: {fileID: 2698725006402179665, guid: 983afcd3e6cd0cf49be833cde7d53caf, type: 2}
@@ -685,6 +685,7 @@ GameObject:
   - component: {fileID: 645741526}
   - component: {fileID: 645741527}
   - component: {fileID: 645741528}
+  - component: {fileID: 645741529}
   m_Layer: 0
   m_Name: TextInjector
   m_TagString: Untagged
@@ -759,6 +760,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _msg: {fileID: 1717313254}
+--- !u!114 &645741529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 645741522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2099907c708c0034eaad204d0c0d4cf6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _msg: {fileID: 218489693}
 --- !u!1 &759800951
 GameObject:
   m_ObjectHideFlags: 0
@@ -1366,7 +1380,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 09
+  m_text: "\uD504\uB85C\uC81D\uD2B8 Log \uBC0F vs\uACF5\uC720 \uC548\uB418\uAC8C
+    \uC218\uC815\uD588\uC2B5\uB2C8\uB2E4!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 983afcd3e6cd0cf49be833cde7d53caf, type: 2}
   m_sharedMaterial: {fileID: 2698725006402179665, guid: 983afcd3e6cd0cf49be833cde7d53caf, type: 2}
