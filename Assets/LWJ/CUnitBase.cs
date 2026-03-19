@@ -91,7 +91,6 @@ public abstract class CUnitBase : MonoBehaviour
 
 		if (_targetEnemy != null)
 		{
-
 			_targetPos = _targetEnemy.transform.position; // transform.position 수정
 
 			// 거리 계산
@@ -104,7 +103,7 @@ public abstract class CUnitBase : MonoBehaviour
 				if (IsAvailable())
 				{
 					// 공격 쿨타임 됬을시 공격
-					StopAttack();
+					StopAndAttack();
 				}
 				else
 				{
@@ -310,7 +309,7 @@ public abstract class CUnitBase : MonoBehaviour
 	}
 	/// </summary>
 
-	protected virtual void StopAttack() // <- 이거 함수이름 StopAttack??
+	protected virtual void StopAndAttack()
 	{
 		_isMoving = false;
 		LookAtTarget();
