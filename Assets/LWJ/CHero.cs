@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class CHero : CUnitBase
 {
-    // 이동은 부모가 Update에서 알아서 하니, 여기선 공격만 정의!
-
-    protected override void OnAttack(CUnitBase target)
+	// 이동은 부모가 Update에서 알아서 하니, 여기선 공격만 정의!
+	
+	protected override void OnAttack(CUnitBase target)
     {
 		if (_skeletonAni == null || _attack1Prefab == null)
 		{
