@@ -2,6 +2,15 @@ using UnityEngine;
 
 public class HeroTeo : CHero
 {
+	protected override void Update()
+	{
+		base.Update();
+		if (Input.GetKeyDown(KeyCode.Alpha1))
+		{
+			OnAttack();
+		}
+	}
+
 	protected override void OnAttack(CUnitBase target)
 	{
 		base.OnAttack(target);
