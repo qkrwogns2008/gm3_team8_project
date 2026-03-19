@@ -20,6 +20,7 @@ public abstract class CUnitBase : MonoBehaviour
     [SerializeField] private LayerMask _enemyLayer;        // 탐지할 레이어
     // 힌트 기준점
     [SerializeField] private Transform _hintAnchor; // _hintAnchor 기준 상호작용 없을시 transform
+    [SerializeField] protected SkeletonAnimation _skeletonAni; //
     #endregion
     #region 내부 변수
     // 스테이터스
@@ -33,7 +34,6 @@ public abstract class CUnitBase : MonoBehaviour
     protected float _skill2Cooldown; // 스킬2 재사용 대기시간
     // 오브젝트
     protected CUnitBase _targetEnemy;   // 현재 목표 타겟 CUnitBase 으로 수정
-    protected SkeletonAnimation _skeletonAni; //
     protected GameObject _attack1Prefab;// 기본공격 프리팹
     protected GameObject _skill1Prefab; // 스킬 1 프리팹
     protected GameObject _skill2Prefab; // 스킬 2 프리팹
