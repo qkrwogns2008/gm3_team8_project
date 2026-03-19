@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 481371197}
   - component: {fileID: 481371196}
   - component: {fileID: 481371200}
+  - component: {fileID: 481371201}
   m_Layer: 0
   m_Name: Spine GameObject (Hero_Teo_B)
   m_TagString: Untagged
@@ -251,12 +252,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 481371195}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64a026f907d8ec145b807e0f5fd5be37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _heroName: Teo
+  _unitName: 
   _health: 1
   _attackDamage: 2
   _attackRange: 3
@@ -265,6 +266,26 @@ MonoBehaviour:
   _skeletonAni: {fileID: 481371196}
   _attackEffectPrefab: {fileID: 1709254077376921, guid: 036a247b58fb94e4c80d85e5175dbceb, type: 3}
   _effectPos: {fileID: 0}
+--- !u!114 &481371201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 481371195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98ef6043d4b9deb4981e117ef9876768, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _originData: {fileID: 11400000, guid: cfded9635fc4d804a8a603ed678061e3, type: 2}
+  _unitName: 
+  _teamType: 0
+  _enemyLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  _hintAnchor: {fileID: 0}
+  _skeletonAni: {fileID: 481371196}
 --- !u!1 &1394374600
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,9 +14,9 @@ public abstract class CUnitBase : MonoBehaviour
 												 // 규칙
 	[Header("Skill Settings")]
 	[SerializeField] protected ETeamType _teamType; // 여기서 Hero인지 Enemy인지 선택
-	[SerializeField] private LayerMask _enemyLayer;        // 탐지할 레이어
+	[SerializeField] protected LayerMask _enemyLayer;        // 탐지할 레이어
 														   // 힌트 기준점
-	[SerializeField] private Transform _hintAnchor; // _hintAnchor 기준 상호작용 없을시 transform
+	[SerializeField] protected Transform _hintAnchor; // _hintAnchor 기준 상호작용 없을시 transform
 	[SerializeField] protected SkeletonAnimation _skeletonAni; //
 	#endregion
 	#region 내부 변수
@@ -36,11 +36,11 @@ public abstract class CUnitBase : MonoBehaviour
 	protected GameObject _skill2Prefab; // 스킬 2 프리팹
 	protected SpriteRenderer _sprite;   // 자식들도 써야 하니 protected
 										// 내부 제어용 함수
-	private bool _isMoving = false;
-	private float _nextAttackTime = 0f; // 내부 쿨타임 적용 함수
-	private float _nextSkill1Time = 0f; // 다음 스킬 가능 시간
-	private float _nextSkill2Time = 0f; // 다음 스킬 가능 시간
-	private bool _isDead = false; // 사망 여부
+	protected bool _isMoving = false;
+	protected float _nextAttackTime = 0f; // 내부 쿨타임 적용 함수
+	protected float _nextSkill1Time = 0f; // 다음 스킬 가능 시간
+	protected float _nextSkill2Time = 0f; // 다음 스킬 가능 시간
+	protected bool _isDead = false; // 사망 여부
 
 	// 코드 이식후 추가됨
 	protected Vector3 _targetPos;
