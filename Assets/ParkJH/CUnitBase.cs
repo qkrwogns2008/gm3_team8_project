@@ -1,3 +1,4 @@
+using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -9,10 +10,10 @@ public abstract class CUnitBase : MonoBehaviour
 {
     // 모든 상호작용 대상의 공통 규칙을 가진 Base
     #region 인스펙터
-    /* 
-     [SerializeField] protected HeroSOScript _originData; // SO 연결용
-    */
-    [SerializeField] protected string _displayName = "Interactable"; // 텍스트 확장용
+    
+    [SerializeField] protected UnitDataSO _originData;
+    
+    [SerializeField] protected string _UnitName ; // 텍스트 확장용
     // 규칙
     [Header("Skill Settings")]
     [SerializeField] protected ETeamType _teamType; // 여기서 Hero인지 Enemy인지 선택
@@ -32,6 +33,8 @@ public abstract class CUnitBase : MonoBehaviour
     protected float _skill2Cooldown; // 스킬2 재사용 대기시간
     // 오브젝트
     protected CUnitBase _targetEnemy;   // 현재 목표 타겟 CUnitBase 으로 수정
+    protected SkeletonAnimation _skeletonAni; //
+    protected GameObject _attack1Prefab;// 기본공격 프리팹
     protected GameObject _skill1Prefab; // 스킬 1 프리팹
     protected GameObject _skill2Prefab; // 스킬 2 프리팹
     protected SpriteRenderer _sprite;   // 자식들도 써야 하니 protected
@@ -54,27 +57,29 @@ public abstract class CUnitBase : MonoBehaviour
         _sprite = GetComponent<SpriteRenderer>();
         if (_sprite == null)
         { 
-            Debug.Log($"{_displayName} SpriteRenderer 부재");
+            Debug.Log($"{_UnitName} SpriteRenderer 부재");
         }
     }
 
     //SO 인스팩터 연결 함수
     protected virtual void InitUnitStats()
     {
-        /* SO 인스팩터 연결후 활성화!!
         if (_originData != null)
         {
+            _UnitName = _originData.UnitName;
             _currentHp = _originData.MaxHp;
             _currentAtk = _originData.AttackPower;
-            _currentAtkRange = _originData.AttackRange; 
+            _currentAtkRange = _originData.AttackRange;
+            _skeletonAni = _originData.SkeletonAni;
+            _attack1Prefab = _originData.Attack1Prefab;
             _skill1Prefab = _originData.Skill1Prefab;
             _skill2Prefab = _originData.Skill2Prefab;
-            _currentwalkSpeed = _originData.walkSpeed;
+            _currentwalkSpeed = _originData.WalkSpeed;
         }
-        */
+        
     }
     // SO 오리진 데이터 가져오기
-    void Update()
+    protected virtual void Update()
     {
         FindClosesEnemy();
 
@@ -117,7 +122,7 @@ public abstract class CUnitBase : MonoBehaviour
     }
 
 
-    
+
 
     // 데미지 받을시 호출
     public virtual void TakeDamage(float damage, CUnitBase attacker)
@@ -128,7 +133,7 @@ public abstract class CUnitBase : MonoBehaviour
     }
 
     // 사망, 공격 시작시 여부 확인
-    public bool IsAvailable()
+    protected bool IsAvailable()
     {
         if (_isDead)
             return false;
@@ -137,7 +142,7 @@ public abstract class CUnitBase : MonoBehaviour
         return true;
     }
 
-    public Vector3 GetHitAnchorPosition()
+    protected Vector3 GetHitAnchorPosition()
     {
         // _hintAnchor가 없으면 트랜스폼 위치를 기준점으로 사용한다.
         return (_hintAnchor != null) ? _hintAnchor.position : transform.position;
@@ -145,7 +150,7 @@ public abstract class CUnitBase : MonoBehaviour
 
 
     // 공격 쿨타임 체크 여부
-    private void ApplyAttackCooldown()
+    protected void ApplyAttackCooldown()
     {
         if (_attackCooldown > 0f)
         {
@@ -153,7 +158,7 @@ public abstract class CUnitBase : MonoBehaviour
         }
     }
     // 1번 스킬 사용 가능 여부 체크 함수
-    public bool CanUseSkill1()
+    protected bool CanUseSkill1()
     {
         // 조건 1: 쿨타임 수치가 설정되어 있는가? (0보다 큰가)
         // 조건 2: 현재 시간이 다음 가능 시간보다 지났는가?
@@ -165,7 +170,7 @@ public abstract class CUnitBase : MonoBehaviour
         return false; // 아직 쿨타임 중이거나 설정 안됨
     }
     // 2번 스킬 사용 가능 여부 체크 함수
-    public bool CanUseSkill2()
+    protected bool CanUseSkill2()
     {
         if (_skill2Cooldown > 0f && Time.time >= _nextSkill2Time)
         {
@@ -210,26 +215,26 @@ public abstract class CUnitBase : MonoBehaviour
 
 
 
-    private void ExecuteCombat(EAttackType type, CUnitBase target)
+    protected void ExecuteCombat(EAttackType type, CUnitBase target)
     {
         switch (type)
         {
             case EAttackType.Skill1:
-                Debug.Log($"{_displayName}스킬1 작동");
+                Debug.Log($"{_UnitName}스킬1 작동");
                 _nextSkill1Time = Time.time + _skill1Cooldown;
                 ApplyAttackCooldown();
                 OnSkill1(target);
                 break;
 
             case EAttackType.Skill2:
-                Debug.Log($"{_displayName}스킬2 작동");
+                Debug.Log($"{_UnitName}스킬2 작동");
                 _nextSkill2Time = Time.time + _skill2Cooldown;
                 ApplyAttackCooldown();
                 OnSkill2(target);
                 break;
 
             case EAttackType.Normal:
-                Debug.Log($"{_displayName}공격 작동");
+                Debug.Log($"{_UnitName}공격 작동");
                 ApplyAttackCooldown();
                 OnAttack(target);
                 break;
@@ -248,7 +253,7 @@ public abstract class CUnitBase : MonoBehaviour
 
     //============================== CAutoPlayerMoving 함수 가져옴==========================
 
-    void FindClosesEnemy()
+    protected void FindClosesEnemy()
     {
         Collider[] enemies = Physics.OverlapSphere(transform.position, _detectionRange, _enemyLayer);
 
@@ -282,7 +287,7 @@ public abstract class CUnitBase : MonoBehaviour
         }
     }
 
-    void MoveToTarget()
+    protected void MoveToTarget()
     {
         LookAtTarget();
         transform.position = Vector3.MoveTowards(transform.position, _targetPos, _currentwalkSpeed * Time.deltaTime);
@@ -293,7 +298,7 @@ public abstract class CUnitBase : MonoBehaviour
     /// <summary>
     /// 기본 캐릭터 방향이 오른쪽일 경우 그대로
     /// 왼쪽을 바라볼 경우 반대로 뒤집기
-    void LookAtTarget()
+    protected void LookAtTarget()
     {
         // 오른쪽
         if (_targetPos.x > transform.position.x)
@@ -316,7 +321,7 @@ public abstract class CUnitBase : MonoBehaviour
     }
     /// </summary>
 
-    void StopAttack() // <- 이거 함수이름 StopAttack??
+    protected void StopAttack() // <- 이거 함수이름 StopAttack??
     {
         _isMoving = false;
         LookAtTarget();
