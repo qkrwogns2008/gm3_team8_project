@@ -325,9 +325,12 @@ public abstract class CUnitBase : MonoBehaviour
         TryAttack(_targetEnemy);
     }
 
-    protected virtual void OnAttack(CUnitBase target);
-    protected virtual void OnSkill1(CUnitBase target);
-    protected virtual void OnSkill2(CUnitBase target);
+    protected virtual void OnAttack(CUnitBase target)
+    { }
+    protected virtual void OnSkill1(CUnitBase target)
+    { }
+    protected virtual void OnSkill2(CUnitBase target)
+    { }
 
 
 
