@@ -7,7 +7,7 @@ public class HeroTeo : CHero
 		base.Update();
 		if (Input.GetKeyDown(KeyCode.Alpha1))
 		{
-			OnAttack();
+			//OnAttack();
 		}
 	}
 
