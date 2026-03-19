@@ -24,7 +24,7 @@ public class HeroBasePrototype : MonoBehaviour
 	→ 스킬 쿨타임
 	→ 스킬 데미지
 	*/
-	[SerializeField] protected string _heroName;
+	[SerializeField] protected string _unitName;
 	[SerializeField] protected float _health;
 	[SerializeField] protected float _attackDamage;
 	[SerializeField] protected float _attackRange;
@@ -39,7 +39,7 @@ public class HeroBasePrototype : MonoBehaviour
 	protected Vector3 _targetPos = Vector3.one;
 	protected Coroutine _routine;
 
-	public string HeroName => _heroName;
+	public string UnitName => _unitName;
 	public float Health => _health;
 	public float AttackDamage => _attackDamage;
 	public float AttackSpeed => _attackSpeed;
