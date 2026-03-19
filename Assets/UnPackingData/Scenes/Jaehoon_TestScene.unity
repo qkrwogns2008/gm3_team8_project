@@ -299,7 +299,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fed72c17ead63f49afddd3bd4c085e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _displayName: Interactable
+  _originData: {fileID: 0}
+  _UnitName: 
   _teamType: 1
   _enemyLayer:
     serializedVersion: 2
@@ -545,7 +546,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fed72c17ead63f49afddd3bd4c085e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _displayName: Interactable
+  _originData: {fileID: 0}
+  _UnitName: 
   _teamType: 0
   _enemyLayer:
     serializedVersion: 2
@@ -779,7 +781,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fed72c17ead63f49afddd3bd4c085e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _displayName: Interactable
+  _originData: {fileID: 0}
+  _UnitName: 
   _teamType: 0
   _enemyLayer:
     serializedVersion: 2
@@ -903,18 +906,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7461a5ec8bc42204aa402dae62c7dc69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _originData: {fileID: 0}
   _displayName: Interactable
   _teamType: 0
   _enemyLayer:
-    serializedVersion: 2
     m_Bits: 128
   _hintAnchor: {fileID: 1864192569}
+  _currentHp: 0
+  _currentAtk: 0
+  _currentAtkRange: 0
+  _detectionRange: 0
+  _currentwalkSpeed: 0
+  _attackCooldown: 0
+  _skill1Cooldown: 0
+  _skill2Cooldown: 0
+  _targetEnemy: {fileID: 0}
+  _skill1Prefab: {fileID: 0}
+  _skill2Prefab: {fileID: 0}
+  _sprite: {fileID: 0}
+  _isMoving: 0
+  _nextAttackTime: 0
+  _nextSkill1Time: 0
+  _nextSkill2Time: 0
+  _isDead: 0
+  _targetPos: {x: 0, y: 0, z: 0}
   _walkSpeed: 2
   _attackRange: 1.5
   _detectionRange: 100
   _enemyLayer:
-    serializedVersion: 2
     m_Bits: 0
+  _targetEnemy: {fileID: 0}
+  _targetPos: {x: 0, y: 0, z: 0}
+  _isMoving: 0
+  sprite: {fileID: 0}
 --- !u!1 &1977584926
 GameObject:
   m_ObjectHideFlags: 0
