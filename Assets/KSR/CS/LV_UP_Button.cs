@@ -6,93 +6,119 @@ using UnityEngine.UI;
 public class LV_UP_Button : MonoBehaviour
 {
     [Header("플레이어 데이터")]
-    public Dummy_Player DummyPlayer; // 플레이어 골드 참조
+    public Dummy_Player DummyPlayer;
 
     [Header("기본 상태")]
-    public int currentLevel = 1;     // 현재 레벨
-    public int currentStage = 0;     // 현재 단계 (영향력 단계)
+    public int currentLevel = 1;
+    public int currentStage = 0;
 
     [Header("능력치")]
-    public float currentStat = 0;    // 누적 능력치 (리셋 안됨)
-    public float statPerLevel = 10f; // 레벨당 증가량
+    public float currentStat = 0;
+    public float statPerLevel = 10f;
 
     [Header("골드 설정")]
-    public float baseCost = 10f;         // 기본 비용
-    public float costIncreaseValue = 2f; // 증가 값
+    public float baseCost = 10f;
+    public float costIncreaseValue = 2f;
 
-    public enum CostType { Add, Multiply } // 비용 증가 방식
+    public enum CostType { Add, Multiply }
     public CostType costType = CostType.Add;
 
+    [Header("현재 비용 (핵심)")]
+    public float currentCost; // 다음 1레벨 비용 (누적 유지)
+
     [Header("레벨 증가 배수")]
-    public int levelStep = 1; // 한 번에 오르는 레벨
+    public int levelStep = 1;
 
     [Header("단계별 최대 레벨")]
-    public List<int> stageMaxLevels = new List<int>() { 200, 400, 600 }; // 단계별 MAX
+    public List<int> stageMaxLevels = new List<int>() { 200, 400, 600 };
 
     [Header("TMP UI")]
-    public TMP_Text goldText;   // 골드 표시
-    public TMP_Text levelText;  // 레벨 표시
-    public TMP_Text statText;   // 능력치 표시
-    public TMP_Text costText;   // 비용 표시
+    public TMP_Text goldText;
+    public TMP_Text levelText;
+    public TMP_Text statText;
+    public TMP_Text costText;
 
     [Header("MAX UI 설정")]
-    public GameObject maxImage; // MAX 표시 이미지
+    public GameObject maxImage;
 
     [Header("버튼")]
-    public Button levelUpButton; // 레벨업 버튼
+    public Button levelUpButton;
 
     [Header("이미지 교체")]
-    public GameObject originalImage; // 기본 이미지
-    public GameObject changedImage;  // MAX 시 교체 이미지
+    public GameObject originalImage;
+    public GameObject changedImage;
 
     // =============================
 
     void Start()
     {
-        UpdateUI(); // 시작 시 UI 초기화
+        currentCost = baseCost; // 시작 비용
+        UpdateUI();
     }
 
     // =============================
-    // 레벨업 시도
+    // 현재 클릭 시 필요한 총 비용 계산 (UI & 실제 결제용)
 
-    public void TryLevelUp()
+    float GetPreviewCost(out float afterCost, out int levelGained)
     {
-        if (DummyPlayer == null) return; // 플레이어 없으면 종료
+        int maxLevel = GetMaxLevel();
 
-        float currentGold = DummyPlayer.gold;
-
-        int maxLevel = GetMaxLevel(); // 현재 단계 기준 MAX
-
-        // 목표 레벨 계산
         int targetLevel = currentLevel + levelStep;
         if (targetLevel > maxLevel)
             targetLevel = maxLevel;
 
-        // 총 비용 계산
-        float totalCost = CalculateTotalCost(currentLevel, targetLevel);
+        levelGained = targetLevel - currentLevel;
 
-        // 골드 부족 시 종료
-        if (currentGold < totalCost)
+        float total = 0f;
+        float tempCost = currentCost;
+
+        for (int i = 0; i < levelGained; i++)
+        {
+            total += tempCost;
+
+            if (costType == CostType.Add)
+                tempCost += costIncreaseValue;
+            else
+                tempCost *= costIncreaseValue;
+        }
+
+        afterCost = tempCost; // 레벨업 후 비용
+
+        return total;
+    }
+
+    // =============================
+    // 레벨업
+
+    public void TryLevelUp()
+    {
+        if (DummyPlayer == null) return;
+
+        float afterCost;
+        int levelGained;
+
+        float totalCost = GetPreviewCost(out afterCost, out levelGained);
+
+        if (DummyPlayer.gold < totalCost)
         {
             Debug.Log("골드 부족");
             return;
         }
 
-        // 증가량 계산
-        int levelGained = targetLevel - currentLevel;
-        float statGained = statPerLevel * levelGained;
-
         // 골드 차감
         DummyPlayer.gold -= totalCost;
 
-        // 레벨 및 능력치 증가
-        currentLevel = targetLevel;
-        currentStat += statGained;
+        // 레벨 증가
+        currentLevel += levelGained;
 
-        // UI 갱신
+        // 능력치 증가
+        currentStat += statPerLevel * levelGained;
+
+        // 비용 갱신 (누적 유지)
+        currentCost = afterCost;
+
         UpdateUI();
 
-        // Manager에게 변경 알림 (총합 갱신 + 단계 체크)
         FindObjectOfType<Up_Manager>()?.OnLevelChanged();
     }
 
@@ -105,51 +131,40 @@ public class LV_UP_Button : MonoBehaviour
 
         float currentGold = DummyPlayer.gold;
 
-        // 골드 표시
         if (goldText != null)
             goldText.text = FormatGold(currentGold);
 
-        // 레벨 표시
         if (levelText != null)
             levelText.text = $"Lv.{currentLevel}";
 
-        // 능력치 표시
         if (statText != null)
             statText.text = $"+{currentStat:F0}";
 
-        int maxLevel = GetMaxLevel();
+        // 현재 클릭 시 총 비용 가져오기
+        float afterCost;
+        int levelGained;
+        float previewCost = GetPreviewCost(out afterCost, out levelGained);
 
-        // 다음 비용 계산
-        float nextCost = CalculateTotalCost(
-            currentLevel,
-            Mathf.Min(currentLevel + levelStep, maxLevel)
-        );
-
-        // 비용 표시 + 색상 변경
         if (costText != null)
         {
-            costText.text = FormatGold(nextCost);
+            costText.text = FormatGold(previewCost); // 🔥 총 비용 표시
 
-            if (currentGold < nextCost)
-                costText.color = Color.red;   // 부족
+            // 총 비용 기준으로 빨간색
+            if (currentGold < previewCost)
+                costText.color = Color.red;
             else
-                costText.color = Color.white; // 가능
+                costText.color = Color.white;
         }
 
-        // =============================
-        // MAX 상태 처리
-
+        int maxLevel = GetMaxLevel();
         bool isMax = currentLevel >= maxLevel;
 
-        // 버튼 ON/OFF (완전히 사라짐)
         if (levelUpButton != null)
             levelUpButton.gameObject.SetActive(!isMax);
 
-        // MAX 이미지 표시
         if (maxImage != null)
             maxImage.SetActive(isMax);
 
-        // 이미지 교체
         if (originalImage != null)
             originalImage.SetActive(!isMax);
 
@@ -158,36 +173,32 @@ public class LV_UP_Button : MonoBehaviour
     }
 
     // =============================
-    // 단계 상승 시 호출
+    // 스테이지 상승 시
 
     public void ResetLevel()
     {
-        currentLevel = 1; // 레벨만 초기화 (능력치는 유지)
+        currentLevel = 1;
 
-        // 버튼 다시 활성화
+        // 🔥 currentCost 유지 (핵심)
+
         if (levelUpButton != null)
             levelUpButton.gameObject.SetActive(true);
 
-        // MAX 이미지 끄기
         if (maxImage != null)
             maxImage.SetActive(false);
 
-        // 이미지 원상복구
         if (originalImage != null)
             originalImage.SetActive(true);
 
         if (changedImage != null)
             changedImage.SetActive(false);
 
-        // UI 갱신
         UpdateUI();
 
-        // Manager 다시 갱신 (총합 초기화 반영)
         FindObjectOfType<Up_Manager>()?.OnLevelChanged();
     }
 
     // =============================
-    // 골드 포맷
 
     string FormatGold(float value)
     {
@@ -209,46 +220,6 @@ public class LV_UP_Button : MonoBehaviour
     }
 
     // =============================
-    // 총 비용 계산
-
-    float CalculateTotalCost(int startLevel, int endLevel)
-    {
-        float total = 0;
-        float cost = GetCostAtLevel(startLevel);
-
-        for (int i = startLevel; i < endLevel; i++)
-        {
-            total += cost;
-
-            if (costType == CostType.Add)
-                cost += costIncreaseValue;
-            else
-                cost *= costIncreaseValue;
-        }
-
-        return total;
-    }
-
-    // =============================
-    // 특정 레벨 비용 계산
-
-    float GetCostAtLevel(int level)
-    {
-        float cost = baseCost;
-
-        for (int i = 1; i < level; i++)
-        {
-            if (costType == CostType.Add)
-                cost += costIncreaseValue;
-            else
-                cost *= costIncreaseValue;
-        }
-
-        return cost;
-    }
-
-    // =============================
-    // 현재 단계 기준 MAX 레벨 반환
 
     int GetMaxLevel()
     {
