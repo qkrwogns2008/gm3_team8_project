@@ -290,9 +290,9 @@ MonoBehaviour:
     materialsInsideMask: []
     materialsOutsideMask: []
   disableRenderingOnOverride: 1
-  _animationName: Idle
+  _animationName: Attack_A
   loop: 1
-  timeScale: 1
+  timeScale: 0.1
 --- !u!23 &369601816
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1211,9 +1211,9 @@ MonoBehaviour:
     materialsInsideMask: []
     materialsOutsideMask: []
   disableRenderingOnOverride: 1
-  _animationName: Idle
+  _animationName: Attack_A
   loop: 1
-  timeScale: 1
+  timeScale: 0.1
 --- !u!23 &1821707867
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1299,6 +1299,7 @@ MonoBehaviour:
     m_Bits: 128
   _hintAnchor: {fileID: 1821707869}
   _skeletonAni: {fileID: 0}
+  _effectDestroyTime: 0.5
 --- !u!1 &1890916574
 GameObject:
   m_ObjectHideFlags: 0
