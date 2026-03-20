@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc2f22b96e152db418cc7662e07be72d, type: 3}
+  m_Name: UnitDataSO_aarang
+  m_EditorClassIdentifier: 
+  unitName: aarang
+  maxHp: 80
+  attackPower: 6
+  attackRange: 10
+  attack1Prefab: {fileID: 1709254077376921, guid: b04e6ed40bc664047affaf1bb7d44d3b, type: 3}
+  skill1Prefab: {fileID: 0}
+  skill2Prefab: {fileID: 0}
+  walkSpeed: 5
