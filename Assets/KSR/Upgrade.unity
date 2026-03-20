@@ -7003,6 +7003,7 @@ GameObject:
   - component: {fileID: 1611756215}
   - component: {fileID: 1611756217}
   - component: {fileID: 1611756216}
+  - component: {fileID: 1611756218}
   m_Layer: 5
   m_Name: Ex_bar_f
   m_TagString: Untagged
@@ -7050,10 +7051,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 0e90572638ab7c64092473314b93fc72, type: 2}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 1
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -7067,6 +7068,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1611756214}
   m_CullTransparentMesh: 1
+--- !u!114 &1611756218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611756214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb325a54c7da8b349bdb5d4ee7f9ca39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fillImage: {fileID: 1611756216}
+  expText: {fileID: 1775616312}
 --- !u!1 &1612047919
 GameObject:
   m_ObjectHideFlags: 0
