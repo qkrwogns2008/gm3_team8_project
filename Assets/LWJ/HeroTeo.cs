@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class HeroTeo : CHero
 {
+	/*
 	protected override void Update()
 	{
 		base.Update();
@@ -10,7 +11,8 @@ public class HeroTeo : CHero
 			OnAttack(_targetEnemy);
 		}
 	}
-
+	*/
+	/*
 	protected override void OnAttack(CUnitBase target)
 	{
 		base.OnAttack(target);
@@ -29,4 +31,5 @@ public class HeroTeo : CHero
 		base.OnSkill2(target);
 
 	}
+	*/
 }
