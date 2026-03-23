@@ -2,45 +2,20 @@ using UnityEngine;
 
 public class CHero : CUnitBase
 {
-	[SerializeField] protected float _effectDestroyTime = 0.5f;
-
-	protected EffectBase _attack1Effect;
-
-	protected override void Awake()
-	{
-		base.Awake();
-		if (_attack1Prefab != null)
-		{
-			// 캐싱 시도
-			if (!_attack1Prefab.TryGetComponent<EffectBase>(out _attack1Effect))
-			{
-				Debug.LogWarning($"{name} : 이펙트 캐싱 실패");
-				return;
-			}
-		}
-	}
-
-	// for Test
-	protected override void Update()
-	{
-		base.Update();
-		if (Input.GetKeyDown(KeyCode.Alpha1))
-		{
-			OnAttack(_targetEnemy);
-		}
-	}
-
-	protected override void FindClosesEnemy()
+	// 이동은 부모가 Update에서 알아서 하니, 여기선 공격만 정의!
+	protected virtual void FindClosesEnemy()
 	{
 		Collider[] enemies = Physics.OverlapSphere(transform.position, _detectionRange, _enemyLayer);
 
 		if (enemies.Length > 0)
 		{
-			CUnitBase closest = null;
+			CUnitBase closest = null; // transform -> CUnitBase 수정
 			float minDistance = Mathf.Infinity;
+
 
 			foreach (Collider enemy in enemies)
 			{
+				// 가까운 대상 거리 계산
 				float distance = Vector3.Distance(transform.position, enemy.transform.position);
 				if (distance < minDistance)
 				{
@@ -52,6 +27,7 @@ public class CHero : CUnitBase
 					}
 				}
 			}
+			// 타겟 설정
 			_targetEnemy = closest;
 		}
 		else
@@ -63,43 +39,34 @@ public class CHero : CUnitBase
 
 	protected override void OnAttack(CUnitBase target)
 	{
-		if (_skeletonAni == null || _attack1Effect == null)
+		if (_skeletonAni == null || _attack1Prefab == null)
 		{
 			return;
 		}
-		_skeletonAni.AnimationState.SetAnimation(0, "Attack_A", false);
-
-		// 이펙트 소환
-		EffectBase fx = Instantiate(_attack1Effect, transform.position, Quaternion.identity);
-
-		if (fx == null)
-		{
-			return;
-		}
-		fx.Init(false, 1f);
+		Debug.Log($"{_unitName}의 일반 공격!");
 
 		if (target != null)
 		{
 			target.TakeDamage(_currentAtk, this);
 		}
-		Debug.Log($"{_unitName}의 일반 공격!");
 	}
 
-	protected override void OnSkill1(CUnitBase target)
-	{
+    protected override void OnSkill1(CUnitBase target)
+    {
 		if (_skeletonAni == null || _skill1Prefab == null)
 		{
 			return;
 		}
 		Debug.Log($"{_unitName}의 스킬 1 발동!");
-	}
+        // 여기에 이펙트 생성이나 특수 로직 추가
+    }
 
-	protected override void OnSkill2(CUnitBase target)
-	{
+    protected override void OnSkill2(CUnitBase target)
+    {
 		if (_skeletonAni == null || _skill2Prefab == null)
 		{
 			return;
 		}
 		Debug.Log($"{_unitName}의 스킬 2 발동!");
-	}
+    }
 }
