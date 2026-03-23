@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class HeroTeo : CHero
 {
+	/*
 	protected override void Update()
 	{
 		base.Update();
@@ -29,4 +30,5 @@ public class HeroTeo : CHero
 		base.OnSkill2(target);
 
 	}
+	*/
 }
