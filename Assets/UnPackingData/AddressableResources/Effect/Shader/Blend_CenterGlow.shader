@@ -1,67 +1,72 @@
 Shader "ERB/Particles/Blend_CenterGlow" {
-    Properties {
-        _MainTex ("MainTex", 2D) = "white" {}
-        _Color ("Color", Color) = (1,1,1,1)
-        _Emission ("Emission", Float) = 2
-        _Opacity ("Opacity", Range(0, 1)) = 1
-        [Enum(Cull Off,0, Cull Front,1, Cull Back,2)] _CullMode ("Culling", Float) = 0
-        [Enum(UnityEngine.Rendering.CompareFunction)] _ZTestMode ("ZTestMode", Float) = 4
-    }
-    SubShader {
-        Tags { "Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent" }
-        
-        // --- 부드러운 투명(Alpha Blend) 설정 ---
-        Blend SrcAlpha OneMinusSrcAlpha 
-        ZWrite Off
-        Cull [_CullMode]
-        ZTest [_ZTestMode]
+	Properties {
+		_MainTex ("MainTex", 2D) = "white" {}
+		_Noise ("Noise", 2D) = "white" {}
+		_Flow ("Flow", 2D) = "white" {}
+		_SpeedMainTexUVNoiseZW ("Speed MainTex U/V + Noise Z/W", Vector) = (0,0,0,0)
+		_DistortionSpeedXYPowerZ ("Distortion Speed XY Power Z", Vector) = (0,0,0,0)
+		_Emission ("Emission", Float) = 2
+		_Color ("Color", Vector) = (0.5,0.5,0.5,1)
+		_Opacity ("Opacity", Range(0, 1)) = 1
+		[Enum(Cull Off,0, Cull Front,1, Cull Back,2)] _CullMode ("Culling", Float) = 0
+		[Enum(UnityEngine.Rendering.CompareFunction)] _ZTestMode ("ZTestMode", Float) = 4
+		[HideInInspector] _texcoord ("", 2D) = "white" {}
+		[Header(Transform)] [Toggle] _EnableCurvedTransform ("Enable Curved Transform", Float) = 0
+		[Space(20)] _Cutoff ("Cutoff", Range(0, 1)) = 0
+		_CutoffSoftness ("Cutoff softness", Range(0, 1)) = 1
+		[Space(20)] [Header(Cull Distance)] [Space(10)] [Toggle] _UseCullDistance ("Use Cull Distance", Float) = 0
+		_CullDistance ("Cull Distance", Float) = 350
+	}
+	//DummyShaderTextExporter
+	SubShader{
+		Tags { "RenderType"="Opaque" }
+		LOD 200
 
-        Pass {
-            CGPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
-            #include "UnityCG.cginc"
+		Pass
+		{
+			HLSLPROGRAM
+			#pragma vertex vert
+			#pragma fragment frag
 
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
-            fixed4 _Color;
-            float _Emission;
-            float _Opacity;
+			float4x4 unity_ObjectToWorld;
+			float4x4 unity_MatrixVP;
+			float4 _MainTex_ST;
 
-            struct appdata {
-                float4 vertex : POSITION;
-                float2 uv : TEXCOORD0;
-                fixed4 color : COLOR; // 파티클 Start Color 수신
-            };
+			struct Vertex_Stage_Input
+			{
+				float4 pos : POSITION;
+				float2 uv : TEXCOORD0;
+			};
 
-            struct v2f {
-                float4 pos : SV_POSITION;
-                float2 uv : TEXCOORD0;
-                fixed4 color : COLOR;
-            };
+			struct Vertex_Stage_Output
+			{
+				float2 uv : TEXCOORD0;
+				float4 pos : SV_POSITION;
+			};
 
-            v2f vert (appdata v) {
-                v2f o;
-                o.pos = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-                o.color = v.color;
-                return o;
-            }
+			Vertex_Stage_Output vert(Vertex_Stage_Input input)
+			{
+				Vertex_Stage_Output output;
+				output.uv = (input.uv.xy * _MainTex_ST.xy) + _MainTex_ST.zw;
+				output.pos = mul(unity_MatrixVP, mul(unity_ObjectToWorld, input.pos));
+				return output;
+			}
 
-            fixed4 frag (v2f i) : SV_Target {
-                // 텍스처 샘플링
-                fixed4 tex = tex2D(_MainTex, i.uv);
-                
-                // 최종 색상 계산
-                // 텍스처 * 파티클 컬러 * 인스펙터 컬러 * 에미션
-                fixed4 col = tex * i.color * _Color * _Emission;
-                
-                // 투명도 조절 (_Opacity 프로퍼티 반영)
-                col.a = tex.a * i.color.a * _Color.a * _Opacity;
-                
-                return col;
-            }
-            ENDCG
-        }
-    }
+			Texture2D<float4> _MainTex;
+			SamplerState sampler_MainTex;
+			float4 _Color;
+
+			struct Fragment_Stage_Input
+			{
+				float2 uv : TEXCOORD0;
+			};
+
+			float4 frag(Fragment_Stage_Input input) : SV_TARGET
+			{
+				return _MainTex.Sample(sampler_MainTex, input.uv.xy) * _Color;
+			}
+
+			ENDHLSL
+		}
+	}
 }

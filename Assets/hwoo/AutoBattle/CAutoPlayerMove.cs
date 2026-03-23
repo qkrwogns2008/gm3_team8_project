@@ -1,3 +1,4 @@
+using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,18 +13,21 @@ public class CAutoPlayerMove : MonoBehaviour
     [SerializeField] private float _detectionRange = 100f;    // 탐지 범위(맵 전체를 덮을 수 있게
     [SerializeField] private LayerMask _enemyLayer;        // 탐지할 레이어
     // 타겟 발견시 속도는 기본과 같음
+    [Header("SpineAnim")]
+    [SerializeField] private string _idleAnim = "Idle";
+    [SerializeField] private string _moveAnim = "Move";
     #endregion
     #region 내부변수
     private Transform _targetEnemy;                     // 현재 목표 타겟
     private Vector3 _targetPos;                          // 타겟 위치
     private bool _isMoving = false;                      // 이동 상태 확인
 
-    private SpriteRenderer sprite;
+    private SkeletonAnimation _skeletonAnim;
     #endregion
 
     void Start()
     {
-        sprite = GetComponent<SpriteRenderer>();
+        _skeletonAnim = GetComponent<SkeletonAnimation>();
         // 첫 번째 적 탐색
         FindClosesEnemy();
     }
@@ -96,31 +100,27 @@ public class CAutoPlayerMove : MonoBehaviour
     }
 
     // 이동 위치 바라보기
-    /// <summary>
-    /// 기본 캐릭터 방향이 오른쪽일 경우 그대로
-    /// 왼쪽을 바라볼 경우 반대로 뒤집기
     void LookAtTarget()
     {
-        // 오른쪽
+        // 대상이 오른쪽
         if (_targetPos.x > transform.position.x)
         {
-            if (sprite != null)
-            {
-                // 뒤집기
-                sprite.flipX = true;
-            }
-        }
-        // 왼쪽
-        else if (_targetPos.x < transform.position.x)
-        {
-            if (sprite != null)
+            if (_skeletonAnim != null)
             {
                 // 그대로
-                sprite.flipX = false;
+                _skeletonAnim.Skeleton.ScaleX = -1f;
+            }
+        }
+        // 대상이 왼쪽
+        else if (_targetPos.x < transform.position.x)
+        {
+            if (_skeletonAnim != null)
+            {
+                // 그대로
+                _skeletonAnim.Skeleton.ScaleX = 1f;
             }
         }
     }
-    /// </summary>
 
     void StopAttack()
     {
