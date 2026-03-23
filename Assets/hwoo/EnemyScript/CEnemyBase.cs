@@ -8,6 +8,8 @@ public class CEnemyBase : CUnitBase
     protected EnemyBaseSO _enemySO;
     protected Vector3 _startPosition;
 
+    public EnemyBaseSO EnemyData => _originData as EnemyBaseSO;
+
     protected override void InitUnitStats()
     {
         base.InitUnitStats();
