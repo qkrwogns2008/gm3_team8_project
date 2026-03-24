@@ -15,12 +15,10 @@ public class Stage_View_N : MonoBehaviour
 
         int realStage = upManager.GetCurrentStage();
 
-        // 이미 실제 상태면 아무것도 안함
         if (upManager.viewStage >= realStage) return;
 
         upManager.viewStage++;
 
-        // 실제 단계로 돌아오면 완전 복구
         if (upManager.viewStage == realStage)
         {
             upManager.OnLevelChanged();
@@ -41,9 +39,15 @@ public class Stage_View_N : MonoBehaviour
 
             int maxLevel = GetMaxLevel(btn, stage);
 
-            float previewStat = btn.statPerLevel * (maxLevel - 1);
+            float statValue;
 
-            // UI 직접 덮어쓰기
+            if (stage < btn.statPerLevelByStage.Count)
+                statValue = btn.statPerLevelByStage[stage];
+            else
+                statValue = btn.statPerLevelByStage[btn.statPerLevelByStage.Count - 1];
+
+            float previewStat = statValue * (maxLevel - 1);
+
             if (btn.levelText != null)
                 btn.levelText.text = $"Lv.{maxLevel}";
 
@@ -57,10 +61,8 @@ public class Stage_View_N : MonoBehaviour
 
             if (btn.stageTextB != null)
                 btn.stageTextB.text = $"{displayStage}/10";
-            //
 
-            bool isMax = true;
-
+            // MAX 상태 UI
             if (btn.levelUpButton != null)
                 btn.levelUpButton.gameObject.SetActive(false);
 

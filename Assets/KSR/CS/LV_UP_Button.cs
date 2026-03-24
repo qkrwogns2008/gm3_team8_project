@@ -15,7 +15,9 @@ public class LV_UP_Button : MonoBehaviour
     [Header("능력치")]
     public float currentStat = 0;   // 전체 누적값
     public float stageStat = 0;     // 현재 단계 표시용
-    public float statPerLevel = 10f;
+
+    [Header("단계별 레벨당 능력치")]
+    public List<float> statPerLevelByStage = new List<float>() { 10f, 20f, 30f };
 
     [Header("골드 설정")]
     public float baseCost = 10f;
@@ -59,6 +61,17 @@ public class LV_UP_Button : MonoBehaviour
     {
         currentCost = baseCost;
         UpdateUI();
+    }
+
+    // =============================
+    // 단계별 능력치 가져오기
+
+    float GetStatPerLevel()
+    {
+        if (currentStage < statPerLevelByStage.Count)
+            return statPerLevelByStage[currentStage];
+
+        return statPerLevelByStage[statPerLevelByStage.Count - 1];
     }
 
     // =============================
@@ -113,9 +126,9 @@ public class LV_UP_Button : MonoBehaviour
 
         currentLevel += levelGained;
 
-        float gainedStat = statPerLevel * levelGained;
+        float statValue = GetStatPerLevel();
+        float gainedStat = statValue * levelGained;
 
-        //
         stageStat += gainedStat;   // 현재 단계 표시용
         currentStat += gainedStat; // 전체 누적
 
