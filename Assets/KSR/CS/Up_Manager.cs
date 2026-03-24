@@ -18,10 +18,14 @@ public class Up_Manager : MonoBehaviour
 
     private int currentStage = 0;
 
+    [Header("프리뷰용 현재 보는 단계")]
+    public int viewStage;
+
     // =============================
 
     void Start()
     {
+        viewStage = currentStage;
         OnLevelChanged();
     }
 
@@ -65,6 +69,8 @@ public class Up_Manager : MonoBehaviour
 
         Debug.Log("단계 상승! 현재 단계: " + currentStage);
 
+        viewStage = currentStage;
+
         foreach (var btn in upgradeButtons)
         {
             if (btn == null) continue;
@@ -99,17 +105,21 @@ public class Up_Manager : MonoBehaviour
 
     public void OnLevelChanged()
     {
-        // 단계 먼저 체크
         CheckStageUp();
-
-        // 그 다음 텍스트 갱신
         UpdateTotalLevelUI();
 
-        // 각 버튼 UI 갱신
         foreach (var btn in upgradeButtons)
         {
             if (btn == null) continue;
             btn.UpdateUI();
         }
+    }
+
+    // =============================
+    // 현재 실제 단계 반환
+
+    public int GetCurrentStage()
+    {
+        return currentStage;
     }
 }

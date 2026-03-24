@@ -13,7 +13,8 @@ public class LV_UP_Button : MonoBehaviour
     public int currentStage = 0;
 
     [Header("능력치")]
-    public float currentStat = 0;
+    public float currentStat = 0;   // 전체 누적값
+    public float stageStat = 0;     // 현재 단계 표시용
     public float statPerLevel = 10f;
 
     [Header("골드 설정")]
@@ -24,7 +25,7 @@ public class LV_UP_Button : MonoBehaviour
     public CostType costType = CostType.Add;
 
     [Header("현재 비용 (핵심)")]
-    public float currentCost; // 다음 1레벨 비용 (누적 유지)
+    public float currentCost;
 
     [Header("레벨 증가 배수")]
     public int levelStep = 1;
@@ -37,6 +38,10 @@ public class LV_UP_Button : MonoBehaviour
     public TMP_Text levelText;
     public TMP_Text statText;
     public TMP_Text costText;
+
+    [Header("단계 표시 UI")]
+    public TMP_Text stageTextA;
+    public TMP_Text stageTextB;
 
     [Header("MAX UI 설정")]
     public GameObject maxImage;
@@ -52,12 +57,12 @@ public class LV_UP_Button : MonoBehaviour
 
     void Start()
     {
-        currentCost = baseCost; // 시작 비용
+        currentCost = baseCost;
         UpdateUI();
     }
 
     // =============================
-    // 현재 클릭 시 필요한 총 비용 계산 (UI & 실제 결제용)
+    // 비용 계산
 
     float GetPreviewCost(out float afterCost, out int levelGained)
     {
@@ -82,8 +87,7 @@ public class LV_UP_Button : MonoBehaviour
                 tempCost *= costIncreaseValue;
         }
 
-        afterCost = tempCost; // 레벨업 후 비용
-
+        afterCost = tempCost;
         return total;
     }
 
@@ -105,16 +109,16 @@ public class LV_UP_Button : MonoBehaviour
             return;
         }
 
-        // 골드 차감
         DummyPlayer.gold -= totalCost;
 
-        // 레벨 증가
         currentLevel += levelGained;
 
-        // 능력치 증가
-        currentStat += statPerLevel * levelGained;
+        float gainedStat = statPerLevel * levelGained;
 
-        // 비용 갱신 (누적 유지)
+        //
+        stageStat += gainedStat;   // 현재 단계 표시용
+        currentStat += gainedStat; // 전체 누적
+
         currentCost = afterCost;
 
         UpdateUI();
@@ -137,24 +141,31 @@ public class LV_UP_Button : MonoBehaviour
         if (levelText != null)
             levelText.text = $"Lv.{currentLevel}";
 
+        //  
         if (statText != null)
-            statText.text = $"+{currentStat:F0}";
+            statText.text = $"+{stageStat:F0}";
 
-        // 현재 클릭 시 총 비용 가져오기
         float afterCost;
         int levelGained;
         float previewCost = GetPreviewCost(out afterCost, out levelGained);
 
         if (costText != null)
         {
-            costText.text = FormatGold(previewCost); // 🔥 총 비용 표시
+            costText.text = FormatGold(previewCost);
 
-            // 총 비용 기준으로 빨간색
             if (currentGold < previewCost)
                 costText.color = Color.red;
             else
                 costText.color = Color.white;
         }
+
+        int displayStage = currentStage + 1;
+
+        if (stageTextA != null)
+            stageTextA.text = $"영향력 {displayStage}단계";
+
+        if (stageTextB != null)
+            stageTextB.text = $"{displayStage}/10";
 
         int maxLevel = GetMaxLevel();
         bool isMax = currentLevel >= maxLevel;
@@ -173,13 +184,12 @@ public class LV_UP_Button : MonoBehaviour
     }
 
     // =============================
-    // 스테이지 상승 시
 
     public void ResetLevel()
     {
         currentLevel = 1;
 
-        // 🔥 currentCost 유지 (핵심)
+        stageStat = 0; //단계 넘어가면 표시만 초기화
 
         if (levelUpButton != null)
             levelUpButton.gameObject.SetActive(true);
