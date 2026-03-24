@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Spine.Unity;
 
 public class CAutoEnemyMove : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class CAutoEnemyMove : MonoBehaviour
     [Header("Tracking")]
     [SerializeField] private float _detectionRange = 10f;    // 탐지 범위
     [SerializeField] private LayerMask _playerLayer;        // 탐지할 레이어
+    [Header("SpineAnim")]
+    [SerializeField] private string _idleAnim = "Idle";
+    [SerializeField] private string _moveAnim = "Move";
     // 타겟 발견시 속도는 기본과 같음
     #endregion
     #region 내부변수
@@ -24,14 +28,15 @@ public class CAutoEnemyMove : MonoBehaviour
     public bool _canAttack = false;         // 공격 스크립트에서 참조
     private Transform _targetPlayer;        // 발견 플레이어
 
-    private SpriteRenderer sprite;
+    private SkeletonAnimation _skeletonAnim;
     #endregion
 
     void Start()
     {
         // 현재 위치 세팅
         _homePosition = transform.position;
-        sprite = GetComponent<SpriteRenderer>();
+
+        _skeletonAnim = GetComponent<SkeletonAnimation>();
         // 이동할 위치 선택
         SetNewTarget();
     }
@@ -110,33 +115,29 @@ public class CAutoEnemyMove : MonoBehaviour
             _timer = 0f;
         }
     }
-    
+
     // 이동 위치 바라보기
-    /// <summary>
-    /// 기본 캐릭터 방향이 오른쪽일 경우 그대로
-    /// 왼쪽을 바라볼 경우 반대로 뒤집기
     void LookAtTarget()
     {
-        // 오른쪽
-        if(_targetPos.x > transform.position.x)
+        // 대상이 오른쪽
+        if (_targetPos.x > transform.position.x)
         {
-            if(sprite != null)
-            {
-                // 뒤집기
-                sprite.flipX = true;
-            }
-        }
-        // 왼쪽
-        else if (_targetPos.x < transform.position.x)
-        {
-            if(sprite != null)
+            if (_skeletonAnim != null)
             {
                 // 그대로
-                sprite.flipX = false;
+                _skeletonAnim.Skeleton.ScaleX = -1f;
+            }
+        }
+        // 대상이 왼쪽
+        else if (_targetPos.x < transform.position.x)
+        {
+            if (_skeletonAnim != null)
+            {
+                // 그대로
+                _skeletonAnim.Skeleton.ScaleX = 1f;
             }
         }
     }
-    /// </summary>
 
     // 이동 후 대기
     void WaitAtPosiiton()
