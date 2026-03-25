@@ -31,6 +31,7 @@ public class CHero : CUnitBase
 		}
 	}
 
+	/*
 	protected override void FindClosesEnemy()
 	{
 		Collider[] enemies = Physics.OverlapSphere(transform.position, _detectionRange, _enemyLayer);
@@ -61,6 +62,7 @@ public class CHero : CUnitBase
 			_targetEnemy = null;
 		}
 	}
+	*/
 
 	protected override void OnAttack(CUnitBase target)
 	{
