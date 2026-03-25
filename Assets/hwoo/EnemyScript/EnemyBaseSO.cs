@@ -5,6 +5,18 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "MonsterDataSO", menuName = "Monster_Data(SO)")]
 public class EnemyBaseSO : UnitDataSO
 {
+
+    public enum EUnitState
+    {
+        Idle,
+        Move,
+        Wander,
+        Tracking,
+        Attack,
+        Dead
+    }
+
+
     [SerializeField] protected int _goldReward;             // 드롭 골드
     [SerializeField] protected int _expReward;              // 드롭 경험치
     [SerializeField] protected int _itemReward;             // 드롭 아이템
