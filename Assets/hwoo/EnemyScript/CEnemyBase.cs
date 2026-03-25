@@ -37,47 +37,25 @@ public class CEnemyBase : CUnitBase
                 _targetEnemy = null;
             }
         }
-        // 대상이 없으면 제자리 대기
-        if(_targetEnemy == null && !_isDead)
+        if (_skeletonAni != null)
         {
-            if(_skeletonAni != null && _skeletonAni.AnimationName != "idle" && _skeletonAni.AnimationName != "attack")
+            if (_skeletonAni.AnimationName == "Attack_A")
             {
-                SetAnimation("idle", true);
+                return;
             }
+           
         }
     }
 
-    // 여기서 부터 이동 관련
-    protected override void MoveToTarget()
-    {
-        if(_targetEnemy != null)
-        {
-            LookAtTarget();
-
-            transform.position = Vector3.MoveTowards(transform.position, _targetEnemy.transform.position, _currentwalkSpeed * Time.deltaTime);
-
-            SetAnimation("move", true);
-        }
-    }
-
-    protected override void StopAndAttack()
-    {
-        base.StopAndAttack();
-
-        if (!_isMoving && _skeletonAni.AnimationName != "attack")
-        {
-            SetAnimation("Idle", true);
-        }
-    }
-    // 여기까지 이동관련
+   
     
     // 공격
     protected override void OnAttack(CUnitBase target)
     {
         // 공격 애니메이션 1회 재생
-        SetAnimation("attack", false);
+        SetAnimation("Attack_A", false);
         // 이후 Idle
-        _skeletonAni.AnimationState.AddAnimation(0, "idle", true, 0f);
+        _skeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0f);
 
         // 이펙트 생성
         if(_enemySO != null && _enemySO.AttackEffectPrefab != null)
@@ -102,7 +80,7 @@ public class CEnemyBase : CUnitBase
         if(!_isDead && _skeletonAni != null)
         {
             SetAnimation("hit", false);
-            _skeletonAni.AnimationState.AddAnimation(0, "idle", true, 0f);
+            _skeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0f);
         }
     }
 
@@ -110,7 +88,7 @@ public class CEnemyBase : CUnitBase
     {
         base.Die();
 
-        SetAnimation("die", false);
+        SetAnimation("Death", false);
 
         if(_enemySO != null)
         {
@@ -122,7 +100,7 @@ public class CEnemyBase : CUnitBase
     }
     
     // 편의성
-    protected void SetAnimation(string animName, bool loop)
+    public void SetAnimation(string animName, bool loop)
     {
         if(_skeletonAni == null || _skeletonAni.AnimationState == null)
         {
