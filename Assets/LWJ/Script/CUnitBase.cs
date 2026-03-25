@@ -2,48 +2,68 @@ using Spine.Unity;
 using UnityEngine;
 
 public enum ETeamType { Hero, Enemy } // Hero, Enemy 적 타입 구분
-public enum EAttackType { Normal, Skill1, Skill2 } // 스킬 공격 여부
+public enum EAttackType { Normal, Skill } // 스킬 공격 여부
+
+// 모든 상호작용 대상의 공통 규칙을 가진 Base
 public abstract class CUnitBase : MonoBehaviour
 {
-	// 모든 상호작용 대상의 공통 규칙을 가진 Base
 	#region 인스펙터
+	[SerializeField] protected string _unitName; // 로그용
 
+	[Header("유닛 데이터 SO")]
 	[SerializeField] protected UnitDataSO _originData;
 
-	[SerializeField] protected string _unitName; // 텍스트 확장용
-												 // 규칙
-	[Header("Skill Settings")]
+	[Header("감지 세팅")]
 	[SerializeField] protected ETeamType _teamType; // 여기서 Hero인지 Enemy인지 선택
 	[SerializeField] protected LayerMask _enemyLayer;        // 탐지할 레이어
-														   // 힌트 기준점
+	[SerializeField] protected float _detectionRange; // 탐지 범위
+
+	[Header("Skill Settings")]
+	// 힌트 기준점
 	[SerializeField] protected Transform _hintAnchor; // _hintAnchor 기준 상호작용 없을시 transform
-	[SerializeField] protected SkeletonAnimation _skeletonAni; //
+
+	[Header("스켈레톤 애니메이션")]
+	[SerializeField] protected SkeletonAnimation _skeletonAni;
+
+	[Header("일반 공격")]
+	[SpineAnimation(dataField = "_skeletonAni")]
+	[SerializeField] protected string _attackAnimation;
+	[SerializeField] protected EffectDataSO _attackEffect; // 공격 이펙트 없으면 생략
+
+	[Header("사망")]
+	[SpineAnimation(dataField = "_skeletonAni")]
+	[SerializeField] protected string _deathAnimation;
+	[SerializeField] protected float _deathDisableTime;
 	#endregion
+
 	#region 내부 변수
 	// 스테이터스
+	protected float _baseMaxHp; // 최대 채력
 	protected float _currentHp; // 현재 채력
-	protected float _currentAtk; // 공격력
-	protected float _currentAtkRange; // 공격 범위
-	protected float _detectionRange; // 탐지 범위
-	protected float _currentwalkSpeed; // 이동속도
-	protected float _attackCooldown; // 공격속도 쿨타임
-	protected float _skill1Cooldown; // 스킬1 재사용 대기시간
-	protected float _skill2Cooldown; // 스킬2 재사용 대기시간
-									 // 오브젝트
-	protected CUnitBase _targetEnemy;   // 현재 목표 타겟 CUnitBase 으로 수정
-	protected GameObject _attack1Prefab;// 기본공격 프리팹
-	protected GameObject _skill1Prefab; // 스킬 1 프리팹
-	protected GameObject _skill2Prefab; // 스킬 2 프리팹
-	protected SpriteRenderer _sprite;   // 자식들도 써야 하니 protected
-										// 내부 제어용 함수
+	protected float _baseAtkDamage; // 공격력
+	protected float _baseAttackDelay; // 공격 딜레이(초)
+	protected float _atkRange; // 공격 범위
+	protected float _baseMoveSpeed; // 이동속도
+
+	// 승수
+	protected float _maxHPMultiplier = 1.0f;
+	protected float _attackDamageMultiplier = 1.0f;
+	protected float _attackSpeedMultiplier = 1.0f;
+	protected float _moveSpeedMultiplier = 1.0f;
+
+	protected float _nextAttackTime;
+	protected CUnitBase _targetEnemy; // 현재 목표 타겟
 	protected bool _isMoving = false;
-	protected float _nextAttackTime = 0f; // 내부 쿨타임 적용 함수
-	protected float _nextSkill1Time = 0f; // 다음 스킬 가능 시간
-	protected float _nextSkill2Time = 0f; // 다음 스킬 가능 시간
 	protected bool _isDead = false; // 사망 여부
 
-	// 코드 이식후 추가됨
-	protected Vector3 _targetPos;
+	protected float MaxHP => _baseMaxHp * _maxHPMultiplier;
+	protected float AttackDamage => _baseAtkDamage * _attackDamageMultiplier;
+	protected float AttackDelay => _baseAttackDelay / _attackSpeedMultiplier; // 공격 딜레이 (공격 속도 100% 증가 => 공격 딜레이 1/2)
+	protected float MoveSpeed => _baseMoveSpeed * _moveSpeedMultiplier;
+
+	
+	//protected Vector3 _targetPos;
+	protected float _currentAtk; // conflict 방지를 위한 임시 선언. 추후 삭제 예정
 	#endregion
 
 	// 외부에서 이 유닛이 어느 팀인지 확인할 때 사용
@@ -51,60 +71,75 @@ public abstract class CUnitBase : MonoBehaviour
 
 	protected virtual void Awake()
 	{
-		//SO 인스팩터 연결
 		InitUnitStats();
-		_sprite = GetComponent<SpriteRenderer>();
-		if (_sprite == null)
-		{
-			Debug.Log($"{_unitName} SpriteRenderer 부재");
-		}
+		
 		if (_skeletonAni == null)
 		{
 			_skeletonAni = GetComponent<SkeletonAnimation>();
 		}
 		if (_skeletonAni == null)
 		{
-			Debug.Log($"{_unitName} SkeletonAnimation 부재");
-		}
-	}
-
-	//SO 인스팩터 연결 함수
-	// SO 오리진 데이터 가져오기
-	protected virtual void InitUnitStats()
-	{
-		if (_originData != null)
-		{
-			_unitName = _originData.UnitName;
-			_currentHp = _originData.MaxHp;
-			_currentAtk = _originData.AttackPower;
-			_currentAtkRange = _originData.AttackRange;
-			_attack1Prefab = _originData.Attack1Prefab;
-			_skill1Prefab = _originData.Skill1Prefab;
-			_skill2Prefab = _originData.Skill2Prefab;
-			_currentwalkSpeed = _originData.WalkSpeed;
+			Debug.LogWarning($"{_unitName} SkeletonAnimation 부재");
 		}
 	}
 
 	protected virtual void Update()
 	{
-		
 	}
 
-	// 데미지 받을시 호출
+	// SO 데이터 주입 함수
+	// 유닛 기본값 세팅
+	protected virtual void InitUnitStats()
+	{
+		if (_originData != null)
+		{
+			_unitName = _originData.UnitName;
+			_baseMaxHp = _originData.BaseMaxHp;
+			_baseAtkDamage = _originData.BaseAttackDamage;
+			_baseAttackDelay = _originData.BaseAttackDelay;
+			_atkRange = _originData.AttackRange;
+			_baseMoveSpeed = _originData.BaseMoveSpeed;
+
+			_maxHPMultiplier = _originData.MaxHPMultiplier;
+			_attackDamageMultiplier = _originData.AttackDamageMultiplier;
+			_attackSpeedMultiplier = _originData.AttackSpeedMultiplier;
+			_moveSpeedMultiplier = _originData.MoveSpeedMultiplier;
+
+			_currentHp = MaxHP;
+		}
+	}
+
+	// 데미지 받을 시 호출
 	public virtual void TakeDamage(float damage, CUnitBase attacker)
 	{
-		if (_isDead) return;
+		if (_isDead)
+		{
+			return;
+		}
+
 		_currentHp -= damage;
-		if (_currentHp <= 0) Die();
+		if (_currentHp <= 0)
+		{
+			Die();
+		}
 	}
 
-	// 사망, 공격 시작시 여부 확인
+	// 사망 시 호출
+	protected virtual void Die()
+	{
+		_isDead = true;
+		// 사망 애니메이션 등 추가
+	}
+
+	// 공격 가능 여부 확인
 	protected virtual bool IsAvailable()
 	{
 		if (_isDead)
 			return false;
+
 		if (Time.time < _nextAttackTime)
 			return false;
+
 		return true;
 	}
 
@@ -114,101 +149,48 @@ public abstract class CUnitBase : MonoBehaviour
 		return (_hintAnchor != null) ? _hintAnchor.position : transform.position;
 	}
 
-
 	// 공격 쿨타임 체크 여부
 	protected virtual void ApplyAttackCooldown()
 	{
-		if (_attackCooldown > 0f)
+		if (AttackDelay > 0f)
 		{
-			_nextAttackTime = Time.time + _attackCooldown;
+			_nextAttackTime = Time.time + AttackDelay;
 		}
 	}
-	// 1번 스킬 사용 가능 여부 체크 함수
-	protected virtual bool CanUseSkill1()
-	{
-		// 조건 1: 쿨타임 수치가 설정되어 있는가? (0보다 큰가)
-		// 조건 2: 현재 시간이 다음 가능 시간보다 지났는가?
-		if (_skill1Cooldown > 0f && Time.time >= _nextSkill1Time)
-		{
-			return true; // 사용 가능!
-		}
 
-		return false; // 아직 쿨타임 중이거나 설정 안됨
-	}
-	// 2번 스킬 사용 가능 여부 체크 함수
-	protected virtual bool CanUseSkill2()
-	{
-		if (_skill2Cooldown > 0f && Time.time >= _nextSkill2Time)
-		{
-			return true;
-		}
-
-		return false;
-	}
 	// 상호작용의 단일 진입점(제일 중요한 함수)
 	// 규칙 검사 + 실제 행동을 담당한다.
 	public virtual void TryAttack(CUnitBase target)
 	{
-		if (_isDead || target == null) return;
-		// Base -> 공통 규칙만 먼저 검사한다.
-		// 자식 -> 자기만의 조건과 행동을 제공한다.
+		if (IsAvailable() || target == null)
+		{
+			return;
+		}
 
-		// 실제 행동 수행 -> 자식이 구현하는 부분(abtract)
-		if (CanUseSkill2())
-		{
-			ExecuteCombat(EAttackType.Skill2, target);
-		}
-		// 우선순위 2: 스킬 1
-		else if (CanUseSkill1())
-		{
-			ExecuteCombat(EAttackType.Skill1, target);
-		}
-		// 우선순위 3: 일반 공격
-		else
-		{
-			ExecuteCombat(EAttackType.Normal, target);
-		}
+		ExecuteCombat(EAttackType.Normal, target);
 
 		// 공통 후처리 진행 : 쿨타임
 	}
 
+	// 공격 종류가 추가로 필요할 경우 자식에서 재정의
 	protected virtual void ExecuteCombat(EAttackType type, CUnitBase target)
 	{
 		switch (type)
 		{
-			case EAttackType.Skill1:
-				Debug.Log($"{_unitName}스킬1 작동");
-				_nextSkill1Time = Time.time + _skill1Cooldown;
-				ApplyAttackCooldown();
-				OnSkill1(target);
-				break;
-
-			case EAttackType.Skill2:
-				Debug.Log($"{_unitName}스킬2 작동");
-				_nextSkill2Time = Time.time + _skill2Cooldown;
-				ApplyAttackCooldown();
-				OnSkill2(target);
-				break;
-
 			case EAttackType.Normal:
-				Debug.Log($"{_unitName}공격 작동");
 				ApplyAttackCooldown();
 				OnAttack(target);
 				break;
 		}
 	}
-	// 사망시 호출
-	protected virtual void Die()
-	{
-		_isDead = true;
-		// 사망 애니메이션 등 추가
-	}
-
 
 	protected virtual void OnAttack(CUnitBase target)
-	{ }
-	protected virtual void OnSkill1(CUnitBase target)
-	{ }
-	protected virtual void OnSkill2(CUnitBase target)
-	{ }
+	{
+		if (_skeletonAni == null)
+		{
+			return;
+		}
+
+		// 코루틴 → 스켈레톤 재생 + 데미지 처리 로직 (TakeDamage)
+	}
 }
