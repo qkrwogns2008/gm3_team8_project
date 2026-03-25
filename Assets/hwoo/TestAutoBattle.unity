@@ -138,7 +138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &98272102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5408315746cd814aadb9fb1c3c9f963, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _monsterPrefab: {fileID: 955160903}
+  _monsterPrefab: {fileID: 3687054226942838078, guid: 13ae1b221c137a24994e381c40e6b28d, type: 3}
   _spawnRadius: 5
   _maxMonsterCount: 10
 --- !u!4 &98272103
@@ -169,11 +169,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &955160903 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8146170927842649474, guid: 0c39bc606fde0334988506006fb80544, type: 3}
-  m_PrefabInstance: {fileID: 4431966842092982182}
-  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &875080799
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -6889585368624551242, guid: 13ae1b221c137a24994e381c40e6b28d, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -5958294485156858266, guid: 13ae1b221c137a24994e381c40e6b28d, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 509562218686492499, guid: 13ae1b221c137a24994e381c40e6b28d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 509562218686492499, guid: 13ae1b221c137a24994e381c40e6b28d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 509562218686492499, guid: 13ae1b221c137a24994e381c40e6b28d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 509562218686492499, guid: 13ae1b221c137a24994e381c40e6b28d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 509562218686492499, guid: 13ae1b221c137a24994e381c40e6b28d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 509562218686492499, guid: 13ae1b221c137a24994e381c40e6b28d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 509562218686492499, guid: 13ae1b221c137a24994e381c40e6b28d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 509562218686492499, guid: 13ae1b221c137a24994e381c40e6b28d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 509562218686492499, guid: 13ae1b221c137a24994e381c40e6b28d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 509562218686492499, guid: 13ae1b221c137a24994e381c40e6b28d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3523680985301269560, guid: 13ae1b221c137a24994e381c40e6b28d, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3687054226942838078, guid: 13ae1b221c137a24994e381c40e6b28d, type: 3}
+      propertyPath: m_Name
+      value: Monster_Aaron_A
+      objectReference: {fileID: 0}
+    - target: {fileID: 4080940522737949976, guid: 13ae1b221c137a24994e381c40e6b28d, type: 3}
+      propertyPath: _animationName
+      value: Move
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 13ae1b221c137a24994e381c40e6b28d, type: 3}
 --- !u!1 &1042069141
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,6 +440,7 @@ GameObject:
   - component: {fileID: 1843552425}
   - component: {fileID: 1843552424}
   - component: {fileID: 1843552423}
+  - component: {fileID: 1843552427}
   m_Layer: 6
   m_Name: Spine GameObject (Hero_Agni_A)
   m_TagString: Untagged
@@ -475,83 +544,41 @@ Transform:
   m_GameObject: {fileID: 1843552422}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.752, y: 0, z: 0}
+  m_LocalPosition: {x: -11.73, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &4431966842092982182
-PrefabInstance:
+--- !u!136 &1843552427
+CapsuleCollider:
   m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843552422}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4492731866147656040, guid: 0c39bc606fde0334988506006fb80544, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4615655844474196753, guid: 0c39bc606fde0334988506006fb80544, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4615655844474196753, guid: 0c39bc606fde0334988506006fb80544, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4615655844474196753, guid: 0c39bc606fde0334988506006fb80544, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4615655844474196753, guid: 0c39bc606fde0334988506006fb80544, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4615655844474196753, guid: 0c39bc606fde0334988506006fb80544, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4615655844474196753, guid: 0c39bc606fde0334988506006fb80544, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4615655844474196753, guid: 0c39bc606fde0334988506006fb80544, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4615655844474196753, guid: 0c39bc606fde0334988506006fb80544, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4615655844474196753, guid: 0c39bc606fde0334988506006fb80544, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4615655844474196753, guid: 0c39bc606fde0334988506006fb80544, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8146170927842649474, guid: 0c39bc606fde0334988506006fb80544, type: 3}
-      propertyPath: m_Name
-      value: Spine GameObject (Monster_Mimic_Boss_A)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8146170927842649474, guid: 0c39bc606fde0334988506006fb80544, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 0c39bc606fde0334988506006fb80544, type: 3}
+  m_Radius: 0.85819805
+  m_Height: 1.7743729
+  m_Direction: 1
+  m_Center: {x: -0.32829487, y: 0.6071624, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1042069144}
   - {fileID: 1598935435}
-  - {fileID: 4431966842092982182}
   - {fileID: 98272103}
   - {fileID: 1843552426}
+  - {fileID: 875080799}

@@ -87,43 +87,7 @@ public abstract class CUnitBase : MonoBehaviour
 
 	protected virtual void Update()
 	{
-		FindClosesEnemy();
 
-		if (_targetEnemy != null)
-		{
-			_targetPos = _targetEnemy.transform.position; // transform.position 수정
-
-			// 거리 계산
-			float distanceToEnemy = Vector3.Distance(transform.position, _targetPos);
-
-			// 가까우면 공격
-			if (distanceToEnemy <= _currentAtkRange)
-			{
-				// 공격 쿨타임 여부 판단
-				if (IsAvailable())
-				{
-					// 공격 쿨타임 됬을시 공격
-					StopAndAttack();
-				}
-				else
-				{
-					// 제자리에서 처다보기
-					_isMoving = false;
-					LookAtTarget();
-				}
-			}
-			// 멀면 이동
-			else
-			{
-				_isMoving = true;
-				MoveToTarget();
-			}
-		}
-		else
-		{
-			//대기
-			_isMoving = false;
-		}
 	}
 
 	// 데미지 받을시 호출
@@ -240,83 +204,6 @@ public abstract class CUnitBase : MonoBehaviour
 		// 사망 애니메이션 등 추가
 	}
 	
-	//============================== CAutoPlayerMoving 함수 가져옴==========================
-	protected virtual void FindClosesEnemy()
-	{
-		Collider[] enemies = Physics.OverlapSphere(transform.position, _detectionRange, _enemyLayer);
-
-		if (enemies.Length > 0)
-		{
-			CUnitBase closest = null; // transform -> CUnitBase 수정
-			float minDistance = Mathf.Infinity;
-
-
-			foreach (Collider enemy in enemies)
-			{
-				// 가까운 대상 거리 계산
-				float distance = Vector3.Distance(transform.position, enemy.transform.position);
-				if (distance < minDistance)
-				{
-					CUnitBase targetUnit = enemy.GetComponent<CUnitBase>();
-					if (targetUnit != null)
-					{
-						minDistance = distance;
-						closest = targetUnit;
-					}
-				}
-			}
-			// 타겟 설정
-			_targetEnemy = closest;
-		}
-		else
-		{
-			Debug.Log("타겟 없음");
-			_targetEnemy = null;
-		}
-	}
-
-	protected virtual void MoveToTarget()
-	{
-		LookAtTarget();
-		transform.position = Vector3.MoveTowards(transform.position, _targetPos, _currentwalkSpeed * Time.deltaTime);
-
-	}
-
-	// 이동 위치 바라보기
-	/// <summary>
-	/// 기본 캐릭터 방향이 오른쪽일 경우 그대로
-	/// 왼쪽을 바라볼 경우 반대로 뒤집기
-	protected virtual void LookAtTarget()
-	{
-		// 오른쪽
-		if (_targetPos.x > transform.position.x)
-		{
-			if (_sprite != null)
-			{
-				// 뒤집기
-				_sprite.flipX = true;
-			}
-		}
-		// 왼쪽
-		else if (_targetPos.x < transform.position.x)
-		{
-			if (_sprite != null)
-			{
-				// 그대로
-				_sprite.flipX = false;
-			}
-		}
-	}
-	/// </summary>
-
-	protected virtual void StopAndAttack()
-	{
-		_isMoving = false;
-		LookAtTarget();
-
-		// 공격 로직 실행
-		TryAttack(_targetEnemy);
-	}
 
 	protected virtual void OnAttack(CUnitBase target)
 	{ }
