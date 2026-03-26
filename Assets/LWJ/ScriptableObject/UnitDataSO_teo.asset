@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc2f22b96e152db418cc7662e07be72d, type: 3}
   m_Name: UnitDataSO_teo
   m_EditorClassIdentifier: 
-  unitName: teo
-  maxHp: 100
-  attackPower: 10
-  attackRange: 10
-  skeletonAni: {fileID: 0}
-  attack1Prefab: {fileID: 0}
-  skill1Prefab: {fileID: 0}
-  skill2Prefab: {fileID: 0}
-  walkSpeed: 5
+  _unitName: teo
+  _baseMaxHp: 200
+  _baseAttackDamage: 10
+  _baseAttackDelay: 3
+  _attackRange: 3
+  _baseMoveSpeed: 2
+  _maxHPMultiplier: 1
+  _attackDamageMultiplier: 1
+  _attackSpeedMultiplier: 1
+  _moveSpeedMultiplier: 1
