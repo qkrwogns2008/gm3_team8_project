@@ -86,6 +86,7 @@ public class CSpawnArea : MonoBehaviour
         {
             if (_activeMonsters[i] == null)
             {
+                PoolManager.Instance.Push(_monsterPrefab, _activeMonsters[i]);
                 _activeMonsters.RemoveAt(i);
             }
         }
