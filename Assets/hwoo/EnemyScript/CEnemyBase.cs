@@ -57,11 +57,24 @@ public class CEnemyBase : CUnitBase
             {
                 return;
             }
-           
         }
     }
 
-    
+    private void OnEnable()
+    {
+        // 상태 초기화
+        _isDead = false;
+        _isAttackCooldown = false;
+
+        // 능력치 초기화
+        InitUnitStats();
+
+        // 애니메이션 초기화
+        if(_skeletonAni != null)
+        {
+            _skeletonAni.AnimationState.SetAnimation(0, "Idle", true);
+        }
+    }
 
     // 공격
     protected override void OnAttack(CUnitBase target)
@@ -95,6 +108,9 @@ public class CEnemyBase : CUnitBase
         }
         StartCoroutine(CoAttackRoutine(target));
     }
+
+    
+
     private IEnumerator CoAttackRoutine(CUnitBase target)
     {
         _isAttackCooldown = true;
@@ -106,6 +122,7 @@ public class CEnemyBase : CUnitBase
 
         _isAttackCooldown = false;
     }
+
     public void LookAt(Vector3 targetPos)
     {
         if (_skeletonAni == null)
@@ -142,8 +159,12 @@ public class CEnemyBase : CUnitBase
 
     protected override void Die()
     {
-        base.Die();
+        if (_isDead)
+        {
+            return;
+        }
 
+        base.Die();
         SetAnimation("Death", false);
 
         if(_enemySO != null)
@@ -152,9 +173,17 @@ public class CEnemyBase : CUnitBase
             Debug.Log($"골드 : {_enemySO.GoldReward}, 경험치: {_enemySO.ExpReward}, 아이템: {_enemySO.ItemReward}");
         }
 
-        Destroy(gameObject, 3f);
+        StopAllCoroutines();
+
+        StartCoroutine(CoReturnToPool());
     }
-    
+
+    private IEnumerator CoReturnToPool()
+    {
+        yield return new WaitForSeconds(3f);
+        gameObject.SetActive(false);
+    }
+
     // 편의성
     public void SetAnimation(string animName, bool loop)
     {
