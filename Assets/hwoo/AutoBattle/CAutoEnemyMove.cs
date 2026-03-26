@@ -19,7 +19,9 @@ public class CAutoEnemyMove : MonoBehaviour
     [SerializeField] private float _detectionRange = 10f;    // 탐지 범위
     [SerializeField] private float _giveUpRange = 12f;      // 추격 포기 범위
     [SerializeField] private LayerMask _playerLayer;        // 탐지할 레이어
-    
+    [Header("State")]
+    [SerializeField] private EUnitState _currentState = EUnitState.Idle;
+
     // 타겟 발견시 속도는 기본과 같음
     #endregion
     #region 내부변수
@@ -33,7 +35,7 @@ public class CAutoEnemyMove : MonoBehaviour
 
     private SkeletonAnimation _skeletonAnim;
 
-    private CEnemyBase _enemyBase;
+    private CEnemyBase _enemyBase; // 베이스 참조
     #endregion
 
     void Start()
@@ -44,29 +46,158 @@ public class CAutoEnemyMove : MonoBehaviour
         _enemyBase = GetComponent<CEnemyBase>();
         _skeletonAnim = GetComponent<SkeletonAnimation>();
         // 이동할 위치 선택
-        SetNewTarget();
     }
     void Update()
     {
-        // 대상이 없을경우 추적
-       if(_targetPlayer == null)
+        if (_enemyBase.IsDead)
         {
-            SerachForTarget();
+            return;
         }
-       if(_targetPlayer != null)
+        switch (_currentState)
         {
-            Tracking();
+            case EUnitState.Idle:
+                UpdateIdle();
+                break;
+            case EUnitState.Wander:
+                UpdateWander();
+                break;
+            case EUnitState.Tracking:
+                UpdateTracking();
+                break;
+            case EUnitState.Attack:
+                UpdateAttack();
+                break;
+        }
+
+    }
+
+    public void ChangeState(EUnitState newState)
+    {
+        if (_currentState == newState && newState != EUnitState.Attack)
+        {
+            return;
+        }
+
+        _currentState = newState;
+
+        switch (_currentState)
+        {
+            case EUnitState.Idle:
+                _isMoving = false;
+                SetAnimation("Idle", true);
+                break;
+            case EUnitState.Wander:
+            case EUnitState.Tracking:
+                _isMoving = true;
+                SetAnimation("Move", true);
+                break;
+            case EUnitState.Attack:
+                _isMoving = false;
+                //UpdateAttack();
+                break;
+        }
+    }
+
+    // 상태별 함수
+
+    void UpdateIdle()
+    {
+        if(FindTarget())
+        {
+            ChangeState(EUnitState.Tracking);
+            return;
+        }
+        _timer += Time.deltaTime;
+        if(_timer >= _walkTimer)
+        {
+            _timer = 0;
+            SetNewWanderTarget();
+            ChangeState(EUnitState.Wander);
+        }
+    }
+
+    void UpdateWander()
+    {
+        if(FindTarget())
+        {
+            ChangeState(EUnitState.Tracking);
+            return;
+        }
+        MoveTo(_targetPos);
+        if(Vector3.Distance(transform.position, _targetPos) < 0.1f)
+        {
+            ChangeState(EUnitState.Idle);
+        }
+    }
+
+    void UpdateTracking()
+    {
+        if(_targetPlayer == null)
+        {
+            ChangeState(EUnitState.Idle);
+            return;
+        }
+
+        float dist = Vector3.Distance(transform.position, _targetPlayer.position);
+
+        if (dist > _giveUpRange)
+        {
+            _targetPlayer = null;
+            ChangeState(EUnitState.Idle);
+        }
+        else if(dist <= _attackRange)
+        {
+            ChangeState(EUnitState.Attack);
         }
         else
         {
-            Wandering();
+            MoveTo(_targetPlayer.position);
         }
-       if(!_isMoving)
-        {
-            SetAnimation("Idle", true);
-        }
-        
+
     }
+
+    void UpdateAttack()
+    {
+        Debug.Log("공격 사거리 진입 공격 상태 전환");
+        _enemyBase.LookAt(_targetPlayer.position);
+
+        _enemyBase.TryAttack(_targetPlayer.GetComponent<CUnitBase>());
+
+        float dist = Vector3.Distance(transform.position, _targetPlayer.position);
+        if(dist > _attackRange)
+        {
+            ChangeState(EUnitState.Tracking);
+        }
+    }
+
+    // 여기까지 상태
+
+    bool FindTarget()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, _detectionRange, _playerLayer);
+
+        if (colliders.Length > 0)
+        {
+            _targetPlayer = colliders[0].transform;
+            return true;
+        }
+        return false;
+    }
+
+    void MoveTo(Vector3 pos)
+    {
+        _enemyBase.LookAt(pos);
+        transform.position = Vector3.MoveTowards(transform.position, pos, _walkspeed * Time.deltaTime);
+    }
+
+    void SetNewWanderTarget()
+    {
+        Vector2 rand = Random.insideUnitCircle * _walkRange;
+        _targetPos = _homePosition + new Vector3(rand.x, 0, rand.y);
+    }
+
+   
+
     private void SetAnimation(string animName, bool loop)
     {
         if (_skeletonAnim.AnimationName != animName)
@@ -75,153 +206,34 @@ public class CAutoEnemyMove : MonoBehaviour
         }
     }
 
-
-    // 플레이어 추적
-    void SerachForTarget()
-    {
-        Collider[] targets = Physics.OverlapSphere(transform.position, _detectionRange, _playerLayer);
-
-        if(targets.Length > 0)
-        {
-            float minDistance = Mathf.Infinity;
-            foreach (Collider collider in targets)
-            {
-                float dist = Vector3.Distance(transform.position, collider.transform.position);
-                if(dist < minDistance)
-                {
-                    minDistance = dist;
-                    _targetPlayer = collider.transform;
-                }
-            }
-
-        }
-    }
-
-    // 추적 상태
-    void Tracking()
-    {
-        float distance = Vector3.Distance(transform.position, _targetPlayer.position);
-
-        if(distance > _giveUpRange)
-        {
-            Debug.Log("추격 대상 범위 이탈");
-            _targetPlayer = null;
-            _canAttack = false;
-
-            _isMoving = false;
-            _timer = 0;
-            return;
-        }
-        _targetPos = _targetPlayer.position;
-
-        // 공격 사거리 내부
-        if(distance < _attackRange)
-        {
-            _isMoving = false;
-            _canAttack = true;
-            LookAtTarget();
-        }
-        // giveUp 구간 내부 / 공격 사거리 밖
-        else
-        {
-            _isMoving = true;
-            _canAttack = false;
-            MoveToTarget(true);
-        }
-    }
-
-    // 타겟이 없을때
-    void Wandering()
-    {
-        if (_isMoving)
-        {
-            MoveToTarget(false);
-        }
-        else
-        {
-            WaitAtPosition();
-        }
-    }
-
-    // 이동 위치 탐색
-    void MoveToTarget(bool isTracking)
-    {
-        LookAtTarget();
-        transform.position = Vector3.MoveTowards(transform.position, _targetPos, _walkspeed * Time.deltaTime);
-        SetAnimation("Move", true);
-        // 목표지점.x - 현재 위치.x(절대값) < 0.005f 경우 정지
-        if (!isTracking && Mathf.Abs(transform.position.x - _targetPos.x) < 0.05f)
-        {
-            _isMoving = false;
-            _timer = 0f;
-        }
-    }
-
-    // 이동 위치 바라보기
-    void LookAtTarget()
-    {
-        // 대상이 오른쪽
-        if (_targetPos.x > transform.position.x)
-        {
-            if (_skeletonAnim != null)
-            {
-                // 그대로
-                _skeletonAnim.Skeleton.ScaleX = -1f;
-            }
-        }
-        // 대상이 왼쪽
-        else if (_targetPos.x < transform.position.x)
-        {
-            if (_skeletonAnim != null)
-            {
-                // 그대로
-                _skeletonAnim.Skeleton.ScaleX = 1f;
-            }
-        }
-    }
-
-    // 이동 후 대기
-    void WaitAtPosition()
-    {
-        _timer += Time.deltaTime;
-        if (_timer >= _walkTimer)
-        {
-            _timer = 0f;
-            SetNewTarget();
-        }
-    }
-
-    // 새로운 위치 탐색
-    void SetNewTarget()
-    {
-        Vector2 randPoint = Random.insideUnitCircle * _walkRange;
-        _targetPos = new Vector3(_homePosition.x + randPoint.x, _homePosition.y, _homePosition.z + randPoint.y);
-        _isMoving = true;
-    }
-
-    // 기즈모로 범위 확인
     private void OnDrawGizmos()
     {
-        // 탐지 범위
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, _detectionRange);
 
-        // 사거리
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, _attackRange);
 
-        // 배회 범위
+        Gizmos.color = Color.grey;
+        Gizmos.DrawWireSphere(transform.position, _giveUpRange);
+
         Vector3 centerPos = Application.isPlaying ? _homePosition : transform.position;
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(centerPos, _walkRange);
 
-        // 현재 이동하는 위치
-        if(_isMoving)
+        if(_currentState == EUnitState.Wander || _currentState == EUnitState.Tracking)
         {
             Gizmos.color = Color.yellow;
             Gizmos.DrawLine(transform.position, _targetPos);
             Gizmos.DrawSphere(_targetPos, 0.3f);
         }
+
+        if(_currentState == EUnitState.Tracking && _targetPlayer != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(transform.position, _targetPlayer.position);
+        }
     }
+
 
 }
