@@ -13,7 +13,7 @@ public class EffectBase : MonoBehaviour
 	[SerializeField] protected GameObject RightEffect;
 
 	[Header("Effect Life")]
-	[SerializeField] protected float EffectLifeTime;
+	[SerializeField] protected float EffectLifeTime = 2f;
 
 	[Header("Praticle Scale Multiplier")]
 	[SerializeField] protected bool EnableParticleBaseScaleMultiplier = true;
@@ -31,6 +31,12 @@ public class EffectBase : MonoBehaviour
 		if (LeftEffect == null || RightEffect == null)
 		{
 			Debug.LogWarning($"{name} : 인스펙터 null");
+			gameObject.SetActive(false);
+			return;
+		}
+		if (EffectLifeTime <= 0)
+		{
+			Debug.LogWarning($"{name} : EffectLifeTime이 0보다 커야 합니다.");
 			gameObject.SetActive(false);
 			return;
 		}

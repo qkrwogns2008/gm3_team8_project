@@ -32928,11 +32928,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b5e7618439229f439e0910602e9a73a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _leftEffect: {fileID: 1730242686860875}
-  _rightEffect: {fileID: 1044625135789424}
-  _effectLifeTime: 2
-  _enableParticleBaseScaleMultiplier: 1
-  _baseScaleMultiplier: 0.15
+  LeftEffect: {fileID: 1730242686860875}
+  RightEffect: {fileID: 1044625135789424}
+  EffectLifeTime: 1
+  EnableParticleBaseScaleMultiplier: 1
+  BaseScaleMultiplier: 0.15
 --- !u!1 &1709867586078768
 GameObject:
   m_ObjectHideFlags: 0
