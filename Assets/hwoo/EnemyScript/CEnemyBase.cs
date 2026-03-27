@@ -144,12 +144,7 @@ public class CEnemyBase : CUnitBase
     {
         base.TakeDamage(damage, attacker);
 
-        // 피격 애니메이션 (살아있을때만)
-        if(!IsDead && SkeletonAni != null)
-        {
-            SetAnimation("hit", false);
-            SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0f);
-        }
+        
     }
 
     protected override void Die()
