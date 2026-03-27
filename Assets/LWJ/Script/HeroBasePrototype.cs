@@ -2,6 +2,7 @@ using Spine.Unity;
 using System.Collections;
 using UnityEngine;
 
+// no use Dummy script file
 public class HeroBasePrototype : MonoBehaviour
 {
 	/*
