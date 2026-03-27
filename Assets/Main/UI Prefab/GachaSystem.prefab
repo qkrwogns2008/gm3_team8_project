@@ -1,0 +1,107 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1438308864714353178
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6783757613816274841}
+  - component: {fileID: 2424552737167543050}
+  - component: {fileID: 2716021544176848396}
+  - component: {fileID: 4809564303730383046}
+  m_Layer: 0
+  m_Name: GachaSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6783757613816274841
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438308864714353178}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2424552737167543050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438308864714353178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d376b4b1a764dd84197c71b67572dc26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gachaModel: {fileID: 4809564303730383046}
+  _gachaView: {fileID: 2716021544176848396}
+  _gachaCategoryList:
+  - {fileID: 11400000, guid: 2f66157925a6e9849aea71db9e70723c, type: 2}
+  - {fileID: 11400000, guid: fd3fd9a068307624ebd406ccf73524f9, type: 2}
+  _currentCategoryIndex: 0
+  _cardPrefab: {fileID: 4614312923335339625, guid: faf7bcd32af024c4ca0f361cf1a0c1c6, type: 3}
+  _miniCardPrefab: {fileID: 4614312923335339625, guid: 47cbec6621706254bbb0c4751cd7dd33, type: 3}
+  _poolSize: 30
+--- !u!114 &2716021544176848396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438308864714353178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89f176d70a5beff43a4a815433ee7dd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rubyText: {fileID: 0}
+  _summonCard: {fileID: 0}
+  _categoryGroup: {fileID: 0}
+  _heroTabGroup: {fileID: 0}
+  _petTabGroup: {fileID: 0}
+  _holyTabGroup: {fileID: 0}
+  _heroTabButton: {fileID: 0}
+  _petTabButton: {fileID: 0}
+  _holyTabButton: {fileID: 0}
+  _expFillImage: {fileID: 0}
+  _expText: {fileID: 0}
+  _levelText: {fileID: 0}
+  _mainShopImage: {fileID: 0}
+  _gachaOneButton: {fileID: 0}
+  _gachaTenButton: {fileID: 0}
+  _gachaThirtyButton: {fileID: 0}
+  _gachaTHundredButton: {fileID: 0}
+  _resultPanel: {fileID: 0}
+  _gachaTransform: {fileID: 0}
+  _openAllCard: {fileID: 0}
+  _closeButton: {fileID: 0}
+  _miniCardPanel: {fileID: 0}
+  _miniCardTransform: {fileID: 0}
+  _miniCardButton: {fileID: 0}
+--- !u!114 &4809564303730383046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438308864714353178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f0ba92e60bb20846a68ba63080835c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rubyCount: 500000
+  _summonCardCount: 300
