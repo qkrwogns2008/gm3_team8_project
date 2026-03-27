@@ -68,25 +68,38 @@ public class CSpawnArea : MonoBehaviour
 
     private void SpawnMonster()
     {
-        if(_monsterPrefab == null)
+        if (_monsterPrefab == null)
         {
             return;
         }
         Vector2 randomPoint = Random.insideUnitCircle * _spawnRadius;
-
         Vector3 spawnPos = transform.position + new Vector3(randomPoint.x, randomPoint.y, 0f);
+        spawnPos.z = 0f;
 
-        GameObject monster = Instantiate(_monsterPrefab, spawnPos, Quaternion.identity);
-        _activeMonsters.Add(monster);
+        GameObject monster = PoolManager.Instance.Pop(_monsterPrefab, spawnPos, Quaternion.identity);
+        if (monster != null)
+        {
+            _activeMonsters.Add(monster);
+        }
     }
 
     private void CleanUpList()
     {
         for(int i = _activeMonsters.Count - 1; i>= 0; i--)
         {
-            if (_activeMonsters[i] == null)
+            GameObject monsterObj = _activeMonsters[i];
+            
+            // 하이어라키에서 삭제할경우
+            if(monsterObj == null)
             {
-                PoolManager.Instance.Push(_monsterPrefab, _activeMonsters[i]);
+                _activeMonsters.RemoveAt(i);
+                continue;
+            }
+
+            // 비활성화 수거
+            if(monsterObj.activeSelf == false)
+            {
+                PoolManager.Instance.Push(_monsterPrefab, monsterObj);
                 _activeMonsters.RemoveAt(i);
             }
         }
