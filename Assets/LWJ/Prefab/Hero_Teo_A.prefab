@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UnitName: 
+  CurrentHp: 0
   OriginData: {fileID: 11400000, guid: cfded9635fc4d804a8a603ed678061e3, type: 2}
   TeamType: 0
   SkeletonAni: {fileID: 4024569556539796475}
@@ -57,15 +58,15 @@ MonoBehaviour:
   DeathAnimation: Death
   DeathDisableTime: 3
   PrintLog: 1
-  _criticalAnimation: Critical
-  _criticalEffect: {fileID: 11400000, guid: 43641eaf32843294188424242b43a8a6, type: 2}
-  _baseCriticalDelay: 1
-  _criticalChance: 20
-  _criticalAttackMultiplier: 2
-  _skillAnimation: Active_A
-  _skillEffect: {fileID: 11400000, guid: 3f1e7435205806e41ad8ad78767b0b80, type: 2}
-  _baseSkillDelay: 1
-  _baseSkillCooldown: 1
+  CriticalAnimation: Critical
+  CriticalEffect: {fileID: 11400000, guid: 43641eaf32843294188424242b43a8a6, type: 2}
+  CriticalChance: 20
+  CriticalAttackMultiplier: 2
+  SkillAnimation: Active_A
+  SkillEffect: {fileID: 11400000, guid: 3f1e7435205806e41ad8ad78767b0b80, type: 2}
+  SkillActionInterval: 2
+  BaseSkillCooldown: 5
+  CooldownMultiplier: 1
 --- !u!114 &7235707145319245369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,7 +74,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2209794903314683923}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 95dafd336d8cdea46bf35191d129a7f9, type: 3}
   m_Name: 
