@@ -2,43 +2,85 @@ using UnityEngine;
 
 public class UnitScaleController : MonoBehaviour
 {
-    [Header("설정값")]
-    public float scaleFactor = 0.1f;    // 비례 계수 (0.1)
-    public float minScaleLimit = 0.4f; // 최대 30% 감소 (원본의 70% 유지)
+    [Header("Scale 변화 수치")]
+    [SerializeField] private float _minScaleLimit = 0.2f;
+    [Header("Shader 설정값")]
+    [SerializeField] private float _scaleFactor = 0.05f;
+    [SerializeField] private float _horizonStart = 4.5f;//3.83+0.56
+    [SerializeField] private float _horizonFinish = 4.7f;
 
-    private Transform camTransform;
-    private Vector3 initialScale;
-
+    private Transform _camTransform;
+    private Vector3 _initialScale;
+    private Vector3 _originalPosition;
+    private Renderer _renderer;
+    private bool _isPositionAltered = false;
+    
     void Start()
     {
-        // 메인 카메라 트랜스폼 참조
-        if (Camera.main != null) camTransform = Camera.main.transform;
-
-        // 시작할 때의 스케일 저장 (원본 크기 기준)
-        initialScale = transform.localScale;
+        if (Camera.main != null) _camTransform = Camera.main.transform;
+        _initialScale = transform.localScale;
+        _renderer = GetComponent<Renderer>();
     }
 
     void Update()
     {
-        if (camTransform == null) return;
+        if (_camTransform == null || _renderer == null) return;
+        float relativeY = transform.position.y - _camTransform.position.y;
 
-        // 1. 카메라로부터의 상대적인 Y 거리 계산 (카메라 기준 Y축 증가량)
-        float relativeY = transform.position.y - camTransform.position.y-2f;
-
-        // Y값이 음수일 경우(카메라보다 아래)를 대비해 0 이상으로 클램핑
         relativeY = Mathf.Max(0, relativeY);
 
-        // 2. 팀장님의 마법 공식: Y^2 * 0.1
-        // 감소량 = (Y * Y) * 0.1
-        float reduction = (relativeY * relativeY) * scaleFactor;
+        // 1. 사라짐 처리 (StayPoint 기준)
+        if (relativeY >= _horizonStart)
+        {
+            _renderer.enabled = false;
+        }
+        // 2. 스케일 계산 (_horizonFinish 이하 기준)
+        else if (relativeY < _horizonStart)
+        {
+            _renderer.enabled = true;
+            // 지평선 시작점(_horizonStart)까지만 줄어들도록 제한
+            float scaleTargetY = Mathf.Min(relativeY, _horizonStart);
+            float reduction = (scaleTargetY * scaleTargetY) * _scaleFactor;
+            reduction = Mathf.Min(reduction, 1.0f - _minScaleLimit);
 
-        // 3. 감소량이 최대 30%(0.3)를 넘지 않도록 제한
-        reduction = Mathf.Min(reduction, 1.0f - minScaleLimit);
+            transform.localScale = _initialScale * (1.0f - reduction);
 
-        // 4. 최종 스케일 계산 (1.0 - 감소량)
-        float finalScaleFactor = 1.0f - reduction;
+        }
 
-        // 5. 원본 스케일에 곱해서 적용
-        transform.localScale = initialScale * finalScaleFactor;
     }
+
+    /* 지평선 대기 효과 폐기건
+    // 3. 눈속임 위치만 렌더링 직전에 교체
+    void OnWillRenderObject()
+    {
+        if (_camTransform == null || !_renderer.enabled) return;
+
+        float currentRelativeY = transform.position.y - _camTransform.position.y;
+        // [핵심] Finish 지점을 넘었다면 위치 고정 로직을 타지 않도록 즉시 리턴!
+        // 이렇게 해야 지평선에 유닛이 맺힌 채로 카메라에 끌려오는 걸 막습니다.
+        if (currentRelativeY >= _horizonFinish)
+        {
+            return;
+        }
+        // [중요] 현재 실제 위치를 백업
+        _originalPosition = transform.position;
+
+        // Update와 동일한 relativeY 계산 (기준점 통일)
+        float relativeY = _originalPosition.y - (_camTransform.position.y);
+
+        
+
+        // 지평선 시작점 ~ 끝점 사이라면 "시각적 위치만" 고정
+        if (relativeY >= _horizonStart && relativeY < _horizonFinish)
+        {
+            // 지평선에 해당하는 실제 월드 Y 좌표 계산
+            float visualWorldY = _camTransform.position.y + _horizonStart;
+
+            // 그리기 직전 위치 바꿔치기
+            transform.position = new Vector3(_originalPosition.x, visualWorldY, _originalPosition.z);
+            _isPositionAltered = true;
+        }
+    }
+    */
+
 }
