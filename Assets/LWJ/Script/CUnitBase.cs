@@ -82,6 +82,43 @@ public abstract class CUnitBase : MonoBehaviour
 	{
 	}
 
+	protected virtual void OnEnable()
+	{
+		if(TeamType == ETeamType.Hero)
+		{
+			if(HeroManagerDummy.Instance != null)
+			{
+				HeroManagerDummy.Instance.RegisterHero(this.transform);
+			}
+			
+		}
+		else if(TeamType == ETeamType.Enemy)
+		{
+			if(CEnemyManager.Instance != null)
+			{
+				CEnemyManager.Instance.RegisterEnemy(this.transform);
+			}
+		}
+	}
+
+	protected virtual void OnDisable()
+	{
+		if(TeamType == ETeamType.Hero)
+		{
+			if(HeroManagerDummy.Instance != null)
+			{
+				HeroManagerDummy.Instance.UnregiserHero(this.transform);
+			}
+		}
+		else if(TeamType == ETeamType.Enemy)
+		{
+			if(CEnemyManager.Instance != null)
+			{
+				CEnemyManager.Instance.UnregisterEnemy(this.transform);
+			}
+		}
+	}
+
 	// SO 데이터 주입 함수
 	// 유닛 기본값 세팅
 	protected virtual void InitUnitStats()

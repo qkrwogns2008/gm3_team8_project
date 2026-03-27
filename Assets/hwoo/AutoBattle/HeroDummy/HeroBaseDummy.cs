@@ -2,6 +2,15 @@ using Spine.Unity;
 using System.Collections;
 using UnityEngine;
 
+public enum EHeroState
+{
+    Idle,
+    Move,
+    Attack,
+    Skill,
+    Death
+}
+
 public class HeroBaseDummy : CUnitBase
 {
     //[Header("일반 공격")]
@@ -9,6 +18,9 @@ public class HeroBaseDummy : CUnitBase
     //[SerializeField] protected string _attackAnimation;
     //[SerializeField] protected EffectDataSO _attackEffect;
     //[SerializeField] protected float _baseAttackDelay = 1.0f;
+
+    [Header("State")]
+    [SerializeField] public EHeroState CurrentState = EHeroState.Idle;
 
     [Header("치명타 공격")]
     [SpineAnimation(dataField = "SkeletonAni")]
@@ -36,6 +48,13 @@ public class HeroBaseDummy : CUnitBase
     protected virtual float CriticalDamage => BaseAtkDamage * CriticalAttackMultiplier;
     protected virtual float FinalSkillCooldown => BaseSkillCooldown * CooldownMultiplier;
     protected virtual float FinalSkillActionInterval => SkillActionInterval / AttackSpeedMultiplier;
+
+    public bool IsDead => IsDead;
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+    }
 
     // for Test
     protected override void Update()
@@ -214,15 +233,17 @@ public class HeroBaseDummy : CUnitBase
     // 이펙트 소환 시도
     protected virtual bool TrySummonEffect(EffectCatalog fxData)
     {
+        EffectBase prefab = fxData.Prefab;
+
         Vector3 pos = transform.position + fxData.Offset;
         Quaternion rot = Quaternion.Euler(-45f, 0f, 0f);
-        EffectBase fx = Instantiate(fxData.Prefab, pos, rot);
+        EffectBase fx = PoolManager.Instance.Pop(prefab, pos, rot);
 
         if (fx == null)
         {
             return false;
         }
-        fx.Init(false);
+        fx.Init(prefab, false);
 
         return true;
     }
@@ -313,6 +334,48 @@ public class HeroBaseDummy : CUnitBase
             {
                 NextAttackTime = Time.time + FinalSkillActionInterval;
             }
+        }
+    }
+
+    // 상태 변경 관리
+    public void ChangeState(EHeroState newState)
+    {
+        if(CurrentState == newState && newState != EHeroState.Attack)
+        {
+            return;
+        }
+
+        CurrentState = newState;
+
+        switch(CurrentState)
+        {
+            case EHeroState.Idle:
+                SetAnimation("Idle", true);
+                break;
+            case EHeroState.Move:
+                SetAnimation("Move", true);
+                break;
+            case EHeroState.Death:
+                //Die 에서 처리
+                break;
+        }
+    }
+
+    
+
+    // 편의성용 SetAnimation 함수
+    public void SetAnimation(string animName, bool loop)
+    {
+        if (SkeletonAni == null || SkeletonAni.AnimationState == null)
+        {
+            return;
+        }
+
+        Spine.TrackEntry currentTrack = SkeletonAni.AnimationState.GetCurrent(0);
+
+        if (currentTrack == null || currentTrack.Animation.Name != animName)
+        {
+            SkeletonAni.AnimationState.SetAnimation(0, animName, loop);
         }
     }
 }

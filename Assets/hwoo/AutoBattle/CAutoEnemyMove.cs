@@ -53,7 +53,7 @@ public class CAutoEnemyMove : MonoBehaviour
 
     void Update()
     {
-        if (_enemyBase.IsUnitDead)
+        if (_enemyBase == null || _enemyBase.IsUnitDead)
         {
             return;
         }
@@ -185,11 +185,36 @@ public class CAutoEnemyMove : MonoBehaviour
 
     bool FindTarget()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, _detectionRange, _playerLayer);
-
-        if (colliders.Length > 0)
+        if (HeroManagerDummy.Instance == null || HeroManagerDummy.Instance.ActiveHero.Count == 0)
         {
-            _targetPlayer = colliders[0].transform;
+            return false;
+        }
+
+        Transform closet = null;
+        float minDistance = _detectionRange;
+
+        foreach(var player in HeroManagerDummy.Instance.ActiveHero)
+        {
+            if(player == null || !player.gameObject.activeSelf)
+            {
+                continue;
+            }
+            CUnitBase heroUnit = player.GetComponent<CUnitBase>();
+            if(heroUnit != null && heroUnit.IsUnitDead)
+            {
+                continue;
+            }
+            float dist = Vector2.Distance(transform.position, player.position);
+            if(dist > minDistance)
+            {
+                minDistance = dist;
+                closet = player;
+            }
+        }
+
+        if(closet != null)
+        {
+            _targetPlayer = closet;
             return true;
         }
         return false;

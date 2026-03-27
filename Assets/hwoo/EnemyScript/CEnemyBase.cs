@@ -57,6 +57,7 @@ public class CEnemyBase : CUnitBase
 
     private void OnEnable()
     {
+        base.OnEnable();
         // 상태 초기화
         _isAttackCooldown = false;
         IsDead = false;

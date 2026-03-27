@@ -23,79 +23,100 @@ public class CAutoPlayerMove : MonoBehaviour
     private bool _isMoving = false;                      // 이동 상태 확인
 
     private SkeletonAnimation _skeletonAnim;
+    private HeroBaseDummy PlayerHero;   // 상태 제어용 참조 사용시 CHero참조
     #endregion
 
     void Start()
     {
         _skeletonAnim = GetComponent<SkeletonAnimation>();
-        // 첫 번째 적 탐색
-        FindClosesEnemy();
+        PlayerHero = GetComponent<HeroBaseDummy>();
+
+        Vector3 pos = transform.position;
+        pos.z = 0f;
+        transform.position = pos;
     }
     void Update()
     {
-        FindClosesEnemy();
+        if (PlayerHero == null || PlayerHero.IsDead)
+        {
+            return;
+        }
 
+        FindClosestEnemy();
+        
         if(_targetEnemy != null)
         {
             _targetPos = _targetEnemy.position;
+            _targetPos.z = 0f;
 
-            // 거리 계산
-            float distanceToEnemy = Vector3.Distance(transform.position, _targetPos);
+            float distanceToEnemy = Vector2.Distance(transform.position, _targetPos);
 
-            // 가까우면 공격
-            if (distanceToEnemy <= _attackRange)
+            if(distanceToEnemy <= _attackRange)
             {
-                StopAttack();
+                StopAndAttack();
             }
-            // 멀면 이동
             else
             {
-                _isMoving = true;
                 MoveToTarget();
             }
         }
         else
         {
-            //대기
-            _isMoving = false;
+            if(PlayerHero.CurrentState != EHeroState.Idle)
+            {
+                PlayerHero.ChangeState(EHeroState.Idle);
+            }
         }
+
     }
 
-    void FindClosesEnemy()
+    void FindClosestEnemy()
     {
-        Collider[] enemies = Physics.OverlapSphere(transform.position, _detectionRange, _enemyLayer);
-
-        if(enemies.Length>0)
+        if(CEnemyManager.Instance == null || CEnemyManager.Instance.ActiveEnemies.Count == 0)
         {
-            Transform closest = null;
-            float minDistance = Mathf.Infinity;
-
-            
-            foreach(Collider enemy in enemies)
-            {
-                // 가까운 대상 거리 계산
-                float distance = Vector3.Distance(transform.position, enemy.transform.position);
-                if(distance < minDistance)
-                {
-                    minDistance = distance;
-                    closest = enemy.transform;
-                }
-            }
-            // 타겟 설정
-            _targetEnemy = closest;
-        }
-        else
-        {
-            Debug.Log("타겟 없음");
             _targetEnemy = null;
+            return;
         }
+
+        Transform closest = null;
+        float minDistance = _detectionRange;
+
+        foreach(Transform enemy in CEnemyManager.Instance.ActiveEnemies)
+        {
+            if(enemy == null || !enemy.gameObject.activeSelf)
+            {
+                continue;
+            }
+            CUnitBase enemyUnit = enemy.GetComponent<CUnitBase>();
+            if(enemyUnit!= null && enemyUnit.IsUnitDead)
+            {
+                continue;
+            }
+
+            float distance = Vector2.Distance(transform.position, enemy.position);
+
+            if(distance < minDistance)
+            {
+                minDistance = distance;
+                closest = enemy;
+            }
+        }
+
+        _targetEnemy = closest;
     }
 
     // 이동 위치 탐색
     void MoveToTarget()
     {
+        PlayerHero.ChangeState(EHeroState.Move);
         LookAtTarget();
+
         transform.position = Vector3.MoveTowards(transform.position, _targetPos, _walkSpeed * Time.deltaTime);
+
+        // Z 축 고정
+        Vector3 curPos = transform.position;
+        curPos.z = 0f;
+        transform.position = curPos;
 
     }
 
@@ -122,13 +143,14 @@ public class CAutoPlayerMove : MonoBehaviour
         }
     }
 
-    void StopAttack()
+    void StopAndAttack()
     {
-        _isMoving = false;
         LookAtTarget();
 
         /// </summary>
         /// 공격 로직 실행
         /// </summary>
+        CUnitBase targetUnit = _targetEnemy.GetComponent<CUnitBase>();
+        PlayerHero.TryAttack(targetUnit);
     }
 }
