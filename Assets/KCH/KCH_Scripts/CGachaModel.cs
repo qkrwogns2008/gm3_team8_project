@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,11 @@ using UnityEngine;
 
 public class CGachaModel : MonoBehaviour
 {
+
+    [Header("보유 재화(임시)")]
+    public int _rubyCount = 30000;         // 현재 루비
+    public int _summonCardCount = 300;      // 현재 소환권
+
     private CGachaCategorySO _currentCategory;
 
     // 카테고리 세팅
@@ -37,5 +43,27 @@ public class CGachaModel : MonoBehaviour
             _currentCategory.AddExp(amount);
         }
 
+    }
+    public bool CheckMoney(int count)
+    {
+        if (_summonCardCount >= count || _rubyCount >= count * 100)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public void PayMoney(int count)
+    {
+        if (_summonCardCount >= count) 
+        {
+            _summonCardCount -= count;
+        }
+
+        else
+        {
+            _rubyCount -= (count * 100);
+        }
     }
 }
