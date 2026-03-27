@@ -214,15 +214,17 @@ public class CHero : CUnitBase
 	// 이펙트 소환 시도
 	protected virtual bool TrySummonEffect(EffectCatalog fxData)
 	{
+		EffectBase prefab = fxData.Prefab;
+
 		Vector3 pos = transform.position + fxData.Offset;
 		Quaternion rot = Quaternion.Euler(-45f, 0f, 0f);
-		EffectBase fx = Instantiate(fxData.Prefab, pos, rot);
+		EffectBase fx = PoolManager.Instance.Pop(prefab, pos, rot);
 
 		if (fx == null)
 		{
 			return false;
 		}
-		fx.Init(false);
+		fx.Init(prefab, false);
 
 		return true;
 	}
