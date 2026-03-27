@@ -2,19 +2,13 @@ using Spine.Unity;
 using System.Collections;
 using UnityEngine;
 
+
+
+
+
 [CreateAssetMenu(fileName = "MonsterDataSO", menuName = "Monster_Data(SO)")]
 public class EnemyBaseSO : UnitDataSO
 {
-
-    public enum EUnitState
-    {
-        Idle,
-        Move,
-        Wander,
-        Tracking,
-        Attack,
-        Dead
-    }
 
 
     [SerializeField] protected int _goldReward;             // 드롭 골드
@@ -25,7 +19,7 @@ public class EnemyBaseSO : UnitDataSO
     [SerializeField] protected float _detectionRange = 8f;  // 플레이어 감지 거리
     [SerializeField] protected float _giveUpRange = 12f;    // 추격 포기 거리
 
-
+    [SerializeField] protected float _attackSpeed;
     [SerializeField] protected GameObject _attackEffectPrefab;      // 공격 이펙트 프리펩
 
 
@@ -37,6 +31,7 @@ public class EnemyBaseSO : UnitDataSO
     public float DetectionRange => _detectionRange;
     public float GiveUpRange => _giveUpRange;
 
+    public float AttackSpeed => _attackSpeed;
     public GameObject AttackEffectPrefab => _attackEffectPrefab;
    
 }

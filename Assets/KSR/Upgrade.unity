@@ -1559,6 +1559,10 @@ PrefabInstance:
       value: Menu
       objectReference: {fileID: 0}
     - target: {fileID: 2185013961960763775, guid: 5bc5bc06591263344ae2413e4a94ea7c, type: 3}
+      propertyPath: targetPrefabs.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2185013961960763775, guid: 5bc5bc06591263344ae2413e4a94ea7c, type: 3}
       propertyPath: targetPrefabs.Array.data[0]
       value: 
       objectReference: {fileID: 2140028468}
@@ -1566,6 +1570,18 @@ PrefabInstance:
       propertyPath: targetPrefabs.Array.data[1]
       value: 
       objectReference: {fileID: 808349706}
+    - target: {fileID: 2185013961960763775, guid: 5bc5bc06591263344ae2413e4a94ea7c, type: 3}
+      propertyPath: targetPrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 1355528497}
+    - target: {fileID: 2185013961960763775, guid: 5bc5bc06591263344ae2413e4a94ea7c, type: 3}
+      propertyPath: targetPrefabs.Array.data[3]
+      value: 
+      objectReference: {fileID: 365312201}
+    - target: {fileID: 2185013961960763775, guid: 5bc5bc06591263344ae2413e4a94ea7c, type: 3}
+      propertyPath: targetPrefabs.Array.data[4]
+      value: 
+      objectReference: {fileID: 1899950489}
     - target: {fileID: 3526944005861598271, guid: 5bc5bc06591263344ae2413e4a94ea7c, type: 3}
       propertyPath: myPrefab
       value: 

@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84c152800de289948b8ee43c471c7b79, type: 3}
-  m_Name: EffectDataSO_TeoCritical1
+  m_Name: EffectDataSO_TeoCritical
   m_EditorClassIdentifier: 
-  _name: TeoCritical1
-  _prefab: {fileID: 2727509717097820771, guid: 8c29d553e4608da47b1ede9080bda233, type: 3}
-  _offset: {x: 0, y: 0, z: 0}
-  _preDelay: 0.3
+  _name: TeoCritical
+  _effectCatalog:
+  - _prefab: {fileID: 2727509717097820771, guid: 8c29d553e4608da47b1ede9080bda233, type: 3}
+    _preDelay: 0.3
+    _offset: {x: 0, y: 0, z: 0}

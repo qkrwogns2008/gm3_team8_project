@@ -16,35 +16,54 @@ public class CSpawnArea : MonoBehaviour
     #region 내부 변수
 
     private List<GameObject> _activeMonsters = new List<GameObject>();
-    private float _spawnTimer = 0f;
     private float _spawnCoolTime = 3f;
 
+    private int _waitSpawnCount = 0;
     #endregion
 
-    // Start is called before the first frame update
+
     void Start()
     {
         CEnemyBase enemyScript = _monsterPrefab.GetComponent<CEnemyBase>();
 
-        if(enemyScript != null && enemyScript.EnemyData != null)
+        if (enemyScript != null && enemyScript.EnemyData != null)
         {
             _spawnCoolTime = enemyScript.EnemyData.SpawnCooltime;
         }
+
+        for (int i = 0; i< _maxMonsterCount; i++)
+        {
+            SpawnMonster();
+        }
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         CleanUpList();
-        if(_activeMonsters.Count < _maxMonsterCount)
+
+        int currentTotal = _activeMonsters.Count + _waitSpawnCount;
+
+        if(currentTotal < _maxMonsterCount)
         {
-            _spawnTimer += Time.deltaTime;
-            if(_spawnTimer >= _spawnCoolTime )
+            int deficit = _maxMonsterCount - currentTotal;
+            for(int i = 0; i < deficit; i++)
             {
-                SpawnMonster();
-                _spawnTimer = 0f;
+                StartCoroutine(CoRespawnMonster());
             }
         }
+    }
+
+    // 개별 몬스터 리스폰 관리
+    private IEnumerator CoRespawnMonster()
+    {
+        _waitSpawnCount++;
+
+        yield return new WaitForSeconds(_spawnCoolTime);
+
+        SpawnMonster();
+
+        _waitSpawnCount--;
     }
 
     private void SpawnMonster()
@@ -67,6 +86,7 @@ public class CSpawnArea : MonoBehaviour
         {
             if (_activeMonsters[i] == null)
             {
+                PoolManager.Instance.Push(_monsterPrefab, _activeMonsters[i]);
                 _activeMonsters.RemoveAt(i);
             }
         }

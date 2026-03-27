@@ -10,9 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 84c152800de289948b8ee43c471c7b79, type: 3}
-  m_Name: EffectDataSO_TeoAttack1
+  m_Name: EffectDataSO_TeoActive
   m_EditorClassIdentifier: 
-  _name: TeoAttack1
-  _prefab: {fileID: -3867343681002411872, guid: 036a247b58fb94e4c80d85e5175dbceb, type: 3}
-  _offset: {x: 0, y: 0, z: 0}
-  _preDelay: 0.3
+  _name: TeoActive
+  _effectCatalog:
+  - _prefab: {fileID: -3836113966167957806, guid: 425344f08201c27498e64e4d79c52d2e, type: 3}
+    _preDelay: 0.3
+    _offset: {x: 0, y: 0, z: 0}
+  - _prefab: {fileID: -7516881438969116505, guid: ebf563b179da01b458dcdc1e62e3d759, type: 3}
+    _preDelay: 0.5
+    _offset: {x: 0, y: 0, z: 0}
