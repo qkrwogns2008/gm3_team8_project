@@ -133,6 +133,22 @@ PrefabInstance:
     - target: {fileID: -4705622958786604801, guid: 0c39bc606fde0334988506006fb80544, type: 3}
       propertyPath: OriginData
       value: 
+      objectReference: {fileID: 11400000, guid: 8baac1c61b184c347b56a246191424c4, type: 2}
+    - target: {fileID: -4705622958786604801, guid: 0c39bc606fde0334988506006fb80544, type: 3}
+      propertyPath: SkeletonAni
+      value: 
+      objectReference: {fileID: 41115624}
+    - target: {fileID: -4705622958786604801, guid: 0c39bc606fde0334988506006fb80544, type: 3}
+      propertyPath: DeathAnimation
+      value: Death
+      objectReference: {fileID: 0}
+    - target: {fileID: -4705622958786604801, guid: 0c39bc606fde0334988506006fb80544, type: 3}
+      propertyPath: AttackAnimation
+      value: Attack_A
+      objectReference: {fileID: 0}
+    - target: {fileID: -4705622958786604801, guid: 0c39bc606fde0334988506006fb80544, type: 3}
+      propertyPath: DeathDisableTime
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -2305140598136509611, guid: 0c39bc606fde0334988506006fb80544, type: 3}
       propertyPath: m_Enabled
@@ -198,6 +214,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1263019303}
   m_SourcePrefab: {fileID: 100100000, guid: 0c39bc606fde0334988506006fb80544, type: 3}
+--- !u!114 &41115624 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8270684644065887420, guid: 0c39bc606fde0334988506006fb80544, type: 3}
+  m_PrefabInstance: {fileID: 41115623}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1263019296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1263019296 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8146170927842649474, guid: 0c39bc606fde0334988506006fb80544, type: 3}
@@ -534,22 +561,6 @@ PrefabInstance:
     - target: {fileID: 5845931139765108105, guid: 36aa282f753fc5b4581f3c9ac5433231, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8096124463481793326, guid: 36aa282f753fc5b4581f3c9ac5433231, type: 3}
-      propertyPath: SkillEffect
-      value: 
-      objectReference: {fileID: 11400000, guid: 3f1e7435205806e41ad8ad78767b0b80, type: 2}
-    - target: {fileID: 8096124463481793326, guid: 36aa282f753fc5b4581f3c9ac5433231, type: 3}
-      propertyPath: CriticalEffect
-      value: 
-      objectReference: {fileID: 11400000, guid: 43641eaf32843294188424242b43a8a6, type: 2}
-    - target: {fileID: 8096124463481793326, guid: 36aa282f753fc5b4581f3c9ac5433231, type: 3}
-      propertyPath: SkillAnimation
-      value: Active_A
-      objectReference: {fileID: 0}
-    - target: {fileID: 8096124463481793326, guid: 36aa282f753fc5b4581f3c9ac5433231, type: 3}
-      propertyPath: CriticalAnimation
-      value: Critical
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
