@@ -29,22 +29,22 @@ public class CHero : CUnitBase
 
 	Coroutine _motionRoutine;
 
-	protected float CriticalDamage => _baseAtkDamage * _criticalAttackMultiplier;
+	protected float CriticalDamage => BaseAtkDamage * _criticalAttackMultiplier;
 
 	// for Test
 	protected override void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.Alpha1))
 		{
-			OnAttack(_targetEnemy);
+			OnAttack(TargetEnemy);
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha2))
 		{
-			OnCritical(_targetEnemy);
+			OnCritical(TargetEnemy);
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha3))
 		{
-			OnSkill(_targetEnemy);
+			OnSkill(TargetEnemy);
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha4))
 		{
@@ -54,7 +54,7 @@ public class CHero : CUnitBase
 
 	protected override void OnAttack(CUnitBase target)
 	{
-		if (_skeletonAni == null || _attackEffect == null)
+		if (SkeletonAni == null || AttackEffect == null)
 		{
 			return;
 		}
@@ -66,23 +66,34 @@ public class CHero : CUnitBase
 
 		// 치명타 체크
 		bool isCriAttack = (Random.Range(0f, 100f) <= _criticalChance);
-		Debug.Log($"크리티컬 : {isCriAttack}");
+		
+		if (PrintLog)
+		{
+			Debug.Log($"크리티컬 : {isCriAttack}");
+		}
+
 		if (isCriAttack && _criticalEffect != null)
 		{
 			_motionRoutine = StartCoroutine(Co_PlayMotion(_criticalEffect, _criticalAnimation, target, CriticalDamage));
-			Debug.Log($"{_unitName}의 치명타 공격!");
+			if (PrintLog)
+			{
+				Debug.Log($"{UnitName}의 치명타 공격!");
+			}
 		}
 		else
 		{
-			_motionRoutine = StartCoroutine(Co_PlayMotion(_attackEffect, _attackAnimation, target, _baseAtkDamage));
-			Debug.Log($"{_unitName}의 일반 공격!");
+			_motionRoutine = StartCoroutine(Co_PlayMotion(AttackEffect, AttackAnimation, target, BaseAtkDamage));
+			if (PrintLog)
+			{
+				Debug.Log($"{UnitName}의 일반 공격!");
+			}
 		}
 	}
 
 	// for test
 	private void OnCritical(CUnitBase target)
 	{
-		if (_skeletonAni == null || _criticalEffect == null)
+		if (SkeletonAni == null || _criticalEffect == null)
 		{
 			return;
 		}
@@ -93,12 +104,15 @@ public class CHero : CUnitBase
 		}
 
 		_motionRoutine = StartCoroutine(Co_PlayMotion(_criticalEffect, _criticalAnimation, target, CriticalDamage));
-		Debug.Log($"{_unitName}의 치명타 공격!");
+		if (PrintLog)
+		{
+			Debug.Log($"{UnitName}의 치명타 공격!");
+		}
 	}
 
 	protected void OnSkill(CUnitBase target)
 	{
-		if (_skeletonAni == null || _skillEffect == null)
+		if (SkeletonAni == null || _skillEffect == null)
 		{
 			return;
 		}
@@ -108,8 +122,11 @@ public class CHero : CUnitBase
 			return;
 		}
 
-		_motionRoutine = StartCoroutine(Co_PlayMotion(_skillEffect, _skillAnimation, target, _baseAtkDamage));
-		Debug.Log($"{_unitName}의 스킬 1 발동!");
+		_motionRoutine = StartCoroutine(Co_PlayMotion(_skillEffect, _skillAnimation, target, BaseAtkDamage));
+		if (PrintLog)
+		{
+			Debug.Log($"{UnitName}의 스킬 1 발동!");
+		}
 	}
 
 	/// <summary>
@@ -124,8 +141,8 @@ public class CHero : CUnitBase
 			yield break;
 		}
 
-		_skeletonAni.AnimationState.SetAnimation(0, animationName, false);
-		_skeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
+		SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
+		SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
 
 		// 목록의 이펙트를 순차 출력
 		for (int i = 0; i < effectData.Catalog.Count; i++)
@@ -161,7 +178,7 @@ public class CHero : CUnitBase
 			yield break;
 		}
 
-		_skeletonAni.AnimationState.SetAnimation(0, animationName, false);
+		SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
 
 		yield return new WaitForSeconds(time);
 
@@ -193,7 +210,7 @@ public class CHero : CUnitBase
 	{
 		base.Die();
 
-		if (_skeletonAni == null )
+		if (SkeletonAni == null )
 		{
 			return;
 		}
@@ -203,8 +220,11 @@ public class CHero : CUnitBase
 			return;
 		}
 
-		_motionRoutine = StartCoroutine(Co_PlayMotion(_deathAnimation, _deathDisableTime, true));
-		Debug.Log($"{_unitName} 사망");
+		_motionRoutine = StartCoroutine(Co_PlayMotion(DeathAnimation, DeathDisableTime, true));
+		if (PrintLog)
+		{
+			Debug.Log($"{UnitName} 사망");
+		}
 	}
 }
 

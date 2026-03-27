@@ -8,7 +8,7 @@ public class UnitDataSO : ScriptableObject
 	[SerializeField] private string _unitName;
 	[SerializeField] private float _baseMaxHp;
 	[SerializeField] private float _baseAttackDamage;
-	[SerializeField] private float _baseAttackDelay;
+	[SerializeField] private float _baseAttackInterval;
 	[SerializeField] private float _attackRange;
 	[SerializeField] private float _baseMoveSpeed;
 
@@ -23,7 +23,7 @@ public class UnitDataSO : ScriptableObject
 	public string UnitName => _unitName;
 	public float BaseMaxHp => _baseMaxHp;
 	public float BaseAttackDamage => _baseAttackDamage;
-	public float BaseAttackDelay => _baseAttackDelay;
+	public float BaseAttackInterval => _baseAttackInterval;
 	public float AttackRange => _attackRange;
 	public float BaseMoveSpeed => _baseMoveSpeed;
 	public float MaxHPMultiplier => _maxHPMultiplier;

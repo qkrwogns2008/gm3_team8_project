@@ -38,18 +38,22 @@ public class CAutoEnemyMove : MonoBehaviour
     private CEnemyBase _enemyBase; // 베이스 참조
     #endregion
 
+   
+
     void Start()
     {
         // 현재 위치 세팅
         _homePosition = transform.position;
+        _homePosition.z = 0f;
 
         _enemyBase = GetComponent<CEnemyBase>();
         _skeletonAnim = GetComponent<SkeletonAnimation>();
         // 이동할 위치 선택
     }
+
     void Update()
     {
-        if (_enemyBase.IsDead)
+        if (_enemyBase.IsUnitDead)
         {
             return;
         }
@@ -69,6 +73,13 @@ public class CAutoEnemyMove : MonoBehaviour
                 break;
         }
 
+    }
+
+    private void OnEnable()
+    {
+        _homePosition = transform.position;
+        _homePosition.z = 0f;
+        ChangeState(EUnitState.Idle);
     }
 
     public void ChangeState(EUnitState newState)
@@ -124,7 +135,7 @@ public class CAutoEnemyMove : MonoBehaviour
             return;
         }
         MoveTo(_targetPos);
-        if(Vector3.Distance(transform.position, _targetPos) < 0.1f)
+        if(Vector2.Distance(transform.position, _targetPos) < 0.1f)
         {
             ChangeState(EUnitState.Idle);
         }
@@ -174,7 +185,7 @@ public class CAutoEnemyMove : MonoBehaviour
 
     bool FindTarget()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, _detectionRange, _playerLayer);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, _detectionRange, _playerLayer);
 
         if (colliders.Length > 0)
         {
@@ -187,13 +198,15 @@ public class CAutoEnemyMove : MonoBehaviour
     void MoveTo(Vector3 pos)
     {
         _enemyBase.LookAt(pos);
+        Vector3 nextPos = Vector3.MoveTowards(transform.position, pos, _walkspeed * Time.deltaTime);
+        nextPos.z = 0f;
         transform.position = Vector3.MoveTowards(transform.position, pos, _walkspeed * Time.deltaTime);
     }
 
     void SetNewWanderTarget()
     {
         Vector2 rand = Random.insideUnitCircle * _walkRange;
-        _targetPos = _homePosition + new Vector3(rand.x, 0, rand.y);
+        _targetPos = _homePosition + (Vector3)rand;
     }
 
    

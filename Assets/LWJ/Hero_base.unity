@@ -194,6 +194,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1263019303}
   m_SourcePrefab: {fileID: 100100000, guid: 0c39bc606fde0334988506006fb80544, type: 3}
+--- !u!114 &1191132803 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8096124463481793326, guid: 36aa282f753fc5b4581f3c9ac5433231, type: 3}
+  m_PrefabInstance: {fileID: 364592932680682934}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fed72c17ead63f49afddd3bd4c085e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1263019296 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8146170927842649474, guid: 0c39bc606fde0334988506006fb80544, type: 3}
@@ -491,6 +502,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hero_Teo_A
       objectReference: {fileID: 0}
+    - target: {fileID: 2209794903314683923, guid: 36aa282f753fc5b4581f3c9ac5433231, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5845931139765108105, guid: 36aa282f753fc5b4581f3c9ac5433231, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -530,6 +545,14 @@ PrefabInstance:
     - target: {fileID: 5845931139765108105, guid: 36aa282f753fc5b4581f3c9ac5433231, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7235707145319245369, guid: 36aa282f753fc5b4581f3c9ac5433231, type: 3}
+      propertyPath: _unitBase
+      value: 
+      objectReference: {fileID: 1191132803}
+    - target: {fileID: 7235707145319245369, guid: 36aa282f753fc5b4581f3c9ac5433231, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
