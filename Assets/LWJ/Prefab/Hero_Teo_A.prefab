@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8096124463481793326}
   - component: {fileID: 7235707145319245369}
   - component: {fileID: 8241242084976139400}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Hero_Teo_A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,19 +48,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fed72c17ead63f49afddd3bd4c085e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _unitName: teo
-  _originData: {fileID: 11400000, guid: cfded9635fc4d804a8a603ed678061e3, type: 2}
-  _teamType: 0
-  _enemyLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  _detectionRange: 3
-  _hintAnchor: {fileID: 0}
-  _skeletonAni: {fileID: 4024569556539796475}
-  _attackAnimation: Attack_A
-  _attackEffect: {fileID: 11400000, guid: eb531b3eb7dcaaf45868d6cb4beedd74, type: 2}
-  _deathAnimation: Death
-  _deathDisableTime: 3
+  UnitName: 
+  OriginData: {fileID: 11400000, guid: cfded9635fc4d804a8a603ed678061e3, type: 2}
+  TeamType: 0
+  SkeletonAni: {fileID: 4024569556539796475}
+  AttackAnimation: Attack_A
+  AttackEffect: {fileID: 11400000, guid: eb531b3eb7dcaaf45868d6cb4beedd74, type: 2}
+  DeathAnimation: Death
+  DeathDisableTime: 3
+  PrintLog: 1
   _criticalAnimation: Critical
   _criticalEffect: {fileID: 11400000, guid: 43641eaf32843294188424242b43a8a6, type: 2}
   _baseCriticalDelay: 1
@@ -77,7 +73,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2209794903314683923}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 95dafd336d8cdea46bf35191d129a7f9, type: 3}
   m_Name: 
@@ -88,7 +84,7 @@ MonoBehaviour:
   _enemyLayer:
     serializedVersion: 2
     m_Bits: 128
-  _unitBase: {fileID: 0}
+  _unitBase: {fileID: 8096124463481793326}
 --- !u!65 &8241242084976139400
 BoxCollider:
   m_ObjectHideFlags: 0

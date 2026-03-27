@@ -5,31 +5,37 @@ using UnityEngine;
 public class CHero : CUnitBase
 {
 	//[Header("일반 공격")]
-	//[SpineAnimation(dataField = "_skeletonAni")]
+	//[SpineAnimation(dataField = "SkeletonAni")]
 	//[SerializeField] protected string _attackAnimation;
 	//[SerializeField] protected EffectDataSO _attackEffect;
 	//[SerializeField] protected float _baseAttackDelay = 1.0f;
 
 	[Header("치명타 공격")]
-	[SpineAnimation(dataField = "_skeletonAni")]
-	[SerializeField] protected string _criticalAnimation;
-	[SerializeField] protected EffectDataSO _criticalEffect;
-	[SerializeField] protected float _baseCriticalDelay = 1.0f;
+	[SpineAnimation(dataField = "SkeletonAni")]
+	[SerializeField] protected string CriticalAnimation;
+	[SerializeField] protected EffectDataSO CriticalEffect;
+	//[SerializeField] protected float BaseCriticalActionInterval = 1.5f;
 
 	[Header("치명타 수치")]
-	[SerializeField] protected float _criticalChance = 20f;
-	[SerializeField] protected float _criticalAttackMultiplier = 2f;
+	[SerializeField] protected float CriticalChance = 20f;
+	[SerializeField] protected float CriticalAttackMultiplier = 2f;
 
 	[Header("스킬")]
-	[SpineAnimation(dataField = "_skeletonAni")]
-	[SerializeField] protected string _skillAnimation;
-	[SerializeField] protected EffectDataSO _skillEffect;
-	[SerializeField] protected float _baseSkillDelay = 1.0f;
-	[SerializeField] protected float _baseSkillCooldown = 1.0f;
+	[SpineAnimation(dataField = "SkeletonAni")]
+	[SerializeField] protected string SkillAnimation;
+	[SerializeField] protected EffectDataSO SkillEffect;
 
-	Coroutine _motionRoutine;
+	[Header("스킬 수치")]
+	[SerializeField] protected float SkillActionInterval = 2f; // 스킬 액션 딜레이
+	[SerializeField] protected float BaseSkillCooldown = 5.0f; // 쿨타임
+	[SerializeField] protected float CooldownMultiplier = 1.0f; // 쿨타임 감소 승수
 
-	protected float CriticalDamage => BaseAtkDamage * _criticalAttackMultiplier;
+	protected float NextSkillTime;
+	protected Coroutine MotionRoutine;
+
+	protected virtual float CriticalDamage => BaseAtkDamage * CriticalAttackMultiplier;
+	protected virtual float FinalSkillCooldown => BaseSkillCooldown * CooldownMultiplier;
+	protected virtual float FinalSkillActionInterval => SkillActionInterval / AttackSpeedMultiplier;
 
 	// for Test
 	protected override void Update()
@@ -56,25 +62,26 @@ public class CHero : CUnitBase
 	{
 		if (SkeletonAni == null || AttackEffect == null)
 		{
+			Debug.LogWarning("CHero) 인스펙터 null 감지");
 			return;
 		}
 
-		if (_motionRoutine != null)
+		if (MotionRoutine != null)
 		{
 			return;
 		}
 
 		// 치명타 체크
-		bool isCriAttack = (Random.Range(0f, 100f) <= _criticalChance);
-		
+		bool isCriAttack = (Random.Range(0f, 100f) <= CriticalChance);
+
 		if (PrintLog)
 		{
 			Debug.Log($"크리티컬 : {isCriAttack}");
 		}
 
-		if (isCriAttack && _criticalEffect != null)
+		if (isCriAttack && CriticalEffect != null)
 		{
-			_motionRoutine = StartCoroutine(Co_PlayMotion(_criticalEffect, _criticalAnimation, target, CriticalDamage));
+			MotionRoutine = StartCoroutine(Co_PlayMotion(CriticalEffect, CriticalAnimation, target, CriticalDamage));
 			if (PrintLog)
 			{
 				Debug.Log($"{UnitName}의 치명타 공격!");
@@ -82,7 +89,7 @@ public class CHero : CUnitBase
 		}
 		else
 		{
-			_motionRoutine = StartCoroutine(Co_PlayMotion(AttackEffect, AttackAnimation, target, BaseAtkDamage));
+			MotionRoutine = StartCoroutine(Co_PlayMotion(AttackEffect, AttackAnimation, target, BaseAtkDamage));
 			if (PrintLog)
 			{
 				Debug.Log($"{UnitName}의 일반 공격!");
@@ -93,17 +100,18 @@ public class CHero : CUnitBase
 	// for test
 	private void OnCritical(CUnitBase target)
 	{
-		if (SkeletonAni == null || _criticalEffect == null)
+		if (SkeletonAni == null || CriticalEffect == null)
+		{
+			Debug.LogWarning("CHero) 인스펙터 null 감지");
+			return;
+		}
+
+		if (MotionRoutine != null)
 		{
 			return;
 		}
 
-		if (_motionRoutine != null)
-		{
-			return;
-		}
-
-		_motionRoutine = StartCoroutine(Co_PlayMotion(_criticalEffect, _criticalAnimation, target, CriticalDamage));
+		MotionRoutine = StartCoroutine(Co_PlayMotion(CriticalEffect, CriticalAnimation, target, CriticalDamage));
 		if (PrintLog)
 		{
 			Debug.Log($"{UnitName}의 치명타 공격!");
@@ -112,17 +120,18 @@ public class CHero : CUnitBase
 
 	protected void OnSkill(CUnitBase target)
 	{
-		if (SkeletonAni == null || _skillEffect == null)
+		if (SkeletonAni == null || SkillEffect == null)
+		{
+			Debug.LogWarning("CHero) 인스펙터 null 감지");
+			return;
+		}
+
+		if (MotionRoutine != null)
 		{
 			return;
 		}
 
-		if (_motionRoutine != null)
-		{
-			return;
-		}
-
-		_motionRoutine = StartCoroutine(Co_PlayMotion(_skillEffect, _skillAnimation, target, BaseAtkDamage));
+		MotionRoutine = StartCoroutine(Co_PlayMotion(SkillEffect, SkillAnimation, target, BaseAtkDamage));
 		if (PrintLog)
 		{
 			Debug.Log($"{UnitName}의 스킬 1 발동!");
@@ -137,7 +146,7 @@ public class CHero : CUnitBase
 		if (string.IsNullOrEmpty(animationName))
 		{
 			Debug.LogWarning("애니메이션 NONE. 인스펙터 확인");
-			_motionRoutine = null;
+			MotionRoutine = null;
 			yield break;
 		}
 
@@ -149,13 +158,25 @@ public class CHero : CUnitBase
 		{
 			EffectCatalog fxData = effectData.Catalog[i];
 
+			if (fxData == null)
+			{
+				Debug.LogWarning($"CHero) 이펙트 NONE. {effectData.Name} 이펙트 목록 확인");
+				continue;
+			}
+
 			yield return new WaitForSeconds(fxData.PreDelay);
+
+			if (fxData.Prefab == null)
+			{
+				Debug.LogWarning($"CHero) 이펙트 프리팹 NONE. {effectData.Name} 이펙트 목록 확인");
+				continue;
+			}
 
 			// 이펙트 생성 실패 시 즉시 종료
 			if (!TrySummonEffect(fxData))
 			{
 				Debug.LogWarning($"{name} : {effectData.Name} 이펙트 생성 실패");
-				_motionRoutine = null;
+				MotionRoutine = null;
 				yield break;
 			}
 		}
@@ -165,7 +186,7 @@ public class CHero : CUnitBase
 			target.TakeDamage(damage, this);
 		}
 
-		_motionRoutine = null;
+		MotionRoutine = null;
 	}
 
 	// 오버로딩 : 모션 재생 후 정지.
@@ -174,7 +195,7 @@ public class CHero : CUnitBase
 		if (string.IsNullOrEmpty(animationName))
 		{
 			Debug.LogWarning("애니메이션 NONE. 인스펙터 확인");
-			_motionRoutine = null;
+			MotionRoutine = null;
 			yield break;
 		}
 
@@ -187,7 +208,7 @@ public class CHero : CUnitBase
 			gameObject.SetActive(false);
 		}
 
-		_motionRoutine = null;
+		MotionRoutine = null;
 	}
 
 	// 이펙트 소환 시도
@@ -210,76 +231,89 @@ public class CHero : CUnitBase
 	{
 		base.Die();
 
-		if (SkeletonAni == null )
+		if (SkeletonAni == null)
 		{
 			return;
 		}
 
-		if (_motionRoutine != null)
+		if (MotionRoutine != null)
 		{
 			return;
 		}
 
-		_motionRoutine = StartCoroutine(Co_PlayMotion(DeathAnimation, DeathDisableTime, true));
+		MotionRoutine = StartCoroutine(Co_PlayMotion(DeathAnimation, DeathDisableTime, true));
 		if (PrintLog)
 		{
 			Debug.Log($"{UnitName} 사망");
 		}
 	}
-}
 
-/*
-public virtual void TryAttack(CUnitBase target)
+	public override void TryAttack(CUnitBase target)
 	{
-		if (IsAvailable() || target == null) return;
-		// Base -> 공통 규칙만 먼저 검사한다.
-		// 자식 -> 자기만의 조건과 행동을 제공한다.
-
-		// 실제 행동 수행 -> 자식이 구현하는 부분(abtract)
-		// 우선순위 2: 스킬 1
-		if (CanUseSkill1())
+		if (!IsAvailable() || target == null)
 		{
-			ExecuteCombat(EAttackType.Skill1, target);
+			return;
 		}
-		// 우선순위 3: 일반 공격
+
+		if (CanUseSkill())
+		{
+			ExecuteCombat(EAttackType.Skill, target);
+		}
 		else
 		{
 			ExecuteCombat(EAttackType.Normal, target);
 		}
-
-		// 공통 후처리 진행 : 쿨타임
 	}
-*/
-/*
-protected virtual void ExecuteCombat(EAttackType type, CUnitBase target)
+
+	protected override void ExecuteCombat(EAttackType type, CUnitBase target)
 	{
 		switch (type)
 		{
-			case EAttackType.Skill1:
-				Debug.Log($"{_unitName}스킬1 작동");
-				_nextSkill1Time = Time.time + _skill1Cooldown;
-				ApplyAttackCooldown();
-				OnSkill1(target);
+			case EAttackType.Skill:
+				//Debug.Log($"{UnitName} 스킬 작동");
+				NextSkillTime = Time.time + FinalSkillCooldown;
+				ApplyAttackCooldown(false);
+				OnSkill(target);
 				break;
 			case EAttackType.Normal:
-				Debug.Log($"{_unitName}공격 작동");
-				ApplyAttackCooldown();
+				//Debug.Log($"{UnitName} 공격 작동");
+				ApplyAttackCooldown(true);
 				OnAttack(target);
 				break;
 		}
 	}
-*/
-/*
-// 1번 스킬 사용 가능 여부 체크 함수
-	protected virtual bool CanUseSkill1()
+
+	// 스킬 사용 가능 여부 체크
+	protected virtual bool CanUseSkill()
 	{
-		// 조건 1: 쿨타임 수치가 설정되어 있는가? (0보다 큰가)
-		// 조건 2: 현재 시간이 다음 가능 시간보다 지났는가?
-		if (_skill1Cooldown > 0f && Time.time >= _nextSkill1Time)
+		if (BaseSkillCooldown > 0f && Time.time >= NextSkillTime)
 		{
-			return true; // 사용 가능!
+			return true;
 		}
 
 		return false; // 아직 쿨타임 중이거나 설정 안됨
 	}
-*/
+
+	/// <summary>
+	/// 공격 액션 딜레이를 적용합니다. 기본 공격이면 True, 스킬 사용이면 False입니다.
+	/// </summary>
+	/// <param name="isNormal">기본 공격 여부</param>
+	protected void ApplyAttackCooldown(bool isNormal)
+	{
+		if (isNormal) // 기본 공격
+		{
+			if (FinalAttackActionInterval > 0f)
+			{
+				NextAttackTime = Time.time + FinalAttackActionInterval;
+			}
+		}
+		else // 스킬 사용
+		{
+			if (FinalSkillActionInterval > 0f)
+			{
+				NextAttackTime = Time.time + FinalSkillActionInterval;
+			}
+		}
+	}
+}
+

@@ -10,6 +10,7 @@ public abstract class CUnitBase : MonoBehaviour
 {
 	#region 인스펙터
 	[SerializeField] protected string UnitName; // 로그용
+	[SerializeField] protected float CurrentHp; // 현재 체력
 
 	[Header("유닛 데이터 SO")]
 	[SerializeField] protected UnitDataSO OriginData;
@@ -36,10 +37,9 @@ public abstract class CUnitBase : MonoBehaviour
 
 	#region 내부 변수
 	// 스테이터스
-	protected float BaseMaxHp; // 최대 채력
-	protected float CurrentHp; // 현재 채력
+	protected float BaseMaxHp; // 최대 체력
 	protected float BaseAtkDamage; // 공격력
-	protected float BaseAttackInterval; // 공격 주기(초)
+	protected float BaseAttackActionInterval; // 공격 주기(초)
 	protected float AtkRange; // 공격 범위
 	protected float BaseMoveSpeed; // 이동속도
 
@@ -55,7 +55,7 @@ public abstract class CUnitBase : MonoBehaviour
 
 	protected virtual float FinalMaxHP => BaseMaxHp * MaxHPMultiplier; // 1000 * 1.1 (최대 체력 10%증가) = 1100
 	protected virtual float FinalAttackDamage => BaseAtkDamage * AttackDamageMultiplier;
-	protected virtual float FinalAttackInterval => BaseAttackInterval / AttackSpeedMultiplier; // 공격 딜레이 (공격 속도 100% 증가 => 공격 딜레이 1/2)
+	protected virtual float FinalAttackActionInterval => BaseAttackActionInterval / AttackSpeedMultiplier; // 공격 딜레이 (공격 속도 100% 증가 => 공격 딜레이 1/2)
 	protected virtual float FinalMoveSpeed => BaseMoveSpeed * MoveSpeedMultiplier;
 	
 	//protected Coroutine _motionRoutine;
@@ -91,7 +91,7 @@ public abstract class CUnitBase : MonoBehaviour
 			UnitName = OriginData.UnitName;
 			BaseMaxHp = OriginData.BaseMaxHp;
 			BaseAtkDamage = OriginData.BaseAttackDamage;
-			BaseAttackInterval = OriginData.BaseAttackInterval;
+			BaseAttackActionInterval = OriginData.BaseAttackInterval;
 			AtkRange = OriginData.AttackRange;
 			BaseMoveSpeed = OriginData.BaseMoveSpeed;
 
@@ -115,7 +115,7 @@ public abstract class CUnitBase : MonoBehaviour
 		CurrentHp -= damage;
 		if (PrintLog)
 		{
-			Debug.Log($"CUnitBase) {damage} 피해 입음. [HP:{CurrentHp}]");
+			Debug.Log($"CUnitBase) [{UnitName}] {damage} 피해 입음. [HP:{CurrentHp}]");
 		}
 
 		if (CurrentHp <= 0)
@@ -143,12 +143,12 @@ public abstract class CUnitBase : MonoBehaviour
 		return true;
 	}
 
-	// 공격 쿨타임 체크 여부
+	// 공격 후딜레이 적용
 	protected virtual void ApplyAttackCooldown()
 	{
-		if (FinalAttackInterval > 0f)
+		if (FinalAttackActionInterval > 0f)
 		{
-			NextAttackTime = Time.time + FinalAttackInterval;
+			NextAttackTime = Time.time + FinalAttackActionInterval;
 		}
 	}
 
