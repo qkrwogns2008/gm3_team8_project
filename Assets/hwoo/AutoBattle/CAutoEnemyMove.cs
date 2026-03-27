@@ -53,7 +53,7 @@ public class CAutoEnemyMove : MonoBehaviour
 
     void Update()
     {
-        if (_enemyBase.IsDead)
+        if (_enemyBase.IsUnitDead)
         {
             return;
         }
