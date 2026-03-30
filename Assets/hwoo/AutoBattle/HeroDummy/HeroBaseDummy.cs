@@ -55,6 +55,11 @@ public class HeroBaseDummy : CUnitBase
         base.OnEnable();
     }
 
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+    }
+
     // for Test
     protected override void Update()
     {
