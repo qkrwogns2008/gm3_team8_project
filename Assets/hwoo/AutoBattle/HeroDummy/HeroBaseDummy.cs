@@ -49,7 +49,6 @@ public class HeroBaseDummy : CUnitBase
     protected virtual float FinalSkillCooldown => BaseSkillCooldown * CooldownMultiplier;
     protected virtual float FinalSkillActionInterval => SkillActionInterval / AttackSpeedMultiplier;
 
-    public bool IsDead => IsDead;
 
     protected override void OnEnable()
     {

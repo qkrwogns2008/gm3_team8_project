@@ -11,7 +11,6 @@ public class CAutoPlayerMove : MonoBehaviour
     [SerializeField] private float _attackRange = 1.5f;         // 공격 사거리 (임시)
     [Header("Tracking")]
     [SerializeField] private float _detectionRange = 100f;    // 탐지 범위(맵 전체를 덮을 수 있게
-    [SerializeField] private LayerMask _enemyLayer;        // 탐지할 레이어
     // 타겟 발견시 속도는 기본과 같음
     [Header("SpineAnim")]
     [SerializeField] private string _idleAnim = "Idle";
@@ -37,7 +36,7 @@ public class CAutoPlayerMove : MonoBehaviour
     }
     void Update()
     {
-        if (PlayerHero == null || PlayerHero.IsDead)
+        if (PlayerHero == null || PlayerHero.IsUnitDead)
         {
             return;
         }
@@ -50,6 +49,10 @@ public class CAutoPlayerMove : MonoBehaviour
             _targetPos.z = 0f;
 
             float distanceToEnemy = Vector2.Distance(transform.position, _targetPos);
+
+            CheckTarget();
+
+            FindClosestEnemy();
 
             if(distanceToEnemy <= _attackRange)
             {
@@ -68,6 +71,22 @@ public class CAutoPlayerMove : MonoBehaviour
             }
         }
 
+    }
+
+    // 대상 체크
+    void CheckTarget()
+    {
+        if(_targetEnemy == null)
+        {
+            return;
+        }
+        CUnitBase enemy = _targetEnemy.GetComponent<CUnitBase>();
+
+        
+        if(enemy == null || enemy.IsUnitDead || !_targetEnemy.gameObject.activeSelf)
+        {
+            _targetEnemy = null;
+        }
     }
 
     void FindClosestEnemy()
