@@ -35,13 +35,14 @@ public class CHero : CUnitBase
 	#region 내부 변수
 	protected float NextSkillTime;
 	protected Coroutine MotionRoutine;
+	protected bool _isPendingDead = false;
 
 	protected virtual float CriticalDamage => BaseAtkDamage * CriticalAttackMultiplier;
 	protected virtual float FinalSkillCooldown => BaseSkillCooldown * CooldownMultiplier;
 	protected virtual float FinalSkillActionInterval => SkillActionInterval / AttackSpeedMultiplier;
 	#endregion
 
-	public virtual event System.Action<float> OnSkillUsed;
+	public virtual event System.Action<float> OnSkillUsed; // 스킬 쿨타임이 인자로 들어감
 
 	// for Test
 	protected override void Update()
@@ -61,6 +62,10 @@ public class CHero : CUnitBase
 		if (Input.GetKeyDown(KeyCode.Alpha4))
 		{
 			Die();
+		}
+		if (Input.GetKeyDown(KeyCode.Alpha5))
+		{
+			TakeDamage(Random.Range(5f, 20f), this);
 		}
 	}
 
@@ -137,10 +142,12 @@ public class CHero : CUnitBase
 			return;
 		}
 
+		OnSkillUsed?.Invoke(FinalSkillCooldown);
+
 		MotionRoutine = StartCoroutine(Co_PlayMotion(SkillEffect, SkillAnimation, target, BaseAtkDamage));
 		if (PrintLog)
 		{
-			Debug.Log($"{UnitName}의 스킬 1 발동!");
+			Debug.Log($"{UnitName}의 스킬 발동!");
 		}
 	}
 
@@ -193,6 +200,11 @@ public class CHero : CUnitBase
 		}
 
 		MotionRoutine = null;
+
+		if (_isPendingDead)
+		{
+			DeathSequence();
+		}
 	}
 
 	// 오버로딩 : 모션 재생 후 정지.
@@ -246,10 +258,17 @@ public class CHero : CUnitBase
 
 		if (MotionRoutine != null)
 		{
+			_isPendingDead = true;
 			return;
 		}
 
+		DeathSequence();
+	}
+
+	protected virtual void DeathSequence()
+	{
 		MotionRoutine = StartCoroutine(Co_PlayMotion(DeathAnimation, DeathDisableTime, true));
+
 		if (PrintLog)
 		{
 			Debug.Log($"{UnitName} 사망");
@@ -278,13 +297,10 @@ public class CHero : CUnitBase
 		switch (type)
 		{
 			case EAttackType.Skill:
-				//Debug.Log($"{UnitName} 스킬 작동");
-				NextSkillTime = Time.time + FinalSkillCooldown;
 				ApplyAttackCooldown(false);
 				OnSkill(target);
 				break;
 			case EAttackType.Normal:
-				//Debug.Log($"{UnitName} 공격 작동");
 				ApplyAttackCooldown(true);
 				OnAttack(target);
 				break;
@@ -317,6 +333,8 @@ public class CHero : CUnitBase
 		}
 		else // 스킬 사용
 		{
+			NextSkillTime = Time.time + FinalSkillCooldown;
+
 			if (FinalSkillActionInterval > 0f)
 			{
 				NextAttackTime = Time.time + FinalSkillActionInterval;
@@ -324,4 +342,3 @@ public class CHero : CUnitBase
 		}
 	}
 }
-

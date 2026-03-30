@@ -150,12 +150,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2209794903314683923}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 95dafd336d8cdea46bf35191d129a7f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _walkSpeed: 2
+  _walkSpeed: 10
   _attackRange: 1.5
   _detectionRange: 100
   _enemyLayer:
@@ -5054,6 +5054,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7082898993306059475}
+  - component: {fileID: 1523001329595342100}
   m_Layer: 0
   m_Name: Hud
   m_TagString: Untagged
@@ -5078,6 +5079,22 @@ Transform:
   - {fileID: 2470924038596600199}
   m_Father: {fileID: 5845931139765108105}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1523001329595342100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5261778898222213605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7047008b104b0d84f8b46dfec35cad5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _base: {fileID: 8096124463481793326}
+  _hpBar: {fileID: 4397057811304110730}
+  _coolDownBar: {fileID: 4702439521294152629}
+  _fxCooldownEnd: {fileID: 6412579621228955230}
 --- !u!1 &5716120598718262879
 GameObject:
   m_ObjectHideFlags: 0

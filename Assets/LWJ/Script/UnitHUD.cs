@@ -10,10 +10,17 @@ public class UnitHUD : MonoBehaviour
 	[Header("UI Gauge Bar")]
 	[SerializeField] private Image _hpBar;
 	[SerializeField] private Image _coolDownBar;
+
+	[Header("쿨다운 종료 이펙트")]
+	[SerializeField] private ParticleSystem _fxCooldownEnd;
 	#endregion
 
 	#region 내부 변수
 	private CHero _herobase; // 영웅이면 영웅의 이벤트를 담기 위해 형변환
+
+	private bool _isCooling = false;
+	private float _cooldown;
+	private float _guageEndTime;
 	#endregion
 
 	private void Awake()
@@ -21,6 +28,7 @@ public class UnitHUD : MonoBehaviour
 		if (_base == null)
 		{
 			Debug.LogWarning("UnitHUD) base null");
+			gameObject.SetActive(false);
 		}
 	}
 
@@ -48,6 +56,10 @@ public class UnitHUD : MonoBehaviour
 
 	private void Update()
 	{
+		if (!_isCooling)
+		{
+			return;
+		}
 
 		UpdateCooldownBar();
 	}
@@ -61,12 +73,33 @@ public class UnitHUD : MonoBehaviour
 
 	public void StartCooldownUI(float time)
 	{
+		// 쿨타임이 0초면 게이지를 갱신할 필요 없음.
+		if (time <= 0)
+		{
+			return;
+		}
+
+		_cooldown = time;
+		_guageEndTime = Time.time + _cooldown;
 		_coolDownBar.fillAmount = 0;
-		// 쿨타임 계산해서 게이지로 표시 로직
+
+		_isCooling = true;
 	}
 
 	public void UpdateCooldownBar()
 	{
+		float ratio = Mathf.Clamp01(1 - (_guageEndTime - Time.time) / _cooldown);
 
+		_coolDownBar.fillAmount = ratio;
+
+		if (ratio >= 1f)
+		{
+			_isCooling = false;
+
+			if (_fxCooldownEnd != null)
+			{
+				_fxCooldownEnd.Play();
+			}
+		}
 	}
 }
