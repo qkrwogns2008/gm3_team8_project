@@ -17,8 +17,11 @@ public class UnitDataSO : ScriptableObject
 	[SerializeField] private float _attackDamageMultiplier = 1.0f;
 	[SerializeField] private float _attackSpeedMultiplier = 1.0f;
 	[SerializeField] private float _moveSpeedMultiplier = 1.0f;
+
+	[Header("추격")]
+	[SerializeField] private float _detectionRange;
 	#endregion
-	
+
 	#region 프로퍼티
 	public string UnitName => _unitName;
 	public float BaseMaxHp => _baseMaxHp;
@@ -30,5 +33,6 @@ public class UnitDataSO : ScriptableObject
 	public float AttackDamageMultiplier => _attackDamageMultiplier;
 	public float AttackSpeedMultiplier => _attackSpeedMultiplier;
 	public float MoveSpeedMultiplier => _moveSpeedMultiplier;
+	public float DetectionRange => _detectionRange;
 	#endregion
 }

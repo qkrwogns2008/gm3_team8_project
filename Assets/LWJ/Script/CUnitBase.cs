@@ -33,6 +33,12 @@ public abstract class CUnitBase : MonoBehaviour
 
 	[Header("log")]
 	[SerializeField] protected bool PrintLog = true;
+
+	/*
+	[Header("이동 스크립트")]
+	[SerializeField] protected CAutoEnemyMove _moveEnemy;
+	[SerializeField] protected CAutoPlayerMove _movePlayer;
+	*/
 	#endregion
 
 	#region 내부 변수
@@ -49,10 +55,12 @@ public abstract class CUnitBase : MonoBehaviour
 	protected float AttackSpeedMultiplier = 1.0f;
 	protected float MoveSpeedMultiplier = 1.0f;
 
+	protected float DetectionRange;
+
 	protected float NextAttackTime;
 	protected CUnitBase TargetEnemy; // 현재 목표 타겟
 	protected bool IsDead = false; // 사망 여부
-	//protected Coroutine _motionRoutine;
+	protected Coroutine _motionRoutine;
 
 	protected virtual float FinalMaxHP => BaseMaxHp * MaxHPMultiplier; // 1000 * 1.1 (최대 체력 10%증가) = 1100
 	protected virtual float FinalAttackDamage => BaseAtkDamage * AttackDamageMultiplier;
@@ -136,6 +144,18 @@ public abstract class CUnitBase : MonoBehaviour
 			AttackDamageMultiplier = OriginData.AttackDamageMultiplier;
 			AttackSpeedMultiplier = OriginData.AttackSpeedMultiplier;
 			MoveSpeedMultiplier = OriginData.MoveSpeedMultiplier;
+
+			DetectionRange = OriginData.DetectionRange;
+			/*
+			if (_moveEnemy != null)
+			{
+
+			}
+			if (_movePlayer != null)
+			{
+
+			}
+			*/
 
 			CurrentHp = FinalMaxHP;
 		}
@@ -222,7 +242,6 @@ public abstract class CUnitBase : MonoBehaviour
 			return;
 		}
 
-		/*
 		if (_motionRoutine != null)
 		{
 			return;
@@ -230,7 +249,7 @@ public abstract class CUnitBase : MonoBehaviour
 
 		_motionRoutine = StartCoroutine(Co_PlayMotion(AttackAnimation, target, BaseAtkDamage));
 		Debug.Log($"{UnitName}의 일반 공격!");
-		*/
+
 		if (PrintLog)
 		{
 			Debug.Log("CUnitBase) OnAttack 호출");
@@ -238,7 +257,6 @@ public abstract class CUnitBase : MonoBehaviour
 		// 코루틴 → 스켈레톤 재생 + 데미지 처리 로직 (TakeDamage)
 	}
 
-	/*
 	protected virtual IEnumerator Co_PlayMotion(string animationName, CUnitBase target, float damage)
 	{
 		if (string.IsNullOrEmpty(animationName))
@@ -258,5 +276,4 @@ public abstract class CUnitBase : MonoBehaviour
 
 		_motionRoutine = null;
 	}
-	*/
 }

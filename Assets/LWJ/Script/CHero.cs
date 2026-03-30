@@ -217,7 +217,7 @@ public class CHero : CUnitBase
 		EffectBase prefab = fxData.Prefab;
 
 		Vector3 pos = transform.position + fxData.Offset;
-		Quaternion rot = Quaternion.Euler(-45f, 0f, 0f);
+		Quaternion rot = Quaternion.Euler(-42f, 0f, 0f);
 		EffectBase fx = PoolManager.Instance.Pop(prefab, pos, rot);
 
 		if (fx == null)

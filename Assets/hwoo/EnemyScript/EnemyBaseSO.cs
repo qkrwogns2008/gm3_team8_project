@@ -28,7 +28,7 @@ public class EnemyBaseSO : UnitDataSO
     public int ItemReward => _itemReward;
 
     public float SpawnCooltime => _spawnCooltime;
-    public float DetectionRange => _detectionRange;
+    //public float DetectionRange => _detectionRange;
     public float GiveUpRange => _giveUpRange;
 
     public float AttackSpeed => _attackSpeed;
