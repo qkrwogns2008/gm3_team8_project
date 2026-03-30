@@ -16,7 +16,7 @@ public class EnemyBaseSO : UnitDataSO
     [SerializeField] protected int _itemReward;             // 드롭 아이템
 
     [SerializeField] protected float _spawnCooltime;        // 스폰 쿨타임
-    [SerializeField] protected float _detectionRange = 8f;  // 플레이어 감지 거리
+    //[SerializeField] protected float _detectionRange = 8f;  // 플레이어 감지 거리
     [SerializeField] protected float _giveUpRange = 12f;    // 추격 포기 거리
 
     [SerializeField] protected float _attackSpeed;
