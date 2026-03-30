@@ -77,6 +77,30 @@ public class HeroBaseDummy : CUnitBase
         }
     }
 
+    public void ChagneState(EHeroState state)
+    {
+        if(CurrentState == state && state != EHeroState.Attack)
+        {
+            return;
+        }
+        CurrentState = state;
+
+        switch(CurrentState)
+        {
+            case EHeroState.Idle:
+                SetAnimation("Idle", true);
+                break;
+            case EHeroState.Move:
+                SetAnimation("Move", true);
+                break;
+            case EHeroState.Attack:
+            case EHeroState.Skill:
+                break;
+            case EHeroState.Death:
+                break;
+        }
+    }
+
     protected override void OnAttack(CUnitBase target)
     {
         if (SkeletonAni == null || AttackEffect == null)

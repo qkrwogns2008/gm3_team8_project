@@ -744,7 +744,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UnitName: 
-  CurrentHp: 0
+  CurrentHp: 1000
   OriginData: {fileID: 0}
   TeamType: 0
   SkeletonAni: {fileID: 0}
@@ -773,6 +773,10 @@ PrefabInstance:
     - target: {fileID: 2350792938031747858, guid: 950e36a1b54ee7f4a898ae6d2c74c534, type: 3}
       propertyPath: m_Name
       value: Ahri_Spawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 2350792938031747858, guid: 950e36a1b54ee7f4a898ae6d2c74c534, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3908093004018936671, guid: 950e36a1b54ee7f4a898ae6d2c74c534, type: 3}
       propertyPath: m_LocalPosition.x

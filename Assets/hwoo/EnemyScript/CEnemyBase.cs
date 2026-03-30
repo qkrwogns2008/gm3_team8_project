@@ -99,7 +99,6 @@ public class CEnemyBase : CUnitBase
     {
         if(IsDead || target == null || _isAttackCooldown)
         {
-            Debug.Log("Å¸°ÙNull");
             return;
         }
         StartCoroutine(CoAttackRoutine(target));

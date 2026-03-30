@@ -57,6 +57,7 @@ public class CAutoEnemyMove : MonoBehaviour
         {
             return;
         }
+        CheckTarget();
         switch (_currentState)
         {
             case EUnitState.Idle:
@@ -167,8 +168,45 @@ public class CAutoEnemyMove : MonoBehaviour
 
     }
 
+    void CheckTarget()
+    {
+        if(_targetPlayer == null)
+        {
+            return;
+        }
+
+        CUnitBase playerbase = _targetPlayer.GetComponent<CUnitBase>();
+
+        if (playerbase == null || playerbase.IsUnitDead || !_targetPlayer.gameObject.activeSelf)
+        {
+            ResetTarget();
+            return;
+        }
+
+        float dist = Vector2.Distance(transform.position, _targetPlayer.position);
+        if (dist > _giveUpRange)
+        {
+            ResetTarget();
+        }
+    }
+
+    void ResetTarget()
+    {
+        _targetPlayer = null;
+
+        if(_currentState == EUnitState.Tracking || _currentState == EUnitState.Attack)
+        {
+            ChangeState(EUnitState.Idle);
+        }
+    }
+
     void UpdateAttack()
     {
+        if(_targetPlayer == null)
+        {
+            ChangeState(EUnitState.Idle);
+            return;
+        }
         Debug.Log("공격 사거리 진입 공격 상태 전환");
         _enemyBase.LookAt(_targetPlayer.position);
 
@@ -205,7 +243,7 @@ public class CAutoEnemyMove : MonoBehaviour
                 continue;
             }
             float dist = Vector2.Distance(transform.position, player.position);
-            if(dist > minDistance)
+            if(dist < minDistance)
             {
                 minDistance = dist;
                 closet = player;
