@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CHero : CUnitBase
 {
+	#region 인스펙터
 	//[Header("일반 공격")]
 	//[SpineAnimation(dataField = "SkeletonAni")]
 	//[SerializeField] protected string _attackAnimation;
@@ -29,13 +30,18 @@ public class CHero : CUnitBase
 	[SerializeField] protected float SkillActionInterval = 2f; // 스킬 액션 딜레이
 	[SerializeField] protected float BaseSkillCooldown = 5.0f; // 쿨타임
 	[SerializeField] protected float CooldownMultiplier = 1.0f; // 쿨타임 감소 승수
+	#endregion
 
+	#region 내부 변수
 	protected float NextSkillTime;
 	protected Coroutine MotionRoutine;
 
 	protected virtual float CriticalDamage => BaseAtkDamage * CriticalAttackMultiplier;
 	protected virtual float FinalSkillCooldown => BaseSkillCooldown * CooldownMultiplier;
 	protected virtual float FinalSkillActionInterval => SkillActionInterval / AttackSpeedMultiplier;
+	#endregion
+
+	public virtual event System.Action<float> OnSkillUsed;
 
 	// for Test
 	protected override void Update()

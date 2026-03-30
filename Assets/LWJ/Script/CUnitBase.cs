@@ -68,6 +68,8 @@ public abstract class CUnitBase : MonoBehaviour
 	protected virtual float FinalMoveSpeed => BaseMoveSpeed * MoveSpeedMultiplier;
 	#endregion
 
+	public virtual event System.Action<float, float> OnHpChanged;
+
 	// 외부에서 이 유닛이 어느 팀인지 확인할 때 사용
 	public ETeamType Team => TeamType;
 	public virtual bool IsUnitDead => IsDead;
@@ -170,10 +172,13 @@ public abstract class CUnitBase : MonoBehaviour
 		}
 
 		CurrentHp -= damage;
+
 		if (PrintLog)
 		{
 			Debug.Log($"CUnitBase) [{UnitName}] {damage} 피해 입음. [HP:{CurrentHp}]");
 		}
+
+		OnHpChanged?.Invoke(CurrentHp, FinalMaxHP);
 
 		if (CurrentHp <= 0)
 		{
