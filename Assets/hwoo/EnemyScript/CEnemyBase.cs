@@ -55,7 +55,7 @@ public class CEnemyBase : CUnitBase
         }
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
         base.OnEnable();
         // 상태 초기화
@@ -70,6 +70,11 @@ public class CEnemyBase : CUnitBase
         {
             SkeletonAni.AnimationState.SetAnimation(0, "Idle", true);
         }
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
     }
 
     // 공격
