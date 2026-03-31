@@ -16,6 +16,10 @@ public class CEnemyBase : CUnitBase
 {
     [SerializeField] protected Transform _effectPos;
 
+    [SerializeField] protected float _currentHp;
+    [SerializeField] protected float _baseMaxHP = 100f;
+    [SerializeField] protected float _baseAtk = 10f;
+
     protected EnemyBaseSO _enemySO => OriginData as EnemyBaseSO;
     protected Vector3 _startPosition;
 
@@ -31,6 +35,10 @@ public class CEnemyBase : CUnitBase
 
         if(EnemyData != null)
         {
+            _currentHp = EnemyData.BaseMaxHp;
+
+            _baseAtk = EnemyData.BaseAttackDamage;
+
             DetectionRange = EnemyData.DetectionRange;
         }
         
