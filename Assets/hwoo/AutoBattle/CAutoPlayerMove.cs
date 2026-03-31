@@ -48,7 +48,12 @@ public class CAutoPlayerMove : MonoBehaviour
             return;
         }
 
-        FindClosestEnemy();
+		CheckTarget();
+
+		if (_targetEnemy == null)
+		{
+			FindClosestEnemy();
+		}
         
         if(_targetEnemy != null)
         {
@@ -107,7 +112,7 @@ public class CAutoPlayerMove : MonoBehaviour
 
         foreach(CUnitBase enemy in CEnemyManager.Instance.ActiveEnemies)
         {
-            if(enemy == null || !enemy.gameObject.activeSelf)
+            if(enemy == null || !enemy.gameObject.activeSelf || enemy.IsUnitDead)
             {
                 continue;
             }

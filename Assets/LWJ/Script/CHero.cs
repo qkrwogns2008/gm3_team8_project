@@ -204,7 +204,7 @@ public class CHero : CUnitBase
 				continue;
 			}
 
-			yield return new WaitForSeconds(fxData.PreDelay);
+			yield return new WaitForSeconds(fxData.PreDelay / AttackSpeedMultiplier);
 
 			if (fxData.Prefab == null)
 			{
