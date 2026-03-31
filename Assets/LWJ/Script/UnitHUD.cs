@@ -48,6 +48,7 @@ public class UnitHUD : MonoBehaviour
 			_coolDownBar.fillAmount = 1f;
 		}
 
+		_hpBar.fillAmount = 1f;
 		_isCooling = false;
 	}
 
