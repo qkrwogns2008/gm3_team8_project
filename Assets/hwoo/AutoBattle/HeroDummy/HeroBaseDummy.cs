@@ -2,14 +2,15 @@ using Spine.Unity;
 using System.Collections;
 using UnityEngine;
 
+/*
 public enum EHeroState
 {
     Idle,
     Move,
-    Attack,
-    Skill,
+	Combat,
     Death
 }
+*/
 
 public class HeroBaseDummy : CUnitBase
 {
@@ -43,22 +44,11 @@ public class HeroBaseDummy : CUnitBase
     [SerializeField] protected float CooldownMultiplier = 1.0f; // 쿨타임 감소 승수
 
     protected float NextSkillTime;
-    protected Coroutine MotionRoutine;
 
     protected virtual float CriticalDamage => BaseAtkDamage * CriticalAttackMultiplier;
     protected virtual float FinalSkillCooldown => BaseSkillCooldown * CooldownMultiplier;
     protected virtual float FinalSkillActionInterval => SkillActionInterval / AttackSpeedMultiplier;
 
-
-    protected override void OnEnable()
-    {
-        base.OnEnable();
-    }
-
-    protected override void OnDisable()
-    {
-        base.OnDisable();
-    }
 
     // for Test
     protected override void Update()
@@ -81,9 +71,9 @@ public class HeroBaseDummy : CUnitBase
         }
     }
 
-    public void ChagneState(EHeroState state)
+    public void ChangeState(EHeroState state)
     {
-        if(CurrentState == state && state != EHeroState.Attack)
+        if(CurrentState == state && state != EHeroState.Combat)
         {
             return;
         }
@@ -97,11 +87,9 @@ public class HeroBaseDummy : CUnitBase
             case EHeroState.Move:
                 SetAnimation("Move", true);
                 break;
-            case EHeroState.Attack:
-            case EHeroState.Skill:
-                break;
-            case EHeroState.Death:
-                break;
+			case EHeroState.Combat:
+				TryAttack(TargetEnemy);
+				break;
         }
     }
 
@@ -366,30 +354,6 @@ public class HeroBaseDummy : CUnitBase
     }
 
     // 상태 변경 관리
-    public void ChangeState(EHeroState newState)
-    {
-        if(CurrentState == newState && newState != EHeroState.Attack)
-        {
-            return;
-        }
-
-        CurrentState = newState;
-
-        switch(CurrentState)
-        {
-            case EHeroState.Idle:
-                SetAnimation("Idle", true);
-                break;
-            case EHeroState.Move:
-                SetAnimation("Move", true);
-                break;
-            case EHeroState.Death:
-                //Die 에서 처리
-                break;
-        }
-    }
-
-    
 
     // 편의성용 SetAnimation 함수
     public void SetAnimation(string animName, bool loop)

@@ -2,15 +2,17 @@ using Spine.Unity;
 using System.Collections;
 using UnityEngine;
 
+public enum EHeroState
+{
+	Idle,
+	Move,
+	Combat,
+	Death
+}
+
 public class CHero : CUnitBase
 {
 	#region 인스펙터
-	//[Header("일반 공격")]
-	//[SpineAnimation(dataField = "SkeletonAni")]
-	//[SerializeField] protected string _attackAnimation;
-	//[SerializeField] protected EffectDataSO _attackEffect;
-	//[SerializeField] protected float _baseAttackDelay = 1.0f;
-
 	[Header("치명타 공격")]
 	[SpineAnimation(dataField = "SkeletonAni")]
 	[SerializeField] protected string CriticalAnimation;
@@ -30,11 +32,14 @@ public class CHero : CUnitBase
 	[SerializeField] protected float SkillActionInterval = 2f; // 스킬 액션 딜레이
 	[SerializeField] protected float BaseSkillCooldown = 5.0f; // 쿨타임
 	[SerializeField] protected float CooldownMultiplier = 1.0f; // 쿨타임 감소 승수
+
+	[Header("유닛 상태")]
+	[SerializeField] public EHeroState CurrentState = EHeroState.Idle;
 	#endregion
 
 	#region 내부 변수
 	protected float NextSkillTime;
-	protected bool _isPendingDead = false;
+	protected bool _isPendingDead = false; // 사망 유예 여부
 
 	protected virtual float CriticalDamage => BaseAtkDamage * CriticalAttackMultiplier;
 	protected virtual float FinalSkillCooldown => BaseSkillCooldown * CooldownMultiplier;
@@ -43,6 +48,28 @@ public class CHero : CUnitBase
 
 	public virtual event System.Action<float> OnSkillUsed; // 스킬 쿨타임이 인자로 들어감
 	public virtual event System.Action OnDead;
+
+	public void ChangeState(EHeroState state)
+	{
+		if (CurrentState == state && state != EHeroState.Combat)
+		{
+			return;
+		}
+		CurrentState = state;
+
+		switch (CurrentState)
+		{
+			case EHeroState.Idle:
+				SetAnimation("Idle", true);
+				break;
+			case EHeroState.Move:
+				SetAnimation("Move", true);
+				break;
+			case EHeroState.Combat:
+				TryAttack(TargetEnemy);
+				break;
+		}
+	}
 
 	// for Test
 	protected override void Update()
@@ -237,12 +264,13 @@ public class CHero : CUnitBase
 		Vector3 pos = transform.position + fxData.Offset;
 		Quaternion rot = Quaternion.Euler(-42f, 0f, 0f);
 		EffectBase fx = PoolManager.Instance.Pop(prefab, pos, rot);
+		bool isFacingRight = (SkeletonAni.skeleton.ScaleX != 1.0f);
 
 		if (fx == null)
 		{
 			return false;
 		}
-		fx.Init(prefab, false);
+		fx.Init(prefab, isFacingRight);
 
 		return true;
 	}
@@ -341,6 +369,26 @@ public class CHero : CUnitBase
 			{
 				NextAttackTime = Time.time + FinalSkillActionInterval;
 			}
+		}
+	}
+
+	public void SetAnimation(string animName, bool loop)
+	{
+		if (SkeletonAni == null || SkeletonAni.AnimationState == null)
+		{
+			return;
+		}
+
+		if (MotionRoutine != null)
+		{
+			return;
+		}
+
+		Spine.TrackEntry currentTrack = SkeletonAni.AnimationState.GetCurrent(0);
+
+		if (currentTrack == null || currentTrack.Animation.Name != animName)
+		{
+			SkeletonAni.AnimationState.SetAnimation(0, animName, loop);
 		}
 	}
 }

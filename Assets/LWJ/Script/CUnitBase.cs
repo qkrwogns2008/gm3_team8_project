@@ -214,6 +214,16 @@ public abstract class CUnitBase : MonoBehaviour
 		}
 	}
 
+	public virtual void SetTarget(CUnitBase target)
+	{
+		if (target == null)
+		{
+			return;
+		}
+
+		TargetEnemy = target;
+	}
+
 	// 상호작용의 단일 진입점(제일 중요한 함수)
 	// 규칙 검사 + 실제 행동을 담당한다.
 	public virtual void TryAttack(CUnitBase target)

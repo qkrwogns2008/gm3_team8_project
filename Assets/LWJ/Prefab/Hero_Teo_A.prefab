@@ -85,8 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5845931139765108105}
   - component: {fileID: 8096124463481793326}
-  - component: {fileID: 7235707145319245369}
-  - component: {fileID: 8241242084976139400}
+  - component: {fileID: 1385575880346748945}
   m_Layer: 6
   m_Name: Hero_Teo_A
   m_TagString: Untagged
@@ -143,7 +142,8 @@ MonoBehaviour:
   SkillActionInterval: 2
   BaseSkillCooldown: 5
   CooldownMultiplier: 1
---- !u!114 &7235707145319245369
+  CurrentState: 0
+--- !u!114 &1385575880346748945
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -152,37 +152,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2209794903314683923}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95dafd336d8cdea46bf35191d129a7f9, type: 3}
+  m_Script: {fileID: 11500000, guid: 8458d08ebfd40524ebe51fdf3782d5bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _walkSpeed: 10
-  _attackRange: 1.5
+  _attackRange: 5
   _detectionRange: 100
-  _enemyLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  _unitBase: {fileID: 8096124463481793326}
---- !u!65 &8241242084976139400
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2209794903314683923}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2956675600375265142
 GameObject:
   m_ObjectHideFlags: 0

@@ -29,20 +29,26 @@ public class UnitHUD : MonoBehaviour
 		{
 			Debug.LogWarning("UnitHUD) base null");
 			gameObject.SetActive(false);
+			return;
 		}
+
+		// 형변환 캐싱 시도
+		_herobase = _base as CHero;
 	}
 
 	private void OnEnable()
 	{
 		_base.OnHpChanged += SetHPBar;
 		
-		// 형변환 시도
-		_herobase = _base as CHero;
 		if (_herobase != null)
 		{
 			_herobase.OnSkillUsed += StartCooldownUI;
 			_herobase.OnDead += PauseCooldownUI;
+
+			_coolDownBar.fillAmount = 1f;
 		}
+
+		_isCooling = false;
 	}
 
 	private void OnDisable()
@@ -90,6 +96,7 @@ public class UnitHUD : MonoBehaviour
 
 	public void UpdateCooldownBar()
 	{
+		_cooldown = Mathf.Max(0.0001f, _cooldown);
 		float ratio = Mathf.Clamp01(1 - (_guageEndTime - Time.time) / _cooldown);
 
 		_coolDownBar.fillAmount = ratio;
