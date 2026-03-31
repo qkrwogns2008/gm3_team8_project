@@ -118,7 +118,6 @@ public class CAutoPlayerMove : MonoBehaviour
             CUnitBase enemyUnit = enemy.GetComponent<CUnitBase>();
             if(enemyUnit!= null && enemyUnit.IsUnitDead)
             {
-                Debug.Log($"대상 : {enemy.name} 상태 : Die");
                 continue;
                 
             }
@@ -127,7 +126,6 @@ public class CAutoPlayerMove : MonoBehaviour
 
             if(distance < minDistance)
             {
-                Debug.Log($"대상 : {enemy.name} 상태 : 범위 밖");
                 minDistance = distance;
                 closest = enemy;
             }

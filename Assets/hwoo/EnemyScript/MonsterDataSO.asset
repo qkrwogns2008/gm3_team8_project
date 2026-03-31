@@ -13,20 +13,20 @@ MonoBehaviour:
   m_Name: MonsterDataSO
   m_EditorClassIdentifier: 
   _unitName: 
-  _baseMaxHp: 0
-  _baseAttackDamage: 0
-  _baseAttackInterval: 0
-  _attackRange: 0
+  _baseMaxHp: 100
+  _baseAttackDamage: 10
+  _baseAttackInterval: 1
+  _attackRange: 1
   _baseMoveSpeed: 0
   _maxHPMultiplier: 1
   _attackDamageMultiplier: 1
   _attackSpeedMultiplier: 1
   _moveSpeedMultiplier: 1
+  _detectionRange: 8
   _goldReward: 0
   _expReward: 0
   _itemReward: 0
   _spawnCooltime: 0
-  _detectionRange: 8
   _giveUpRange: 12
   _attackSpeed: 0
   _attackEffectPrefab: {fileID: 0}

@@ -217,7 +217,6 @@ public class CAutoEnemyMove : MonoBehaviour
             ChangeState(EUnitState.Idle);
             return;
         }
-        Debug.Log("공격 사거리 진입 공격 상태 전환");
         _enemyBase.LookAt(_targetPlayer.position);
 
         _enemyBase.TryAttack(_targetPlayer.GetComponent<CUnitBase>());
