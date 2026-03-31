@@ -25,10 +25,19 @@ public class CAutoPlayerMove : MonoBehaviour
     private HeroBaseDummy PlayerHero;   // 상태 제어용 참조 사용시 CHero참조
     #endregion
 
+    private void Awake()
+    {
+        PlayerHero = GetComponent<HeroBaseDummy>();
+        _skeletonAnim = GetComponentInChildren<SkeletonAnimation>();
+
+        if (_skeletonAnim == null)
+        {
+            Debug.LogError($"{gameObject.name}: SkeletonAnim null");
+        }
+    }
+
     void Start()
     {
-        _skeletonAnim = GetComponent<SkeletonAnimation>();
-        PlayerHero = GetComponent<HeroBaseDummy>();
 
         Vector3 pos = transform.position;
         pos.z = 0f;

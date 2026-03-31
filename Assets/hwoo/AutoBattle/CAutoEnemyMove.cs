@@ -38,16 +38,26 @@ public class CAutoEnemyMove : MonoBehaviour
     private CEnemyBase _enemyBase; // 베이스 참조
     #endregion
 
-   
+
+
+    private void Awake()
+    {
+        _enemyBase = GetComponent<CEnemyBase>();
+        _skeletonAnim = GetComponentInChildren<SkeletonAnimation>();
+
+        if(_skeletonAnim == null)
+        {
+            Debug.LogError($"{gameObject.name}: SkeletonAnim null");
+        }
+    }
 
     void Start()
     {
         // 현재 위치 세팅
         _homePosition = transform.position;
         _homePosition.z = 0f;
-
-        _enemyBase = GetComponent<CEnemyBase>();
-        _skeletonAnim = GetComponent<SkeletonAnimation>();
+        ChangeState(EUnitState.Idle);
+        
         // 이동할 위치 선택
     }
 
@@ -276,6 +286,14 @@ public class CAutoEnemyMove : MonoBehaviour
 
     private void SetAnimation(string animName, bool loop)
     {
+        if(_skeletonAnim == null)
+        {
+            return;
+        }
+        if(_skeletonAnim.AnimationState == null)
+        {
+            return;
+        }
         if (_skeletonAnim.AnimationName != animName)
         {
             _skeletonAnim.AnimationState.SetAnimation(0, animName, loop);
