@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HeroManagerDummy : MonoBehaviour
 {
     public static HeroManagerDummy Instance;
 
-    public List<Transform> ActiveHero = new List<Transform>();
+    public List<CUnitBase> ActiveHero = new List<CUnitBase>();
 
     private void Awake()
     {
@@ -19,7 +20,7 @@ public class HeroManagerDummy : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    public void RegisterHero(Transform hero)
+    public void RegisterHero(CUnitBase hero)
     {
         if(!ActiveHero.Contains(hero))
         {
@@ -28,7 +29,7 @@ public class HeroManagerDummy : MonoBehaviour
         }
     }
 
-    public void UnregiserHero(Transform hero)
+    public void UnregisterHero(CUnitBase hero)
     {
         if(ActiveHero.Contains(hero))
         {

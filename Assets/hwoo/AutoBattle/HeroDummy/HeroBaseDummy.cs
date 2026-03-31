@@ -55,15 +55,15 @@ public class HeroBaseDummy : CUnitBase
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            OnAttack(TargetEnemy);
+            OnAttack(Target);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            OnCritical(TargetEnemy);
+            OnCritical(Target);
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            OnSkill(TargetEnemy);
+            OnSkill(Target);
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
@@ -88,7 +88,7 @@ public class HeroBaseDummy : CUnitBase
                 SetAnimation("Move", true);
                 break;
 			case EHeroState.Combat:
-				TryAttack(TargetEnemy);
+				TryAttack(Target);
 				break;
         }
     }

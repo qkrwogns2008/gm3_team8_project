@@ -154,20 +154,23 @@ public class CAutoEnemyMove : MonoBehaviour
 
     void UpdateTracking()
     {
+        CUnitBase target = _enemyBase.TargetHero;
         if(_targetPlayer == null)
         {
             ChangeState(EUnitState.Idle);
             return;
         }
 
-        float dist = Vector3.Distance(transform.position, _targetPlayer.position);
+        float sqrDist = (target.transform.position - transform.position).sqrMagnitude;
+        float sqrAttackRange = _attackRange * _attackRange;
+        float sqrGiveUpRange = _giveUpRange * _giveUpRange;
 
-        if (dist > _giveUpRange)
+        if (sqrDist > _giveUpRange)
         {
             _targetPlayer = null;
             ChangeState(EUnitState.Idle);
         }
-        else if(dist <= _attackRange)
+        else if(sqrDist <= _attackRange)
         {
             ChangeState(EUnitState.Attack);
         }
@@ -237,8 +240,8 @@ public class CAutoEnemyMove : MonoBehaviour
             return false;
         }
 
-        Transform closet = null;
-        float minDistance = _detectionRange;
+        CUnitBase closetPlayer = null;
+        float minDistance = _detectionRange * _detectionRange;
 
         foreach(var player in HeroManagerDummy.Instance.ActiveHero)
         {
@@ -246,22 +249,17 @@ public class CAutoEnemyMove : MonoBehaviour
             {
                 continue;
             }
-            CUnitBase heroUnit = player.GetComponent<CUnitBase>();
-            if(heroUnit != null && heroUnit.IsUnitDead)
-            {
-                continue;
-            }
-            float dist = Vector2.Distance(transform.position, player.position);
+            float dist = Vector2.Distance(player.transform.position, transform.position);
             if(dist < minDistance)
             {
                 minDistance = dist;
-                closet = player;
+                closetPlayer = player;
             }
         }
 
-        if(closet != null)
+        if(closetPlayer != null)
         {
-            _targetPlayer = closet;
+            _enemyBase.SetTarget(closetPlayer);
             return true;
         }
         return false;

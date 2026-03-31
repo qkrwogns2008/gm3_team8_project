@@ -7,7 +7,7 @@ public class CEnemyManager : MonoBehaviour
     // Start is called before the first frame update
     public static CEnemyManager Instance;
 
-    public List<Transform> ActiveEnemies = new List<Transform>();
+    public List<CUnitBase> ActiveEnemies = new List<CUnitBase>();
 
     private void Awake()
     {
@@ -21,14 +21,14 @@ public class CEnemyManager : MonoBehaviour
         }
     }
 
-    public void RegisterEnemy(Transform enemy)
+    public void RegisterEnemy(CUnitBase enemy)
     {
         if(!ActiveEnemies.Contains(enemy))
         {
             ActiveEnemies.Add(enemy);
         }
     }
-    public void UnregisterEnemy(Transform enemy)
+    public void UnregisterEnemy(CUnitBase enemy)
     {
         if(ActiveEnemies.Contains(enemy))
         {

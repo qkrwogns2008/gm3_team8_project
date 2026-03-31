@@ -104,32 +104,32 @@ public class CAutoPlayerMove : MonoBehaviour
             return;
         }
 
-        Transform closest = null;
-        float minDistance = _detectionRange;
+        CUnitBase closest = null;
+        float minSqrDistance = _detectionRange;
 
-        foreach(Transform enemy in CEnemyManager.Instance.ActiveEnemies)
+        foreach(CUnitBase enemy in CEnemyManager.Instance.ActiveEnemies)
         {
             if(enemy == null || !enemy.gameObject.activeSelf)
             {
                 continue;
             }
-            CUnitBase enemyUnit = enemy.GetComponent<CUnitBase>();
-            if(enemyUnit!= null && enemyUnit.IsUnitDead)
-            {
-                continue;
-                
-            }
+            float sqrDist = (enemy.transform.position - transform.position).sqrMagnitude;
 
-            float distance = Vector2.Distance(transform.position, enemy.position);
-
-            if(distance < minDistance)
+            if(sqrDist< minSqrDistance)
             {
-                minDistance = distance;
+                minSqrDistance = sqrDist;
                 closest = enemy;
             }
+            
         }
-
-        _targetEnemy = closest;
+        if(closest!=null)
+        {
+            PlayerHero.SetTarget(closest);
+        }
+        else
+        {
+            PlayerHero.SetTarget(null);
+        }
     }
 
     // 이동 위치 탐색

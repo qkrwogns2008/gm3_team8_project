@@ -58,7 +58,7 @@ public abstract class CUnitBase : MonoBehaviour
 	protected float DetectionRange;
 
 	protected float NextAttackTime;
-	protected CUnitBase TargetEnemy; // 현재 목표 타겟
+	protected CUnitBase Target; // 현재 목표 타겟
 	protected bool IsDead = false; // 사망 여부
 	protected Coroutine MotionRoutine;
 
@@ -98,7 +98,7 @@ public abstract class CUnitBase : MonoBehaviour
 		{
 			if(HeroManagerDummy.Instance != null)
 			{
-				HeroManagerDummy.Instance.RegisterHero(this.transform);
+				HeroManagerDummy.Instance.RegisterHero(this);
 			}
 			
 		}
@@ -106,7 +106,7 @@ public abstract class CUnitBase : MonoBehaviour
 		{
 			if(CEnemyManager.Instance != null)
 			{
-				CEnemyManager.Instance.RegisterEnemy(this.transform);
+				CEnemyManager.Instance.RegisterEnemy(this);
 			}
 		}
 	}
@@ -117,14 +117,14 @@ public abstract class CUnitBase : MonoBehaviour
 		{
 			if(HeroManagerDummy.Instance != null)
 			{
-				HeroManagerDummy.Instance.UnregiserHero(this.transform);
+				HeroManagerDummy.Instance.UnregisterHero(this);
 			}
 		}
 		else if(TeamType == ETeamType.Enemy)
 		{
 			if(CEnemyManager.Instance != null)
 			{
-				CEnemyManager.Instance.UnregisterEnemy(this.transform);
+				CEnemyManager.Instance.UnregisterEnemy(this);
 			}
 		}
 	}
@@ -221,7 +221,7 @@ public abstract class CUnitBase : MonoBehaviour
 			return;
 		}
 
-		TargetEnemy = target;
+		Target = target;
 	}
 
 	// 상호작용의 단일 진입점(제일 중요한 함수)

@@ -66,7 +66,7 @@ public class CHero : CUnitBase
 				SetAnimation("Move", true);
 				break;
 			case EHeroState.Combat:
-				TryAttack(TargetEnemy);
+				TryAttack(Target);
 				break;
 		}
 	}
@@ -76,15 +76,15 @@ public class CHero : CUnitBase
 	{
 		if (Input.GetKeyDown(KeyCode.Alpha1))
 		{
-			OnAttack(TargetEnemy);
+			OnAttack(Target);
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha2))
 		{
-			OnCritical(TargetEnemy);
+			OnCritical(Target);
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha3))
 		{
-			OnSkill(TargetEnemy);
+			OnSkill(Target);
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha4))
 		{

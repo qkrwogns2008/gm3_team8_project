@@ -47,8 +47,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UnitName: 
-  CurrentHp: 0
-  OriginData: {fileID: 0}
+  CurrentHp: 100
+  OriginData: {fileID: 11400000, guid: 4437df723d5d0fa4399b0cbe9eb56590, type: 2}
   TeamType: 1
   SkeletonAni: {fileID: 238129565184269926}
   AttackAnimation: Attack_A
@@ -108,7 +108,7 @@ Transform:
   m_GameObject: {fileID: 8746802124468265471}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10.28781, y: -4.0600586, z: 4.2887}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 6, y: 6, z: 6}
   m_ConstrainProportionsScale: 0
   m_Children: []

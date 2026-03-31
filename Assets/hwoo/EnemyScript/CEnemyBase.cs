@@ -25,6 +25,7 @@ public class CEnemyBase : CUnitBase
     public override bool IsUnitDead => IsDead;
 
     public EnemyBaseSO EnemyData => OriginData as EnemyBaseSO;
+    public CUnitBase TargetHero => Target;
 
     protected override void InitUnitStats()
     {
@@ -48,14 +49,14 @@ public class CEnemyBase : CUnitBase
     {
         base.Update();
         // 추격 포기 거리
-        if (TargetEnemy != null && EnemyData != null)
+        if (TargetHero != null && EnemyData != null)
         {
-            float distanceToEnemy = Vector3.Distance(transform.position, TargetEnemy.transform.position);
+            float distanceToEnemy = Vector3.Distance(transform.position, TargetHero.transform.position);
 
             if(distanceToEnemy > EnemyData.GiveUpRange)
             {
                 // 타겟 초기화
-                TargetEnemy = null;
+                SetTarget(null);
             }
         }
         if (SkeletonAni != null)
