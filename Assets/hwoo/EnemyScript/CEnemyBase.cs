@@ -49,23 +49,8 @@ public class CEnemyBase : CUnitBase
     {
         base.Update();
         // 추격 포기 거리
-        if (TargetHero != null && EnemyData != null)
-        {
-            float distanceToEnemy = Vector3.Distance(transform.position, TargetHero.transform.position);
-
-            if(distanceToEnemy > EnemyData.GiveUpRange)
-            {
-                // 타겟 초기화
-                SetTarget(null);
-            }
-        }
-        if (SkeletonAni != null)
-        {
-            if (SkeletonAni.AnimationName == "Attack_A")
-            {
-                return;
-            }
-        }
+        
+       
         if(SkeletonAni != null && SkeletonAni.AnimationName == "Attack_A")
         {
             return;
@@ -106,18 +91,29 @@ public class CEnemyBase : CUnitBase
 
     protected override IEnumerator Co_PlayMotion(string animationName, CUnitBase target, float damage)
     {
-        SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
+        var trackEntry = SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
         SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
 
-        if(target != null)
+        if(trackEntry != null)
+        {
+            // 애니메이션 재생되는동안 기다리기
+            // 중복 실행 방지
+            yield return new WaitForSeconds(trackEntry.Animation.Duration);
+        }
+        else
+        {
+            // 애니메이션 없을경우
+            yield return new WaitForSeconds(0.5f);
+        }
+        
+        if(target != null && !target.IsUnitDead)
         {
             target.TakeDamage(damage, this);
         }
+
         ApplyAttackCooldown();
 
         MotionRoutine = null;
-
-        yield break;
     }
 
     protected override void ApplyAttackCooldown()

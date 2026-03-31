@@ -15,7 +15,7 @@ public class CAutoPlayerMove : MonoBehaviour
     #endregion
 
     #region 내부변수
-    private Transform _targetEnemy;                     // 현재 목표 타겟
+    private CUnitBase _targetEnemy;                     // 현재 목표 타겟
     private Vector3 _targetPos;                          // 타겟 위치
     private bool _isMoving = false;                      // 이동 상태 확인
 
@@ -52,16 +52,13 @@ public class CAutoPlayerMove : MonoBehaviour
         
         if(_targetEnemy != null)
         {
-            _targetPos = _targetEnemy.position;
+            _targetPos = _targetEnemy.transform.position;
             _targetPos.z = 0f;
 
-            float distanceToEnemy = Vector2.Distance(transform.position, _targetPos);
+            float sqrDistance = (transform.position - _targetPos).sqrMagnitude;
+            float sqrAttackRange = _attackRange * _attackRange;
 
-            CheckTarget();
-
-            FindClosestEnemy();
-
-            if(distanceToEnemy <= _attackRange)
+            if(sqrDistance <= sqrAttackRange)
             {
                 StopAndAttack();
             }
@@ -87,12 +84,12 @@ public class CAutoPlayerMove : MonoBehaviour
         {
             return;
         }
-        CUnitBase enemy = _targetEnemy.GetComponent<CUnitBase>();
 
         
-        if(enemy == null || enemy.IsUnitDead || !_targetEnemy.gameObject.activeSelf)
+        if(_targetEnemy.IsUnitDead || !_targetEnemy.gameObject.activeSelf)
         {
             _targetEnemy = null;
+            PlayerHero.SetTarget(null);
         }
     }
 
@@ -101,11 +98,12 @@ public class CAutoPlayerMove : MonoBehaviour
         if(CEnemyManager.Instance == null || CEnemyManager.Instance.ActiveEnemies.Count == 0)
         {
             _targetEnemy = null;
+            PlayerHero.SetTarget(null);
             return;
         }
 
         CUnitBase closest = null;
-        float minSqrDistance = _detectionRange;
+        float minSqrDistance = _detectionRange * _detectionRange;
 
         foreach(CUnitBase enemy in CEnemyManager.Instance.ActiveEnemies)
         {
@@ -124,10 +122,12 @@ public class CAutoPlayerMove : MonoBehaviour
         }
         if(closest!=null)
         {
+            _targetEnemy = closest;
             PlayerHero.SetTarget(closest);
         }
         else
         {
+            _targetEnemy = null;
             PlayerHero.SetTarget(null);
         }
     }
@@ -174,9 +174,6 @@ public class CAutoPlayerMove : MonoBehaviour
     {
         LookAtTarget();
 
-        CUnitBase targetUnit = _targetEnemy.GetComponent<CUnitBase>();
-
-		PlayerHero.SetTarget(targetUnit);
 		PlayerHero.ChangeState(EHeroState.Combat);
     }
 }

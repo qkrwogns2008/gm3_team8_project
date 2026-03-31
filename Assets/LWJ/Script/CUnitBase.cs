@@ -76,7 +76,8 @@ public abstract class CUnitBase : MonoBehaviour
 
 	protected virtual void Awake()
 	{
-		InitUnitStats();
+
+        InitUnitStats();
 		
 		if (SkeletonAni == null)
 		{
@@ -87,6 +88,11 @@ public abstract class CUnitBase : MonoBehaviour
 			Debug.LogWarning($"CUnitBase) {UnitName} SkeletonAnimation ∫Œ¿Á");
 		}
 	}
+	protected virtual void Start()
+	{
+		RegisterToManager();
+
+    }
 
 	protected virtual void Update()
 	{
@@ -94,22 +100,27 @@ public abstract class CUnitBase : MonoBehaviour
 
 	protected virtual void OnEnable()
 	{
-		if(TeamType == ETeamType.Hero)
-		{
-			if(HeroManagerDummy.Instance != null)
-			{
-				HeroManagerDummy.Instance.RegisterHero(this);
-			}
-			
-		}
-		else if(TeamType == ETeamType.Enemy)
-		{
-			if(CEnemyManager.Instance != null)
-			{
-				CEnemyManager.Instance.RegisterEnemy(this);
-			}
-		}
+		
 	}
+
+	private void RegisterToManager()
+	{
+        if (TeamType == ETeamType.Hero)
+        {
+            if (HeroManagerDummy.Instance != null)
+            {
+                HeroManagerDummy.Instance.RegisterHero(this);
+            }
+
+        }
+        else if (TeamType == ETeamType.Enemy)
+        {
+            if (CEnemyManager.Instance != null)
+            {
+                CEnemyManager.Instance.RegisterEnemy(this);
+            }
+        }
+    }
 
 	protected virtual void OnDisable()
 	{

@@ -17,7 +17,7 @@ public class CAutoEnemyMove : MonoBehaviour
     [SerializeField] private float _walkTimer = 3f;     // 대기시간
     [Header("Tracking")]
     [SerializeField] private float _detectionRange = 10f;    // 탐지 범위
-    [SerializeField] private float _giveUpRange = 12f;      // 추격 포기 범위
+    [SerializeField] private float _giveUpRange = 16f;      // 추격 포기 범위
     [SerializeField] private LayerMask _playerLayer;        // 탐지할 레이어
     [Header("State")]
     [SerializeField] private EUnitState _currentState = EUnitState.Idle;
@@ -31,7 +31,6 @@ public class CAutoEnemyMove : MonoBehaviour
     private float _timer = 0f;                           // 대기시간 타이머
 
     public bool _canAttack = false;         // 공격 스크립트에서 참조
-    private Transform _targetPlayer;        // 발견 플레이어
 
     private SkeletonAnimation _skeletonAnim;
 
@@ -155,7 +154,7 @@ public class CAutoEnemyMove : MonoBehaviour
     void UpdateTracking()
     {
         CUnitBase target = _enemyBase.TargetHero;
-        if(_targetPlayer == null)
+        if(_enemyBase.TargetHero == null)
         {
             ChangeState(EUnitState.Idle);
             return;
@@ -165,47 +164,25 @@ public class CAutoEnemyMove : MonoBehaviour
         float sqrAttackRange = _attackRange * _attackRange;
         float sqrGiveUpRange = _giveUpRange * _giveUpRange;
 
-        if (sqrDist > _giveUpRange)
+        if (sqrDist > sqrGiveUpRange)
         {
-            _targetPlayer = null;
-            ChangeState(EUnitState.Idle);
+            ResetTarget();
         }
-        else if(sqrDist <= _attackRange)
+        else if(sqrDist <= sqrAttackRange)
         {
             ChangeState(EUnitState.Attack);
         }
         else
         {
-            MoveTo(_targetPlayer.position);
+            MoveTo(target.transform.position);
         }
 
     }
-
-    void CheckTarget()
-    {
-        if(_targetPlayer == null)
-        {
-            return;
-        }
-
-        CUnitBase playerbase = _targetPlayer.GetComponent<CUnitBase>();
-
-        if (playerbase == null || playerbase.IsUnitDead || !_targetPlayer.gameObject.activeSelf)
-        {
-            ResetTarget();
-            return;
-        }
-
-        float dist = Vector2.Distance(transform.position, _targetPlayer.position);
-        if (dist > _giveUpRange)
-        {
-            ResetTarget();
-        }
-    }
+    
 
     void ResetTarget()
     {
-        _targetPlayer = null;
+        _enemyBase.SetTarget(null);
 
         if(_currentState == EUnitState.Tracking || _currentState == EUnitState.Attack)
         {
@@ -215,17 +192,19 @@ public class CAutoEnemyMove : MonoBehaviour
 
     void UpdateAttack()
     {
-        if(_targetPlayer == null)
+        CUnitBase target = _enemyBase.TargetHero;
+        if(_enemyBase.TargetHero == null)
         {
             ChangeState(EUnitState.Idle);
             return;
         }
-        _enemyBase.LookAt(_targetPlayer.position);
+        _enemyBase.LookAt(target.transform.position);
 
-        _enemyBase.TryAttack(_targetPlayer.GetComponent<CUnitBase>());
+        _enemyBase.TryAttack(target);
 
-        float dist = Vector3.Distance(transform.position, _targetPlayer.position);
-        if(dist > _attackRange)
+        float sqrDist = (target.transform.position - transform.position).sqrMagnitude;
+
+        if(sqrDist > (_attackRange*_attackRange))
         {
             ChangeState(EUnitState.Tracking);
         }
@@ -241,7 +220,7 @@ public class CAutoEnemyMove : MonoBehaviour
         }
 
         CUnitBase closetPlayer = null;
-        float minDistance = _detectionRange * _detectionRange;
+        float minsqrDistance = _detectionRange * _detectionRange;
 
         foreach(var player in HeroManagerDummy.Instance.ActiveHero)
         {
@@ -249,10 +228,10 @@ public class CAutoEnemyMove : MonoBehaviour
             {
                 continue;
             }
-            float dist = Vector2.Distance(player.transform.position, transform.position);
-            if(dist < minDistance)
+            float sqrDist = (player.transform.position - transform.position).sqrMagnitude;
+            if(sqrDist < minsqrDistance)
             {
-                minDistance = dist;
+                minsqrDistance = sqrDist;
                 closetPlayer = player;
             }
         }
@@ -264,7 +243,19 @@ public class CAutoEnemyMove : MonoBehaviour
         }
         return false;
     }
+    void CheckTarget()
+    {
+        CUnitBase target = _enemyBase.TargetHero;
+        if (target == null)
+        {
+            return;
+        }
 
+        if (target.IsUnitDead || !target.gameObject.activeSelf)
+        {
+            ResetTarget();
+        }
+    }
     void MoveTo(Vector3 pos)
     {
         _enemyBase.LookAt(pos);
@@ -319,10 +310,10 @@ public class CAutoEnemyMove : MonoBehaviour
             Gizmos.DrawSphere(_targetPos, 0.3f);
         }
 
-        if(_currentState == EUnitState.Tracking && _targetPlayer != null)
+        if(_currentState == EUnitState.Tracking && _enemyBase.TargetHero != null)
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, _targetPlayer.position);
+            Gizmos.DrawLine(transform.position, _enemyBase.TargetHero.transform.position);
         }
     }
 
