@@ -34,7 +34,6 @@ public class CHero : CUnitBase
 
 	#region 내부 변수
 	protected float NextSkillTime;
-	protected Coroutine MotionRoutine;
 	protected bool _isPendingDead = false;
 
 	protected virtual float CriticalDamage => BaseAtkDamage * CriticalAttackMultiplier;
@@ -43,6 +42,7 @@ public class CHero : CUnitBase
 	#endregion
 
 	public virtual event System.Action<float> OnSkillUsed; // 스킬 쿨타임이 인자로 들어감
+	public virtual event System.Action OnDead;
 
 	// for Test
 	protected override void Update()
@@ -273,6 +273,8 @@ public class CHero : CUnitBase
 		{
 			Debug.Log($"{UnitName} 사망");
 		}
+
+		OnDead?.Invoke();
 	}
 
 	public override void TryAttack(CUnitBase target)

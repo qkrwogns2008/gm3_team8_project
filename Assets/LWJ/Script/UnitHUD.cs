@@ -41,6 +41,7 @@ public class UnitHUD : MonoBehaviour
 		if (_herobase != null)
 		{
 			_herobase.OnSkillUsed += StartCooldownUI;
+			_herobase.OnDead += PauseCooldownUI;
 		}
 	}
 
@@ -51,6 +52,7 @@ public class UnitHUD : MonoBehaviour
 		if (_herobase != null)
 		{
 			_herobase.OnSkillUsed -= StartCooldownUI;
+			_herobase.OnDead -= PauseCooldownUI;
 		}
 	}
 
@@ -101,5 +103,10 @@ public class UnitHUD : MonoBehaviour
 				_fxCooldownEnd.Play();
 			}
 		}
+	}
+
+	public void PauseCooldownUI()
+	{
+		_isCooling = false;
 	}
 }

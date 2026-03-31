@@ -60,7 +60,7 @@ public abstract class CUnitBase : MonoBehaviour
 	protected float NextAttackTime;
 	protected CUnitBase TargetEnemy; // 현재 목표 타겟
 	protected bool IsDead = false; // 사망 여부
-	protected Coroutine _motionRoutine;
+	protected Coroutine MotionRoutine;
 
 	protected virtual float FinalMaxHP => BaseMaxHp * MaxHPMultiplier; // 1000 * 1.1 (최대 체력 10%증가) = 1100
 	protected virtual float FinalAttackDamage => BaseAtkDamage * AttackDamageMultiplier;
@@ -247,16 +247,16 @@ public abstract class CUnitBase : MonoBehaviour
 			return;
 		}
 
-		if (_motionRoutine != null)
+		if (MotionRoutine != null)
 		{
 			return;
 		}
 
-		_motionRoutine = StartCoroutine(Co_PlayMotion(AttackAnimation, target, BaseAtkDamage));
-		Debug.Log($"{UnitName}의 일반 공격!");
+		MotionRoutine = StartCoroutine(Co_PlayMotion(AttackAnimation, target, BaseAtkDamage));
 
 		if (PrintLog)
 		{
+			Debug.Log($"{UnitName}의 일반 공격!");
 			Debug.Log("CUnitBase) OnAttack 호출");
 		}
 		// 코루틴 → 스켈레톤 재생 + 데미지 처리 로직 (TakeDamage)
@@ -267,7 +267,7 @@ public abstract class CUnitBase : MonoBehaviour
 		if (string.IsNullOrEmpty(animationName))
 		{
 			Debug.LogWarning("애니메이션 NONE. 인스펙터 확인");
-			_motionRoutine = null;
+			MotionRoutine = null;
 			yield break;
 		}
 
@@ -279,6 +279,6 @@ public abstract class CUnitBase : MonoBehaviour
 			target.TakeDamage(damage, this);
 		}
 
-		_motionRoutine = null;
+		MotionRoutine = null;
 	}
 }
