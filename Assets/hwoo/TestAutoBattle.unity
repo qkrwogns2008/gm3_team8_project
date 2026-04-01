@@ -636,6 +636,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8096124463481793326, guid: 36aa282f753fc5b4581f3c9ac5433231, type: 3}
+      propertyPath: PrintLog
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -728,7 +732,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3915354438719941486, guid: 587efaf89d0516c48bb128e8f1303768, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.9999556
       objectReference: {fileID: 0}
     - target: {fileID: 3915354438719941486, guid: 587efaf89d0516c48bb128e8f1303768, type: 3}
       propertyPath: m_LocalRotation.x
@@ -740,7 +744,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3915354438719941486, guid: 587efaf89d0516c48bb128e8f1303768, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: 0.009424611
       objectReference: {fileID: 0}
     - target: {fileID: 3915354438719941486, guid: 587efaf89d0516c48bb128e8f1303768, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -752,7 +756,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3915354438719941486, guid: 587efaf89d0516c48bb128e8f1303768, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 1.08
       objectReference: {fileID: 0}
     - target: {fileID: 7836725768016682895, guid: 587efaf89d0516c48bb128e8f1303768, type: 3}
       propertyPath: _spawnRadius

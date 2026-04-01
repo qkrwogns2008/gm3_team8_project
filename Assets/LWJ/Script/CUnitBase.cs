@@ -66,6 +66,8 @@ public abstract class CUnitBase : MonoBehaviour
 	protected virtual float FinalAttackDamage => BaseAtkDamage * AttackDamageMultiplier;
 	protected virtual float FinalAttackActionInterval => BaseAttackActionInterval / AttackSpeedMultiplier; // 공격 딜레이 (공격 속도 100% 증가 => 공격 딜레이 1/2)
 	protected virtual float FinalMoveSpeed => BaseMoveSpeed * MoveSpeedMultiplier;
+
+	private bool _isRegisterd = false; // 중복 등록 방지
 	#endregion
 
 	public virtual event System.Action<float, float> OnHpChanged;
@@ -100,41 +102,63 @@ public abstract class CUnitBase : MonoBehaviour
 
 	protected virtual void OnEnable()
 	{
+		StartCoroutine(CoRegisterWithWaiting());
+    }
+	
+
+	protected virtual void OnDisable()
+	{
+		UnRegisterFromManager();
+	}
+
+	// List Manager
+	private IEnumerator CoRegisterWithWaiting()
+	{
+		if(_isRegisterd)
+		{
+			yield break;
+		}
+
+        if (TeamType == ETeamType.Hero)
+        {
+				yield return new WaitUntil(() => HeroManagerDummy.Instance != null);
+                HeroManagerDummy.Instance.RegisterHero(this);
+
+        }
+        else if (TeamType == ETeamType.Enemy)
+        {
+			yield return new WaitUntil(() => CEnemyManager.Instance != null);
+			CEnemyManager.Instance.RegisterEnemy(this);
+        }
+
+        _isRegisterd = false;
+
+	}
+	private void UnRegisterFromManager()
+	{
+		if(!_isRegisterd)
+		{
+			return;
+		}
+
         if (TeamType == ETeamType.Hero)
         {
             if (HeroManagerDummy.Instance != null)
             {
-                HeroManagerDummy.Instance.RegisterHero(this);
+                HeroManagerDummy.Instance.UnregisterHero(this);
             }
-
         }
         else if (TeamType == ETeamType.Enemy)
         {
             if (CEnemyManager.Instance != null)
             {
-                CEnemyManager.Instance.RegisterEnemy(this);
+                CEnemyManager.Instance.UnregisterEnemy(this);
             }
         }
+
+		_isRegisterd = false;
     }
 
-
-	protected virtual void OnDisable()
-	{
-		if(TeamType == ETeamType.Hero)
-		{
-			if(HeroManagerDummy.Instance != null)
-			{
-				HeroManagerDummy.Instance.UnregisterHero(this);
-			}
-		}
-		else if(TeamType == ETeamType.Enemy)
-		{
-			if(CEnemyManager.Instance != null)
-			{
-				CEnemyManager.Instance.UnregisterEnemy(this);
-			}
-		}
-	}
 
 	// SO 데이터 주입 함수
 	// 유닛 기본값 세팅

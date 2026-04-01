@@ -87,6 +87,7 @@ public class CAutoEnemyMove : MonoBehaviour
 
     private void OnEnable()
     {
+        
         _homePosition = transform.position;
         _homePosition.z = 0f;
         ChangeState(EUnitState.Idle);
@@ -174,6 +175,8 @@ public class CAutoEnemyMove : MonoBehaviour
         }
         else
         {
+            Vector3 targetPos = target.transform.position;
+            targetPos.z = 0f;
             MoveTo(target.transform.position);
         }
 
@@ -198,8 +201,8 @@ public class CAutoEnemyMove : MonoBehaviour
             ChangeState(EUnitState.Idle);
             return;
         }
-        _enemyBase.LookAt(target.transform.position);
 
+        _enemyBase.LookAt(target.transform.position);
         _enemyBase.TryAttack(target);
 
         float sqrDist = (target.transform.position - transform.position).sqrMagnitude;
@@ -216,11 +219,13 @@ public class CAutoEnemyMove : MonoBehaviour
     {
         if (HeroManagerDummy.Instance == null || HeroManagerDummy.Instance.ActiveHero.Count == 0)
         {
+            Debug.Log("Å½Áö Á¾·á");
             return false;
         }
 
         CUnitBase closetPlayer = null;
         float minsqrDistance = _detectionRange * _detectionRange;
+
 
         foreach(var player in HeroManagerDummy.Instance.ActiveHero)
         {
