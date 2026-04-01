@@ -17,7 +17,6 @@ public class CAutoPlayerMove : MonoBehaviour
     #region 내부변수
     private CUnitBase _targetEnemy;                     // 현재 목표 타겟
     private Vector3 _targetPos;                          // 타겟 위치
-    private bool _isMoving = false;                      // 이동 상태 확인
 
     private SkeletonAnimation _skeletonAnim;
     private CHero PlayerHero;   // 상태 제어용 참조 사용시 CHero참조

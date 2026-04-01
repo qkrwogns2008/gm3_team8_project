@@ -20,8 +20,6 @@ public class CEnemyBase : CUnitBase
     protected EnemyBaseSO _enemySO => OriginData as EnemyBaseSO;
     protected Vector3 _startPosition;
 
-    private bool _isAttackCooldown = false;
-
     public override bool IsUnitDead => IsDead;
 
     public EnemyBaseSO EnemyData => OriginData as EnemyBaseSO;
@@ -61,7 +59,6 @@ public class CEnemyBase : CUnitBase
     {
         base.OnEnable();
         // 상태 초기화
-        _isAttackCooldown = false;
         IsDead = false;
 
         // 능력치 초기화

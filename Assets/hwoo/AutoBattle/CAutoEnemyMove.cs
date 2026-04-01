@@ -27,7 +27,6 @@ public class CAutoEnemyMove : MonoBehaviour
     #region 내부변수
     private Vector3 _homePosition;                       // 처음 스폰한 위치
     private Vector3 _targetPos;                          // 타겟 위치
-    private bool _isMoving = false;                      // 이동 상태 확인
     private float _timer = 0f;                           // 대기시간 타이머
 
     public bool _canAttack = false;         // 공격 스크립트에서 참조
@@ -105,16 +104,13 @@ public class CAutoEnemyMove : MonoBehaviour
         switch (_currentState)
         {
             case EUnitState.Idle:
-                _isMoving = false;
                 SetAnimation("Idle", true);
                 break;
             case EUnitState.Wander:
             case EUnitState.Tracking:
-                _isMoving = true;
                 SetAnimation("Move", true);
                 break;
             case EUnitState.Attack:
-                _isMoving = false;
                 //UpdateAttack();
                 break;
         }
