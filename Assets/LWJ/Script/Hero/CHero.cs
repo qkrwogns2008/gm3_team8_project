@@ -193,6 +193,7 @@ public class CHero : CUnitBase
 	protected virtual void OnSkill(CUnitBase target)
 	{
 		ApplyAttackCooldown(false);
+		NotifySkillUse();
 
 		if (SkeletonAni == null || SkillEffect == null)
 		{
@@ -204,8 +205,6 @@ public class CHero : CUnitBase
 		{
 			return;
 		}
-
-		NotifySkillUse();
 
 		MotionRoutine = StartCoroutine(Co_PlayMotion(SkillEffect, SkillAnimation, target, EAttackType.Skill));
 		if (PrintLog)
@@ -221,7 +220,7 @@ public class CHero : CUnitBase
 	}
 
 	// 공격 종류에 따라 데미지 처리 로직 분기
-	protected void ProcessHit(CUnitBase target, EAttackType type)
+	protected virtual void ProcessHit(CUnitBase target, EAttackType type)
 	{
 		switch (type)
 		{
