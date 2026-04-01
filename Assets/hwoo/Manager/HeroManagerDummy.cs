@@ -7,7 +7,9 @@ public class HeroManagerDummy : MonoBehaviour
 {
     public static HeroManagerDummy Instance;
 
-    public List<CUnitBase> ActiveHero = new List<CUnitBase>();
+    private List<CUnitBase> _activeHero = new List<CUnitBase>();
+
+    public IReadOnlyList<CUnitBase> ActiveHero => _activeHero;
 
     private void Awake()
     {
@@ -22,18 +24,18 @@ public class HeroManagerDummy : MonoBehaviour
     }
     public void RegisterHero(CUnitBase hero)
     {
-        if(!ActiveHero.Contains(hero))
+        if(!_activeHero.Contains(hero))
         {
-            ActiveHero.Add(hero);
+            _activeHero.Add(hero);
             Debug.Log($"HeroManager {hero.name} 등록");
         }
     }
 
     public void UnregisterHero(CUnitBase hero)
     {
-        if(ActiveHero.Contains(hero))
+        if(_activeHero.Contains(hero))
         {
-            ActiveHero.Remove(hero);
+            _activeHero.Remove(hero);
             Debug.Log($"HeroManager {hero.name} 제거");
         }
     }

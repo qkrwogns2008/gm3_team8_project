@@ -219,7 +219,6 @@ public class CAutoEnemyMove : MonoBehaviour
     {
         if (HeroManagerDummy.Instance == null || HeroManagerDummy.Instance.ActiveHero.Count == 0)
         {
-            Debug.Log("Å½Áö Á¾·á");
             return false;
         }
 
