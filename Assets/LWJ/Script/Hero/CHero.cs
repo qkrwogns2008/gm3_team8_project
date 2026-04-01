@@ -12,6 +12,13 @@ public enum EHeroState
 
 public class CHero : CUnitBase
 {
+	protected enum EAttackType
+	{
+		Normal,
+		Critical,
+		Skill,
+	}
+
 	#region 인스펙터
 	[Header("치명타 애니메이션")]
 	[SpineAnimation(dataField = "SkeletonAni")]
@@ -34,20 +41,23 @@ public class CHero : CUnitBase
 	protected float CriticalAttackMultiplier; // 치명타 데미지 승수
 
 	protected EffectDataSO SkillEffect; // 스킬 이펙트
-	protected float SkillActionInterval = 2f; // 스킬 액션 딜레이
+	protected float SkillActionInterval = 1f; // 스킬 액션 딜레이
+	protected float BaseSkillDamageRate = 1f; // 스킬 데미지 계수 (1f = 100%)
 	protected float BaseSkillCooldown = 5.0f; // 쿨타임
 	protected float CooldownMultiplier = 1.0f; // 쿨타임 감소 승수
 
 	protected float NextSkillTime;
 	protected bool IsPendingDead = false; // 사망 유예 여부
 
-	protected virtual float CriticalDamage => BaseAtkDamage * CriticalAttackMultiplier;
-	protected virtual float FinalSkillCooldown => BaseSkillCooldown * CooldownMultiplier;
+	protected bool IsFacingRight => (SkeletonAni.skeleton.ScaleX != 1.0f);
+	protected virtual float CriticalDamage => FinalAttackDamage * CriticalAttackMultiplier;
 	protected virtual float FinalSkillActionInterval => SkillActionInterval / AttackSpeedMultiplier;
+	protected virtual float FinalSkillDamage => FinalAttackDamage * BaseSkillDamageRate;
+	protected virtual float FinalSkillCooldown => BaseSkillCooldown * CooldownMultiplier;
 	#endregion
 
-	public virtual event System.Action<float> OnSkillUsed; // 스킬 쿨타임이 인자로 들어감
-	public virtual event System.Action OnDead;
+	public event System.Action<float> OnSkillUsed; // 스킬 쿨타임이 인자로 들어감
+	public event System.Action OnDead;
 
 	// 영웅 공통 데이터 주입
 	protected override void InitUnitStats()
@@ -65,6 +75,7 @@ public class CHero : CUnitBase
 
 			SkillEffect = HeroData.SkillEffect;
 			SkillActionInterval = HeroData.SkillActionInterval;
+			BaseSkillDamageRate = HeroData.BaseSkillDamageRate;
 			BaseSkillCooldown = HeroData.BaseSkillCooldown;
 			CooldownMultiplier = HeroData.CooldownMultiplier;
 		}
@@ -119,6 +130,8 @@ public class CHero : CUnitBase
 
 	protected override void OnAttack(CUnitBase target)
 	{
+		ApplyAttackCooldown(true);
+
 		if (SkeletonAni == null || AttackEffect == null)
 		{
 			Debug.LogWarning("CHero) 인스펙터 null 감지");
@@ -140,7 +153,7 @@ public class CHero : CUnitBase
 
 		if (isCriAttack && CriticalEffect != null)
 		{
-			MotionRoutine = StartCoroutine(Co_PlayMotion(CriticalEffect, CriticalAnimation, target, CriticalDamage));
+			MotionRoutine = StartCoroutine(Co_PlayMotion(CriticalEffect, CriticalAnimation, target, EAttackType.Critical));
 			if (PrintLog)
 			{
 				Debug.Log($"{UnitName}의 치명타 공격!");
@@ -148,7 +161,7 @@ public class CHero : CUnitBase
 		}
 		else
 		{
-			MotionRoutine = StartCoroutine(Co_PlayMotion(AttackEffect, AttackAnimation, target, BaseAtkDamage));
+			MotionRoutine = StartCoroutine(Co_PlayMotion(AttackEffect, AttackAnimation, target, EAttackType.Normal));
 			if (PrintLog)
 			{
 				Debug.Log($"{UnitName}의 일반 공격!");
@@ -170,15 +183,17 @@ public class CHero : CUnitBase
 			return;
 		}
 
-		MotionRoutine = StartCoroutine(Co_PlayMotion(CriticalEffect, CriticalAnimation, target, CriticalDamage));
+		MotionRoutine = StartCoroutine(Co_PlayMotion(CriticalEffect, CriticalAnimation, target, EAttackType.Critical));
 		if (PrintLog)
 		{
 			Debug.Log($"{UnitName}의 치명타 공격!");
 		}
 	}
 
-	protected void OnSkill(CUnitBase target)
+	protected virtual void OnSkill(CUnitBase target)
 	{
+		ApplyAttackCooldown(false);
+
 		if (SkeletonAni == null || SkillEffect == null)
 		{
 			Debug.LogWarning("CHero) 인스펙터 null 감지");
@@ -190,19 +205,57 @@ public class CHero : CUnitBase
 			return;
 		}
 
-		OnSkillUsed?.Invoke(FinalSkillCooldown);
+		NotifySkillUse();
 
-		MotionRoutine = StartCoroutine(Co_PlayMotion(SkillEffect, SkillAnimation, target, BaseAtkDamage));
+		MotionRoutine = StartCoroutine(Co_PlayMotion(SkillEffect, SkillAnimation, target, EAttackType.Skill));
 		if (PrintLog)
 		{
 			Debug.Log($"{UnitName}의 스킬 발동!");
 		}
 	}
 
+	// 자식에서 Invoke를 사용하기 위함.
+	protected virtual void NotifySkillUse()
+	{
+		OnSkillUsed?.Invoke(FinalSkillCooldown);
+	}
+
+	// 공격 종류에 따라 데미지 처리 로직 분기
+	protected void ProcessHit(CUnitBase target, EAttackType type)
+	{
+		switch (type)
+		{
+			case EAttackType.Normal:
+				if (target != null)
+				{
+					target.TakeDamage(FinalAttackDamage, this);
+				}
+				break;
+			case EAttackType.Critical:
+				if (target != null)
+				{
+					target.TakeDamage(CriticalDamage, this);
+				}
+				break;
+			case EAttackType.Skill:
+				ProcessSkillHit(target, this);
+				break;
+		}
+	}
+
+	// 영웅 고유 스킬 처리 로직. 자식에서 재정의함.
+	protected virtual void ProcessSkillHit(CUnitBase target, CUnitBase attacker)
+	{
+		if (target != null)
+		{
+			target.TakeDamage(FinalSkillDamage, this);
+		}
+	}
+
 	/// <summary>
 	/// 스파인 애니메이션을 재생하고, effectData의 PreDelay 값에 따라 시간차로 이펙트를 생성합니다. 성공적으로 종료되면 피해를 적용합니다.
 	/// </summary>
-	protected virtual IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, float damage)
+	protected virtual IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type)
 	{
 		if (string.IsNullOrEmpty(animationName))
 		{
@@ -242,10 +295,7 @@ public class CHero : CUnitBase
 			}
 		}
 
-		if (target != null)
-		{
-			target.TakeDamage(damage, this);
-		}
+		ProcessHit(target, type);
 
 		MotionRoutine = null;
 
@@ -285,13 +335,13 @@ public class CHero : CUnitBase
 		Vector3 pos = transform.position + fxData.Offset;
 		Quaternion rot = Quaternion.Euler(-42f, 0f, 0f);
 		EffectBase fx = PoolManager.Instance.Pop(prefab, pos, rot);
-		bool isFacingRight = (SkeletonAni.skeleton.ScaleX != 1.0f);
+		
 
 		if (fx == null)
 		{
 			return false;
 		}
-		fx.Init(prefab, isFacingRight);
+		fx.Init(prefab, IsFacingRight);
 
 		return true;
 	}
@@ -343,16 +393,14 @@ public class CHero : CUnitBase
 		}
 	}
 
-	protected override void ExecuteCombat(EAttackType type, CUnitBase target)
+	protected virtual void ExecuteCombat(EAttackType type, CUnitBase target)
 	{
 		switch (type)
 		{
 			case EAttackType.Skill:
-				ApplyAttackCooldown(false);
 				OnSkill(target);
 				break;
 			case EAttackType.Normal:
-				ApplyAttackCooldown(true);
 				OnAttack(target);
 				break;
 		}

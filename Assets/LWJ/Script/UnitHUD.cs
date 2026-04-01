@@ -27,6 +27,11 @@ public class UnitHUD : MonoBehaviour
 	{
 		if (_base == null)
 		{
+			_base = gameObject.GetComponentInParent<CUnitBase>();
+		}
+
+		if (_base == null)
+		{
 			Debug.LogWarning("UnitHUD) base null");
 			gameObject.SetActive(false);
 			return;

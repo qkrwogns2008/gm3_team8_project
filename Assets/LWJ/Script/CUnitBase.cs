@@ -3,7 +3,6 @@ using System.Collections;
 using UnityEngine;
 
 public enum ETeamType { Hero, Enemy } // Hero, Enemy 적 타입 구분
-public enum EAttackType { Normal, Skill } // 스킬 공격 여부
 
 // 모든 상호작용 대상의 공통 규칙을 가진 Base
 public abstract class CUnitBase : MonoBehaviour
@@ -264,25 +263,21 @@ public abstract class CUnitBase : MonoBehaviour
 			return;
 		}
 
-		ExecuteCombat(EAttackType.Normal, target);
+		ExecuteCombat(target);
 
 		// 공통 후처리 진행 : 쿨타임
 	}
 
 	// 공격 종류가 추가로 필요할 경우 자식에서 재정의
-	protected virtual void ExecuteCombat(EAttackType type, CUnitBase target)
+	protected virtual void ExecuteCombat(CUnitBase target)
 	{
-		switch (type)
-		{
-			case EAttackType.Normal:
-				ApplyAttackCooldown();
-				OnAttack(target);
-				break;
-		}
+		OnAttack(target);
 	}
 
 	protected virtual void OnAttack(CUnitBase target)
 	{
+		ApplyAttackCooldown();
+
 		if (SkeletonAni == null)
 		{
 			return;
@@ -300,7 +295,6 @@ public abstract class CUnitBase : MonoBehaviour
 			Debug.Log($"{UnitName}의 일반 공격!");
 			Debug.Log("CUnitBase) OnAttack 호출");
 		}
-		// 코루틴 → 스켈레톤 재생 + 데미지 처리 로직 (TakeDamage)
 	}
 
 	protected virtual IEnumerator Co_PlayMotion(string animationName, CUnitBase target, float damage)
