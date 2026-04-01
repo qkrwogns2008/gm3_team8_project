@@ -16,8 +16,8 @@ public class CAutoEnemyMove : MonoBehaviour
     [SerializeField] private float _walkRange = 10f;    // 주변 돌아다니는 범위
     [SerializeField] private float _walkTimer = 3f;     // 대기시간
     [Header("Tracking")]
-    [SerializeField] private float _detectionRange = 10f;    // 탐지 범위
-    [SerializeField] private float _giveUpRange = 16f;      // 추격 포기 범위
+    [SerializeField] private float _detectionRange = 50f;    // 탐지 범위
+    [SerializeField] private float _giveUpRange = 65f;      // 추격 포기 범위
     [SerializeField] private LayerMask _playerLayer;        // 탐지할 레이어
     [Header("State")]
     [SerializeField] private EUnitState _currentState = EUnitState.Idle;
@@ -261,7 +261,8 @@ public class CAutoEnemyMove : MonoBehaviour
         _enemyBase.LookAt(pos);
         Vector3 nextPos = Vector3.MoveTowards(transform.position, pos, _walkspeed * Time.deltaTime);
         nextPos.z = 0f;
-        transform.position = Vector3.MoveTowards(transform.position, pos, _walkspeed * Time.deltaTime);
+        transform.position = nextPos;
+
     }
 
     void SetNewWanderTarget()

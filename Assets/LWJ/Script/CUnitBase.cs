@@ -90,7 +90,7 @@ public abstract class CUnitBase : MonoBehaviour
 	}
 	protected virtual void Start()
 	{
-		RegisterToManager();
+		
 
     }
 
@@ -99,11 +99,6 @@ public abstract class CUnitBase : MonoBehaviour
 	}
 
 	protected virtual void OnEnable()
-	{
-		
-	}
-
-	private void RegisterToManager()
 	{
         if (TeamType == ETeamType.Hero)
         {
@@ -121,6 +116,7 @@ public abstract class CUnitBase : MonoBehaviour
             }
         }
     }
+
 
 	protected virtual void OnDisable()
 	{

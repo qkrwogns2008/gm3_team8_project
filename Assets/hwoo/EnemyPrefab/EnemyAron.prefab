@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6855915785034417697}
   - component: {fileID: 3517583090020551184}
   m_Layer: 0
-  m_Name: Monster_Name
+  m_Name: EnemyAron
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,7 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnitName: 
   CurrentHp: 0
-  OriginData: {fileID: 0}
+  OriginData: {fileID: 11400000, guid: 4437df723d5d0fa4399b0cbe9eb56590, type: 2}
   TeamType: 1
   SkeletonAni: {fileID: 3895971952002063882}
   AttackAnimation: Attack_A
@@ -75,11 +75,11 @@ MonoBehaviour:
   _attackRange: 4
   _walkRange: 10
   _walkTimer: 3
-  _detectionRange: 10
-  _giveUpRange: 12
+  _detectionRange: 50
+  _giveUpRange: 65
   _playerLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   _currentState: 0
   _canAttack: 0
 --- !u!1 &5614867913979186797
