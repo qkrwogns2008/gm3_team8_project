@@ -95,7 +95,7 @@ public class UnitHUD : MonoBehaviour
 		_isCooling = true;
 	}
 
-	public void UpdateCooldownBar()
+	private void UpdateCooldownBar()
 	{
 		_cooldown = Mathf.Max(0.0001f, _cooldown);
 		float ratio = Mathf.Clamp01(1 - (_guageEndTime - Time.time) / _cooldown);

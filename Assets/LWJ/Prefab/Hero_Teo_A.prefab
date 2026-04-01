@@ -50,7 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnitName: 
   CurrentHp: 0
-  OriginData: {fileID: 11400000, guid: cfded9635fc4d804a8a603ed678061e3, type: 2}
+  OriginData: {fileID: 11400000, guid: 9c752abebd1754e4f98bd68cb06cf613, type: 2}
   TeamType: 0
   SkeletonAni: {fileID: 4024569556539796475}
   AttackAnimation: Attack_A
@@ -59,14 +59,7 @@ MonoBehaviour:
   DeathDisableTime: 3
   PrintLog: 1
   CriticalAnimation: Critical
-  CriticalEffect: {fileID: 11400000, guid: 43641eaf32843294188424242b43a8a6, type: 2}
-  CriticalChance: 20
-  CriticalAttackMultiplier: 2
   SkillAnimation: Active_A
-  SkillEffect: {fileID: 11400000, guid: 3f1e7435205806e41ad8ad78767b0b80, type: 2}
-  SkillActionInterval: 2
-  BaseSkillCooldown: 5
-  CooldownMultiplier: 1
   CurrentState: 0
 --- !u!114 &1385575880346748945
 MonoBehaviour:

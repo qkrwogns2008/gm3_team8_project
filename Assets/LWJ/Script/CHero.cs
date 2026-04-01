@@ -13,33 +13,33 @@ public enum EHeroState
 public class CHero : CUnitBase
 {
 	#region 인스펙터
-	[Header("치명타 공격")]
+	[Header("치명타 애니메이션")]
 	[SpineAnimation(dataField = "SkeletonAni")]
 	[SerializeField] protected string CriticalAnimation;
-	[SerializeField] protected EffectDataSO CriticalEffect;
-	//[SerializeField] protected float BaseCriticalActionInterval = 1.5f;
 
-	[Header("치명타 수치")]
-	[SerializeField] protected float CriticalChance = 20f;
-	[SerializeField] protected float CriticalAttackMultiplier = 2f;
-
-	[Header("스킬")]
+	[Header("스킬 애니메이션")]
 	[SpineAnimation(dataField = "SkeletonAni")]
 	[SerializeField] protected string SkillAnimation;
-	[SerializeField] protected EffectDataSO SkillEffect;
-
-	[Header("스킬 수치")]
-	[SerializeField] protected float SkillActionInterval = 2f; // 스킬 액션 딜레이
-	[SerializeField] protected float BaseSkillCooldown = 5.0f; // 쿨타임
-	[SerializeField] protected float CooldownMultiplier = 1.0f; // 쿨타임 감소 승수
 
 	[Header("유닛 상태")]
 	[SerializeField] public EHeroState CurrentState = EHeroState.Idle;
 	#endregion
 
 	#region 내부 변수
+	protected HeroDataSO HeroData;
+
+	protected EffectDataSO CriticalEffect; // 치명타 공격 이펙트
+	//protected float BaseCriticalActionInterval = 1.5f;
+	protected float CriticalChance; // 치명타 확률
+	protected float CriticalAttackMultiplier; // 치명타 데미지 승수
+
+	protected EffectDataSO SkillEffect; // 스킬 이펙트
+	protected float SkillActionInterval = 2f; // 스킬 액션 딜레이
+	protected float BaseSkillCooldown = 5.0f; // 쿨타임
+	protected float CooldownMultiplier = 1.0f; // 쿨타임 감소 승수
+
 	protected float NextSkillTime;
-	protected bool _isPendingDead = false; // 사망 유예 여부
+	protected bool IsPendingDead = false; // 사망 유예 여부
 
 	protected virtual float CriticalDamage => BaseAtkDamage * CriticalAttackMultiplier;
 	protected virtual float FinalSkillCooldown => BaseSkillCooldown * CooldownMultiplier;
@@ -48,6 +48,27 @@ public class CHero : CUnitBase
 
 	public virtual event System.Action<float> OnSkillUsed; // 스킬 쿨타임이 인자로 들어감
 	public virtual event System.Action OnDead;
+
+	// 영웅 공통 데이터 주입
+	protected override void InitUnitStats()
+	{
+		base.InitUnitStats();
+
+		HeroData = OriginData as HeroDataSO;
+		if (HeroData != null)
+		{
+			AttackEffect = AttackEffect != null ? AttackEffect : HeroData.AttackEffect; // 비었으면 SO에서 할당
+
+			CriticalEffect = HeroData.CriticalEffect;
+			CriticalChance = HeroData.CriticalChance;
+			CriticalAttackMultiplier = HeroData.CriticalAttackMultiplier;
+
+			SkillEffect = HeroData.SkillEffect;
+			SkillActionInterval = HeroData.SkillActionInterval;
+			BaseSkillCooldown = HeroData.BaseSkillCooldown;
+			CooldownMultiplier = HeroData.CooldownMultiplier;
+		}
+	}
 
 	public void ChangeState(EHeroState state)
 	{
@@ -228,7 +249,7 @@ public class CHero : CUnitBase
 
 		MotionRoutine = null;
 
-		if (_isPendingDead)
+		if (IsPendingDead)
 		{
 			DeathSequence();
 		}
@@ -286,7 +307,7 @@ public class CHero : CUnitBase
 
 		if (MotionRoutine != null)
 		{
-			_isPendingDead = true;
+			IsPendingDead = true;
 			return;
 		}
 
