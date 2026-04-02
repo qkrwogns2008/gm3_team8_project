@@ -7,7 +7,7 @@ public class CSpawnArea : MonoBehaviour
 
     #region 인스펙터
     [SerializeField] private GameObject _monsterPrefab;         // 몬스터 프리팹
-    [SerializeField] private float _spawnRadius = 5f;           // 구역 크기
+    [SerializeField] private float _spawnRadius = 30f;           // 구역 크기
     [SerializeField] private int _maxMonsterCount = 10;         // 구역당 최대 스폰수
 
 

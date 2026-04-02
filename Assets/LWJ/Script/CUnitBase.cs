@@ -42,6 +42,8 @@ public abstract class CUnitBase : MonoBehaviour
 
 	#region 내부 변수
 	// 스테이터스
+
+
 	protected float BaseMaxHp; // 최대 체력
 	protected float BaseAtkDamage; // 공격력
 	protected float BaseAttackActionInterval; // 공격 주기(초)

@@ -12,12 +12,8 @@ public class CAutoEnemyMove : MonoBehaviour
     [Header("Yellow : Move Target")]
     [Header("Move")]
     [SerializeField] private float _walkspeed = 2f;             // 이동속도 (임시) 이후 외부에서 받아올것
-    [SerializeField] private float _attackRange = 4f;           // 사거리 (임시)
-    [SerializeField] private float _walkRange = 10f;    // 주변 돌아다니는 범위
     [SerializeField] private float _walkTimer = 3f;     // 대기시간
     [Header("Tracking")]
-    [SerializeField] private float _detectionRange = 50f;    // 탐지 범위
-    [SerializeField] private float _giveUpRange = 65f;      // 추격 포기 범위
     [SerializeField] private LayerMask _playerLayer;        // 탐지할 레이어
     [Header("State")]
     [SerializeField] private EUnitState _currentState = EUnitState.Idle;
@@ -34,6 +30,12 @@ public class CAutoEnemyMove : MonoBehaviour
     private SkeletonAnimation _skeletonAnim;
 
     private CEnemyBase _enemyBase; // 베이스 참조
+
+    private float FinalAtkRange => _enemyBase.FinalAtkRange;
+    private float FinalDetectionRange => _enemyBase.FinalDetectionRange;
+    private float FinalGiveUpRange => _enemyBase.FinalGiveUpRange;
+    private float FinalWalkRange => _enemyBase.FinalWalkRange;
+    
     #endregion
 
 
@@ -158,8 +160,8 @@ public class CAutoEnemyMove : MonoBehaviour
         }
 
         float sqrDist = (target.transform.position - transform.position).sqrMagnitude;
-        float sqrAttackRange = _attackRange * _attackRange;
-        float sqrGiveUpRange = _giveUpRange * _giveUpRange;
+        float sqrAttackRange = FinalAtkRange * FinalAtkRange;
+        float sqrGiveUpRange = FinalGiveUpRange * FinalGiveUpRange;
 
         if (sqrDist > sqrGiveUpRange)
         {
@@ -203,7 +205,7 @@ public class CAutoEnemyMove : MonoBehaviour
 
         float sqrDist = (target.transform.position - transform.position).sqrMagnitude;
 
-        if(sqrDist > (_attackRange*_attackRange))
+        if(sqrDist > (FinalAtkRange*FinalAtkRange))
         {
             ChangeState(EUnitState.Tracking);
         }
@@ -219,7 +221,7 @@ public class CAutoEnemyMove : MonoBehaviour
         }
 
         CUnitBase closetPlayer = null;
-        float minsqrDistance = _detectionRange * _detectionRange;
+        float minsqrDistance = FinalDetectionRange * FinalDetectionRange;
 
 
         foreach(var player in HeroManagerDummy.Instance.ActiveHero)
@@ -267,7 +269,7 @@ public class CAutoEnemyMove : MonoBehaviour
 
     void SetNewWanderTarget()
     {
-        Vector2 rand = Random.insideUnitCircle * _walkRange;
+        Vector2 rand = Random.insideUnitCircle * FinalWalkRange;
         _targetPos = _homePosition + (Vector3)rand;
     }
 
@@ -291,18 +293,28 @@ public class CAutoEnemyMove : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        // 실시간으로 정보를 가져오기 위해 에디터에서도 베이스를 찾을 수 있도록
+        if(_enemyBase == null)
+        {
+            _enemyBase = GetComponent<CEnemyBase>();
+        }
+        if(_enemyBase == null || _enemyBase.EnemyData == null)
+        {
+            return;
+        }
+
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, _detectionRange);
+        Gizmos.DrawWireSphere(transform.position, FinalDetectionRange);
 
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, _attackRange);
+        Gizmos.DrawWireSphere(transform.position, FinalAtkRange);
 
         Gizmos.color = Color.grey;
-        Gizmos.DrawWireSphere(transform.position, _giveUpRange);
+        Gizmos.DrawWireSphere(transform.position, FinalGiveUpRange);
 
         Vector3 centerPos = Application.isPlaying ? _homePosition : transform.position;
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(centerPos, _walkRange);
+        Gizmos.DrawWireSphere(centerPos, FinalWalkRange);
 
         if(_currentState == EUnitState.Wander || _currentState == EUnitState.Tracking)
         {

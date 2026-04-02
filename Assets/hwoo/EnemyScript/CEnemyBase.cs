@@ -15,24 +15,27 @@ public enum EUnitState
 public class CEnemyBase : CUnitBase
 {
     [SerializeField] protected Transform _effectPos;
-
+    [SerializeField] private float _giveupRange = 15f;
+    [SerializeField] private float _walkRange = 5f;    // 주변 돌아다니는 범위
 
     protected EnemyBaseSO _enemySO => OriginData as EnemyBaseSO;
     protected Vector3 _startPosition;
-
+    
     public override bool IsUnitDead => IsDead;
 
     public EnemyBaseSO EnemyData => OriginData as EnemyBaseSO;
     public CUnitBase TargetHero => Target;
 
+    private float ScaleMultiplier => Mathf.Abs(SkeletonAni.transform.localScale.x);
+
+    public virtual float FinalAtkRange => AtkRange * ScaleMultiplier;
+    public virtual float FinalDetectionRange => DetectionRange * ScaleMultiplier;
+    public virtual float FinalGiveUpRange => _giveupRange * ScaleMultiplier;
+    public virtual float FinalWalkRange => _walkRange * ScaleMultiplier;
     protected override void InitUnitStats()
     {
         base.InitUnitStats();
-
-        BaseMaxHp = 100f;
-        BaseAtkDamage = 10f;
-
-        CurrentHp = FinalMaxHP;
+        
 
         if (EnemyData != null)
         {
@@ -41,6 +44,16 @@ public class CEnemyBase : CUnitBase
             DetectionRange = EnemyData.DetectionRange;
         }
         
+        if(OriginData != null)
+        {
+            AtkRange = OriginData.AttackRange;
+            DetectionRange = OriginData.DetectionRange;
+            
+            BaseMaxHp = 100f;
+            BaseAtkDamage = 10f;
+            CurrentHp = FinalMaxHP;
+        }
+
     }
 
     protected override void Update()
