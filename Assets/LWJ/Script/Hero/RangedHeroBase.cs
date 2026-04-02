@@ -8,26 +8,7 @@ public class RangedHeroBase : CHero
 	[SerializeField] protected MissileDataSO MissileData;
 	#endregion
 
-	protected override void ProcessHit(CUnitBase target, EAttackType type)
-	{
-		switch (type)
-		{
-			case EAttackType.Normal:
-				ProcessNormalHit(target); // 투사체 공격
-				break;
-			case EAttackType.Critical:
-				if (target != null)
-				{
-					target.TakeDamage(CriticalDamage, this);
-				}
-				break;
-			case EAttackType.Skill:
-				ProcessSkillHit(target, this);
-				break;
-		}
-	}
-
-	protected virtual void ProcessNormalHit(CUnitBase target)
+	protected override void ProcessNormalHit(CUnitBase target)
 	{
 		if (MissilePrefab == null || MissileData == null)
 		{

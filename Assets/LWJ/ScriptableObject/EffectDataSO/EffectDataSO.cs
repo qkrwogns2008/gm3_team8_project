@@ -14,9 +14,13 @@ public class EffectCatalog
 	[Header("소환 오프셋")]
 	[SerializeField] private Vector3 _offset;
 
+	[Header("방향 유무")]
+	[SerializeField] private bool _isNoDirection = false;
+
 	public EffectBase Prefab => _prefab;
 	public Vector3 Offset => _offset;
 	public float PreDelay => _preDelay;
+	public bool IsNoDirection => _isNoDirection;
 }
 
 [CreateAssetMenu(fileName = "EffectDataSO_", menuName = "ScriptableObjects/Effect Data (SO)")]
