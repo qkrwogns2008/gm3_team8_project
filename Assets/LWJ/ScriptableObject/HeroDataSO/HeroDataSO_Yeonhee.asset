@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _unitName: Yeonhee
   _baseMaxHp: 150
-  _baseAttackDamage: 50
+  _baseAttackDamage: 10
   _baseAttackInterval: 1
   _attackRange: 30
   _baseMoveSpeed: 10
@@ -27,8 +27,8 @@ MonoBehaviour:
   _criticalEffect: {fileID: 11400000, guid: 445cd60fff8b89a42a4ded4d489b44f5, type: 2}
   _criticalChance: 5
   _criticalAttackMultiplier: 2
-  _skillEffect: {fileID: 0}
+  _skillEffect: {fileID: 11400000, guid: 92ceadcf804d09244a1d5182b9a4fc2d, type: 2}
   _skillActionInterval: 2
-  _baseSkillDamageRate: 2.5
+  _baseSkillDamageRate: 8
   _baseSkillCooldown: 8
   _cooldownMultiplier: 1

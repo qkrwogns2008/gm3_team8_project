@@ -6,24 +6,24 @@ public class HeroTeo : CHero
 	#region 인스펙터
 	[Header("스킬 속성값")]
 	[SerializeField] protected float SectorRadius = 5f;
-	[SerializeField] protected float SectorWidth = 30f;
+	[SerializeField] protected float SectorDegree = 30f;
 	[SerializeField] protected bool PrintSkillLog = false;
 	#endregion
 
 	#region 내부 변수
-	protected float SpineScale => SkeletonAni.gameObject.transform.localScale.x;
+	protected float SpineScale => SkeletonAni.transform.localScale.x;
 	protected float ScaledSectorRadius => SectorRadius * SpineScale; // 스킬 범위에 스파인 크기 반영
 	#endregion
 
-	protected override void ProcessSkillHit(CUnitBase target, CUnitBase attacker)
+	protected override void ProcessSkillHit(CUnitBase target)
 	{
-		SectorAttack(target, attacker);
+		SectorAttack(target);
 	}
 
-	protected virtual void SectorAttack(CUnitBase target, CUnitBase attacker)
+	protected virtual void SectorAttack(CUnitBase target)
 	{
-		float SectorHalfWidth = SectorWidth * 0.5f; // (정면, 좌측)과 (정면, 우측)의 내적(코사인) 값 같음.
-		float cosSectorWidth = Mathf.Cos(SectorHalfWidth * Mathf.Deg2Rad);
+		float SectorHalfDegree = SectorDegree * 0.5f; // (정면, 좌측)과 (정면, 우측)의 내적(코사인) 값 같음.
+		float cosSectorDegree = Mathf.Cos(SectorHalfDegree * Mathf.Deg2Rad);
 
 		float sqrSectorRadius = ScaledSectorRadius * ScaledSectorRadius;
 
@@ -61,13 +61,13 @@ public class HeroTeo : CHero
 			float cosAngle = Vector2.Dot(forward, toTarget);
 
 			// (cos범위 > 타겟과의 내적 값) → 부채꼴 바깥
-			if (cosSectorWidth > cosAngle)
+			if (cosSectorDegree > cosAngle)
 			{
 				continue;
 			}
 
 			
-			enemy.TakeDamage(FinalSkillDamage, attacker);
+			enemy.TakeDamage(FinalSkillDamage, this);
 		}
 
 		if (PrintSkillLog)
@@ -78,7 +78,7 @@ public class HeroTeo : CHero
 		// 부채꼴 바깥이어도 타겟은 무조건 피해를 입도록 보장
 		if (target != null)
 		{
-			target.TakeDamage(FinalSkillDamage, attacker);
+			target.TakeDamage(FinalSkillDamage, this);
 		}
 	}
 
@@ -93,8 +93,8 @@ public class HeroTeo : CHero
 
 		Gizmos.color = Color.yellow;
 		Vector2 forward = IsFacingRight ? Vector2.right : Vector2.left;
-		Vector2 left = Quaternion.Euler(0, 0, -SectorWidth * 0.5f) * forward;
-		Vector2 right = Quaternion.Euler(0, 0, SectorWidth * 0.5f) * forward;
+		Vector2 left = Quaternion.Euler(0, 0, -SectorDegree * 0.5f) * forward;
+		Vector2 right = Quaternion.Euler(0, 0, SectorDegree * 0.5f) * forward;
 
 		Vector2 pos = transform.position;
 

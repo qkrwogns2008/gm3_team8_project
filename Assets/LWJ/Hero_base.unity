@@ -182,6 +182,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hero_Yeonhee_A
       objectReference: {fileID: 0}
+    - target: {fileID: 2209794903314683923, guid: c1a41e0f41d88bb4e9ccfdba59430164, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5845931139765108105, guid: c1a41e0f41d88bb4e9ccfdba59430164, type: 3}
       propertyPath: m_LocalPosition.x
       value: -24.5
@@ -542,7 +546,7 @@ Camera:
   far clip plane: 3000
   field of view: 60
   orthographic: 1
-  orthographic size: 30
+  orthographic size: 40
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2

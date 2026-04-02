@@ -225,25 +225,35 @@ public class CHero : CUnitBase
 		switch (type)
 		{
 			case EAttackType.Normal:
-				if (target != null)
-				{
-					target.TakeDamage(FinalAttackDamage, this);
-				}
+				ProcessNormalHit(target);
 				break;
 			case EAttackType.Critical:
-				if (target != null)
-				{
-					target.TakeDamage(CriticalDamage, this);
-				}
+				ProcessCriticalHit(target);
 				break;
 			case EAttackType.Skill:
-				ProcessSkillHit(target, this);
+				ProcessSkillHit(target);
 				break;
 		}
 	}
 
+	protected virtual void ProcessNormalHit(CUnitBase target)
+	{
+		if (target != null)
+		{
+			target.TakeDamage(FinalAttackDamage, this);
+		}
+	}
+
+	protected virtual void ProcessCriticalHit(CUnitBase target)
+	{
+		if (target != null)
+		{
+			target.TakeDamage(CriticalDamage, this);
+		}
+	}
+
 	// 영웅 고유 스킬 처리 로직. 자식에서 재정의함.
-	protected virtual void ProcessSkillHit(CUnitBase target, CUnitBase attacker)
+	protected virtual void ProcessSkillHit(CUnitBase target)
 	{
 		if (target != null)
 		{
@@ -326,21 +336,58 @@ public class CHero : CUnitBase
 		MotionRoutine = null;
 	}
 
-	// 이펙트 소환 시도
 	protected virtual bool TrySummonEffect(EffectCatalog fxData)
 	{
 		EffectBase prefab = fxData.Prefab;
+		if (prefab == null)
+		{
+			return false;
+		}
 
 		Vector3 pos = transform.position + fxData.Offset;
 		Quaternion rot = Quaternion.Euler(-42f, 0f, 0f);
 		EffectBase fx = PoolManager.Instance.Pop(prefab, pos, rot);
-		
 
 		if (fx == null)
 		{
 			return false;
 		}
-		fx.Init(prefab, IsFacingRight);
+
+		EEffectDirection dir;
+
+		if (fxData.IsNoDirection) // 무방향 이펙트인지 체크
+		{
+			dir = EEffectDirection.None;
+		}
+		else
+		{
+			dir = IsFacingRight ? EEffectDirection.Right : EEffectDirection.Left;
+		}
+
+		fx.Init(prefab, dir);
+
+		return true;
+	}
+
+	/// <summary>
+	/// 오버로딩 : 프리팹으로 이펙트 소환 시도.
+	/// </summary>
+	protected virtual bool TrySummonEffect(EffectBase prefab, EEffectDirection direction, Vector3 position)
+	{
+		if (prefab == null)
+		{
+			return false;
+		}
+
+		Quaternion rot = Quaternion.Euler(-42f, 0f, 0f);
+		EffectBase fx = PoolManager.Instance.Pop(prefab, position, rot);
+
+		if (fx == null)
+		{
+			return false;
+		}
+
+		fx.Init(prefab, direction);
 
 		return true;
 	}
