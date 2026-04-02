@@ -18,10 +18,15 @@ public class CGachaView : MonoBehaviour
     public Button PetTabButton;            // 펫 탭 버튼
     public Button HolyTabButton;           // 성물 탭 버튼
 
-    [Header("소환 레벨 경험치")]
-    public Image ExpFillImage;             // FIll Amount 조절용 이미지
-    public TMP_Text ExpText;               // 10 / 100 텍스트
-    public TMP_Text LevelText;             // LV 표시 텍스트
+    [Header("영웅 소환 레벨 경험치")]
+    public Image ExpFillImageHero;         // FIll Amount 조절용 이미지
+    public TMP_Text ExpTextHero;           // 10 / 100 텍스트
+    public TMP_Text LevelTextHero;         // LV 표시 텍스트
+
+    [Header("펫 소환 레벨 경험치")]
+    public Image ExpFillImagePet;          // FIll Amount 조절용 이미지
+    public TMP_Text ExpTextPet;            // 10 / 100 텍스트
+    public TMP_Text LevelTextPet;          // LV 표시 텍스트
 
     [Header("메인 이미지")]
     public Image MainShopImage;            // 메인 이미지

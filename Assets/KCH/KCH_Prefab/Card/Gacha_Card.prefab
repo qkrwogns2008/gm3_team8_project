@@ -207,18 +207,18 @@ MonoBehaviour:
   _nameText: {fileID: 9130238695177663431}
   _backCard: {fileID: 4915339551931874630}
   _cardButton: {fileID: -509309842842888301}
-  _movingcard: {fileID: 0}
+  _movingCard: {fileID: 2107284036366455879}
   _backCardImage: {fileID: 2036660076579781106}
   _effectSet:
   - Rarity: 2
-    BackSprite: {fileID: 0}
-    IdleEffect: {fileID: 0}
+    BackSprite: {fileID: 21300000, guid: 530f1e14010080443b29290608368d64, type: 2}
+    IdleEffect: {fileID: 1709254077376921, guid: faef63a1cc0fff940bcc9af37ea52237, type: 3}
   - Rarity: 3
-    BackSprite: {fileID: 0}
-    IdleEffect: {fileID: 0}
+    BackSprite: {fileID: 21300000, guid: 0399fbfe4542858468a0b1c356cb3d83, type: 2}
+    IdleEffect: {fileID: 1709254077376921, guid: faef63a1cc0fff940bcc9af37ea52237, type: 3}
   - Rarity: 4
-    BackSprite: {fileID: 0}
-    IdleEffect: {fileID: 0}
+    BackSprite: {fileID: 21300000, guid: 60305ce864f377149968674967072b0c, type: 2}
+    IdleEffect: {fileID: 1709254077376921, guid: faef63a1cc0fff940bcc9af37ea52237, type: 3}
 --- !u!222 &2678753515123486498
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -288,7 +288,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5016853946219618081
 RectTransform:
   m_ObjectHideFlags: 0

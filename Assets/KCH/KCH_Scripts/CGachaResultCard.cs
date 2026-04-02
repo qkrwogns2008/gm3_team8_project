@@ -28,7 +28,7 @@ public class CGachaResultCard : MonoBehaviour
     [Header("Card 연출")]
     [SerializeField] private GameObject _backCard;              // 카드 뒷면 
     [SerializeField] private Button _cardButton;                // 카드 뒷면 클릭 버튼
-    [SerializeField] private RectTransform _movingcard;         // 움직일 자식 카드
+    [SerializeField] private RectTransform _movingCard;         // 움직일 자식 카드
 
     [Header("Card 등급별 설정")]
     [SerializeField] private Image _backCardImage;              // 등급별 카드 뒷면
@@ -133,11 +133,11 @@ public class CGachaResultCard : MonoBehaviour
         this.gameObject.SetActive(true);
 
         // 카드 위치,크기 초기화
-        if (_movingcard != null)
+        if (_movingCard != null)
         {
-            _movingcard.gameObject.SetActive(true);
-            _movingcard.localScale = Vector3.one;
-            _movingcard.localPosition = Vector3.zero;
+            _movingCard.gameObject.SetActive(true);
+            _movingCard.localScale = Vector3.one;
+            _movingCard.localPosition = Vector3.zero;
         }
 
         _isReversed = true;
@@ -180,10 +180,10 @@ public class CGachaResultCard : MonoBehaviour
     }
 
     // 카드를 안보이게 크기 조절
-    public void HideVisual() => _movingcard.localScale = Vector3.zero;
+    public void HideVisual() => _movingCard.localScale = Vector3.zero;
 
     // 카들를 보이게 크기 조절
-    public void ShowVisual() => _movingcard.localScale = Vector3.one;
+    public void ShowVisual() => _movingCard.localScale = Vector3.one;
 
     // 카드 소환 이펙트
     public void SpawnEffect()
@@ -208,15 +208,14 @@ public class CGachaResultCard : MonoBehaviour
         {
             timer += Time.deltaTime;
             float move = timer / duration;
-            
-            _movingcard.transform.localPosition = Vector3.Lerp(startPos, targetPos, move);
+
+            _movingCard.transform.localPosition = Vector3.Lerp(startPos, targetPos, move);
 
             yield return null;
         }
 
-        _movingcard.transform.localPosition = targetPos;
+        _movingCard.transform.localPosition = targetPos;
     }
-
 
     // 카드를 뒤집을 때 함수
     public void ReverseCard()

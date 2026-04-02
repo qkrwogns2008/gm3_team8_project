@@ -8,8 +8,8 @@ public class CGachaModel : MonoBehaviour
 {
 
     [Header("보유 재화(임시)")]
-    public int RubyCount = 30000;         // 현재 루비
-    public int TicketCount = 30;          // 현재 소환권
+    public int RubyCount = 30000;               // 현재 루비
+    public int TicketCount = 30;                // 현재 소환권
 
     private CGachaCategorySO _currentCategory;
 

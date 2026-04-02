@@ -300,7 +300,7 @@ public class CGachaPresenter : MonoBehaviour
 
             for (int i = 0; i < _cardList.Count; i++)
             {
-                // 카드 보여 주기 `       
+                // 카드 보여 주기      
                 _cardList[i].ShowVisual();
                 // 카드 내려오는 이펙트
                 _cardList[i].SpawnEffect();
@@ -343,9 +343,13 @@ public class CGachaPresenter : MonoBehaviour
 
         int maxExp = current._maxExpTable[current.CurrentLevel - 1];
 
-        _gachaView.LevelText.text = current.CategoryName + "소환 레벨 " + current.CurrentLevel;
-        _gachaView.ExpText.text = current.CurrentExp + " / " + maxExp;
-        _gachaView.ExpFillImage.fillAmount = (float)current.CurrentExp / maxExp;
+        _gachaView.LevelTextHero.text = current.CategoryName + "소환 레벨 " + current.CurrentLevel;
+        _gachaView.ExpTextHero.text = current.CurrentExp + " / " + maxExp;
+        _gachaView.ExpFillImageHero.fillAmount = (float)current.CurrentExp / maxExp;
+
+        _gachaView.LevelTextPet.text = current.CategoryName + "소환 레벨 " + current.CurrentLevel;
+        _gachaView.ExpTextPet.text = current.CurrentExp + " / " + maxExp;
+        _gachaView.ExpFillImagePet.fillAmount = (float)current.CurrentExp / maxExp;
 
         _gachaView.HeroTabGroup.alpha = (_currentCategoryIndex == 0) ? 1.0f : 0.0f;
         _gachaView.PetTabGroup.alpha = (_currentCategoryIndex == 1) ? 1.0f : 0.0f;
