@@ -54,6 +54,8 @@ public class CHero : CUnitBase
 	protected virtual float FinalSkillActionInterval => SkillActionInterval / AttackSpeedMultiplier;
 	protected virtual float FinalSkillDamage => FinalAttackDamage * BaseSkillDamageRate;
 	protected virtual float FinalSkillCooldown => BaseSkillCooldown * CooldownMultiplier;
+
+	protected virtual float SpineScale => SkeletonAni.transform.localScale.x;
 	#endregion
 
 	public event System.Action<float> OnSkillUsed; // 스킬 쿨타임이 인자로 들어감
@@ -296,7 +298,7 @@ public class CHero : CUnitBase
 			}
 
 			// 이펙트 생성 실패 시 즉시 종료
-			if (!TrySummonEffect(fxData))
+			if (!TrySummonEffect(fxData, transform.position))
 			{
 				Debug.LogWarning($"{name} : {effectData.Name} 이펙트 생성 실패");
 				MotionRoutine = null;
@@ -336,7 +338,7 @@ public class CHero : CUnitBase
 		MotionRoutine = null;
 	}
 
-	protected virtual bool TrySummonEffect(EffectCatalog fxData)
+	protected virtual bool TrySummonEffect(EffectCatalog fxData, Vector3 position)
 	{
 		EffectBase prefab = fxData.Prefab;
 		if (prefab == null)
@@ -344,7 +346,7 @@ public class CHero : CUnitBase
 			return false;
 		}
 
-		Vector3 pos = transform.position + fxData.Offset;
+		Vector3 pos = position + fxData.Offset;
 		Quaternion rot = Quaternion.Euler(-42f, 0f, 0f);
 		EffectBase fx = PoolManager.Instance.Pop(prefab, pos, rot);
 
@@ -365,29 +367,6 @@ public class CHero : CUnitBase
 		}
 
 		fx.Init(prefab, dir);
-
-		return true;
-	}
-
-	/// <summary>
-	/// 오버로딩 : 프리팹으로 이펙트 소환 시도.
-	/// </summary>
-	protected virtual bool TrySummonEffect(EffectBase prefab, EEffectDirection direction, Vector3 position)
-	{
-		if (prefab == null)
-		{
-			return false;
-		}
-
-		Quaternion rot = Quaternion.Euler(-42f, 0f, 0f);
-		EffectBase fx = PoolManager.Instance.Pop(prefab, position, rot);
-
-		if (fx == null)
-		{
-			return false;
-		}
-
-		fx.Init(prefab, direction);
 
 		return true;
 	}

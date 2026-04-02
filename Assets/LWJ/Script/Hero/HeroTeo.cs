@@ -11,21 +11,26 @@ public class HeroTeo : CHero
 	#endregion
 
 	#region 내부 변수
-	protected float SpineScale => SkeletonAni.transform.localScale.x;
-	protected float ScaledSectorRadius => SectorRadius * SpineScale; // 스킬 범위에 스파인 크기 반영
+	protected virtual float ScaledSectorRadius => SectorRadius * SpineScale; // 스킬 범위에 스파인 크기 반영
 	#endregion
 
 	protected override void ProcessSkillHit(CUnitBase target)
 	{
-		SectorAttack(target);
+		SectorAreaAttack(target, SectorDegree, ScaledSectorRadius);
 	}
 
-	protected virtual void SectorAttack(CUnitBase target)
+	/// <summary>
+	/// 부채꼴 영역의 Enemy에게 피해를 줍니다. degree는 부채꼴의 각도, radius는 부채꼴의 반지름입니다.
+	/// </summary>
+	/// <param name="target">공격 매개 대상입니다. 범위에 상관없이 항상 피해를 입습니다.</param>
+	/// <param name="degree">부채꼴 각도</param>
+	/// <param name="radius">부채꼴 반지름</param>
+	protected virtual void SectorAreaAttack(CUnitBase target, float degree, float radius)
 	{
-		float SectorHalfDegree = SectorDegree * 0.5f; // (정면, 좌측)과 (정면, 우측)의 내적(코사인) 값 같음.
-		float cosSectorDegree = Mathf.Cos(SectorHalfDegree * Mathf.Deg2Rad);
+		float sectorHalfDegree = degree * 0.5f; // (정면, 좌측)과 (정면, 우측)의 내적(코사인) 값 같음.
+		float cosSectorDegree = Mathf.Cos(sectorHalfDegree * Mathf.Deg2Rad);
 
-		float sqrSectorRadius = ScaledSectorRadius * ScaledSectorRadius;
+		float sqrSectorRadius = radius * radius;
 
 		Vector2 forward = IsFacingRight ? Vector2.right : Vector2.left;
 		Vector2 pos = transform.position;
@@ -41,9 +46,14 @@ public class HeroTeo : CHero
 				continue;
 			}
 
-			if (target == enemy)
+			if (enemy == target)
 			{
 				continue; // target에 대한 피해는 후처리
+			}
+
+			if (enemy.IsUnitDead)
+			{
+				continue;
 			}
 
 			Vector2 targetPos = enemy.transform.position;
@@ -65,7 +75,6 @@ public class HeroTeo : CHero
 			{
 				continue;
 			}
-
 			
 			enemy.TakeDamage(FinalSkillDamage, this);
 		}

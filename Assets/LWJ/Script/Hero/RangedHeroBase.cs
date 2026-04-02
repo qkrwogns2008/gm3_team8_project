@@ -6,7 +6,12 @@ public class RangedHeroBase : CHero
 	[Header("원거리 세팅")]
 	[SerializeField] protected MissileBase MissilePrefab;
 	[SerializeField] protected MissileDataSO MissileData;
+
+	[Header("투사체 발사 오프셋")]
+	[SerializeField] protected Vector2 FirePosOffset = new Vector2(0, 0.5f);
 	#endregion
+
+	protected virtual Vector2 CenterPos => (Vector2)transform.position + FirePosOffset * SpineScale;
 
 	protected override void ProcessNormalHit(CUnitBase target)
 	{
@@ -16,9 +21,7 @@ public class RangedHeroBase : CHero
 			return;
 		}
 
-		Vector2 pos = transform.position;
-
-		MissileBase missile = PoolManager.Instance.Pop(MissilePrefab, pos, Quaternion.identity);
+		MissileBase missile = PoolManager.Instance.Pop(MissilePrefab, CenterPos, Quaternion.identity);
 		missile.Init(MissilePrefab, MissileData, FinalAttackDamage, target, this);
 	}
 }
