@@ -6,14 +6,29 @@ public class CUserData
 {
     // 재화 및 기본 정보
     public string UserName = "GM3_8Team_FiveKnights_Account";
-    public int UserLevel = 0;
-    public int Gold = 0;
+    public int UserLevel = 100;
+    // 재화 관련 함수
+    public int Gold = 10000000;
     public int Diamond = 0;
+    // 픽업 관련 함수
+    public int Ruby = 0;
     public int PickUpTicket = 0;
-    public int CurrentStage = 1;
-    public int BaseDamage = 1;
-    public int Baseshield = 1;
-    public int BaseHP = 1;
+    public int HeroPickUpLevel = 0;
+    public int PetPickUpLevel = 0;
+    // 스테이지 관련 함수
+    public int MainStageLevel = 1;
+    public int GoldDungeonLevel = 1;
+    public int EXPDungeonLevel = 1;
+    // 강화 UI 관련 함수
+    public int Atk_Level = 1; // ATK
+    public int Atk_Stat = 1;
+    public int Atk_Cost = 1;
+    public int Def_Level = 1;
+    public int Def_Stat = 1;
+    public int Def_Cost = 1;
+    public int Life_Level = 1;
+    public int Life_Stat = 1;
+    public int Life_Cost = 1;
 
     // 보유 중인 영웅ID, 레벨 정보
     public List<UserHeroData> HeroList = new List<UserHeroData>();
