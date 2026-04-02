@@ -34,7 +34,13 @@ public class PoolManager : MonoBehaviour
         }
         else
         {
-            obj = Instantiate(prefab, position, rotation);
+			obj = Instantiate(prefab, position, rotation);
+			CUnitBase unit = obj.GetComponent<CUnitBase>();
+
+			if(unit != null)
+			{
+				unit.SetOriginPrefab(prefab);
+			}
         }
         return obj;
     }

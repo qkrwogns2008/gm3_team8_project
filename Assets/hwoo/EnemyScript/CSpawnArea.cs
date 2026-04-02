@@ -19,7 +19,6 @@ public class CSpawnArea : MonoBehaviour
     private float _spawnCoolTime = 3f;
 
     private int _waitSpawnCount = 0;
-    private bool _isCheckRespawn = false; // 중복 실행 방지
     #endregion
 
 
@@ -45,16 +44,16 @@ public class CSpawnArea : MonoBehaviour
 
         int currentTotal = _activeMonsters.Count + _waitSpawnCount;
 
-        if(currentTotal < _maxMonsterCount && !_isCheckRespawn)
+        if(currentTotal < _maxMonsterCount)
         {
-                StartCoroutine(CoRespawnMonster());
+            StartCoroutine(CoRespawnMonster());
+            currentTotal++;
         }
     }
 
     // 개별 몬스터 리스폰 관리
     private IEnumerator CoRespawnMonster()
     {
-        _isCheckRespawn = true;
         _waitSpawnCount++;
 
         yield return new WaitForSeconds(_spawnCoolTime);
@@ -62,7 +61,6 @@ public class CSpawnArea : MonoBehaviour
         SpawnMonster();
 
         _waitSpawnCount--;
-        _isCheckRespawn = false;
     }
 
     private void SpawnMonster()

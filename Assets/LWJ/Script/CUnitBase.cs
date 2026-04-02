@@ -110,35 +110,35 @@ public abstract class CUnitBase : MonoBehaviour
 		UnRegisterFromManager();
 	}
 
-	// List Manager
-	private IEnumerator CoRegisterWithWaiting()
-	{
-		if(_isRegisterd)
-		{
-			yield break;
-		}
+    #region ListManager
+    private IEnumerator CoRegisterWithWaiting()
+    {
+        if (_isRegisterd)
+        {
+            yield break;
+        }
 
         if (TeamType == ETeamType.Hero)
         {
-				yield return new WaitUntil(() => HeroManagerDummy.Instance != null);
-                HeroManagerDummy.Instance.RegisterHero(this);
+            yield return new WaitUntil(() => HeroManagerDummy.Instance != null);
+            HeroManagerDummy.Instance.RegisterHero(this);
 
         }
         else if (TeamType == ETeamType.Enemy)
         {
-			yield return new WaitUntil(() => CEnemyManager.Instance != null);
-			CEnemyManager.Instance.RegisterEnemy(this);
+            yield return new WaitUntil(() => CEnemyManager.Instance != null);
+            CEnemyManager.Instance.RegisterEnemy(this);
         }
 
-        _isRegisterd = false;
+        _isRegisterd = true;
 
-	}
-	private void UnRegisterFromManager()
-	{
-		if(!_isRegisterd)
-		{
-			return;
-		}
+    }
+    private void UnRegisterFromManager()
+    {
+        if (!_isRegisterd)
+        {
+            return;
+        }
 
         if (TeamType == ETeamType.Hero)
         {
@@ -155,9 +155,24 @@ public abstract class CUnitBase : MonoBehaviour
             }
         }
 
-		_isRegisterd = false;
+        _isRegisterd = false;
     }
+	#endregion
 
+	#region PoolManager
+
+	public GameObject OriginPrefab { get; private set; }
+
+	public void SetOriginPrefab(GameObject prefab)
+	{
+		if(OriginPrefab != null)
+		{
+			return;
+		}
+		OriginPrefab = prefab;
+	}
+
+	#endregion
 
 	// SO 데이터 주입 함수
 	// 유닛 기본값 세팅

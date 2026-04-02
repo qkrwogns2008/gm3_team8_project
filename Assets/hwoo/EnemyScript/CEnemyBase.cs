@@ -172,7 +172,14 @@ public class CEnemyBase : CUnitBase
     private IEnumerator CoReturnToPool()
     {
         yield return new WaitForSeconds(3f);
-        gameObject.SetActive(false);
+        if(OriginPrefab != null)
+        {
+            PoolManager.Instance.Push(OriginPrefab, gameObject);
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     // ∆Ì¿«º∫
