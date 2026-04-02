@@ -103,7 +103,7 @@ public class CSpawnArea : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = new Color(0, 1, 0, 0.15f);
         Gizmos.DrawSphere(transform.position, _spawnRadius);
