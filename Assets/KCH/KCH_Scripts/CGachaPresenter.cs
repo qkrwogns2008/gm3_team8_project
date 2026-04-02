@@ -37,39 +37,39 @@ public class CGachaPresenter : MonoBehaviour
     {
         // 버튼 리스너 연결
         // 뽑기 버튼
-        _gachaView._gachaOneButton.onClick.AddListener(() => OnClickButton(1));
-        _gachaView._gachaTenButton.onClick.AddListener(() => OnClickButton(10));
-        _gachaView._gachaThirtyButton.onClick.AddListener(() => OnClickButton(30));
-        _gachaView._gachaTHundredButton.onClick.AddListener(() => OnClickButton(300));
+        _gachaView.GachaOneButton.onClick.AddListener(() => OnClickButton(1));
+        _gachaView.GachaTenButton.onClick.AddListener(() => OnClickButton(10));
+        _gachaView.GachaThirtyButton.onClick.AddListener(() => OnClickButton(30));
+        _gachaView.GachaTHundredButton.onClick.AddListener(() => OnClickButton(300));
 
         // 재뽑기 버튼
-        _gachaView._reRollTenButton.onClick.AddListener(() => OnClickButton(10));
-        _gachaView._reRollThirtyButton.onClick.AddListener(() => OnClickButton(30));
+        _gachaView.ReRollTenButton.onClick.AddListener(() => OnClickButton(10));
+        _gachaView.ReRollThirtyButton.onClick.AddListener(() => OnClickButton(30));
 
         // 카테고리 버튼
-        _gachaView._heroTabButton.onClick.AddListener(() => ChangeCatergory(0));
-        _gachaView._petTabButton.onClick.AddListener(() => ChangeCatergory(1));
-        _gachaView._holyTabButton.onClick.AddListener(() => ChangeCatergory(2));
+        _gachaView.HeroTabButton.onClick.AddListener(() => ChangeCatergory(0));
+        _gachaView.PetTabButton.onClick.AddListener(() => ChangeCatergory(1));
+        _gachaView.HolyTabButton.onClick.AddListener(() => ChangeCatergory(2));
 
         // 모두 열기 버튼
-        _gachaView._openAllCard.onClick.AddListener(() => StartCoroutine(CO_OpenAllCard()));
+        _gachaView.OpenAllCard.onClick.AddListener(() => StartCoroutine(CO_OpenAllCard()));
 
         // 닫기 버튼
-        _gachaView._closeButton.onClick.AddListener(OnClickClose);
-        _gachaView._miniCardButton.onClick.AddListener(OnClickClose);
+        _gachaView.CloseButton.onClick.AddListener(OnClickClose);
+        _gachaView.MiniCardButton.onClick.AddListener(OnClickClose);
 
         // 카테고리 영웅으로 시작
         ChangeCatergory(0);
 
         // 재화 이미지
-        _ticketSprite = _gachaView._summonCard.transform.parent.GetComponentInChildren<Image>().sprite;
-        _rubySprite = _gachaView._summonRuby.transform.parent.GetComponentInChildren<Image>().sprite;
+        _ticketSprite = _gachaView.SummonCard.transform.parent.GetComponentInChildren<Image>().sprite;
+        _rubySprite = _gachaView.SummonRuby.transform.parent.GetComponentInChildren<Image>().sprite;
 
         // 재화 표시
         UpdateMoneyUI();
 
         // 처음에는 뽑기창 비활성화
-        _gachaView._resultPanel.SetActive(false);
+        _gachaView.ResultPanel.SetActive(false);
     }
 
 
@@ -84,7 +84,7 @@ public class CGachaPresenter : MonoBehaviour
         // 카테고리 세팅
         _gachaModel.SetCategory(select);
         // 배너 이미지 교체
-        _gachaView._mainShopImage.sprite = select._mainShopImage;
+        _gachaView.MainShopImage.sprite = select.MainShopImage;
 
         // 카테고리 UI 업데이트
         UpdateCategoryUI();
@@ -112,8 +112,8 @@ public class CGachaPresenter : MonoBehaviour
     // 결과 창 닫고 초기화
     private void OnClickClose()
     {
-        _gachaView._resultPanel.SetActive(false);
-        _gachaView._miniCardPanel.SetActive(false);
+        _gachaView.ResultPanel.SetActive(false);
+        _gachaView.MiniCardPanel.SetActive(false);
 
         _isRolling = false;
     }
@@ -121,15 +121,15 @@ public class CGachaPresenter : MonoBehaviour
     // 재화 부족 팝업
     private void NotEnoughMoneyPopup()
     {
-        _gachaView._msgPopupText.text = "루비가 부족합니다.";
-        CanvasGroup canvasGroup = _gachaView._msgPopupPanel.GetComponent<CanvasGroup>();
+        _gachaView.MsgPopupText.text = "루비가 부족합니다.";
+        CanvasGroup canvasGroup = _gachaView.MsgPopupPanel.GetComponent<CanvasGroup>();
 
         if (canvasGroup != null)
         {
             canvasGroup.alpha = 1f;
         }
 
-        _gachaView._msgPopupPanel.SetActive(true);
+        _gachaView.MsgPopupPanel.SetActive(true);
 
         StopCoroutine("CO_HidePopup");
         StartCoroutine("CO_HidePopup");
@@ -140,7 +140,7 @@ public class CGachaPresenter : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
 
-        CanvasGroup canvasGroup = _gachaView._msgPopupPanel.GetComponent<CanvasGroup>();
+        CanvasGroup canvasGroup = _gachaView.MsgPopupPanel.GetComponent<CanvasGroup>();
 
         if (canvasGroup != null)
         {
@@ -161,7 +161,7 @@ public class CGachaPresenter : MonoBehaviour
 
         canvasGroup.alpha = 0f; 
 
-        _gachaView._msgPopupPanel.SetActive(false);
+        _gachaView.MsgPopupPanel.SetActive(false);
     }
 
     // 뽑기 연출, 데이터 처리 코루틴
@@ -178,9 +178,9 @@ public class CGachaPresenter : MonoBehaviour
         UpdateMoneyUI();
 
         // 뽑기 전 UI 제어
-        _gachaView._resultButtonGroup.SetActive(false);
-        _gachaView._closeButton.gameObject.SetActive(false);
-        _gachaView._openAllCard.gameObject.SetActive(false);
+        _gachaView.ResultButtonGroup.SetActive(false);
+        _gachaView.CloseButton.gameObject.SetActive(false);
+        _gachaView.OpenAllCard.gameObject.SetActive(false);
 
         // 뽑기 중 활성
         _isRolling = true;
@@ -195,16 +195,16 @@ public class CGachaPresenter : MonoBehaviour
         // 300회 뽑기 시 로직
         if (count == 300)
         {
-            _gachaView._miniCardPanel.SetActive(true);
-            _gachaView._resultPanel.SetActive(false);
+            _gachaView.MiniCardPanel.SetActive(true);
+            _gachaView.ResultPanel.SetActive(false);
 
-            _gachaView._openAllCard.gameObject.SetActive(false);
-            _gachaView._closeButton.gameObject.SetActive(true);
+            _gachaView.OpenAllCard.gameObject.SetActive(false);
+            _gachaView.CloseButton.gameObject.SetActive(true);
 
             // 미니 카드 풀에 반납 (역순)
-            for (int i = _gachaView._miniCardTransform.childCount - 1; i >= 0; i--)
+            for (int i = _gachaView.MiniCardTransform.childCount - 1; i >= 0; i--)
             {
-                PoolManager.Instance.Push(_miniCardPrefab, _gachaView._miniCardTransform.GetChild(i).gameObject);
+                PoolManager.Instance.Push(_miniCardPrefab, _gachaView.MiniCardTransform.GetChild(i).gameObject);
             }
 
             // 획득 개수 카운팅
@@ -226,7 +226,7 @@ public class CGachaPresenter : MonoBehaviour
 
             // 희귀도 순으로 Sort정렬
             List<CGachaDataSO> keys = new List<CGachaDataSO>(miniCardDict.Keys);
-            keys.Sort((a, b) => b._rarity.CompareTo(a._rarity));
+            keys.Sort((a, b) => b.Rarity.CompareTo(a.Rarity));
 
             // 정렬된 순으로 미니 카드 생성
             for (int i = 0; i < keys.Count; i++)
@@ -234,7 +234,7 @@ public class CGachaPresenter : MonoBehaviour
                 CGachaDataSO key = keys[i];
                 GameObject miniCard = PoolManager.Instance.Pop(_miniCardPrefab, Vector3.zero, Quaternion.identity);
 
-                miniCard.transform.SetParent(_gachaView._miniCardTransform, false);
+                miniCard.transform.SetParent(_gachaView.MiniCardTransform, false);
                 miniCard.transform.SetAsLastSibling();
 
                 miniCard.transform.localScale = Vector3.one;
@@ -252,7 +252,7 @@ public class CGachaPresenter : MonoBehaviour
             }
 
             _isRolling = false;
-            _gachaView._closeButton.gameObject.SetActive(true);
+            _gachaView.CloseButton.gameObject.SetActive(true);
         }
         
         // 1, 10, 30회 뽑기 시 로직
@@ -268,15 +268,15 @@ public class CGachaPresenter : MonoBehaviour
             _cardList.Clear();
 
             // 뽑기 결과 창 활성화
-            _gachaView._resultPanel.SetActive(true);
-            _gachaView._miniCardPanel.SetActive(false);
-            _gachaView._closeButton.gameObject.SetActive(false);
+            _gachaView.ResultPanel.SetActive(true);
+            _gachaView.MiniCardPanel.SetActive(false);
+            _gachaView.CloseButton.gameObject.SetActive(false);
 
             for (int i = 0; i < results.Count; i++)
             {
                 // 프리펩 생성
                 GameObject card = PoolManager.Instance.Pop(_cardPrefab, Vector3.zero, Quaternion.identity);
-                card.transform.SetParent(_gachaView._gachaTransform, false);
+                card.transform.SetParent(_gachaView.GachaTransform, false);
                 card.transform.SetAsLastSibling();
 
                 card.transform.localScale = Vector3.one;
@@ -312,7 +312,7 @@ public class CGachaPresenter : MonoBehaviour
 
             // 뽑기 중 해제
             _isRolling = false;
-            _gachaView._openAllCard.gameObject.SetActive(true);
+            _gachaView.OpenAllCard.gameObject.SetActive(true);
 
         }
         
@@ -321,7 +321,7 @@ public class CGachaPresenter : MonoBehaviour
     // 모두 열기 기능 함수
     private IEnumerator CO_OpenAllCard()
     {
-        _gachaView._openAllCard.gameObject.SetActive(false);
+        _gachaView.OpenAllCard.gameObject.SetActive(false);
 
         for (int i = 0; i < _cardList.Count; i++)
         {
@@ -332,8 +332,8 @@ public class CGachaPresenter : MonoBehaviour
         }
 
         // 카드 오픈 시 재뽑기, 닫기 버튼 활성화
-        _gachaView._resultButtonGroup.SetActive(true);
-        _gachaView._closeButton.gameObject.SetActive(true);
+        _gachaView.ResultButtonGroup.SetActive(true);
+        _gachaView.CloseButton.gameObject.SetActive(true);
     }
 
     // 카테고리 경험치 게이지 업데이트
@@ -341,31 +341,31 @@ public class CGachaPresenter : MonoBehaviour
     {
         CGachaCategorySO current = _gachaCategoryList[_currentCategoryIndex];
 
-        int maxExp = current._maxExpTable[current._currentLevel - 1];
+        int maxExp = current._maxExpTable[current.CurrentLevel - 1];
 
-        _gachaView._levelText.text = current._categoryName + "소환 레벨 " + current._currentLevel;
-        _gachaView._expText.text = current._currentExp + " / " + maxExp;
-        _gachaView._expFillImage.fillAmount = (float)current._currentExp / maxExp;
+        _gachaView.LevelText.text = current.CategoryName + "소환 레벨 " + current.CurrentLevel;
+        _gachaView.ExpText.text = current.CurrentExp + " / " + maxExp;
+        _gachaView.ExpFillImage.fillAmount = (float)current.CurrentExp / maxExp;
 
-        _gachaView._heroTabGroup.alpha = (_currentCategoryIndex == 0) ? 1.0f : 0.0f;
-        _gachaView._petTabGroup.alpha = (_currentCategoryIndex == 1) ? 1.0f : 0.0f;
-        _gachaView._holyTabGroup.alpha = (_currentCategoryIndex == 2) ? 1.0f : 0.0f;
+        _gachaView.HeroTabGroup.alpha = (_currentCategoryIndex == 0) ? 1.0f : 0.0f;
+        _gachaView.PetTabGroup.alpha = (_currentCategoryIndex == 1) ? 1.0f : 0.0f;
+        _gachaView.HolyTabGroup.alpha = (_currentCategoryIndex == 2) ? 1.0f : 0.0f;
     }
 
     // 재화 정보  UI 업데이트
     private void UpdateMoneyUI()
     {
-        _gachaView._summonRuby.text = _gachaModel._rubyCount.ToString("N0");
-        _gachaView._summonCard.text = _gachaModel._ticketCount.ToString("N0");
+        _gachaView.SummonRuby.text = _gachaModel.RubyCount.ToString("N0");
+        _gachaView.SummonCard.text = _gachaModel.TicketCount.ToString("N0");
 
         // 뽑기 별로 비용, 이미지 변경
-        SetButtonCostUI(_gachaView._gachaOneButton, 1);
-        SetButtonCostUI(_gachaView._gachaTenButton, 10);
-        SetButtonCostUI(_gachaView._gachaThirtyButton, 30);
-        SetButtonCostUI(_gachaView._gachaTHundredButton, 300);
+        SetButtonCostUI(_gachaView.GachaOneButton, 1);
+        SetButtonCostUI(_gachaView.GachaTenButton, 10);
+        SetButtonCostUI(_gachaView.GachaThirtyButton, 30);
+        SetButtonCostUI(_gachaView.GachaTHundredButton, 300);
 
-        SetButtonCostUI(_gachaView._reRollTenButton, 10);
-        SetButtonCostUI(_gachaView._reRollThirtyButton, 30);
+        SetButtonCostUI(_gachaView.ReRollTenButton, 10);
+        SetButtonCostUI(_gachaView.ReRollThirtyButton, 30);
     }
 
     // 버튼과 재화 상태 변경(소환권 우선 소모)
@@ -391,19 +391,19 @@ public class CGachaPresenter : MonoBehaviour
 
         // 재화 변경시 아이콘, 텍스트 변경
         // 소환권 충분
-        if (_gachaModel._ticketCount >= count)
+        if (_gachaModel.TicketCount >= count)
         {
             costText.text = count.ToString();
             iconImage.sprite = _ticketSprite;
-            buttonImage.sprite = _gachaView._normalGachaButton;
+            buttonImage.sprite = _gachaView.NormalGachaButton;
         }
 
         // 소환권 부족, 루비 충분
-        else if (_gachaModel._rubyCount >= rubyPrice)
+        else if (_gachaModel.RubyCount >= rubyPrice)
         {
             costText.text = rubyPrice.ToString("N0");
             iconImage.sprite = _rubySprite;
-            buttonImage.sprite = _gachaView._normalGachaButton;
+            buttonImage.sprite = _gachaView.NormalGachaButton;
         }
 
         // 소환권 부족, 루비 부족
@@ -411,23 +411,22 @@ public class CGachaPresenter : MonoBehaviour
         {
             costText.text = rubyPrice.ToString("N0");
             iconImage.sprite = _rubySprite;
-            buttonImage.sprite = _gachaView._disableGachaButton;
+            buttonImage.sprite = _gachaView.DisableGachaButton;
         }
 
         // 재화 부족 시 버튼 비활성화
         if (_gachaModel.CheckRuby(count))
         {
             costText.color = Color.white;
-            buttonImage.sprite = _gachaView._normalGachaButton;
-            buttonTransform.sizeDelta = _gachaView._normalButtonSize;
+            buttonImage.sprite = _gachaView.NormalGachaButton;
+            buttonTransform.sizeDelta = _gachaView.NormalButtonSize;
         }
 
         else
         {
             costText.color = Color.white;
-            buttonImage.sprite = _gachaView._disableGachaButton;
-            buttonTransform.sizeDelta = _gachaView._disabledButtonSize;
+            buttonImage.sprite = _gachaView.DisableGachaButton;
+            buttonTransform.sizeDelta = _gachaView.DisabledButtonSize;
         }
     }
-
 }

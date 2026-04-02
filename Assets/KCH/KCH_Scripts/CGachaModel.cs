@@ -8,8 +8,8 @@ public class CGachaModel : MonoBehaviour
 {
 
     [Header("보유 재화(임시)")]
-    public int _rubyCount = 30000;         // 현재 루비
-    public int _ticketCount = 30;          // 현재 소환권
+    public int RubyCount = 30000;         // 현재 루비
+    public int TicketCount = 30;          // 현재 소환권
 
     private CGachaCategorySO _currentCategory;
 
@@ -28,7 +28,7 @@ public class CGachaModel : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             // 횟수 만큼 실행후 값 추가
-            result.Add(_currentCategory._gachaTable.WeightRandomGacha());
+            result.Add(_currentCategory.GachaTable.WeightRandomGacha());
         }
 
         return result;
@@ -47,12 +47,12 @@ public class CGachaModel : MonoBehaviour
     {
         int needRuby = count * 100;
 
-        if (_ticketCount >= count)
+        if (TicketCount >= count)
         {
             return true;
         }
 
-        if (_rubyCount >= needRuby)
+        if (RubyCount >= needRuby)
         {
             return true;
         }
@@ -62,14 +62,14 @@ public class CGachaModel : MonoBehaviour
 
     public void PayRuby(int count)
     {
-        if (_ticketCount >= count) 
+        if (TicketCount >= count) 
         {
-            _ticketCount -= count;
+            TicketCount -= count;
         }
 
         else
         {
-            _rubyCount -= (count * 100);
+            RubyCount -= (count * 100);
         }
     }
 }

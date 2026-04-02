@@ -14,9 +14,9 @@ public class CGachaResultCard : MonoBehaviour
     [Serializable]
     public class RarityEffectSet
     {
-        public CGachaDataSO.ERarity _rarity;                    // 대상 등급
-        public Sprite _backSprite;                              // 해당 등급 뒷면 이미지
-        public GameObject _idleEffect;                          // 해당 등급 이펙트
+        public CGachaDataSO.ERarity Rarity;                     // 대상 등급
+        public Sprite BackSprite;                               // 해당 등급 뒷면 이미지
+        public GameObject IdleEffect;                           // 해당 등급 이펙트
     }
 
     [Header("Card UI 컴포넌트")]
@@ -28,7 +28,7 @@ public class CGachaResultCard : MonoBehaviour
     [Header("Card 연출")]
     [SerializeField] private GameObject _backCard;              // 카드 뒷면 
     [SerializeField] private Button _cardButton;                // 카드 뒷면 클릭 버튼
-    [SerializeField] private RectTransform _Movingcard;         // 움직일 자식 카드
+    [SerializeField] private RectTransform _movingcard;         // 움직일 자식 카드
 
     [Header("Card 등급별 설정")]
     [SerializeField] private Image _backCardImage;              // 등급별 카드 뒷면
@@ -63,25 +63,25 @@ public class CGachaResultCard : MonoBehaviour
         // 유닛 이름
         if (_nameText != null)
         {
-            _nameText.text = data._unitName;
+            _nameText.text = data.UnitName;
         }
 
         // 유닛 초상화 아이콘
         if (_unitIconImage != null)
         {
-            _unitIconImage.sprite = data._unitIcon;
+            _unitIconImage.sprite = data.UnitIcon;
         }
 
         // 등급별 배경 이미지
         if (_unitBackgroundImage != null)
         {
-            _unitBackgroundImage.sprite = data._unitBackground;
+            _unitBackgroundImage.sprite = data.UnitBackground;
         }
 
         // 등급별 테두리 이미지
         if (_unitBorderImage != null)
         {
-            _unitBorderImage.sprite = data._unitBorder;
+            _unitBorderImage.sprite = data.UnitBorder;
         }
     }
 
@@ -103,17 +103,17 @@ public class CGachaResultCard : MonoBehaviour
         }
         
         // 에픽(2) 등급 부터 이미지 변경과 이펙트 활성화
-        if ((int)data._rarity >= 2)
+        if ((int)data.Rarity >= 2)
         {
             for (int i = 0; i < _effectSet.Count; i++)
             {
-                if (_effectSet[i]._rarity == data._rarity)
+                if (_effectSet[i].Rarity == data.Rarity)
                 {
-                    _backCardImage.sprite = _effectSet[i]._backSprite;
+                    _backCardImage.sprite = _effectSet[i].BackSprite;
 
-                    if (_effectSet[i]._idleEffect != null)
+                    if (_effectSet[i].IdleEffect != null)
                     {
-                        _effectSet[i]._idleEffect.SetActive(true);
+                        _effectSet[i].IdleEffect.SetActive(true);
                     }
                     break;
                 }
@@ -133,11 +133,11 @@ public class CGachaResultCard : MonoBehaviour
         this.gameObject.SetActive(true);
 
         // 카드 위치,크기 초기화
-        if (_Movingcard != null)
+        if (_movingcard != null)
         {
-            _Movingcard.gameObject.SetActive(true);
-            _Movingcard.localScale = Vector3.one;
-            _Movingcard.localPosition = Vector3.zero;
+            _movingcard.gameObject.SetActive(true);
+            _movingcard.localScale = Vector3.one;
+            _movingcard.localPosition = Vector3.zero;
         }
 
         _isReversed = true;
@@ -172,18 +172,18 @@ public class CGachaResultCard : MonoBehaviour
             }
 
             // 자신 제외 이펙트 오브젝트 비활성화
-            if (_effectSet[i]._idleEffect != null && _effectSet[i]._idleEffect != gameObject)
+            if (_effectSet[i].IdleEffect != null && _effectSet[i].IdleEffect != gameObject)
             {
-                _effectSet[i]._idleEffect.SetActive(false);
+                _effectSet[i].IdleEffect.SetActive(false);
             }
         }
     }
 
     // 카드를 안보이게 크기 조절
-    public void HideVisual() => _Movingcard.localScale = Vector3.zero;
+    public void HideVisual() => _movingcard.localScale = Vector3.zero;
 
     // 카들를 보이게 크기 조절
-    public void ShowVisual() => _Movingcard.localScale = Vector3.one;
+    public void ShowVisual() => _movingcard.localScale = Vector3.one;
 
     // 카드 소환 이펙트
     public void SpawnEffect()
@@ -209,12 +209,12 @@ public class CGachaResultCard : MonoBehaviour
             timer += Time.deltaTime;
             float move = timer / duration;
             
-            _Movingcard.transform.localPosition = Vector3.Lerp(startPos, targetPos, move);
+            _movingcard.transform.localPosition = Vector3.Lerp(startPos, targetPos, move);
 
             yield return null;
         }
 
-        _Movingcard.transform.localPosition = targetPos;
+        _movingcard.transform.localPosition = targetPos;
     }
 
 

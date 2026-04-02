@@ -11,12 +11,12 @@ using UnityEngine;
 public class CGachaTableSO : ScriptableObject
 {
     [Header("소환 대상 리스트")]
-    public List<CGachaDataSO> _gachaList = new List<CGachaDataSO>();
+    public List<CGachaDataSO> GachaList = new List<CGachaDataSO>();
 
     public CGachaDataSO WeightRandomGacha()
     {
         // 리스트가 없거나 0이면 null반환
-        if (_gachaList == null || _gachaList.Count == 0)
+        if (GachaList == null || GachaList.Count == 0)
         {
             return null;
         }
@@ -25,9 +25,9 @@ public class CGachaTableSO : ScriptableObject
         float totalWeight = 0f;
 
         // 가중치의 합계
-        for (int i = 0; i < _gachaList.Count; i++)
+        for (int i = 0; i < GachaList.Count; i++)
         {
-            totalWeight += _gachaList[i]._weight;
+            totalWeight += GachaList[i].Weight;
         }
 
         // 랜덤 숫자 선정
@@ -35,20 +35,20 @@ public class CGachaTableSO : ScriptableObject
         // 누적 가중치 변수
         float currentWegiht = 0f;
 
-        for (int i = 0; i < _gachaList.Count; i++)
+        for (int i = 0; i < GachaList.Count; i++)
         {
             // 현재 누적 가중치의 합계
-            currentWegiht += _gachaList[i]._weight;
+            currentWegiht += GachaList[i].Weight;
 
             // 크거나 같으면 당첨
             if (randomValue <= currentWegiht)
             {
                 // 당첨값 리턴
-                return _gachaList[i];
+                return GachaList[i];
             }
         }
 
         // 혹시 모를 값 그냥 노멀 등급 리턴
-        return _gachaList[0];
+        return GachaList[0];
     }
 }

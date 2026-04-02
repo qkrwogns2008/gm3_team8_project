@@ -14,12 +14,12 @@ public class CGachaDataSO : ScriptableObject
     }
 
     [Header("유닛 정보")]
-    public string _unitName;        // 유닛 이름
-    public ERarity _rarity;         // 레어도
-    public float _weight;           // 뽑힐 확률 - 가중치 (노멀: 58.9%, 레어: 24%, 에픽: 14%, 유니크: 3%, 레전드: 0.1%)
+    public string UnitName;        // 유닛 이름
+    public ERarity Rarity;         // 레어도
+    public float Weight;           // 뽑힐 확률 - 가중치 (노멀: 58.9%, 레어: 24%, 에픽: 14%, 유니크: 3%, 레전드: 0.1%)
 
     [Header("유닛 초상화")]
-    public Sprite _unitIcon;        // 유닛 초상화 아이콘
-    public Sprite _unitBackground;  // 등급별 카드 배경
-    public Sprite _unitBorder;      // 등급별 카드 테두리
+    public Sprite UnitIcon;        // 유닛 초상화 아이콘
+    public Sprite UnitBackground;  // 등급별 카드 배경
+    public Sprite UnitBorder;      // 등급별 카드 테두리
 }
