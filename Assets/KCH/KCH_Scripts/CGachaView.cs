@@ -1,10 +1,12 @@
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 
 public class CGachaView : MonoBehaviour
 {
+
     [Header("카테고리 탭 그룹 설정")]
     public CanvasGroup CategoryGroup;      // 영웅 / 펫 / 성물 버튼 그룹
     public CanvasGroup HeroTabGroup;       // 영웅 탭 그룹 (투명도)

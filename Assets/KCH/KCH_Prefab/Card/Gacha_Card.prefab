@@ -207,18 +207,18 @@ MonoBehaviour:
   _nameText: {fileID: 9130238695177663431}
   _backCard: {fileID: 4915339551931874630}
   _cardButton: {fileID: -509309842842888301}
-  _Movingcard: {fileID: 2107284036366455879}
+  _movingcard: {fileID: 0}
   _backCardImage: {fileID: 2036660076579781106}
   _effectSet:
-  - _rarity: 2
-    _backSprite: {fileID: 21300000, guid: 530f1e14010080443b29290608368d64, type: 2}
-    _idleEffect: {fileID: 1709254077376921, guid: faef63a1cc0fff940bcc9af37ea52237, type: 3}
-  - _rarity: 3
-    _backSprite: {fileID: 21300000, guid: 0399fbfe4542858468a0b1c356cb3d83, type: 2}
-    _idleEffect: {fileID: 1709254077376921, guid: faef63a1cc0fff940bcc9af37ea52237, type: 3}
-  - _rarity: 4
-    _backSprite: {fileID: 21300000, guid: 60305ce864f377149968674967072b0c, type: 2}
-    _idleEffect: {fileID: 1709254077376921, guid: faef63a1cc0fff940bcc9af37ea52237, type: 3}
+  - Rarity: 2
+    BackSprite: {fileID: 0}
+    IdleEffect: {fileID: 0}
+  - Rarity: 3
+    BackSprite: {fileID: 0}
+    IdleEffect: {fileID: 0}
+  - Rarity: 4
+    BackSprite: {fileID: 0}
+    IdleEffect: {fileID: 0}
 --- !u!222 &2678753515123486498
 CanvasRenderer:
   m_ObjectHideFlags: 0
