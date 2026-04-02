@@ -67,29 +67,48 @@ public class CDataManager : MonoBehaviour
         Debug.Log($"골드가 부족합니다. 필요 골드: {amount}");
         return false;
     }
+    
 
     // 공격력 강화
     public void UpgradeBaseDamage(int amount)
     {
-        UserData.BaseDamage += amount;
-        Debug.Log($"[강화] 기본 공격력 상승 현재: {UserData.BaseDamage}");
+        UserData.Atk_Level += amount;
+        Debug.Log($"[강화] 기본 공격력 상승 현재: {UserData.Atk_Level}");
         SaveUserData();
     }
 
     // 방어력 강화
     public void UpgradeBaseShield(int amount)
     {
-        UserData.Baseshield += amount;
-        Debug.Log($"[강화] 기본 방어력 상승 현재: {UserData.Baseshield}");
+        UserData.Def_Level += amount;
+        Debug.Log($"[강화] 기본 방어력 상승 현재: {UserData.Def_Level}");
         SaveUserData();
     }
 
     // 체력 강화
     public void UpgradeBaseHP(int amount)
     {
-        UserData.BaseHP += amount;
-        Debug.Log($"[강화] 기본 체력 상승 현재: {UserData.BaseHP}");
+        UserData.Life_Level += amount;
+        Debug.Log($"[강화] 기본 체력 상승 현재: {UserData.Life_Level}");
         SaveUserData();
+    }
+
+    // 유저 강화 수치 
+    public struct UserUpgradeStatus
+    {
+        public int UserAtkLevel;
+        public int UserDefLevel;
+        public int UserLifeLevel;
+    }
+
+    public UserUpgradeStatus GetUserUpgradeStatus()
+    {
+        return new UserUpgradeStatus
+        {
+            UserAtkLevel = UserData.Atk_Level,
+            UserDefLevel = UserData.Def_Level,
+            UserLifeLevel = UserData.Life_Level
+        };
     }
 
 
