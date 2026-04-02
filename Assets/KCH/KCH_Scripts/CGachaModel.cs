@@ -9,7 +9,7 @@ public class CGachaModel : MonoBehaviour
 
     [Header("보유 재화(임시)")]
     public int _rubyCount = 30000;         // 현재 루비
-    public int _summonCardCount = 300;      // 현재 소환권
+    public int _ticketCount = 30;          // 현재 소환권
 
     private CGachaCategorySO _currentCategory;
 
@@ -34,8 +34,7 @@ public class CGachaModel : MonoBehaviour
         return result;
     }
 
-
-        // 카테고리에 현재 경험치 증가 함수
+    // 카테고리에 현재 경험치 증가 함수
     public void AddExp(int amount)
     {
         if (_currentCategory != null)
@@ -44,9 +43,16 @@ public class CGachaModel : MonoBehaviour
         }
 
     }
-    public bool CheckMoney(int count)
+    public bool CheckRuby(int count)
     {
-        if (_summonCardCount >= count || _rubyCount >= count * 100)
+        int needRuby = count * 100;
+
+        if (_ticketCount >= count)
+        {
+            return true;
+        }
+
+        if (_rubyCount >= needRuby)
         {
             return true;
         }
@@ -54,11 +60,11 @@ public class CGachaModel : MonoBehaviour
         return false;
     }
 
-    public void PayMoney(int count)
+    public void PayRuby(int count)
     {
-        if (_summonCardCount >= count) 
+        if (_ticketCount >= count) 
         {
-            _summonCardCount -= count;
+            _ticketCount -= count;
         }
 
         else

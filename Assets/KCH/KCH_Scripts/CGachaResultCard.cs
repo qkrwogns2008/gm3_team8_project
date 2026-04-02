@@ -5,16 +5,18 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-
+/// <summary>
+/// 뽑기 결과로 보여질 카드의 비주얼과 애니메이션 표현 로직을 관리하는 클래스입니다.
+/// </summary>
 public class CGachaResultCard : MonoBehaviour
 {
     #region 인스펙터
     [Serializable]
     public class RarityEffectSet
     {
-        public CGachaDataSO.ERarity _rarity;
-        public Sprite _backSprite;
-        public GameObject _idleEffect;
+        public CGachaDataSO.ERarity _rarity;                    // 대상 등급
+        public Sprite _backSprite;                              // 해당 등급 뒷면 이미지
+        public GameObject _idleEffect;                          // 해당 등급 이펙트
     }
 
     [Header("Card UI 컴포넌트")]
@@ -34,56 +36,163 @@ public class CGachaResultCard : MonoBehaviour
     #endregion
 
     #region 내부 변수
+    private Sprite _originBackSprite;                           // 카드 기본 뒷면
     private bool _isReversed = false;                           // 카드의 뒤집힘 여부 
     #endregion
 
     private void Awake()
     {
+        // 카드 뒤집기 함수 연결
         _cardButton.onClick.AddListener(ReverseCard);
+
+        // 카드 기본 뒷면 저장
+        if (_backCardImage)
+        {
+            _originBackSprite = _backCardImage.sprite;
+        }
     }
 
+    //  CGachaDataSO 데이터를 세팅
+    public void SetData(CGachaDataSO data)
+    {
+        if (data == null)
+        {
+            return;
+        }
+
+        // 유닛 이름
+        if (_nameText != null)
+        {
+            _nameText.text = data._unitName;
+        }
+
+        // 유닛 초상화 아이콘
+        if (_unitIconImage != null)
+        {
+            _unitIconImage.sprite = data._unitIcon;
+        }
+
+        // 등급별 배경 이미지
+        if (_unitBackgroundImage != null)
+        {
+            _unitBackgroundImage.sprite = data._unitBackground;
+        }
+
+        // 등급별 테두리 이미지
+        if (_unitBorderImage != null)
+        {
+            _unitBorderImage.sprite = data._unitBorder;
+        }
+    }
+
+    // 일반 뽑기 연출
     public void SetHidden(CGachaDataSO data)
     {
-        SetData(data);
+        gameObject.SetActive(true);
 
-        for (int i = 0; i < _effectSet.Count; i++)
+        // 이펙트 초기화
+        ResetEffect();
+
+        // 기본 뒷면 초기화
+        _backCardImage.sprite = _originBackSprite;
+        _isReversed = false;
+
+        if (_backCard != null)
         {
-            if (_effectSet[i]._rarity == data._rarity)
+            _backCard.SetActive(true);
+        }
+        
+        // 에픽(2) 등급 부터 이미지 변경과 이펙트 활성화
+        if ((int)data._rarity >= 2)
+        {
+            for (int i = 0; i < _effectSet.Count; i++)
             {
-                _backCardImage.sprite = _effectSet[i]._backSprite;
-
-                ResetEffect();
-
-                if (_effectSet[i]._idleEffect != null)
+                if (_effectSet[i]._rarity == data._rarity)
                 {
-                    _effectSet[i]._idleEffect.SetActive(true);
+                    _backCardImage.sprite = _effectSet[i]._backSprite;
+
+                    if (_effectSet[i]._idleEffect != null)
+                    {
+                        _effectSet[i]._idleEffect.SetActive(true);
+                    }
+                    break;
                 }
             }
         }
 
-        
-        _isReversed = false;
-        _backCard.SetActive(true);
+        // 유닛 데이터 세팅
+        SetData(data);
+
+        // 비주얼 활성화
+        ShowVisual();
     }
 
+    // 300 회 뽑기 연출
+    public void SetMiniCard(CGachaDataSO data, int count)
+    {
+        this.gameObject.SetActive(true);
+
+        // 카드 위치,크기 초기화
+        if (_Movingcard != null)
+        {
+            _Movingcard.gameObject.SetActive(true);
+            _Movingcard.localScale = Vector3.one;
+            _Movingcard.localPosition = Vector3.zero;
+        }
+
+        _isReversed = true;
+
+        if (_backCard != null)
+        {
+            _backCard.SetActive(false);
+        }
+
+        SetData(data);
+
+        // 이름 대신 갯수로 출력
+        if (_nameText != null)
+        {
+            _nameText.text = count.ToString();
+        }
+    }
+
+    // 모든 이펙트 초기화
     private void ResetEffect()
     {
+        if (_effectSet == null)
+        {
+            return;
+        }
+
         for (int i = 0; i < _effectSet.Count; i++)
         {
-            if (_effectSet[i]._idleEffect != null)
+            if (_effectSet[i] == null)
+            {
+                continue;
+            }
+
+            // 자신 제외 이펙트 오브젝트 비활성화
+            if (_effectSet[i]._idleEffect != null && _effectSet[i]._idleEffect != gameObject)
             {
                 _effectSet[i]._idleEffect.SetActive(false);
             }
         }
     }
 
+    // 카드를 안보이게 크기 조절
     public void HideVisual() => _Movingcard.localScale = Vector3.zero;
 
+    // 카들를 보이게 크기 조절
     public void ShowVisual() => _Movingcard.localScale = Vector3.one;
 
+    // 카드 소환 이펙트
     public void SpawnEffect()
     {
-        StartCoroutine(CO_SpawnCard());
+        // 코루틴 사용시 Active 체크
+        if (gameObject.activeInHierarchy)
+        {
+            StartCoroutine(CO_SpawnCard());
+        }
     }
 
     // 카드가 떨어지는 함수
@@ -123,12 +232,14 @@ public class CGachaResultCard : MonoBehaviour
         StartCoroutine(CO_FilpCard());
     }
 
+    // X축을 늘렸다가 다시 늘려 뒤집히는 연출
     private IEnumerator CO_FilpCard()
     {
         // 뒤집히는 시간
         float duration = 0.05f;
         float timer = 0f;
 
+        // 1 ~ 0
         while (timer < duration)
         {
             timer += Time.deltaTime;
@@ -140,8 +251,10 @@ public class CGachaResultCard : MonoBehaviour
             yield return null;
         }
 
+        // 0
         _backCard.SetActive(false);
 
+        // 0 ~ 1
         timer = 0f;
         while(timer < duration)
         {
@@ -156,39 +269,4 @@ public class CGachaResultCard : MonoBehaviour
 
         transform.localScale = Vector3.one;
     }
-
-    // Presenter에서 호출
-    public void SetData(CGachaDataSO data)
-    {
-        if (data == null)
-        {
-            return;
-        }
-
-        // 유닛 이름
-        if (_nameText != null)
-        {
-            _nameText.text = data._unitName;
-        }
-
-        // 유닛 초상화 아이콘
-        if (_unitIconImage != null)
-        {
-            _unitIconImage.sprite = data._unitIcon;
-        }
-
-        // 등급별 배경 이미지
-        if (_unitBackgroundImage != null)
-        {
-            _unitBackgroundImage.sprite = data._unitBackground;
-        }
-
-        // 등급별 테두리 이미지
-        if (_unitBorderImage != null)
-        {
-            _unitBorderImage.sprite = data._unitBorder;
-        }
-
-    }
-
 }
