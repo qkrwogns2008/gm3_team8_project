@@ -49,38 +49,4 @@ public class UnitScaleController : MonoBehaviour
 
     }
 
-    /* 지평선 대기 효과 폐기건
-    // 3. 눈속임 위치만 렌더링 직전에 교체
-    void OnWillRenderObject()
-    {
-        if (_camTransform == null || !_renderer.enabled) return;
-
-        float currentRelativeY = transform.position.y - _camTransform.position.y;
-        // [핵심] Finish 지점을 넘었다면 위치 고정 로직을 타지 않도록 즉시 리턴!
-        // 이렇게 해야 지평선에 유닛이 맺힌 채로 카메라에 끌려오는 걸 막습니다.
-        if (currentRelativeY >= _horizonFinish)
-        {
-            return;
-        }
-        // [중요] 현재 실제 위치를 백업
-        _originalPosition = transform.position;
-
-        // Update와 동일한 relativeY 계산 (기준점 통일)
-        float relativeY = _originalPosition.y - (_camTransform.position.y);
-
-        
-
-        // 지평선 시작점 ~ 끝점 사이라면 "시각적 위치만" 고정
-        if (relativeY >= _horizonStart && relativeY < _horizonFinish)
-        {
-            // 지평선에 해당하는 실제 월드 Y 좌표 계산
-            float visualWorldY = _camTransform.position.y + _horizonStart;
-
-            // 그리기 직전 위치 바꿔치기
-            transform.position = new Vector3(_originalPosition.x, visualWorldY, _originalPosition.z);
-            _isPositionAltered = true;
-        }
-    }
-    */
-
 }
