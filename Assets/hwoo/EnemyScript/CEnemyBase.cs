@@ -17,7 +17,6 @@ public class CEnemyBase : CUnitBase
     [SerializeField] protected Transform _effectPos;
     [SerializeField] private float _giveupRange = 15f;
     [SerializeField] private float _walkRange = 5f;    // 주변 돌아다니는 범위
-
     protected EnemyBaseSO _enemySO => OriginData as EnemyBaseSO;
     protected Vector3 _startPosition;
     
@@ -181,6 +180,7 @@ public class CEnemyBase : CUnitBase
 
         StartCoroutine(CoReturnToPool());
     }
+
 
     private IEnumerator CoReturnToPool()
     {
