@@ -1,0 +1,37 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+[Serializable]
+public class EffectCatalog
+{
+	[Header("이펙트 프리팹")]
+	[SerializeField] private EffectBase _prefab;
+
+	[Header("이펙트 선딜레이")]
+	[SerializeField] private float _preDelay;
+
+	[Header("소환 오프셋")]
+	[SerializeField] private Vector3 _offset;
+
+	[Header("방향 유무")]
+	[SerializeField] private bool _isNoDirection = false;
+
+	public EffectBase Prefab => _prefab;
+	public Vector3 Offset => _offset;
+	public float PreDelay => _preDelay;
+	public bool IsNoDirection => _isNoDirection;
+}
+
+[CreateAssetMenu(fileName = "EffectDataSO_", menuName = "ScriptableObjects/Effect Data (SO)")]
+public class EffectDataSO : ScriptableObject
+{
+	[Header("이펙트 이름")]
+	[SerializeField] private string _name;
+
+	[Header("이펙트 목록")]
+	[SerializeField] private List<EffectCatalog> _effectCatalog;
+
+	public string Name => _name;
+	public IReadOnlyList<EffectCatalog> Catalog => _effectCatalog;
+}

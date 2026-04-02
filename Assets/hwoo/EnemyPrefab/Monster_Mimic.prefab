@@ -144,8 +144,7 @@ MonoBehaviour:
   _playerLayer:
     serializedVersion: 2
     m_Bits: 64
-  _idleAnim: Idle
-  _moveAnim: Move
+  _currentState: 0
   _canAttack: 0
 --- !u!114 &-4705622958786604801
 MonoBehaviour:
@@ -159,12 +158,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaf0ade6caff01747a997d1da3281e48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _originData: {fileID: 0}
-  _unitName: 
-  _teamType: 1
-  _enemyLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  _hintAnchor: {fileID: 0}
-  _skeletonAni: {fileID: 0}
+  UnitName: 
+  CurrentHp: 0
+  OriginData: {fileID: 11400000, guid: 4437df723d5d0fa4399b0cbe9eb56590, type: 2}
+  TeamType: 1
+  SkeletonAni: {fileID: 0}
+  AttackAnimation: 
+  AttackEffect: {fileID: 0}
+  DeathAnimation: 
+  DeathDisableTime: 0
+  PrintLog: 1
   _effectPos: {fileID: 0}

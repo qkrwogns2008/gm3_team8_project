@@ -11,91 +11,143 @@ public class CAutoPlayerMove : MonoBehaviour
     [SerializeField] private float _attackRange = 1.5f;         // 공격 사거리 (임시)
     [Header("Tracking")]
     [SerializeField] private float _detectionRange = 100f;    // 탐지 범위(맵 전체를 덮을 수 있게
-    [SerializeField] private LayerMask _enemyLayer;        // 탐지할 레이어
     // 타겟 발견시 속도는 기본과 같음
-    [Header("SpineAnim")]
-    [SerializeField] private string _idleAnim = "Idle";
-    [SerializeField] private string _moveAnim = "Move";
     #endregion
+
     #region 내부변수
-    private Transform _targetEnemy;                     // 현재 목표 타겟
+    private CUnitBase _targetEnemy;                     // 현재 목표 타겟
     private Vector3 _targetPos;                          // 타겟 위치
-    private bool _isMoving = false;                      // 이동 상태 확인
 
     private SkeletonAnimation _skeletonAnim;
+    private CHero PlayerHero;   // 상태 제어용 참조 사용시 CHero참조
     #endregion
+
+    private void Awake()
+    {
+        PlayerHero = GetComponent<CHero>();
+        _skeletonAnim = GetComponentInChildren<SkeletonAnimation>();
+
+        if (_skeletonAnim == null)
+        {
+            Debug.LogError($"{gameObject.name}: SkeletonAnim null");
+        }
+    }
 
     void Start()
     {
-        _skeletonAnim = GetComponent<SkeletonAnimation>();
-        // 첫 번째 적 탐색
-        FindClosesEnemy();
+
+        Vector3 pos = transform.position;
+        pos.z = 0f;
+        transform.position = pos;
     }
     void Update()
     {
-        FindClosesEnemy();
+        if (PlayerHero == null || PlayerHero.IsUnitDead)
+        {
+            return;
+        }
 
+		CheckTarget();
+
+		if (_targetEnemy == null)
+		{
+			FindClosestEnemy();
+		}
+        
         if(_targetEnemy != null)
         {
-            _targetPos = _targetEnemy.position;
+            _targetPos = _targetEnemy.transform.position;
+            _targetPos.z = 0f;
 
-            // 거리 계산
-            float distanceToEnemy = Vector3.Distance(transform.position, _targetPos);
+            float sqrDistance = (transform.position - _targetPos).sqrMagnitude;
+            float sqrAttackRange = _attackRange * _attackRange;
 
-            // 가까우면 공격
-            if (distanceToEnemy <= _attackRange)
+            if(sqrDistance <= sqrAttackRange)
             {
-                StopAttack();
+                StopAndAttack();
             }
-            // 멀면 이동
             else
             {
-                _isMoving = true;
                 MoveToTarget();
             }
         }
         else
         {
-            //대기
-            _isMoving = false;
+            if(PlayerHero.CurrentState != EHeroState.Idle)
+            {
+                PlayerHero.ChangeState(EHeroState.Idle);
+            }
+        }
+
+    }
+
+    // 대상 체크
+    void CheckTarget()
+    {
+        if(_targetEnemy == null)
+        {
+            return;
+        }
+
+        
+        if(_targetEnemy.IsUnitDead || !_targetEnemy.gameObject.activeSelf)
+        {
+            _targetEnemy = null;
+            PlayerHero.SetTarget(null);
         }
     }
 
-    void FindClosesEnemy()
+    void FindClosestEnemy()
     {
-        Collider[] enemies = Physics.OverlapSphere(transform.position, _detectionRange, _enemyLayer);
-
-        if(enemies.Length>0)
+        if(CEnemyManager.Instance == null || CEnemyManager.Instance.ActiveEnemies.Count == 0)
         {
-            Transform closest = null;
-            float minDistance = Mathf.Infinity;
+            _targetEnemy = null;
+            PlayerHero.SetTarget(null);
+            return;
+        }
 
-            
-            foreach(Collider enemy in enemies)
+        CUnitBase closest = null;
+        float minSqrDistance = _detectionRange * _detectionRange;
+
+        foreach(CUnitBase enemy in CEnemyManager.Instance.ActiveEnemies)
+        {
+            if(enemy == null || !enemy.gameObject.activeSelf || enemy.IsUnitDead)
             {
-                // 가까운 대상 거리 계산
-                float distance = Vector3.Distance(transform.position, enemy.transform.position);
-                if(distance < minDistance)
-                {
-                    minDistance = distance;
-                    closest = enemy.transform;
-                }
+                continue;
             }
-            // 타겟 설정
+            float sqrDist = (enemy.transform.position - transform.position).sqrMagnitude;
+
+            if(sqrDist< minSqrDistance)
+            {
+                minSqrDistance = sqrDist;
+                closest = enemy;
+            }
+            
+        }
+        if(closest!=null)
+        {
             _targetEnemy = closest;
+            PlayerHero.SetTarget(closest);
         }
         else
         {
-            Debug.Log("타겟 없음");
             _targetEnemy = null;
+            PlayerHero.SetTarget(null);
         }
     }
 
     // 이동 위치 탐색
     void MoveToTarget()
     {
+        PlayerHero.ChangeState(EHeroState.Move);
         LookAtTarget();
+
         transform.position = Vector3.MoveTowards(transform.position, _targetPos, _walkSpeed * Time.deltaTime);
+
+        // Z 축 고정
+        Vector3 curPos = transform.position;
+        curPos.z = 0f;
+        transform.position = curPos;
 
     }
 
@@ -122,13 +174,10 @@ public class CAutoPlayerMove : MonoBehaviour
         }
     }
 
-    void StopAttack()
+    void StopAndAttack()
     {
-        _isMoving = false;
         LookAtTarget();
 
-        /// </summary>
-        /// 공격 로직 실행
-        /// </summary>
+		PlayerHero.ChangeState(EHeroState.Combat);
     }
 }

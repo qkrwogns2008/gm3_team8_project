@@ -15,50 +15,63 @@ public enum EUnitState
 public class CEnemyBase : CUnitBase
 {
     [SerializeField] protected Transform _effectPos;
+    [SerializeField] private float _giveupRange = 15f;
+    [SerializeField] private float _walkRange = 5f;    // 주변 돌아다니는 범위
 
-    protected EnemyBaseSO _enemySO;
+    protected EnemyBaseSO _enemySO => OriginData as EnemyBaseSO;
     protected Vector3 _startPosition;
-
-    private bool _isAttackCooldown = false;
-
-    public bool IsUnitDead => IsDead;
+    
+    public override bool IsUnitDead => IsDead;
 
     public EnemyBaseSO EnemyData => OriginData as EnemyBaseSO;
+    public CUnitBase TargetHero => Target;
 
+    private float ScaleMultiplier => Mathf.Abs(SkeletonAni.transform.localScale.x);
+
+    public virtual float FinalAtkRange => AtkRange * ScaleMultiplier;
+    public virtual float FinalDetectionRange => DetectionRange * ScaleMultiplier;
+    public virtual float FinalGiveUpRange => _giveupRange * ScaleMultiplier;
+    public virtual float FinalWalkRange => _walkRange * ScaleMultiplier;
     protected override void InitUnitStats()
     {
         base.InitUnitStats();
-
         
+
+        if (EnemyData != null)
+        {
+            
+
+            DetectionRange = EnemyData.DetectionRange;
+        }
+        
+        if(OriginData != null)
+        {
+            AtkRange = OriginData.AttackRange;
+            DetectionRange = OriginData.DetectionRange;
+            
+            BaseMaxHp = 100f;
+            BaseAtkDamage = 10f;
+            CurrentHp = FinalMaxHP;
+        }
+
     }
 
     protected override void Update()
     {
         base.Update();
         // 추격 포기 거리
-        if (TargetEnemy != null && _enemySO != null)
+        
+       
+        if(SkeletonAni != null && SkeletonAni.AnimationName == "Attack_A")
         {
-            float distanceToEnemy = Vector3.Distance(transform.position, TargetEnemy.transform.position);
-
-            if(distanceToEnemy > _enemySO.GiveUpRange)
-            {
-                // 타겟 초기화
-                TargetEnemy = null;
-            }
-        }
-        if (SkeletonAni != null)
-        {
-            if (SkeletonAni.AnimationName == "Attack_A")
-            {
-                return;
-            }
+            return;
         }
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         // 상태 초기화
-        _isAttackCooldown = false;
         IsDead = false;
 
         // 능력치 초기화
@@ -71,51 +84,52 @@ public class CEnemyBase : CUnitBase
         }
     }
 
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+    }
+
     // 공격
     protected override void OnAttack(CUnitBase target)
     {
-        Debug.Log("공격 실행");
-        // 공격 애니메이션 1회 재생
-        SetAnimation("Attack_A", false);
-        // 이후 Idle
-        SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0f);
-
-        // 이펙트 생성
-        //if(_enemySO != null && _enemySO.AttackEffectPrefab != null)
-        //{
-        //    Vector3 spawnPoint = (_effectPos != null ? _effectPos.position : transform.position);
-        //    Instantiate(_enemySO.AttackEffectPrefab, spawnPoint, Quaternion.identity);
-        //}
-
-        if(target != null)
+        base.OnAttack(target);
+        if(SkeletonAni == null || MotionRoutine != null)
         {
-            target.TakeDamage(FinalAttackDamage, this);
-            Debug.Log($"{UnitName}의 공격, 피해량: {FinalAttackDamage}");
-        }
-    }
-
-    public void TryAttack(CUnitBase target)
-    {
-        if(IsDead || target == null || _isAttackCooldown)
-        {
-            Debug.Log("타겟Null");
             return;
         }
-        StartCoroutine(CoAttackRoutine(target));
     }
 
-    
-
-    private IEnumerator CoAttackRoutine(CUnitBase target)
+    protected override IEnumerator Co_PlayMotion(string animationName, CUnitBase target, float damage)
     {
-        _isAttackCooldown = true;
+        var trackEntry = SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
+        SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
 
-        OnAttack(target);
+        if(trackEntry != null)
+        {
+            // 애니메이션 재생되는동안 기다리기
+            // 중복 실행 방지
+            yield return new WaitForSeconds(trackEntry.Animation.Duration);
+        }
+        else
+        {
+            // 애니메이션 없을경우
+            yield return new WaitForSeconds(0.5f);
+        }
+        
+        if(target != null && !target.IsUnitDead)
+        {
+            target.TakeDamage(damage, this);
+        }
 
-        float cooldown = (_enemySO != null) ? _enemySO.AttackSpeed : 1.0f;
-        yield return new WaitForSeconds(cooldown);
+        ApplyAttackCooldown();
 
-        _isAttackCooldown = false;
+        MotionRoutine = null;
+    }
+
+    protected override void ApplyAttackCooldown()
+    {
+        float cooldown = (EnemyData != null) ? EnemyData.AttackSpeed : 1.0f;
+        NextAttackTime = Time.time + cooldown;
     }
 
     public void LookAt(Vector3 targetPos)
@@ -144,12 +158,7 @@ public class CEnemyBase : CUnitBase
     {
         base.TakeDamage(damage, attacker);
 
-        // 피격 애니메이션 (살아있을때만)
-        if(!IsDead && SkeletonAni != null)
-        {
-            SetAnimation("hit", false);
-            SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0f);
-        }
+        
     }
 
     protected override void Die()
@@ -176,7 +185,14 @@ public class CEnemyBase : CUnitBase
     private IEnumerator CoReturnToPool()
     {
         yield return new WaitForSeconds(3f);
-        gameObject.SetActive(false);
+        if(OriginPrefab != null)
+        {
+            PoolManager.Instance.Push(OriginPrefab, gameObject);
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     // 편의성

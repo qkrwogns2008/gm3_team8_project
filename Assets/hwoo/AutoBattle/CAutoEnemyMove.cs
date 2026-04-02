@@ -12,12 +12,8 @@ public class CAutoEnemyMove : MonoBehaviour
     [Header("Yellow : Move Target")]
     [Header("Move")]
     [SerializeField] private float _walkspeed = 2f;             // 이동속도 (임시) 이후 외부에서 받아올것
-    [SerializeField] private float _attackRange = 4f;           // 사거리 (임시)
-    [SerializeField] private float _walkRange = 10f;    // 주변 돌아다니는 범위
     [SerializeField] private float _walkTimer = 3f;     // 대기시간
     [Header("Tracking")]
-    [SerializeField] private float _detectionRange = 10f;    // 탐지 범위
-    [SerializeField] private float _giveUpRange = 12f;      // 추격 포기 범위
     [SerializeField] private LayerMask _playerLayer;        // 탐지할 레이어
     [Header("State")]
     [SerializeField] private EUnitState _currentState = EUnitState.Idle;
@@ -27,36 +23,51 @@ public class CAutoEnemyMove : MonoBehaviour
     #region 내부변수
     private Vector3 _homePosition;                       // 처음 스폰한 위치
     private Vector3 _targetPos;                          // 타겟 위치
-    private bool _isMoving = false;                      // 이동 상태 확인
     private float _timer = 0f;                           // 대기시간 타이머
 
     public bool _canAttack = false;         // 공격 스크립트에서 참조
-    private Transform _targetPlayer;        // 발견 플레이어
 
     private SkeletonAnimation _skeletonAnim;
 
     private CEnemyBase _enemyBase; // 베이스 참조
+
+    private float FinalAtkRange => _enemyBase.FinalAtkRange;
+    private float FinalDetectionRange => _enemyBase.FinalDetectionRange;
+    private float FinalGiveUpRange => _enemyBase.FinalGiveUpRange;
+    private float FinalWalkRange => _enemyBase.FinalWalkRange;
+    
     #endregion
 
-   
+
+
+    private void Awake()
+    {
+        _enemyBase = GetComponent<CEnemyBase>();
+        _skeletonAnim = GetComponentInChildren<SkeletonAnimation>();
+
+        if(_skeletonAnim == null)
+        {
+            Debug.LogError($"{gameObject.name}: SkeletonAnim null");
+        }
+    }
 
     void Start()
     {
         // 현재 위치 세팅
         _homePosition = transform.position;
         _homePosition.z = 0f;
-
-        _enemyBase = GetComponent<CEnemyBase>();
-        _skeletonAnim = GetComponent<SkeletonAnimation>();
+        ChangeState(EUnitState.Idle);
+        
         // 이동할 위치 선택
     }
 
     void Update()
     {
-        if (_enemyBase.IsUnitDead)
+        if (_enemyBase == null || _enemyBase.IsUnitDead)
         {
             return;
         }
+        CheckTarget();
         switch (_currentState)
         {
             case EUnitState.Idle:
@@ -77,6 +88,7 @@ public class CAutoEnemyMove : MonoBehaviour
 
     private void OnEnable()
     {
+        
         _homePosition = transform.position;
         _homePosition.z = 0f;
         ChangeState(EUnitState.Idle);
@@ -94,16 +106,13 @@ public class CAutoEnemyMove : MonoBehaviour
         switch (_currentState)
         {
             case EUnitState.Idle:
-                _isMoving = false;
                 SetAnimation("Idle", true);
                 break;
             case EUnitState.Wander:
             case EUnitState.Tracking:
-                _isMoving = true;
                 SetAnimation("Move", true);
                 break;
             case EUnitState.Attack:
-                _isMoving = false;
                 //UpdateAttack();
                 break;
         }
@@ -143,39 +152,60 @@ public class CAutoEnemyMove : MonoBehaviour
 
     void UpdateTracking()
     {
-        if(_targetPlayer == null)
+        CUnitBase target = _enemyBase.TargetHero;
+        if(_enemyBase.TargetHero == null)
         {
             ChangeState(EUnitState.Idle);
             return;
         }
 
-        float dist = Vector3.Distance(transform.position, _targetPlayer.position);
+        float sqrDist = (target.transform.position - transform.position).sqrMagnitude;
+        float sqrAttackRange = FinalAtkRange * FinalAtkRange;
+        float sqrGiveUpRange = FinalGiveUpRange * FinalGiveUpRange;
 
-        if (dist > _giveUpRange)
+        if (sqrDist > sqrGiveUpRange)
         {
-            _targetPlayer = null;
-            ChangeState(EUnitState.Idle);
+            ResetTarget();
         }
-        else if(dist <= _attackRange)
+        else if(sqrDist <= sqrAttackRange)
         {
             ChangeState(EUnitState.Attack);
         }
         else
         {
-            MoveTo(_targetPlayer.position);
+            Vector3 targetPos = target.transform.position;
+            targetPos.z = 0f;
+            MoveTo(target.transform.position);
         }
 
+    }
+    
+
+    void ResetTarget()
+    {
+        _enemyBase.SetTarget(null);
+
+        if(_currentState == EUnitState.Tracking || _currentState == EUnitState.Attack)
+        {
+            ChangeState(EUnitState.Idle);
+        }
     }
 
     void UpdateAttack()
     {
-        Debug.Log("공격 사거리 진입 공격 상태 전환");
-        _enemyBase.LookAt(_targetPlayer.position);
+        CUnitBase target = _enemyBase.TargetHero;
+        if(_enemyBase.TargetHero == null)
+        {
+            ChangeState(EUnitState.Idle);
+            return;
+        }
 
-        _enemyBase.TryAttack(_targetPlayer.GetComponent<CUnitBase>());
+        _enemyBase.LookAt(target.transform.position);
+        _enemyBase.TryAttack(target);
 
-        float dist = Vector3.Distance(transform.position, _targetPlayer.position);
-        if(dist > _attackRange)
+        float sqrDist = (target.transform.position - transform.position).sqrMagnitude;
+
+        if(sqrDist > (FinalAtkRange*FinalAtkRange))
         {
             ChangeState(EUnitState.Tracking);
         }
@@ -185,27 +215,61 @@ public class CAutoEnemyMove : MonoBehaviour
 
     bool FindTarget()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, _detectionRange, _playerLayer);
-
-        if (colliders.Length > 0)
+        if (HeroManagerDummy.Instance == null || HeroManagerDummy.Instance.ActiveHero.Count == 0)
         {
-            _targetPlayer = colliders[0].transform;
+            return false;
+        }
+
+        CUnitBase closetPlayer = null;
+        float minsqrDistance = FinalDetectionRange * FinalDetectionRange;
+
+
+        foreach(var player in HeroManagerDummy.Instance.ActiveHero)
+        {
+            if(player == null || !player.gameObject.activeSelf)
+            {
+                continue;
+            }
+            float sqrDist = (player.transform.position - transform.position).sqrMagnitude;
+            if(sqrDist < minsqrDistance)
+            {
+                minsqrDistance = sqrDist;
+                closetPlayer = player;
+            }
+        }
+
+        if(closetPlayer != null)
+        {
+            _enemyBase.SetTarget(closetPlayer);
             return true;
         }
         return false;
     }
+    void CheckTarget()
+    {
+        CUnitBase target = _enemyBase.TargetHero;
+        if (target == null)
+        {
+            return;
+        }
 
+        if (target.IsUnitDead || !target.gameObject.activeSelf)
+        {
+            ResetTarget();
+        }
+    }
     void MoveTo(Vector3 pos)
     {
         _enemyBase.LookAt(pos);
         Vector3 nextPos = Vector3.MoveTowards(transform.position, pos, _walkspeed * Time.deltaTime);
         nextPos.z = 0f;
-        transform.position = Vector3.MoveTowards(transform.position, pos, _walkspeed * Time.deltaTime);
+        transform.position = nextPos;
+
     }
 
     void SetNewWanderTarget()
     {
-        Vector2 rand = Random.insideUnitCircle * _walkRange;
+        Vector2 rand = Random.insideUnitCircle * FinalWalkRange;
         _targetPos = _homePosition + (Vector3)rand;
     }
 
@@ -213,26 +277,44 @@ public class CAutoEnemyMove : MonoBehaviour
 
     private void SetAnimation(string animName, bool loop)
     {
+        if(_skeletonAnim == null)
+        {
+            return;
+        }
+        if(_skeletonAnim.AnimationState == null)
+        {
+            return;
+        }
         if (_skeletonAnim.AnimationName != animName)
         {
             _skeletonAnim.AnimationState.SetAnimation(0, animName, loop);
         }
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
+        // 실시간으로 정보를 가져오기 위해 에디터에서도 베이스를 찾을 수 있도록
+        if(_enemyBase == null)
+        {
+            _enemyBase = GetComponent<CEnemyBase>();
+        }
+        if(_enemyBase == null || _enemyBase.EnemyData == null)
+        {
+            return;
+        }
+
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, _detectionRange);
+        Gizmos.DrawWireSphere(transform.position, FinalDetectionRange);
 
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, _attackRange);
+        Gizmos.DrawWireSphere(transform.position, FinalAtkRange);
 
         Gizmos.color = Color.grey;
-        Gizmos.DrawWireSphere(transform.position, _giveUpRange);
+        Gizmos.DrawWireSphere(transform.position, FinalGiveUpRange);
 
         Vector3 centerPos = Application.isPlaying ? _homePosition : transform.position;
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(centerPos, _walkRange);
+        Gizmos.DrawWireSphere(centerPos, FinalWalkRange);
 
         if(_currentState == EUnitState.Wander || _currentState == EUnitState.Tracking)
         {
@@ -241,10 +323,10 @@ public class CAutoEnemyMove : MonoBehaviour
             Gizmos.DrawSphere(_targetPos, 0.3f);
         }
 
-        if(_currentState == EUnitState.Tracking && _targetPlayer != null)
+        if(_currentState == EUnitState.Tracking && _enemyBase.TargetHero != null)
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, _targetPlayer.position);
+            Gizmos.DrawLine(transform.position, _enemyBase.TargetHero.transform.position);
         }
     }
 
