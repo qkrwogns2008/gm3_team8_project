@@ -5,11 +5,15 @@ using TMPro;
 
 public class CGachaView : MonoBehaviour
 {
+    [Header("재화 관련 설정")]
+    public TMP_Text _rubyText;              // 루비 개수
+    public TMP_Text _summonCard;            // 소환권 개수
+
     [Header("카테고리 탭 그룹 설정")]
     public CanvasGroup _categoryGroup;      // 영웅 / 펫 / 성물 버튼 그룹
     public CanvasGroup _heroTabGroup;       // 영웅 탭 그룹 (투명도)
     public CanvasGroup _petTabGroup;        // 펫 탭 그룹 (투명도)
-    public CanvasGroup _holyTabGroup;      // 성물 탭 버튼 (투명도)
+    public CanvasGroup _holyTabGroup;       // 성물 탭 버튼 (투명도)
 
     [Header("카테고리 탭 버튼 설정")]
     public Button _heroTabButton;           // 영웅 탭 버튼
@@ -33,6 +37,12 @@ public class CGachaView : MonoBehaviour
     [Header("뽑기 창")]
     public GameObject _resultPanel;         // 뽑기 창
     public Transform _gachaTransform;       // 카드 출력 위치
-    public Button _openCard;                // 모두 열기 버튼
+    public Button _openAllCard;             // 모두 열기 버튼
     public Button _closeButton;             // 닫기 버튼
+
+    [Header("미니 뽑기(300 뽑기) 창")]
+
+    public GameObject _miniCardPanel;       // 미니 뽑기 창 
+    public Transform _miniCardTransform;    // 미니 카드 출력 위치
+    public Button _miniCardButton;          // 닫기 버튼
 }
