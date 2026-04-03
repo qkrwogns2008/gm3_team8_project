@@ -77,7 +77,7 @@ public abstract class CUnitBase : MonoBehaviour
     public float ScaleMultiplier => Mathf.Abs(SkeletonAni.transform.lossyScale.x);
     public virtual float FinalAtkRange => AtkRange * ScaleMultiplier;
     public virtual float FinalDetectionRange => DetectionRange * ScaleMultiplier;
-	public virtual float FinalMoveSpeed => MoveSpeed * MoveSpeedMultiplier;
+	public virtual float FinalMoveSpeed => MoveSpeed * ScaleMultiplier;
 	public UnitDataSO BaseData => OriginData;
 
     protected virtual void Awake()
