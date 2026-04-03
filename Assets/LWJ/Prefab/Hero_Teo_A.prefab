@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eda3342a2e900af47a41abfc8211f549, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UnitName: 
+  unitName: 
   CurrentHp: 0
   OriginData: {fileID: 11400000, guid: 9c752abebd1754e4f98bd68cb06cf613, type: 2}
   TeamType: 0
@@ -62,8 +62,8 @@ MonoBehaviour:
   SkillAnimation: Active_A
   CurrentState: 0
   SectorRadius: 10
-  SectorWidth: 60
-  PrintSkillLog: 1
+  SectorDegree: 30
+  PrintSkillLog: 0
 --- !u!114 &1385575880346748945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,9 +76,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8458d08ebfd40524ebe51fdf3782d5bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _walkSpeed: 10
-  _attackRange: 5
-  _detectionRange: 100
 --- !u!1 &5716120598718262879
 GameObject:
   m_ObjectHideFlags: 0
