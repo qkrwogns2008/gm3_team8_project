@@ -154,7 +154,7 @@ public class CAutoPlayerMove : MonoBehaviour
         PlayerHero.ChangeState(EHeroState.Move);
         LookAtTarget();
 
-        float moveSpeed = _heroData.BaseMoveSpeed;
+        float moveSpeed = PlayerHero.FinalMoveSpeed;
 
         transform.position = Vector3.MoveTowards(transform.position, _targetPos, moveSpeed * Time.deltaTime);
 

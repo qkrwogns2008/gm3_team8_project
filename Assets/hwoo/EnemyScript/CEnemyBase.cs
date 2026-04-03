@@ -258,10 +258,9 @@ public class CEnemyBase : CUnitBase
             // 타겟이 바뀌엇으므로 추격상태로 강제 전환
             _lastTargetSwitchTime = Time.time;
 
-            var moveScript = GetComponent<CAutoEnemyMove>();
-            if(moveScript != null)
+            if(_moveScript != null)
             {
-                moveScript.TriggerForcedAggro();
+                _moveScript.TriggerForcedAggro();
             }
         }
     }

@@ -64,7 +64,7 @@ public abstract class CUnitBase : MonoBehaviour
     protected virtual float FinalMaxHP => BaseMaxHp * MaxHPMultiplier; // 1000 * 1.1 (최대 체력 10%증가) = 1100
 	protected virtual float FinalAttackDamage => BaseAtkDamage * AttackDamageMultiplier;
 	protected virtual float FinalAttackActionInterval => BaseAttackActionInterval / AttackSpeedMultiplier; // 공격 딜레이 (공격 속도 100% 증가 => 공격 딜레이 1/2)
-	protected virtual float FinalMoveSpeed => BaseMoveSpeed * MoveSpeedMultiplier;
+	protected virtual float MoveSpeed => BaseMoveSpeed * MoveSpeedMultiplier;
 
 	private bool _isRegisterd = false; // 중복 등록 방지
 	#endregion
@@ -77,6 +77,7 @@ public abstract class CUnitBase : MonoBehaviour
     public float ScaleMultiplier => Mathf.Abs(SkeletonAni.transform.lossyScale.x);
     public virtual float FinalAtkRange => AtkRange * ScaleMultiplier;
     public virtual float FinalDetectionRange => DetectionRange * ScaleMultiplier;
+	public virtual float FinalMoveSpeed => MoveSpeed * MoveSpeedMultiplier;
 	public UnitDataSO BaseData => OriginData;
 
     protected virtual void Awake()

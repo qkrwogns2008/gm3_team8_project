@@ -47,7 +47,7 @@ public class CAutoEnemyMove : MonoBehaviour
             {
                 return 2f;
             }
-            return _enemyBase.EnemyData.BaseMoveSpeed;
+            return _enemyBase.FinalMoveSpeed;
         }
     }
     #endregion
