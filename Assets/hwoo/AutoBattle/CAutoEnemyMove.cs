@@ -11,10 +11,13 @@ public class CAutoEnemyMove : MonoBehaviour
     [Header("Blue : Walk Range")]
     [Header("Yellow : Move Target")]
     [Header("Move")]
-    [SerializeField] private float _walkspeed = 2f;             // 이동속도 (임시) 이후 외부에서 받아올것
     [SerializeField] private float _walkTimer = 3f;     // 대기시간
     [Header("State")]
     [SerializeField] private EUnitState _currentState = EUnitState.Idle;
+    [Header("ForcedAggro")]
+    [SerializeField] private bool _isForcedAggro = false;   // 강제 추격 여부
+    [SerializeField] private float _forcedAggroTimer = 0f;  // 강제 추격 지속 시간
+    [SerializeField] private float AggroDuration = 5f;      // 몇초간 쫒아가는가?
 
     // 타겟 발견시 속도는 기본과 같음
     #endregion
@@ -29,13 +32,25 @@ public class CAutoEnemyMove : MonoBehaviour
 
     private CEnemyBase _enemyBase; // 베이스 참조
 
+    #endregion
+    #region 프로퍼티
     private float FinalAtkRange => _enemyBase.FinalAtkRange;
     private float FinalDetectionRange => _enemyBase.FinalDetectionRange;
     private float FinalGiveUpRange => _enemyBase.FinalGiveUpRange;
     private float FinalWalkRange => _enemyBase.FinalWalkRange;
-    
-    #endregion
 
+    private float MoveSpeed
+    {
+        get
+        {
+            if (_enemyBase == null || _enemyBase.EnemyData == null)
+            {
+                return 2f;
+            }
+            return _enemyBase.EnemyData.BaseMoveSpeed;
+        }
+    }
+    #endregion
 
 
     private void Awake()
@@ -66,6 +81,14 @@ public class CAutoEnemyMove : MonoBehaviour
             return;
         }
         CheckTarget();
+        if(_isForcedAggro)
+        {
+            _forcedAggroTimer += Time.deltaTime;
+            if(_forcedAggroTimer <= 0)
+            {
+                _isForcedAggro = false;
+            }
+        }
         switch (_currentState)
         {
             case EUnitState.Idle:
@@ -148,6 +171,12 @@ public class CAutoEnemyMove : MonoBehaviour
         }
     }
 
+    public void TriggerForcedAggro()
+    {
+        _isForcedAggro = true;
+        _forcedAggroTimer = AggroDuration;
+        ChangeState(EUnitState.Tracking);
+    }
     void UpdateTracking()
     {
         CUnitBase target = _enemyBase.TargetHero;
@@ -160,8 +189,8 @@ public class CAutoEnemyMove : MonoBehaviour
         float sqrDist = (target.transform.position - transform.position).sqrMagnitude;
         float sqrAttackRange = FinalAtkRange * FinalAtkRange;
         float sqrGiveUpRange = FinalGiveUpRange * FinalGiveUpRange;
-
-        if (sqrDist > sqrGiveUpRange)
+        // 강제추격중 아닐때만 포기거리 체크
+        if (!_isForcedAggro && sqrDist > sqrGiveUpRange)
         {
             ResetTarget();
         }
@@ -259,7 +288,7 @@ public class CAutoEnemyMove : MonoBehaviour
     void MoveTo(Vector3 pos)
     {
         _enemyBase.LookAt(pos);
-        Vector3 nextPos = Vector3.MoveTowards(transform.position, pos, _walkspeed * Time.deltaTime);
+        Vector3 nextPos = Vector3.MoveTowards(transform.position, pos, MoveSpeed * Time.deltaTime);
         nextPos.z = 0f;
         transform.position = nextPos;
 

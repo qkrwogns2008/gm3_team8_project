@@ -28,14 +28,12 @@ public class CEnemyBase : CUnitBase
     
 
     private CAutoEnemyMove _moveScript;
-
-    public virtual float FinalAtkRange => AtkRange * ScaleMultiplier;
-    public virtual float FinalDetectionRange => DetectionRange * ScaleMultiplier;
     public virtual float FinalGiveUpRange => _giveupRange * ScaleMultiplier;
     public virtual float FinalWalkRange => _walkRange * ScaleMultiplier;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _moveScript = GetComponent<CAutoEnemyMove>();
     }
     protected override void InitUnitStats()
@@ -163,10 +161,16 @@ public class CEnemyBase : CUnitBase
     public override void TakeDamage(float damage, CUnitBase attacker)
     {
         base.TakeDamage(damage, attacker);
+        if(IsDead || attacker == null)
+        {
+            return;
+        }
+
+        SetTarget(attacker);
 
         if(_moveScript != null)
         {
-            _moveScript.ChangeState(EUnitState.Tracking);
+            _moveScript.TriggerForcedAggro();
         }
         
     }

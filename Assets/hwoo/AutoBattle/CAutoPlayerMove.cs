@@ -1,16 +1,13 @@
 using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 public class CAutoPlayerMove : MonoBehaviour
 {
     #region 인스펙터
-    [Header("Move")]
-    [SerializeField] private float _walkSpeed = 2f;             // 이동속도 (임시) 이후 외부에서 받아올것
-    [SerializeField] private float _attackRange = 1.5f;         // 공격 사거리 (임시)
-    [Header("Tracking")]
-    [SerializeField] private float _detectionRange = 100f;    // 탐지 범위(맵 전체를 덮을 수 있게
+    
     // 타겟 발견시 속도는 기본과 같음
     #endregion
 
@@ -20,7 +17,9 @@ public class CAutoPlayerMove : MonoBehaviour
 
     private SkeletonAnimation _skeletonAnim;
     private CHero PlayerHero;   // 상태 제어용 참조 사용시 CHero참조
+    private HeroDataSO _heroData;
     #endregion
+
 
     private void Awake()
     {
@@ -47,6 +46,15 @@ public class CAutoPlayerMove : MonoBehaviour
             return;
         }
 
+        if(_heroData == null && PlayerHero.BaseData != null)
+        {
+            _heroData = PlayerHero.BaseData as HeroDataSO;
+        }
+
+        if(_heroData == null)
+        {
+            return;
+        }
 		CheckTarget();
 
 		if (_targetEnemy == null)
@@ -60,7 +68,9 @@ public class CAutoPlayerMove : MonoBehaviour
             _targetPos.z = 0f;
 
             float sqrDistance = (transform.position - _targetPos).sqrMagnitude;
-            float sqrAttackRange = _attackRange * _attackRange;
+
+            float finalRange = PlayerHero.FinalAtkRange;
+            float sqrAttackRange = finalRange * finalRange;
 
             if(sqrDistance <= sqrAttackRange)
             {
@@ -107,7 +117,9 @@ public class CAutoPlayerMove : MonoBehaviour
         }
 
         CUnitBase closest = null;
-        float minSqrDistance = _detectionRange * _detectionRange;
+
+        float detectionRange = PlayerHero.FinalDetectionRange;
+        float minSqrDistance = detectionRange * detectionRange;
 
         foreach(CUnitBase enemy in CEnemyManager.Instance.ActiveEnemies)
         {
@@ -142,7 +154,9 @@ public class CAutoPlayerMove : MonoBehaviour
         PlayerHero.ChangeState(EHeroState.Move);
         LookAtTarget();
 
-        transform.position = Vector3.MoveTowards(transform.position, _targetPos, _walkSpeed * Time.deltaTime);
+        float moveSpeed = _heroData.BaseMoveSpeed;
+
+        transform.position = Vector3.MoveTowards(transform.position, _targetPos, moveSpeed * Time.deltaTime);
 
         // Z 축 고정
         Vector3 curPos = transform.position;
