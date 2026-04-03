@@ -389,13 +389,13 @@ public class CHero : CUnitBase
 			return;
 		}
 
-		// 방어력 연산 후 피해가 있으면 적용
-		float finalDamage = damage - FinalDefense;
-		CurrentHp -= finalDamage > 0 ? finalDamage : 0;
+		// 방어력 연산. 최소 1f의 피해 보장.
+		float finalDamage = Mathf.Max(1f, damage - FinalDefense);
+		CurrentHp = Mathf.Max(CurrentHp - finalDamage, 0);
 
 		if (PrintLog)
 		{
-			if (finalDamage > 0)
+			if (finalDamage > 1)
 			{
 				Debug.Log($"CUnitBase) [{UnitName}] {finalDamage} 피해 입음. [HP:{CurrentHp}]");
 			}
