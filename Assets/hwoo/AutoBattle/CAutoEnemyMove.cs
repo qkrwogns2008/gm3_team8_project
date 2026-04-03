@@ -13,8 +13,6 @@ public class CAutoEnemyMove : MonoBehaviour
     [Header("Move")]
     [SerializeField] private float _walkspeed = 2f;             // 이동속도 (임시) 이후 외부에서 받아올것
     [SerializeField] private float _walkTimer = 3f;     // 대기시간
-    [Header("Tracking")]
-    [SerializeField] private LayerMask _playerLayer;        // 탐지할 레이어
     [Header("State")]
     [SerializeField] private EUnitState _currentState = EUnitState.Idle;
 

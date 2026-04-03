@@ -25,12 +25,19 @@ public class CEnemyBase : CUnitBase
     public EnemyBaseSO EnemyData => OriginData as EnemyBaseSO;
     public CUnitBase TargetHero => Target;
 
-    private float ScaleMultiplier => Mathf.Abs(SkeletonAni.transform.localScale.x);
+    
+
+    private CAutoEnemyMove _moveScript;
 
     public virtual float FinalAtkRange => AtkRange * ScaleMultiplier;
     public virtual float FinalDetectionRange => DetectionRange * ScaleMultiplier;
     public virtual float FinalGiveUpRange => _giveupRange * ScaleMultiplier;
     public virtual float FinalWalkRange => _walkRange * ScaleMultiplier;
+
+    private void Awake()
+    {
+        _moveScript = GetComponent<CAutoEnemyMove>();
+    }
     protected override void InitUnitStats()
     {
         base.InitUnitStats();
@@ -157,6 +164,10 @@ public class CEnemyBase : CUnitBase
     {
         base.TakeDamage(damage, attacker);
 
+        if(_moveScript != null)
+        {
+            _moveScript.ChangeState(EUnitState.Tracking);
+        }
         
     }
 
