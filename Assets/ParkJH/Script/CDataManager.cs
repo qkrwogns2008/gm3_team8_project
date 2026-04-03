@@ -15,8 +15,13 @@ public class CDataManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            #if UNITY_EDITOR
+            // 유니티 에디터(PC 작업 중)일 때는 프로젝트 폴더 바로 옆에 저장 (찾기 쉬움)
+            // _savePath = Path.Combine(Application.dataPath, "..", "SaveData.json");
+            #else
+            // 실제 빌드(모바일, PC 빌드본)일 때는 안전한 영구 저장소에 저장
             _savePath = Path.Combine(Application.persistentDataPath, "SaveData.json");
+            #endif
             LoadUserData();
         }
         else { Destroy(gameObject); }
@@ -178,6 +183,40 @@ public class CDataManager : MonoBehaviour
         return null; // 없으면 null 반환
     }
 
+
+
+    public struct FinalHeroStatus
+    {
+        public float HeroAtk;
+        public float HeroDef;
+        public float HeroHP;
+    }
+
+    // 팀원들이 이 함수만 부르면 팀장님의 공식으로 계산된 결과가 나갑니다.
+    public FinalHeroStatus GetHeroFinalStatus(int heroID, UnitDataSO unitSO)
+    {
+        // 유저의 강화/레벨 데이터 로드
+        UserUpgradeStatus upgrade = GetUserUpgradeStatus();
+        UserHeroData heroData = GetHeroData(heroID);
+        HeroDataSO heroSO;
+        heroSO = unitSO as HeroDataSO;
+        if (heroSO != null)
+        { 
+            Debug.Log($"영웅 데이터 조회 성공 (ID: {heroID} / 레벨: {heroData.Level})");
+        }
+            // 최종 스탯 저장용
+            FinalHeroStatus final = new FinalHeroStatus();
+
+        // SO수치  ((영웅 기본 수치 + 영웅 레벨당 수치 * 유저 강화 레벨 )* 영웅 레벨)
+        //final.HeroAtk = (heroSO.BaseAtk + heroSO.AtkPerLevel * upgrade.UserAtkLevel) * (1 + 0.1f * heroData.Level);
+        //final.HeroDef = (heroSO.BaseDefense + heroSO.DefensePerLevel * upgrade.UserDefLevel) * (1 + 0.1f * heroData.Level);
+        //final.HeroHP =  (heroSO.BaseHP + heroSO.HPPerLevel * upgrade.UserLifeLevel) * (1 + 0.1f * heroData.Level);
+
+        return final;
+    }
+
+
+
     public void AddItem(int id, int count)
     {
         // 인벤토리 보유 여부 확인
@@ -225,5 +264,6 @@ public class CDataManager : MonoBehaviour
         double seconds = span.TotalSeconds;
         return Math.Min(seconds, 3600*24); 
     }
+
 
 }
