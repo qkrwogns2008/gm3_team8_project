@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaf0ade6caff01747a997d1da3281e48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UnitName: 
+  unitName: 
   CurrentHp: 0
   OriginData: {fileID: 11400000, guid: 4437df723d5d0fa4399b0cbe9eb56590, type: 2}
   TeamType: 1
@@ -61,6 +61,8 @@ MonoBehaviour:
   _effectPos: {fileID: 0}
   _giveupRange: 15
   _walkRange: 5
+  _switchThreshold: 1.2
+  _minTargetStayTime: 1
 --- !u!114 &3517583090020551184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,12 +75,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d173ca2d533ccc4086579ad61c89728, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _walkspeed: 2
   _walkTimer: 3
-  _playerLayer:
-    serializedVersion: 2
-    m_Bits: 64
   _currentState: 0
+  _isForcedAggro: 0
+  _forcedAggroTimer: 0
+  AggroDuration: 5
   _canAttack: 0
 --- !u!1 &5614867913979186797
 GameObject:

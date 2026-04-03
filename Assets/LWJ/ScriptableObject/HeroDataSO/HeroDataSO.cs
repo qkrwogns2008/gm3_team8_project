@@ -1,14 +1,15 @@
 using UnityEngine;
 
 /*
-유니크 : 1000
-레전드 : 2000
+레어 : 1000
+유니크 : 2000
+레전드 : 3000
 */
 public enum EHeroID
 {
 	None = 0,
-	Teo = 2001,
-	Yeonhee = 2002,
+	Teo = 3001,
+	Yeonhee = 3002,
 }
 
 [CreateAssetMenu(fileName = "HeroDataSO_", menuName = "ScriptableObjects/Hero Data (SO)")]
