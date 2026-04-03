@@ -102,6 +102,7 @@ public class CGachaPresenter : MonoBehaviour
         {
             StartCoroutine(Co_GachaClick(count));
         }
+
         else
         {
             NotEnoughMoneyPopup();
@@ -310,14 +311,13 @@ public class CGachaPresenter : MonoBehaviour
                 yield return new WaitForSeconds(0.05f);
             }
 
-            CQuestManager.Instance.QuestProgress(EQuestType.GachaSummon, count);
-
             // 뽑기 중 해제
             _isRolling = false;
             _gachaView.OpenAllCard.gameObject.SetActive(true);
 
         }
-        
+
+        CQuestManager.Instance.QuestProgress(EQuestType.GachaSummon, count);
     }
 
     // 모두 열기 기능 함수

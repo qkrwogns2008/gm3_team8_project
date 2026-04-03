@@ -13,7 +13,7 @@ public class CGachaTableSO : ScriptableObject
     [Header("소환 대상 리스트")]
     public List<CGachaDataSO> GachaList = new List<CGachaDataSO>();
 
-    public CGachaDataSO WeightRandomGacha()
+    public CGachaDataSO WeightRandomGacha(System.Random randomSeed)
     {
         // 리스트가 없거나 0이면 null반환
         if (GachaList == null || GachaList.Count == 0)
@@ -31,7 +31,7 @@ public class CGachaTableSO : ScriptableObject
         }
 
         // 랜덤 숫자 선정
-        float randomValue = Random.Range(0, totalWeight);
+        float randomValue = (float)(randomSeed.NextDouble() * totalWeight);
         // 누적 가중치 변수
         float currentWegiht = 0f;
 
