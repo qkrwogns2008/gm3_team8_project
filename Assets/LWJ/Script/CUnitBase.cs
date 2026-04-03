@@ -8,7 +8,7 @@ public enum ETeamType { Hero, Enemy } // Hero, Enemy 적 타입 구분
 public abstract class CUnitBase : MonoBehaviour
 {
 	#region 인스펙터
-	[SerializeField] protected string UnitName; // 로그용
+	[SerializeField] protected string unitName; // 로그용
 	[SerializeField] protected float CurrentHp; // 현재 체력
 
 	[Header("유닛 데이터 SO")]
@@ -42,8 +42,6 @@ public abstract class CUnitBase : MonoBehaviour
 
 	#region 내부 변수
 	// 스테이터스
-
-
 	protected float BaseMaxHp; // 최대 체력
 	protected float BaseAtkDamage; // 공격력
 	protected float BaseAttackActionInterval; // 공격 주기(초)
@@ -63,7 +61,6 @@ public abstract class CUnitBase : MonoBehaviour
 	protected bool IsDead = false; // 사망 여부
 	protected Coroutine MotionRoutine;
 
-
     protected virtual float FinalMaxHP => BaseMaxHp * MaxHPMultiplier; // 1000 * 1.1 (최대 체력 10%증가) = 1100
 	protected virtual float FinalAttackDamage => BaseAtkDamage * AttackDamageMultiplier;
 	protected virtual float FinalAttackActionInterval => BaseAttackActionInterval / AttackSpeedMultiplier; // 공격 딜레이 (공격 속도 100% 증가 => 공격 딜레이 1/2)
@@ -74,8 +71,8 @@ public abstract class CUnitBase : MonoBehaviour
 
 	public virtual event System.Action<float, float> OnHpChanged;
 
-	// 외부에서 이 유닛이 어느 팀인지 확인할 때 사용
 	public ETeamType Team => TeamType;
+	public string UnitName => unitName;
 	public virtual bool IsUnitDead => IsDead;
     public float ScaleMultiplier => Mathf.Abs(SkeletonAni.transform.localScale.x);
     public virtual float FinalAtkRange => AtkRange * ScaleMultiplier;
@@ -84,7 +81,6 @@ public abstract class CUnitBase : MonoBehaviour
 
     protected virtual void Awake()
 	{
-
         InitUnitStats();
 		
 		if (SkeletonAni == null)
@@ -98,8 +94,6 @@ public abstract class CUnitBase : MonoBehaviour
 	}
 	protected virtual void Start()
 	{
-		
-
     }
 
 	protected virtual void Update()
@@ -187,7 +181,7 @@ public abstract class CUnitBase : MonoBehaviour
 	{
 		if (OriginData != null)
 		{
-			UnitName = OriginData.UnitName;
+			unitName = OriginData.UnitName;
 			BaseMaxHp = OriginData.BaseMaxHp;
 			BaseAtkDamage = OriginData.BaseAttackDamage;
 			BaseAttackActionInterval = OriginData.BaseAttackInterval;

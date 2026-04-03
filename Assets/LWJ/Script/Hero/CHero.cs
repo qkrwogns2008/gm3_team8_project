@@ -55,7 +55,7 @@ public class CHero : CUnitBase
 	protected virtual float FinalSkillDamage => FinalAttackDamage * BaseSkillDamageRate;
 	protected virtual float FinalSkillCooldown => BaseSkillCooldown * CooldownMultiplier;
 
-	protected virtual float SpineScale => SkeletonAni.transform.localScale.x;
+	protected virtual float SpineScale => ScaleMultiplier;
 	#endregion
 
 	public event System.Action<float> OnSkillUsed; // 스킬 쿨타임이 인자로 들어감
@@ -65,6 +65,8 @@ public class CHero : CUnitBase
 	protected override void InitUnitStats()
 	{
 		base.InitUnitStats();
+
+		DeathDisableTime = DeathDisableTime <= 0f ? 3f : DeathDisableTime;
 
 		HeroData = OriginData as HeroDataSO;
 		if (HeroData != null)
@@ -147,11 +149,6 @@ public class CHero : CUnitBase
 
 		// 치명타 체크
 		bool isCriAttack = (Random.Range(0f, 100f) <= CriticalChance);
-
-		if (PrintLog)
-		{
-			Debug.Log($"크리티컬 : {isCriAttack}");
-		}
 
 		if (isCriAttack && CriticalEffect != null)
 		{

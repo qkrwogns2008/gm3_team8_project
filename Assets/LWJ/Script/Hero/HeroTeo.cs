@@ -16,16 +16,19 @@ public class HeroTeo : CHero
 
 	protected override void ProcessSkillHit(CUnitBase target)
 	{
-		SectorAreaAttack(target, SectorDegree, ScaledSectorRadius);
+		IReadOnlyList<CUnitBase> targetList = CEnemyManager.Instance.ActiveEnemies;
+
+		SectorAreaAttack(target, SectorDegree, ScaledSectorRadius, targetList);
 	}
 
 	/// <summary>
-	/// 부채꼴 영역의 Enemy에게 피해를 줍니다. degree는 부채꼴의 각도, radius는 부채꼴의 반지름입니다.
+	/// 부채꼴 영역 내의 target에게 피해를 줍니다. degree는 부채꼴의 각도, radius는 부채꼴의 반지름, targetList는 탐지할 타겟 목록입니다.
 	/// </summary>
-	/// <param name="target">공격 매개 대상입니다. 범위에 상관없이 항상 피해를 입습니다.</param>
+	/// <param name="originTarget">공격 매개 대상입니다. 범위에 상관없이 항상 피해를 입습니다.</param>
 	/// <param name="degree">부채꼴 각도</param>
 	/// <param name="radius">부채꼴 반지름</param>
-	protected virtual void SectorAreaAttack(CUnitBase target, float degree, float radius)
+	/// <param name="targetList">타겟 목록</param>
+	protected virtual void SectorAreaAttack(CUnitBase originTarget, float degree, float radius, IReadOnlyList<CUnitBase> targetList)
 	{
 		float sectorHalfDegree = degree * 0.5f; // (정면, 좌측)과 (정면, 우측)의 내적(코사인) 값 같음.
 		float cosSectorDegree = Mathf.Cos(sectorHalfDegree * Mathf.Deg2Rad);
@@ -35,28 +38,26 @@ public class HeroTeo : CHero
 		Vector2 forward = IsFacingRight ? Vector2.right : Vector2.left;
 		Vector2 pos = transform.position;
 
-		IReadOnlyList<CUnitBase> enemies = CEnemyManager.Instance.ActiveEnemies;
-
-		for (int i = 0; i < enemies.Count; i++)
+		for (int i = 0; i < targetList.Count; i++)
 		{
-			CUnitBase enemy = enemies[i];
+			CUnitBase target = targetList[i];
 
-			if (enemy == null)
+			if (target == null)
 			{
 				continue;
 			}
 
-			if (enemy == target)
+			if (target == originTarget)
 			{
-				continue; // target에 대한 피해는 후처리
+				continue; // originTarget에 대한 피해는 후처리
 			}
 
-			if (enemy.IsUnitDead)
+			if (target.IsUnitDead)
 			{
 				continue;
 			}
 
-			Vector2 targetPos = enemy.transform.position;
+			Vector2 targetPos = target.transform.position;
 			Vector2 toTarget = targetPos - pos;
 
 			// 사거리 체크
@@ -75,8 +76,8 @@ public class HeroTeo : CHero
 			{
 				continue;
 			}
-			
-			enemy.TakeDamage(FinalSkillDamage, this);
+
+			target.TakeDamage(FinalSkillDamage, this);
 		}
 
 		if (PrintSkillLog)
@@ -85,9 +86,9 @@ public class HeroTeo : CHero
 		}
 
 		// 부채꼴 바깥이어도 타겟은 무조건 피해를 입도록 보장
-		if (target != null)
+		if (originTarget != null)
 		{
-			target.TakeDamage(FinalSkillDamage, this);
+			originTarget.TakeDamage(FinalSkillDamage, this);
 		}
 	}
 
