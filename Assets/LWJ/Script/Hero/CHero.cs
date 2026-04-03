@@ -35,6 +35,11 @@ public class CHero : CUnitBase
 	#region 내부 변수
 	protected HeroDataSO HeroData;
 
+	protected EHeroID HeroID; // ID
+
+	protected float BaseDefense; // 방어력
+	protected float DefenseMultiplier = 1.0f; // 방어력 승수
+
 	protected EffectDataSO CriticalEffect; // 치명타 공격 이펙트
 	//protected float BaseCriticalActionInterval = 1.5f;
 	protected float CriticalChance; // 치명타 확률
@@ -50,10 +55,13 @@ public class CHero : CUnitBase
 	protected bool IsPendingDead = false; // 사망 유예 여부
 
 	protected bool IsFacingRight => (SkeletonAni.skeleton.ScaleX != 1.0f);
+	protected virtual float FinalDefense => BaseDefense * DefenseMultiplier;
 	protected virtual float CriticalDamage => FinalAttackDamage * CriticalAttackMultiplier;
 	protected virtual float FinalSkillActionInterval => SkillActionInterval / AttackSpeedMultiplier;
 	protected virtual float FinalSkillDamage => FinalAttackDamage * BaseSkillDamageRate;
 	protected virtual float FinalSkillCooldown => BaseSkillCooldown * CooldownMultiplier;
+
+	protected virtual float SpineScale => ScaleMultiplier;
 	#endregion
 
 	public event System.Action<float> OnSkillUsed; // 스킬 쿨타임이 인자로 들어감
@@ -64,9 +72,19 @@ public class CHero : CUnitBase
 	{
 		base.InitUnitStats();
 
+		DeathDisableTime = DeathDisableTime <= 0f ? 3f : DeathDisableTime;
+
 		HeroData = OriginData as HeroDataSO;
 		if (HeroData != null)
 		{
+			HeroID = HeroData.HeroID;
+			if (HeroID == EHeroID.None)
+			{
+				Debug.LogWarning($"{UnitName} ID 설정 필요.");
+			}
+
+			BaseDefense = HeroData.BaseDefense;
+
 			AttackEffect = AttackEffect != null ? AttackEffect : HeroData.AttackEffect; // 비었으면 SO에서 할당
 
 			CriticalEffect = HeroData.CriticalEffect;
@@ -145,11 +163,6 @@ public class CHero : CUnitBase
 
 		// 치명타 체크
 		bool isCriAttack = (Random.Range(0f, 100f) <= CriticalChance);
-
-		if (PrintLog)
-		{
-			Debug.Log($"크리티컬 : {isCriAttack}");
-		}
 
 		if (isCriAttack && CriticalEffect != null)
 		{
@@ -296,7 +309,7 @@ public class CHero : CUnitBase
 			}
 
 			// 이펙트 생성 실패 시 즉시 종료
-			if (!TrySummonEffect(fxData))
+			if (!TrySummonEffect(fxData, transform.position))
 			{
 				Debug.LogWarning($"{name} : {effectData.Name} 이펙트 생성 실패");
 				MotionRoutine = null;
@@ -336,7 +349,7 @@ public class CHero : CUnitBase
 		MotionRoutine = null;
 	}
 
-	protected virtual bool TrySummonEffect(EffectCatalog fxData)
+	protected virtual bool TrySummonEffect(EffectCatalog fxData, Vector3 position)
 	{
 		EffectBase prefab = fxData.Prefab;
 		if (prefab == null)
@@ -344,7 +357,7 @@ public class CHero : CUnitBase
 			return false;
 		}
 
-		Vector3 pos = transform.position + fxData.Offset;
+		Vector3 pos = position + fxData.Offset;
 		Quaternion rot = Quaternion.Euler(-42f, 0f, 0f);
 		EffectBase fx = PoolManager.Instance.Pop(prefab, pos, rot);
 
@@ -369,27 +382,35 @@ public class CHero : CUnitBase
 		return true;
 	}
 
-	/// <summary>
-	/// 오버로딩 : 프리팹으로 이펙트 소환 시도.
-	/// </summary>
-	protected virtual bool TrySummonEffect(EffectBase prefab, EEffectDirection direction, Vector3 position)
+	public override void TakeDamage(float damage, CUnitBase attacker)
 	{
-		if (prefab == null)
+		if (IsDead)
 		{
-			return false;
+			return;
 		}
 
-		Quaternion rot = Quaternion.Euler(-42f, 0f, 0f);
-		EffectBase fx = PoolManager.Instance.Pop(prefab, position, rot);
+		// 방어력 연산 후 피해가 있으면 적용
+		float finalDamage = damage - FinalDefense;
+		CurrentHp -= finalDamage > 0 ? finalDamage : 0;
 
-		if (fx == null)
+		if (PrintLog)
 		{
-			return false;
+			if (finalDamage > 0)
+			{
+				Debug.Log($"CUnitBase) [{UnitName}] {finalDamage} 피해 입음. [HP:{CurrentHp}]");
+			}
+			else
+			{
+				Debug.Log($"CUnitBase) [{UnitName}] 방어력에 의해 피해 상쇄. [피해:{damage} / 방어력:{FinalDefense}]");
+			}
 		}
 
-		fx.Init(prefab, direction);
+		NotifyHpChange();
 
-		return true;
+		if (CurrentHp <= 0)
+		{
+			Die();
+		}
 	}
 
 	protected override void Die()

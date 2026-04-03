@@ -11,42 +11,53 @@ public class HeroTeo : CHero
 	#endregion
 
 	#region 내부 변수
-	protected float SpineScale => SkeletonAni.transform.localScale.x;
-	protected float ScaledSectorRadius => SectorRadius * SpineScale; // 스킬 범위에 스파인 크기 반영
+	protected virtual float ScaledSectorRadius => SectorRadius * SpineScale; // 스킬 범위에 스파인 크기 반영
 	#endregion
 
 	protected override void ProcessSkillHit(CUnitBase target)
 	{
-		SectorAttack(target);
+		IReadOnlyList<CUnitBase> targetList = CEnemyManager.Instance.ActiveEnemies;
+
+		SectorAreaAttack(target, SectorDegree, ScaledSectorRadius, targetList);
 	}
 
-	protected virtual void SectorAttack(CUnitBase target)
+	/// <summary>
+	/// 부채꼴 영역 내의 target에게 피해를 줍니다. degree는 부채꼴의 각도, radius는 부채꼴의 반지름, targetList는 탐지할 타겟 목록입니다.
+	/// </summary>
+	/// <param name="originTarget">공격 매개 대상입니다. 범위에 상관없이 항상 피해를 입습니다.</param>
+	/// <param name="degree">부채꼴 각도</param>
+	/// <param name="radius">부채꼴 반지름</param>
+	/// <param name="targetList">타겟 목록</param>
+	protected virtual void SectorAreaAttack(CUnitBase originTarget, float degree, float radius, IReadOnlyList<CUnitBase> targetList)
 	{
-		float SectorHalfDegree = SectorDegree * 0.5f; // (정면, 좌측)과 (정면, 우측)의 내적(코사인) 값 같음.
-		float cosSectorDegree = Mathf.Cos(SectorHalfDegree * Mathf.Deg2Rad);
+		float sectorHalfDegree = degree * 0.5f; // (정면, 좌측)과 (정면, 우측)의 내적(코사인) 값 같음.
+		float cosSectorDegree = Mathf.Cos(sectorHalfDegree * Mathf.Deg2Rad);
 
-		float sqrSectorRadius = ScaledSectorRadius * ScaledSectorRadius;
+		float sqrSectorRadius = radius * radius;
 
 		Vector2 forward = IsFacingRight ? Vector2.right : Vector2.left;
 		Vector2 pos = transform.position;
 
-		IReadOnlyList<CUnitBase> enemies = CEnemyManager.Instance.ActiveEnemies;
-
-		for (int i = 0; i < enemies.Count; i++)
+		for (int i = 0; i < targetList.Count; i++)
 		{
-			CUnitBase enemy = enemies[i];
+			CUnitBase target = targetList[i];
 
-			if (enemy == null)
+			if (target == null)
 			{
 				continue;
 			}
 
-			if (target == enemy)
+			if (target == originTarget)
 			{
-				continue; // target에 대한 피해는 후처리
+				continue; // originTarget에 대한 피해는 후처리
 			}
 
-			Vector2 targetPos = enemy.transform.position;
+			if (target.IsUnitDead)
+			{
+				continue;
+			}
+
+			Vector2 targetPos = target.transform.position;
 			Vector2 toTarget = targetPos - pos;
 
 			// 사거리 체크
@@ -66,8 +77,7 @@ public class HeroTeo : CHero
 				continue;
 			}
 
-			
-			enemy.TakeDamage(FinalSkillDamage, this);
+			target.TakeDamage(FinalSkillDamage, this);
 		}
 
 		if (PrintSkillLog)
@@ -76,9 +86,9 @@ public class HeroTeo : CHero
 		}
 
 		// 부채꼴 바깥이어도 타겟은 무조건 피해를 입도록 보장
-		if (target != null)
+		if (originTarget != null)
 		{
-			target.TakeDamage(FinalSkillDamage, this);
+			originTarget.TakeDamage(FinalSkillDamage, this);
 		}
 	}
 

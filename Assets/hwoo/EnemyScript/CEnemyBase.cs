@@ -1,6 +1,7 @@
 using UnityEngine;
 using Spine.Unity;
 using System.Collections;
+using System.Collections.Generic;
 
 public enum EUnitState
 {
@@ -17,21 +18,28 @@ public class CEnemyBase : CUnitBase
     [SerializeField] protected Transform _effectPos;
     [SerializeField] private float _giveupRange = 15f;
     [SerializeField] private float _walkRange = 5f;    // 주변 돌아다니는 범위
-
+    [Header("어그로 설정")]
+    [SerializeField] private float _switchThreshold = 1.2f;
+    [SerializeField] private float _minTargetStayTime = 1.0f;
     protected EnemyBaseSO _enemySO => OriginData as EnemyBaseSO;
     protected Vector3 _startPosition;
+    protected Dictionary<CUnitBase, float> _threatTable = new Dictionary<CUnitBase, float>();
+    private float _lastTargetSwitchTime = -900f;    // 마지막으로 타겟이 바뀐 시간. (첫 타겟을 바로 잡기 위해 작은값지정)
     
     public override bool IsUnitDead => IsDead;
 
     public EnemyBaseSO EnemyData => OriginData as EnemyBaseSO;
     public CUnitBase TargetHero => Target;
+    private CAutoEnemyMove _moveScript;
 
-    private float ScaleMultiplier => Mathf.Abs(SkeletonAni.transform.localScale.x);
-
-    public virtual float FinalAtkRange => AtkRange * ScaleMultiplier;
-    public virtual float FinalDetectionRange => DetectionRange * ScaleMultiplier;
     public virtual float FinalGiveUpRange => _giveupRange * ScaleMultiplier;
     public virtual float FinalWalkRange => _walkRange * ScaleMultiplier;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        _moveScript = GetComponent<CAutoEnemyMove>();
+    }
     protected override void InitUnitStats()
     {
         base.InitUnitStats();
@@ -73,15 +81,23 @@ public class CEnemyBase : CUnitBase
         base.OnEnable();
         // 상태 초기화
         IsDead = false;
+        NextAttackTime = 0f;
+        Target = null;
 
-        // 능력치 초기화
-        InitUnitStats();
+        // 유령 코루틴 변수 삭제
+        MotionRoutine = null;
 
         // 애니메이션 초기화
         if(SkeletonAni != null)
         {
+            SkeletonAni.AnimationState.ClearTracks();
+            SkeletonAni.AnimationName = null;
+
+            SkeletonAni.Skeleton.SetToSetupPose();
             SkeletonAni.AnimationState.SetAnimation(0, "Idle", true);
         }
+        // 능력치 초기화
+        InitUnitStats();
     }
 
     protected override void OnDisable()
@@ -157,8 +173,97 @@ public class CEnemyBase : CUnitBase
     public override void TakeDamage(float damage, CUnitBase attacker)
     {
         base.TakeDamage(damage, attacker);
+        if(IsDead || attacker == null)
+        {
+            return;
+        }
 
+
+        AddThreat(attacker, damage);
+        UpdateBestTarget();
         
+    }
+
+    private void AddThreat(CUnitBase attacker, float damage)
+    {
+        if(!_threatTable.ContainsKey(attacker))
+        {
+            _threatTable.Add(attacker, 0f);
+        }
+        _threatTable[attacker] += damage;
+    }
+    private void UpdateBestTarget()
+    {
+        if(_threatTable.Count == 0)
+        {
+            return;
+        }
+        if(Time.time - _lastTargetSwitchTime < _minTargetStayTime && Target != null && !Target.IsUnitDead)
+        {
+            return;
+        }
+        CUnitBase bestAttacker = null;
+        float maxThreat = -1f;
+
+        // 순회중 삭제를 위한 임시 리스트
+        List<CUnitBase> toRemove = new List<CUnitBase>();
+
+        // 가장 높은 어그로대상 탐색 및 검사
+        foreach (var pair in _threatTable)
+        {
+            CUnitBase unit = pair.Key;
+
+            // 적이 사라졌거나 죽으면 삭제 목록에 추가
+            if (unit == null || unit.IsUnitDead || !unit.gameObject.activeSelf)
+            {
+                toRemove.Add(unit);
+                continue;
+            }
+            
+            // 가장 높은 데미지를 준 대상 찾기
+            if (pair.Value > maxThreat)
+            {
+                maxThreat = pair.Value;
+                bestAttacker = unit;
+            }
+        }
+        
+        // 유효하지 않은 데이터 청소
+        foreach(var unit in toRemove)
+        {
+            _threatTable.Remove(unit);
+        }
+        // 더이상 공격 대상이 없을경우 종료
+        if(bestAttacker == null)
+        {
+            return;
+        }
+        // 타겟 전환 결정
+        // 현 타겟이 있고 살아있다면 새로운 적이 현재보다 20% 더 강하게 때렷을때 대상 변경
+        if(Target != null && !Target.IsUnitDead)
+        {
+            float currentTargetThreat = _threatTable.ContainsKey(Target) ? _threatTable[Target] : 0f;
+
+            // 새로운 대상의 어그로가 기존보다 확실히 높지 않으면 무시
+            if(maxThreat < currentTargetThreat * _switchThreshold)
+            {
+                return;
+            }
+        }
+        // 최종 타겟 설정 및 행동 변경
+        if(Target != bestAttacker)
+        {
+            SetTarget(bestAttacker);
+
+            // 타겟이 바뀌엇으므로 추격상태로 강제 전환
+            _lastTargetSwitchTime = Time.time;
+
+            var moveScript = GetComponent<CAutoEnemyMove>();
+            if(moveScript != null)
+            {
+                moveScript.TriggerForcedAggro();
+            }
+        }
     }
 
     protected override void Die()
@@ -171,16 +276,11 @@ public class CEnemyBase : CUnitBase
         base.Die();
         SetAnimation("Death", false);
 
-        if(_enemySO != null)
-        {
-            Debug.Log($"{UnitName} 처치");
-            Debug.Log($"골드 : {_enemySO.GoldReward}, 경험치: {_enemySO.ExpReward}, 아이템: {_enemySO.ItemReward}");
-        }
-
         StopAllCoroutines();
 
         StartCoroutine(CoReturnToPool());
     }
+
 
     private IEnumerator CoReturnToPool()
     {

@@ -567,6 +567,7 @@ MonoBehaviour:
   myPrefab: {fileID: 0}
   otherPrefabs:
   - {fileID: 0}
+  - {fileID: 0}
   offTarget: {fileID: 7643371352098829548}
   onTarget: {fileID: 6091768835817230464}
 --- !u!1 &740489917524325179
@@ -781,7 +782,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_TargetDisplay: 0
 --- !u!114 &1314869720911718696
 MonoBehaviour:
@@ -1717,6 +1718,7 @@ MonoBehaviour:
   myPrefab: {fileID: 0}
   otherPrefabs:
   - {fileID: 0}
+  - {fileID: 0}
   offTarget: {fileID: 7643371352098829548}
   onTarget: {fileID: 6091768835817230464}
 --- !u!1 &4891040267168176912
@@ -2248,8 +2250,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetPrefabs:
-  - {fileID: 0}
-  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -3070,7 +3070,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myPrefab: {fileID: 0}
-  otherPrefabs: []
+  otherPrefabs:
+  - {fileID: 0}
+  - {fileID: 0}
   offTarget: {fileID: 7643371352098829548}
   onTarget: {fileID: 6091768835817230464}
 --- !u!1001 &1308214086204832023

@@ -1,91 +1,71 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Parallax2DObject : MonoBehaviour
 {
     #region 인스펙터
-    [SerializeField] private Transform _cameraTr;       // 따라갈 카메라
-    [SerializeField] private bool _useX = true;         // X축 parallax 여부
-    [SerializeField] private bool _useY = false;        // Y축 parallax 여부
+    [SerializeField] private Transform _cameraTr;
+    [SerializeField] private bool _useX = true;
+    [SerializeField] private bool _useY = true;
     #endregion
 
     #region 내부변수
     private ParallaxLayerElement[] _layers;
-    // 이전 프레임 카메라 위치를 저장해 두었다가 -> 현재 프레임 위치
-
-    private Vector3 _prevCampos;
+    private Vector3 _startCamPos;
+    private Vector3[] _initialLocalPositions; // 자식들의 초기 위치 저장용
     #endregion
-
 
     private void Awake()
     {
         if (_cameraTr == null)
-        {
-            if (Camera.main != null) _cameraTr = Camera.main.transform;
-            else { enabled = false; return; }
-        }
+            _cameraTr = Camera.main.transform;
 
-        // 핵심: 자식 오브젝트들 중에서 ParallaxLayerElement가 붙은 애들을 다 가져옵니다.
+        // 자식들 가져오기
         _layers = GetComponentsInChildren<ParallaxLayerElement>();
 
-        if (_layers.Length == 0)
+        // 초기 위치 캐싱 (누적 오차 방지)
+        _initialLocalPositions = new Vector3[_layers.Length];
+        for (int i = 0; i < _layers.Length; i++)
         {
-            Debug.LogWarning($"{name}: 자식 중에 ParallaxLayerElement가 없습니다!");
+            _initialLocalPositions[i] = _layers[i].transform.localPosition;
         }
     }
 
     private void Start()
     {
-        // 첫 프레임에서 델타 값이 튀지 않도록 초기화
-        _prevCampos = _cameraTr.position;
-
-        foreach (var layer in _layers)
-        {
-            Debug.Log($"레이어 등록 완료: {layer.name} / 팩터: {layer.factor}");
-        }
+        _startCamPos = _cameraTr.position;
     }
 
     private void LateUpdate()
     {
-        // 카메라 이동량
         Vector3 camPos = _cameraTr.position;
-        Vector3 delta = camPos - _prevCampos;
 
-        if (delta == Vector3.zero) return; // 카메라 미 이동시 계산 스킵
-
-        if (_layers != null)
+        for (int i = 0; i < _layers.Length; i++)
         {
-            int layerCount = _layers.Length; // 반복문 전에 길이를 캐싱해두면 더 좋습니다.
-            for (int i = 0; i < layerCount; i++)
+            // 카메라와 start X, Y값 차이
+            Vector3 totalDelta = camPos - _initialLocalPositions[i];
+            ParallaxLayerElement layer = _layers[i];
+            if (layer == null) continue;
+
+            float f = layer.factor;
+            Vector3 targetOffset = Vector3.zero;
+
+            // X축 LayerElement 비례 parallax
+            if (_useX && totalDelta.x > 0)
             {
-                ParallaxLayerElement layer = _layers[i];
-
-                // 혹시 모를 Null 체크 (안전장치)
-                if (layer == null) continue;
-
-                float f = layer.factor;
-                Vector3 move = Vector3.zero;
-
-                // 설정된 축에 따라 이동량 계산
-                if (_useX)
-                {
-                    move.x = delta.x * f;
-                }
-                if (_useY)
-                {
-                    move.y = delta.y * f / (camPos.y - layer.transform.position.y) / (camPos.y - layer.transform.position.y);
-                }
-                // 레이어의 월드 좌표에 이동량 더하기
-                layer.transform.position += move;
+                targetOffset.x = totalDelta.x * f;
             }
 
-            // 현재 카메라 위치를 다음 프레임 기준으로 저장한다.
-            _prevCampos = camPos;
+            // Y축: 지평선 효과 (카메라와의 거리에 반비례하여 속도 감소)
+            if (_useY)
+            {
+                float dist = Mathf.Abs(camPos.y - _initialLocalPositions[i].y); // 카메라, Layer 간 거리
+                float perspectiveFactor = - f * Mathf.Max(1f, dist * dist ); // 최소값 1로 고정하여 급발진 방지
 
+                targetOffset.y =  perspectiveFactor;
+            }
+
+            // [핵심] += 가 아니라 초기 위치에서 Offset을 더하는 방식 (오차 없음)
+            layer.transform.localPosition = _initialLocalPositions[i] + targetOffset;
         }
-
     }
 }

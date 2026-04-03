@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d75ebe25d35dff44ebe551e3833f2dbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UnitName: 
+  unitName: 
   CurrentHp: 0
   OriginData: {fileID: 11400000, guid: 7a4a9fd1fa1fc264b8b55caebb897584, type: 2}
   TeamType: 0
@@ -56,15 +56,20 @@ MonoBehaviour:
   AttackAnimation: Attack_A
   AttackEffect: {fileID: 11400000, guid: 7d571b2d6518a344191e579366a51673, type: 2}
   DeathAnimation: Death
-  DeathDisableTime: 0
-  PrintLog: 1
+  DeathDisableTime: 3
+  PrintLog: 0
   CriticalAnimation: Critical
   SkillAnimation: Active_A
   CurrentState: 0
   MissilePrefab: {fileID: 114243736805655561, guid: 7791948c576aaeb4dbabf0446ed45475, type: 3}
   MissileData: {fileID: 11400000, guid: 747630f023427934f9b57229a85b4f3e, type: 2}
-  CriticalHitEffect: {fileID: -8808491020081535163, guid: fc97f5f37539c3f47af9882a882a84e8, type: 3}
-  SkillHitEffect: {fileID: 7809792906697084380, guid: 3f72782a7ac6c0e4bbdb4fc54b8aca0f, type: 3}
+  FirePosOffset: {x: 0, y: 0.5}
+  CriticalHitEffect: {fileID: 11400000, guid: f65184546d23db3499a822c46edefbe6, type: 2}
+  SkillHitEffect: {fileID: 11400000, guid: 0593c191830afa445afffe75cc2c9d91, type: 2}
+  AdditionalTargetRadius: 4
+  AdditionalTargetDamageMultiplier: 0.5
+  AreaRadius: 6
+  PrintSkillLog: 0
 --- !u!114 &1385575880346748945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,9 +82,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8458d08ebfd40524ebe51fdf3782d5bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _walkSpeed: 10
-  _attackRange: 50
-  _detectionRange: 100
 --- !u!1 &5716120598718262879
 GameObject:
   m_ObjectHideFlags: 0

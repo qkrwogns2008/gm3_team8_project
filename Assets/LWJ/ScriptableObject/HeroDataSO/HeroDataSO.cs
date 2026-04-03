@@ -1,9 +1,26 @@
 using UnityEngine;
 
+/*
+유니크 : 1000
+레전드 : 2000
+*/
+public enum EHeroID
+{
+	None = 0,
+	Teo = 2001,
+	Yeonhee = 2002,
+}
+
 [CreateAssetMenu(fileName = "HeroDataSO_", menuName = "ScriptableObjects/Hero Data (SO)")]
 public class HeroDataSO : UnitDataSO
 {
 	#region 인스펙터
+	[Header("ID")]
+	[SerializeField] private EHeroID _heroId;
+
+	[Header("능력치")]
+	[SerializeField] private float _baseDefense;
+	
 	[Header("기본 공격 이펙트")]
 	[SerializeField] private EffectDataSO _attackEffect; // 기본 공격 이펙트
 
@@ -22,6 +39,8 @@ public class HeroDataSO : UnitDataSO
 	#endregion
 
 	#region 프로퍼티
+	public EHeroID HeroID => _heroId;
+	public float BaseDefense => _baseDefense;
 	public EffectDataSO AttackEffect => _attackEffect;
 	public EffectDataSO CriticalEffect => _criticalEffect;
 	public float CriticalChance => _criticalChance;
