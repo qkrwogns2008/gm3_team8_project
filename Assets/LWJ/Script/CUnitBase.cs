@@ -75,7 +75,7 @@ public abstract class CUnitBase : MonoBehaviour
 	public ETeamType Team => TeamType;
 	public string UnitName => unitName;
 	public virtual bool IsUnitDead => IsDead;
-    public float ScaleMultiplier => Mathf.Abs(SkeletonAni.transform.localScale.x);
+    public float ScaleMultiplier => Mathf.Abs(SkeletonAni.transform.lossyScale.x);
     public virtual float FinalAtkRange => AtkRange * ScaleMultiplier;
     public virtual float FinalDetectionRange => DetectionRange * ScaleMultiplier;
 	public UnitDataSO BaseData => OriginData;

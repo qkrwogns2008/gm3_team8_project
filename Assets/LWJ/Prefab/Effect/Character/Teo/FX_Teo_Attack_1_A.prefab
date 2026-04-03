@@ -25856,11 +25856,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b5e7618439229f439e0910602e9a73a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NoDirectionEffect: {fileID: 0}
   LeftEffect: {fileID: 1730242686860875}
   RightEffect: {fileID: 1587765826080250}
   EffectLifeTime: 1
   EnableParticleBaseScaleMultiplier: 1
-  BaseScaleMultiplier: 1
+  BaseScaleMultiplier: 0.16
 --- !u!1 &1709867586078768
 GameObject:
   m_ObjectHideFlags: 0

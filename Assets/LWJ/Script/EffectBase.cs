@@ -77,13 +77,13 @@ public class EffectBase : MonoBehaviour
 	{
 		OriginPrefab = prefab;
 
-		SetEffectDirection(direction);
 		DisableAfterTime(EffectLifeTime);
 		if (!EnableParticleBaseScaleMultiplier)
 		{
 			SetEffectScale(scale);
-		}
-	}
+        }
+        SetEffectDirection(direction);
+    }
 
 	protected virtual void SetEffectDirection(EEffectDirection direction)
 	{
