@@ -35,6 +35,11 @@ public class CHero : CUnitBase
 	#region 내부 변수
 	protected HeroDataSO HeroData;
 
+	protected EHeroID HeroID; // ID
+
+	protected float BaseDefense; // 방어력
+	protected float DefenseMultiplier = 1.0f; // 방어력 승수
+
 	protected EffectDataSO CriticalEffect; // 치명타 공격 이펙트
 	//protected float BaseCriticalActionInterval = 1.5f;
 	protected float CriticalChance; // 치명타 확률
@@ -50,6 +55,7 @@ public class CHero : CUnitBase
 	protected bool IsPendingDead = false; // 사망 유예 여부
 
 	protected bool IsFacingRight => (SkeletonAni.skeleton.ScaleX != 1.0f);
+	protected virtual float FinalDefense => BaseDefense * DefenseMultiplier;
 	protected virtual float CriticalDamage => FinalAttackDamage * CriticalAttackMultiplier;
 	protected virtual float FinalSkillActionInterval => SkillActionInterval / AttackSpeedMultiplier;
 	protected virtual float FinalSkillDamage => FinalAttackDamage * BaseSkillDamageRate;
@@ -71,6 +77,14 @@ public class CHero : CUnitBase
 		HeroData = OriginData as HeroDataSO;
 		if (HeroData != null)
 		{
+			HeroID = HeroData.HeroID;
+			if (HeroID == EHeroID.None)
+			{
+				Debug.LogWarning($"{UnitName} ID 설정 필요.");
+			}
+
+			BaseDefense = HeroData.BaseDefense;
+
 			AttackEffect = AttackEffect != null ? AttackEffect : HeroData.AttackEffect; // 비었으면 SO에서 할당
 
 			CriticalEffect = HeroData.CriticalEffect;
@@ -366,6 +380,37 @@ public class CHero : CUnitBase
 		fx.Init(prefab, dir);
 
 		return true;
+	}
+
+	public override void TakeDamage(float damage, CUnitBase attacker)
+	{
+		if (IsDead)
+		{
+			return;
+		}
+
+		// 방어력 연산 후 피해가 있으면 적용
+		float finalDamage = damage - FinalDefense;
+		CurrentHp -= finalDamage > 0 ? finalDamage : 0;
+
+		if (PrintLog)
+		{
+			if (finalDamage > 0)
+			{
+				Debug.Log($"CUnitBase) [{UnitName}] {finalDamage} 피해 입음. [HP:{CurrentHp}]");
+			}
+			else
+			{
+				Debug.Log($"CUnitBase) [{UnitName}] 방어력에 의해 피해 상쇄. [피해:{damage} / 방어력:{FinalDefense}]");
+			}
+		}
+
+		NotifyHpChange();
+
+		if (CurrentHp <= 0)
+		{
+			Die();
+		}
 	}
 
 	protected override void Die()

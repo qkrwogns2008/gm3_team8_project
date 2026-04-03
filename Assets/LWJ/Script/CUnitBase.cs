@@ -225,12 +225,17 @@ public abstract class CUnitBase : MonoBehaviour
 			Debug.Log($"CUnitBase) [{UnitName}] {damage} 피해 입음. [HP:{CurrentHp}]");
 		}
 
-		OnHpChanged?.Invoke(CurrentHp, FinalMaxHP);
+		NotifyHpChange();
 
 		if (CurrentHp <= 0)
 		{
 			Die();
 		}
+	}
+
+	protected virtual void NotifyHpChange()
+	{
+		OnHpChanged?.Invoke(CurrentHp, FinalMaxHP);
 	}
 
 	// 사망 시 호출
