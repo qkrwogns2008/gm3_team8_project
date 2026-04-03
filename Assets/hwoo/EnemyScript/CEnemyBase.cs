@@ -20,19 +20,18 @@ public class CEnemyBase : CUnitBase
     [SerializeField] private float _walkRange = 5f;    // 주변 돌아다니는 범위
     [Header("어그로 설정")]
     [SerializeField] private float _switchThreshold = 1.2f;
+    [SerializeField] private float _minTargetStayTime = 1.0f;
     protected EnemyBaseSO _enemySO => OriginData as EnemyBaseSO;
     protected Vector3 _startPosition;
     protected Dictionary<CUnitBase, float> _threatTable = new Dictionary<CUnitBase, float>();
-
+    private float _lastTargetSwitchTime = -900f;    // 마지막으로 타겟이 바뀐 시간. (첫 타겟을 바로 잡기 위해 작은값지정)
     
     public override bool IsUnitDead => IsDead;
 
     public EnemyBaseSO EnemyData => OriginData as EnemyBaseSO;
     public CUnitBase TargetHero => Target;
-
-    
-
     private CAutoEnemyMove _moveScript;
+
     public virtual float FinalGiveUpRange => _giveupRange * ScaleMultiplier;
     public virtual float FinalWalkRange => _walkRange * ScaleMultiplier;
 
@@ -85,6 +84,10 @@ public class CEnemyBase : CUnitBase
 
         // 능력치 초기화
         InitUnitStats();
+
+        // 공격 관련 데이터 초기화
+        NextAttackTime = 0f;
+        Target = null;
 
         // 애니메이션 초기화
         if(SkeletonAni != null)
@@ -171,16 +174,13 @@ public class CEnemyBase : CUnitBase
             return;
         }
 
-        SetTarget(attacker);
 
-        if(_moveScript != null)
-        {
-            _moveScript.TriggerForcedAggro();
-        }
+        AddThreat(attacker, damage);
+        UpdateBestTarget();
         
     }
 
-    private void AddTherat(CUnitBase attacker, float damage)
+    private void AddThreat(CUnitBase attacker, float damage)
     {
         if(!_threatTable.ContainsKey(attacker))
         {
@@ -191,6 +191,10 @@ public class CEnemyBase : CUnitBase
     private void UpdateBestTarget()
     {
         if(_threatTable.Count == 0)
+        {
+            return;
+        }
+        if(Time.time - _lastTargetSwitchTime < _minTargetStayTime && Target != null && !Target.IsUnitDead)
         {
             return;
         }
@@ -248,6 +252,8 @@ public class CEnemyBase : CUnitBase
             SetTarget(bestAttacker);
 
             // 타겟이 바뀌엇으므로 추격상태로 강제 전환
+            _lastTargetSwitchTime = Time.time;
+
             var moveScript = GetComponent<CAutoEnemyMove>();
             if(moveScript != null)
             {
