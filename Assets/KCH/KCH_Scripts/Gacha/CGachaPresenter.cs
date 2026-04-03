@@ -253,6 +253,7 @@ public class CGachaPresenter : MonoBehaviour
 
             _isRolling = false;
             _gachaView.CloseButton.gameObject.SetActive(true);
+
         }
         
         // 1, 10, 30회 뽑기 시 로직
@@ -309,6 +310,7 @@ public class CGachaPresenter : MonoBehaviour
                 yield return new WaitForSeconds(0.05f);
             }
 
+            CQuestManager.Instance.QuestProgress(EQuestType.GachaSummon, count);
 
             // 뽑기 중 해제
             _isRolling = false;
