@@ -61,7 +61,6 @@ public abstract class CUnitBase : MonoBehaviour
 	protected bool IsDead = false; // 사망 여부
 	protected Coroutine MotionRoutine;
 
-
     protected virtual float FinalMaxHP => BaseMaxHp * MaxHPMultiplier; // 1000 * 1.1 (최대 체력 10%증가) = 1100
 	protected virtual float FinalAttackDamage => BaseAtkDamage * AttackDamageMultiplier;
 	protected virtual float FinalAttackActionInterval => BaseAttackActionInterval / AttackSpeedMultiplier; // 공격 딜레이 (공격 속도 100% 증가 => 공격 딜레이 1/2)
@@ -75,7 +74,7 @@ public abstract class CUnitBase : MonoBehaviour
 	public ETeamType Team => TeamType;
 	public string UnitName => unitName;
 	public virtual bool IsUnitDead => IsDead;
-    public float ScaleMultiplier => Mathf.Abs(SkeletonAni.transform.localScale.x);
+    public float ScaleMultiplier => Mathf.Abs(SkeletonAni.transform.lossyScale.x);
     public virtual float FinalAtkRange => AtkRange * ScaleMultiplier;
     public virtual float FinalDetectionRange => DetectionRange * ScaleMultiplier;
 	public UnitDataSO BaseData => OriginData;
