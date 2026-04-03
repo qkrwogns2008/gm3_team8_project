@@ -81,19 +81,23 @@ public class CEnemyBase : CUnitBase
         base.OnEnable();
         // 상태 초기화
         IsDead = false;
-
-        // 능력치 초기화
-        InitUnitStats();
-
-        // 공격 관련 데이터 초기화
         NextAttackTime = 0f;
         Target = null;
+
+        // 유령 코루틴 변수 삭제
+        MotionRoutine = null;
 
         // 애니메이션 초기화
         if(SkeletonAni != null)
         {
+            SkeletonAni.AnimationState.ClearTracks();
+            SkeletonAni.AnimationName = null;
+
+            SkeletonAni.Skeleton.SetToSetupPose();
             SkeletonAni.AnimationState.SetAnimation(0, "Idle", true);
         }
+        // 능력치 초기화
+        InitUnitStats();
     }
 
     protected override void OnDisable()
