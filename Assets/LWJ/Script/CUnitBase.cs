@@ -31,7 +31,7 @@ public abstract class CUnitBase : MonoBehaviour
 	[SerializeField] protected float DeathDisableTime;
 
 	[Header("log")]
-	[SerializeField] protected bool PrintLog = true;
+	[SerializeField] protected bool PrintLog = false;
 
 	/*
 	[Header("이동 스크립트")]
@@ -60,6 +60,7 @@ public abstract class CUnitBase : MonoBehaviour
 	protected CUnitBase Target; // 현재 목표 타겟
 	protected bool IsDead = false; // 사망 여부
 	protected Coroutine MotionRoutine;
+
 
     protected virtual float FinalMaxHP => BaseMaxHp * MaxHPMultiplier; // 1000 * 1.1 (최대 체력 10%증가) = 1100
 	protected virtual float FinalAttackDamage => BaseAtkDamage * AttackDamageMultiplier;
