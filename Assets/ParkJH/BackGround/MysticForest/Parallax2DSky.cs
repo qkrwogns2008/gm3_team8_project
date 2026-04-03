@@ -39,7 +39,7 @@ public class Parallax2DSky : MonoBehaviour
 
         foreach (var layer in _layers)
         {
-            Debug.Log($"레이어 등록 완료: {layer.name} / 팩터: {layer.factor}");
+            //Debug.Log($"레이어 등록 완료: {layer.name} / 팩터: {layer.factor}");
         }
     }
 
