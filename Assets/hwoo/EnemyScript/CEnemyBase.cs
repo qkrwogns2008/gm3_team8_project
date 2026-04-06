@@ -21,6 +21,8 @@ public class CEnemyBase : CUnitBase
     [Header("어그로 설정")]
     [SerializeField] private float _switchThreshold = 1.2f;
     [SerializeField] private float _minTargetStayTime = 1.0f;
+    [Header("드랍 설정")]
+    [SerializeField] private List<CDropInfo> _dropTable = new List<CDropInfo>();
     protected EnemyBaseSO _enemySO => OriginData as EnemyBaseSO;
     protected Vector3 _startPosition;
     protected Dictionary<CUnitBase, float> _threatTable = new Dictionary<CUnitBase, float>();
@@ -183,7 +185,7 @@ public class CEnemyBase : CUnitBase
         UpdateBestTarget();
         
     }
-
+    #region 어그로
     private void AddThreat(CUnitBase attacker, float damage)
     {
         if(!_threatTable.ContainsKey(attacker))
@@ -264,12 +266,17 @@ public class CEnemyBase : CUnitBase
             }
         }
     }
-
+    #endregion
     protected override void Die()
     {
         if (IsDead)
         {
             return;
+        }
+
+        if(ItemManager.Instance != null && _dropTable.Count > 0)
+        {
+            ItemManager.Instance.ProcessDrop(_dropTable, transform.position);
         }
 
         base.Die();
@@ -293,8 +300,14 @@ public class CEnemyBase : CUnitBase
             gameObject.SetActive(false);
         }
     }
+    #region 아이템
 
-    // 편의성
+
+
+    #endregion
+
+
+    #region 편의성
     public void SetAnimation(string animName, bool loop)
     {
         if(SkeletonAni == null || SkeletonAni.AnimationState == null)
@@ -309,5 +322,5 @@ public class CEnemyBase : CUnitBase
             SkeletonAni.AnimationState.SetAnimation(0, animName, loop);
         }
     }
-
+    #endregion
 }

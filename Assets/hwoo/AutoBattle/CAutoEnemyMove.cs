@@ -56,7 +56,7 @@ public class CAutoEnemyMove : MonoBehaviour
     private void Awake()
     {
         _enemyBase = GetComponent<CEnemyBase>();
-        _skeletonAnim = GetComponentInChildren<SkeletonAnimation>();
+        _skeletonAnim = GetComponentInChildren<SkeletonAnimation>();    // 인스펙터에 등록 할 수 있도록
 
         if(_skeletonAnim == null)
         {
