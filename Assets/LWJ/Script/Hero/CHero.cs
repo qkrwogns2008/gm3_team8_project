@@ -30,6 +30,11 @@ public class CHero : CUnitBase
 
 	[Header("유닛 상태")]
 	[SerializeField] public EHeroState CurrentState = EHeroState.Idle;
+
+	[Header("공격 기능")]
+	[SerializeField] protected bool EnableAttack = true;
+	[SerializeField] protected bool EnableCriticalAttack = true;
+	[SerializeField] protected bool EnableUseSkill = true;
 	#endregion
 
 	#region 내부 변수
@@ -150,7 +155,7 @@ public class CHero : CUnitBase
 	{
 		ApplyAttackCooldown(true);
 
-		if (SkeletonAni == null || AttackEffect == null)
+		if (SkeletonAni == null)
 		{
 			Debug.LogWarning("CHero) 인스펙터 null 감지");
 			return;
@@ -161,31 +166,18 @@ public class CHero : CUnitBase
 			return;
 		}
 
-		// 치명타 체크
-		bool isCriAttack = (Random.Range(0f, 100f) <= CriticalChance);
-
-		if (isCriAttack && CriticalEffect != null)
+		MotionRoutine = StartCoroutine(Co_PlayMotion(AttackEffect, AttackAnimation, target, EAttackType.Normal));
+		if (PrintLog)
 		{
-			MotionRoutine = StartCoroutine(Co_PlayMotion(CriticalEffect, CriticalAnimation, target, EAttackType.Critical));
-			if (PrintLog)
-			{
-				Debug.Log($"{UnitName}의 치명타 공격!");
-			}
-		}
-		else
-		{
-			MotionRoutine = StartCoroutine(Co_PlayMotion(AttackEffect, AttackAnimation, target, EAttackType.Normal));
-			if (PrintLog)
-			{
-				Debug.Log($"{UnitName}의 일반 공격!");
-			}
+			Debug.Log($"{UnitName}의 일반 공격!");
 		}
 	}
 
-	// for test
-	private void OnCritical(CUnitBase target)
+	protected virtual void OnCritical(CUnitBase target)
 	{
-		if (SkeletonAni == null || CriticalEffect == null)
+		ApplyAttackCooldown(true);
+
+		if (SkeletonAni == null)
 		{
 			Debug.LogWarning("CHero) 인스펙터 null 감지");
 			return;
@@ -208,7 +200,7 @@ public class CHero : CUnitBase
 		ApplyAttackCooldown(false);
 		NotifySkillUse();
 
-		if (SkeletonAni == null || SkillEffect == null)
+		if (SkeletonAni == null)
 		{
 			Debug.LogWarning("CHero) 인스펙터 null 감지");
 			return;
@@ -289,32 +281,40 @@ public class CHero : CUnitBase
 		SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
 		SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
 
-		// 목록의 이펙트를 순차 출력
-		for (int i = 0; i < effectData.Catalog.Count; i++)
+		if (effectData != null)
 		{
-			EffectCatalog fxData = effectData.Catalog[i];
-
-			if (fxData == null)
+			// 목록의 이펙트를 순차 출력
+			for (int i = 0; i < effectData.Catalog.Count; i++)
 			{
-				Debug.LogWarning($"CHero) 이펙트 NONE. {effectData.Name} 이펙트 목록 확인");
-				continue;
-			}
+				EffectCatalog fxData = effectData.Catalog[i];
 
-			yield return new WaitForSeconds(fxData.PreDelay / AttackSpeedMultiplier);
+				if (fxData == null)
+				{
+					Debug.LogWarning($"CHero) 이펙트 NONE. {effectData.Name} 이펙트 목록 확인");
+					continue;
+				}
 
-			if (fxData.Prefab == null)
-			{
-				Debug.LogWarning($"CHero) 이펙트 프리팹 NONE. {effectData.Name} 이펙트 목록 확인");
-				continue;
-			}
+				yield return new WaitForSeconds(fxData.PreDelay / AttackSpeedMultiplier);
 
-			// 이펙트 생성 실패 시 즉시 종료
-			if (!TrySummonEffect(fxData, transform.position))
-			{
-				Debug.LogWarning($"{name} : {effectData.Name} 이펙트 생성 실패");
-				MotionRoutine = null;
-				yield break;
+				if (fxData.Prefab == null)
+				{
+					Debug.LogWarning($"CHero) 이펙트 프리팹 NONE. {effectData.Name} 이펙트 목록 확인");
+					continue;
+				}
+
+				// 이펙트 생성 실패 시 즉시 종료
+				if (!TrySummonEffect(fxData, transform.position))
+				{
+					Debug.LogWarning($"{name} : {effectData.Name} 이펙트 생성 실패");
+					MotionRoutine = null;
+					yield break;
+				}
 			}
+		}
+		else
+		{
+			Debug.LogWarning($"{UnitName}) 이펙트 null");
+			yield return new WaitForSeconds(0.3f / AttackSpeedMultiplier);
 		}
 
 		ProcessHit(target, type);
@@ -450,13 +450,23 @@ public class CHero : CUnitBase
 			return;
 		}
 
-		if (CanUseSkill())
+		if (EnableUseSkill && CanUseSkill())
 		{
 			ExecuteCombat(EAttackType.Skill, target);
 		}
 		else
 		{
-			ExecuteCombat(EAttackType.Normal, target);
+			// 치명타 체크
+			bool isCriAttack = (Random.Range(0f, 100f) <= CriticalChance);
+
+			if (EnableCriticalAttack && isCriAttack)
+			{
+				ExecuteCombat(EAttackType.Critical, target);
+			}
+			else if(EnableAttack)
+			{
+				ExecuteCombat(EAttackType.Normal, target);
+			}
 		}
 	}
 
@@ -466,6 +476,9 @@ public class CHero : CUnitBase
 		{
 			case EAttackType.Skill:
 				OnSkill(target);
+				break;
+			case EAttackType.Critical:
+				OnCritical(target);
 				break;
 			case EAttackType.Normal:
 				OnAttack(target);

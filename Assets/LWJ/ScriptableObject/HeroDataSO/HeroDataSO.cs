@@ -10,6 +10,7 @@ using UnityEngine;
 public enum EHeroID
 {
 	None = 0,
+	Loto = 1001,
 	Teo = 3001,
 	Yeonhee = 3002,
 }
@@ -30,7 +31,7 @@ public class HeroDataSO : UnitDataSO
 	[Header("치명타 설정")]
 	[SerializeField] private EffectDataSO _criticalEffect; // 치명타 공격 이펙트
 	//[SerializeField] private float BaseCriticalActionInterval = 1.5f;
-	[SerializeField] private float _criticalChance = 5f; // 치명타 확률
+	[SerializeField, Range(0f, 100f)] private float _criticalChance = 5f; // 치명타 확률
 	[SerializeField] private float _criticalAttackMultiplier = 2f; // 치명타 데미지 승수
 
 	[Header("스킬 설정")]

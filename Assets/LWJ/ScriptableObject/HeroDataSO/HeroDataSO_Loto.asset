@@ -23,14 +23,14 @@ MonoBehaviour:
   _attackSpeedMultiplier: 1
   _moveSpeedMultiplier: 1
   _detectionRange: 50
-  _heroId: 3001
-  _baseDefense: 2
-  _attackEffect: {fileID: 11400000, guid: eb531b3eb7dcaaf45868d6cb4beedd74, type: 2}
-  _criticalEffect: {fileID: 11400000, guid: 43641eaf32843294188424242b43a8a6, type: 2}
+  _heroId: 1001
+  _baseDefense: 3
+  _attackEffect: {fileID: 0}
+  _criticalEffect: {fileID: 0}
   _criticalChance: 5
-  _criticalAttackMultiplier: 2
-  _skillEffect: {fileID: 11400000, guid: 3f1e7435205806e41ad8ad78767b0b80, type: 2}
-  _skillActionInterval: 2
+  _criticalAttackMultiplier: 2.75
+  _skillEffect: {fileID: 0}
+  _skillActionInterval: 0
   _baseSkillDamageRate: 7
   _baseSkillCooldown: 8
   _cooldownMultiplier: 1
