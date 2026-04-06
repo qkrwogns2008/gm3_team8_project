@@ -42,7 +42,7 @@ public class HeroLoto : NoEffectHeroBase
 
 			if (target.IsUnitDead)
 			{
-				break;
+				continue;
 			}
 
 			ProcessHit(target, type);

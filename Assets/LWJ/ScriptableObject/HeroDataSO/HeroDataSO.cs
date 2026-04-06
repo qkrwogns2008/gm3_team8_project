@@ -10,6 +10,8 @@ using UnityEngine;
 public enum EHeroID
 {
 	None = 0,
+	Baskin = 1,
+	Nami = 2,
 	Loto = 1001,
 	Jak = 1002,
 	Teo = 3001,
