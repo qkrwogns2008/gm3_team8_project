@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6031486224418468605}
   - component: {fileID: 5606415028350252320}
+  - component: {fileID: 742757113186983065}
   m_Layer: 0
   m_Name: Gold
   m_TagString: Untagged
@@ -84,3 +85,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &742757113186983065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1729656739897060948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6fe09ec049231448acba20b1434224a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _originPrefab: {fileID: 0}
+  _bounceHeight: 1.5
+  _flySpeed: 10

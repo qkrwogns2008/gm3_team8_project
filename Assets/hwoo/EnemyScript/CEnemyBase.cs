@@ -21,8 +21,6 @@ public class CEnemyBase : CUnitBase
     [Header("어그로 설정")]
     [SerializeField] private float _switchThreshold = 1.2f;
     [SerializeField] private float _minTargetStayTime = 1.0f;
-    [Header("드랍 설정")]
-    [SerializeField] private List<CDropInfo> _dropTable = new List<CDropInfo>();
     protected EnemyBaseSO _enemySO => OriginData as EnemyBaseSO;
     protected Vector3 _startPosition;
     protected Dictionary<CUnitBase, float> _threatTable = new Dictionary<CUnitBase, float>();
@@ -100,6 +98,7 @@ public class CEnemyBase : CUnitBase
         }
         // 능력치 초기화
         InitUnitStats();
+
     }
 
     protected override void OnDisable()
@@ -274,9 +273,9 @@ public class CEnemyBase : CUnitBase
             return;
         }
 
-        if(ItemManager.Instance != null && _dropTable.Count > 0)
+        if(ItemManager.Instance != null && EnemyData != null)
         {
-            ItemManager.Instance.ProcessDrop(_dropTable, transform.position);
+            ItemManager.Instance.ProcessDrop(EnemyData._dropTable, transform.position);
         }
 
         base.Die();
@@ -300,11 +299,6 @@ public class CEnemyBase : CUnitBase
             gameObject.SetActive(false);
         }
     }
-    #region 아이템
-
-
-
-    #endregion
 
 
     #region 편의성

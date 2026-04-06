@@ -1,5 +1,6 @@
 using Spine.Unity;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -21,6 +22,9 @@ public class EnemyBaseSO : UnitDataSO
 
     [SerializeField] protected float _attackSpeed;
     [SerializeField] protected GameObject _attackEffectPrefab;      // 공격 이펙트 프리펩
+
+    [Header("드랍 테이블")]
+    public List<CDropInfo> _dropTable = new List<CDropInfo>();
 
 
     public int GoldReward => _goldReward;
