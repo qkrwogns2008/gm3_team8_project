@@ -10,6 +10,8 @@ public class MissileBase : MonoBehaviour
 
 	protected float MoveSpeed;
 	protected float Damage;
+
+	protected bool LookAtTarget;
 	#endregion
 
 	private void OnDisable()
@@ -26,6 +28,8 @@ public class MissileBase : MonoBehaviour
 		OriginPrefab = origin;
 
 		MoveSpeed = data.MoveSpeed;
+		LookAtTarget = data.LookAtTarget;
+
 		Damage = damage;
 
 		Target = target;
@@ -34,17 +38,44 @@ public class MissileBase : MonoBehaviour
 
 	private void Update()
 	{
-		MoveToTarget();
+		if (Target == null || Target.IsUnitDead)
+		{
+			ReturnToPool();
+			return;
+		}
+
+		Vector2 pos = transform.position;
+		Vector2 targetPos = Target.CenterPos;
+
+		MoveToTarget(pos, targetPos);
+
+		if (LookAtTarget)
+		{
+			RotateToTarget(pos, targetPos);
+		}
 	}
 
-	protected void MoveToTarget()
+	protected virtual void RotateToTarget(Vector2 pos, Vector2 targetPos)
 	{
-		Vector2 targetPos = Target.transform.position;
-		Vector2 pos = transform.position;
+		if (Target == null)
+		{
+			return;
+		}
+		
+		Vector2 toTarget = targetPos - pos;
+
+		float rotAngle = Mathf.Atan2(toTarget.y, toTarget.x) * Mathf.Rad2Deg;
+
+		transform.rotation = Quaternion.Euler(0, 0, rotAngle);
+	}
+
+	protected void MoveToTarget(Vector2 pos, Vector2 targetPos)
+	{
 		float moveDelta = MoveSpeed * Time.deltaTime;
 
 		transform.position = Vector2.MoveTowards(pos, targetPos, moveDelta);
 		
+		// 거리 계산
 		pos = transform.position;
 		Vector2 toTarget = targetPos - pos;
 		
@@ -62,6 +93,7 @@ public class MissileBase : MonoBehaviour
 		}
 		ReturnToPool();
 	}
+
 
 	protected void ReturnToPool()
 	{

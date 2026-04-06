@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5845931139765108105}
-  - component: {fileID: 3278456846952317465}
+  - component: {fileID: 6128072007182516821}
   - component: {fileID: 1385575880346748945}
   m_Layer: 0
-  m_Name: Hero_Teo_A
+  m_Name: Hero_Baskin_A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,10 +34,10 @@ Transform:
   - {fileID: 8629946034131897479}
   - {fileID: 7334262209075989019}
   - {fileID: 7082898993306059475}
-  - {fileID: 8745010829249372185}
+  - {fileID: 8331120324585134367}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3278456846952317465
+--- !u!114 &6128072007182516821
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -46,29 +46,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 2209794903314683923}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eda3342a2e900af47a41abfc8211f549, type: 3}
+  m_Script: {fileID: 11500000, guid: 6dda5b7cd97810e47b3469516349b160, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   unitName: 
   CurrentHp: 0
-  OriginData: {fileID: 11400000, guid: 9c752abebd1754e4f98bd68cb06cf613, type: 2}
+  OriginData: {fileID: 11400000, guid: 44ba4f97f886dac409f00347762cf8f3, type: 2}
   TeamType: 0
-  centerTransform: {fileID: 8745010829249372185}
+  centerTransform: {fileID: 8331120324585134367}
   SkeletonAni: {fileID: 4024569556539796475}
   AttackAnimation: Attack_A
-  AttackEffect: {fileID: 11400000, guid: eb531b3eb7dcaaf45868d6cb4beedd74, type: 2}
+  AttackEffect: {fileID: 0}
   DeathAnimation: Death
-  DeathDisableTime: 3
+  DeathDisableTime: 0
   PrintLog: 0
   CriticalAnimation: Critical
   SkillAnimation: Active_A
   CurrentState: 0
   EnableAttack: 1
   EnableCriticalAttack: 1
-  EnableUseSkill: 1
-  SectorRadius: 10
-  SectorDegree: 30
-  PrintSkillLog: 0
+  EnableUseSkill: 0
+  MissilePrefab: {fileID: 1153866754448755752, guid: 01a43ae49e73d7b46bb2dcef19bbd0a8, type: 3}
+  MissileData: {fileID: 11400000, guid: 8916bde71a9c2824299bfe1da386a177, type: 2}
+  FirePosOffset: {x: 0, y: 0.5}
 --- !u!114 &1385575880346748945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,7 +144,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: bcb4be3893077b640add3c7785c90d44, type: 2}
+  - {fileID: 2100000, guid: e256e69f8ba83d5449750f60a3a59bec, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonDataAsset: {fileID: 11400000, guid: f715b38003215cf46beb3dab56c53e6b, type: 2}
+  skeletonDataAsset: {fileID: 11400000, guid: 1a1c084f53ae05c4787615c8fbc3182e, type: 2}
   initialSkinName: A
   initialFlipX: 0
   initialFlipY: 0
@@ -311,7 +311,7 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: -5
   m_SortAtRoot: 0
---- !u!1 &6879251837453392758
+--- !u!1 &7303544824873240990
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -319,7 +319,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8745010829249372185}
+  - component: {fileID: 8331120324585134367}
   m_Layer: 0
   m_Name: Center
   m_TagString: Untagged
@@ -327,16 +327,16 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8745010829249372185
+--- !u!4 &8331120324585134367
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6879251837453392758}
+  m_GameObject: {fileID: 7303544824873240990}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 4, z: 0}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -394,10 +394,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerHud
       objectReference: {fileID: 0}
-    - target: {fileID: 9046642108580436248, guid: d9b001d91ee30094398bb6b8f786d397, type: 3}
-      propertyPath: _base
-      value: 
-      objectReference: {fileID: 3278456846952317465}
+    - target: {fileID: 5141622292158793439, guid: d9b001d91ee30094398bb6b8f786d397, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

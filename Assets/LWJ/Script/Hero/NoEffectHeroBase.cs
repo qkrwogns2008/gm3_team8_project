@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// 공격 이펙트가 없는 영웅의 베이스 클래스
 /// </summary>
-public class NoEffectHero : CHero
+public class NoEffectHeroBase : CHero
 {
 	protected override void OnAttack(CUnitBase target)
 	{

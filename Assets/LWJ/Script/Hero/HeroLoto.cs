@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HeroLoto : NoEffectHero
+public class HeroLoto : NoEffectHeroBase
 {
 	#region 인스펙터
 	[Header("Multi Attack 설정")]

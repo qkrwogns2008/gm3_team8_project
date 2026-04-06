@@ -17,6 +17,9 @@ public abstract class CUnitBase : MonoBehaviour
 	[Header("감지 세팅")]
 	[SerializeField] protected ETeamType TeamType; // 여기서 Hero인지 Enemy인지 선택 → 추후 미사용 시 제거
 
+	[Header("오브젝트 중앙")]
+	[SerializeField] protected Transform centerTransform;
+
 	[Header("스켈레톤 애니메이션")]
 	[SerializeField] protected SkeletonAnimation SkeletonAni;
 
@@ -75,8 +78,9 @@ public abstract class CUnitBase : MonoBehaviour
 
 	public ETeamType Team => TeamType;
 	public string UnitName => unitName;
+	public virtual Vector2 CenterPos => (centerTransform.position == null) ? transform.position : centerTransform.position;
 	public virtual bool IsUnitDead => IsDead;
-    public float ScaleMultiplier => Mathf.Abs(SkeletonAni.transform.lossyScale.x);
+    public virtual float ScaleMultiplier => Mathf.Abs(SkeletonAni.transform.lossyScale.x);
     public virtual float FinalAtkRange => AtkRange * ScaleMultiplier;
     public virtual float FinalDetectionRange => DetectionRange * ScaleMultiplier;
 	public virtual float FinalMoveSpeed => MoveSpeed * ScaleMultiplier;
@@ -93,6 +97,10 @@ public abstract class CUnitBase : MonoBehaviour
 		if (SkeletonAni == null)
 		{
 			Debug.LogWarning($"CUnitBase) {UnitName} SkeletonAnimation 부재");
+		}
+		if (centerTransform == null)
+		{
+			Debug.LogWarning($"CUnitBase) {UnitName} CenterTransform 부재");
 		}
 	}
 	protected virtual void Start()
