@@ -22,6 +22,6 @@ public class RangedHeroBase : CHero
 		}
 
 		MissileBase missile = PoolManager.Instance.Pop(MissilePrefab, CenterPos, Quaternion.identity);
-		missile.Init(MissilePrefab, MissileData, FinalAttackDamage, target, this);
+		missile.Init(MissilePrefab, MissileData, FinalNormalAttackDamage, target, this);
 	}
 }

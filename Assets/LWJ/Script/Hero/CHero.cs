@@ -245,7 +245,7 @@ public class CHero : CUnitBase
 	{
 		if (target != null)
 		{
-			target.TakeDamage(FinalAttackDamage, this);
+			target.TakeDamage(FinalNormalAttackDamage, this);
 		}
 	}
 

@@ -11,6 +11,7 @@ public enum EHeroID
 {
 	None = 0,
 	Loto = 1001,
+	Jak = 1002,
 	Teo = 3001,
 	Yeonhee = 3002,
 }

@@ -45,6 +45,7 @@ public abstract class CUnitBase : MonoBehaviour
 	protected float BaseMaxHp; // 최대 체력
 	protected float BaseAtkDamage; // 공격력
 	protected float BaseAttackActionInterval; // 공격 주기(초)
+	protected float NormalAttackDamageRatio; // 기본 공격 피해 비율
 	protected float AtkRange; // 공격 범위
 	protected float BaseMoveSpeed; // 이동속도
 
@@ -64,6 +65,7 @@ public abstract class CUnitBase : MonoBehaviour
     protected virtual float FinalMaxHP => BaseMaxHp * MaxHPMultiplier; // 1000 * 1.1 (최대 체력 10%증가) = 1100
 	protected virtual float FinalAttackDamage => BaseAtkDamage * AttackDamageMultiplier;
 	protected virtual float FinalAttackActionInterval => BaseAttackActionInterval / AttackSpeedMultiplier; // 공격 딜레이 (공격 속도 100% 증가 => 공격 딜레이 1/2)
+	protected virtual float FinalNormalAttackDamage => BaseAtkDamage * NormalAttackDamageRatio * AttackDamageMultiplier;
 	protected virtual float MoveSpeed => BaseMoveSpeed * MoveSpeedMultiplier;
 
 	private bool _isRegisterd = false; // 중복 등록 방지
@@ -186,6 +188,7 @@ public abstract class CUnitBase : MonoBehaviour
 			BaseMaxHp = OriginData.BaseMaxHp;
 			BaseAtkDamage = OriginData.BaseAttackDamage;
 			BaseAttackActionInterval = OriginData.BaseAttackInterval;
+			NormalAttackDamageRatio = OriginData.NormalAttackDamageRatio;
 			AtkRange = OriginData.AttackRange;
 			BaseMoveSpeed = OriginData.BaseMoveSpeed;
 
@@ -333,7 +336,7 @@ public abstract class CUnitBase : MonoBehaviour
 
 		if (target != null)
 		{
-			target.TakeDamage(damage, this);
+			target.TakeDamage(FinalNormalAttackDamage, this);
 		}
 
 		MotionRoutine = null;
