@@ -5,9 +5,9 @@ public class UnitScaleController : MonoBehaviour
     [Header("Scale 변화 수치")]
     [SerializeField] private float _minScaleLimit = 0.2f;
     [Header("Shader 설정값")]
-    [SerializeField] private float _scaleFactor = 0.05f;
-    [SerializeField] private float _horizonStart = 4.5f;//3.83+0.56
-    [SerializeField] private float _horizonFinish = 4.7f;
+    [SerializeField] private float _scaleFactor = 0.01f;
+    [SerializeField] private float _horizonStart = 10;//3.83+0.56
+    [SerializeField] private float _horizonFinish = 11f;
 
     private Transform _camTransform;
     private Vector3 _initialScale;
@@ -29,12 +29,16 @@ public class UnitScaleController : MonoBehaviour
 
         relativeY = Mathf.Max(0, relativeY);
 
-        // 1. 사라짐 처리 (StayPoint 기준)
-        if (relativeY >= _horizonStart)
+        // 사라짐 처리 (StayPoint 기준)
+        if (relativeY >= _horizonFinish && _renderer.enabled == true)
         {
             _renderer.enabled = false;
         }
-        // 2. 스케일 계산 (_horizonFinish 이하 기준)
+        else if (relativeY < _horizonFinish && relativeY >= _horizonStart && _renderer.enabled == false)
+        {
+            _renderer.enabled = true;
+        }
+        // 스케일 계산 (_horizonFinish 이하 기준)
         else if (relativeY < _horizonStart)
         {
             _renderer.enabled = true;
