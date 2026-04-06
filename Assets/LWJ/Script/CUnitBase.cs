@@ -218,7 +218,7 @@ public abstract class CUnitBase : MonoBehaviour
 			return;
 		}
 
-		CurrentHp -= damage;
+		CurrentHp = Mathf.Max(CurrentHp - damage, 0);
 
 		if (PrintLog)
 		{
