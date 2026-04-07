@@ -13,11 +13,17 @@ public class CDropItem : MonoBehaviour
 	[SerializeField] private float _flySpeed = 10f;
 	#endregion
 
-	private Vector3 _uiTargetWorldPos;
+	#region 내부변수
+
+	private float _initialFlySpeed;
+
+	#endregion
+
 
     private void OnEnable()
     {
-		_uiTargetWorldPos = Camera.main.ViewportToWorldPoint(new Vector3(0.9f, 0.9f, 10f));
+		transform.localScale = Vector3.one;
+		_flySpeed = _initialFlySpeed;
 
 		StartCoroutine(Co_ItemRoutine());
     }
@@ -25,34 +31,63 @@ public class CDropItem : MonoBehaviour
 	{
 		Vector3 startPos = transform.position;
 
-		// 튕기기
+		// 주변으로 튕기기
 		float elapsed = 0f;
 		float duration = 0.5f;
-		Vector3 bouncePos = startPos + new Vector3(Random.Range(-1f, 1f), 0f, 0f);
 
-		while(elapsed < duration)
-		{
+		Vector3 bouncePos = startPos + new Vector3(Random.Range(-1.2f, 1.2f), 0f, 0f);
+
+		while (elapsed < duration)
+		{ 
 			elapsed += Time.deltaTime;
 			float t = elapsed / duration;
 
 			float yOffset = Mathf.Sin(t * Mathf.PI) * _bounceHeight;
-			transform.position = Vector3.Lerp(startPos, bouncePos, t) + new Vector3(0, yOffset, 0);
+			transform.position = Vector3.Lerp(startPos, bouncePos, t);
 
 			yield return null;
 		}
 
-		// 잠시 대기
-		yield return new WaitForSeconds(0.3f);
+		// 잠깐 멈추기
+		yield return new WaitForSeconds(0.2f);
 
-		// UI로 날아가기
-		while(Vector3.Distance(transform.position, _uiTargetWorldPos)> 0.5f)
+		GameObject targetObj = GameObject.FindGameObjectWithTag("ItemTarget");
+
+		if(targetObj != null)
 		{
-			transform.position = Vector3.MoveTowards(transform.position, _uiTargetWorldPos, _flySpeed * Time.deltaTime);
-			_flySpeed += 0.5f;
+			float distanceToCamera = Mathf.Abs(Camera.main.transform.position.z - transform.position.z);
 
-			yield return null;
+			while(true)
+			{
+				Vector3 uiPos = targetObj.transform.position;
+
+				Vector3 targetWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(
+					uiPos.x,
+					uiPos.y,
+					distanceToCamera
+					));
+				
+				float dist = Vector3.Distance(transform.position, targetWorldPos);
+
+				// 목적지에 가까우면 종료
+				if(dist < 0.2f)
+				{
+					break;
+				}
+
+				// 목적지로 이동
+				transform.position = Vector3.MoveTowards(
+					transform.position,
+					targetWorldPos,
+					_flySpeed * Time.deltaTime
+					);
+				_flySpeed += 0.8f;
+
+				yield return null;
+			}
 		}
 
+		// 풀 반납
 		if(_originPrefab != null)
 		{
 			PoolManager.Instance.Push(_originPrefab, gameObject);
@@ -61,5 +96,6 @@ public class CDropItem : MonoBehaviour
 		{
 			gameObject.SetActive(false);
 		}
+
 	}
 }
