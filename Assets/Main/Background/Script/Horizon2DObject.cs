@@ -1,6 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class Parallax2DObject : MonoBehaviour
+public class Horizon2DObject : MonoBehaviour
 {
     #region 인스펙터
     [SerializeField] private Transform _cameraTr;
@@ -46,22 +47,29 @@ public class Parallax2DObject : MonoBehaviour
             ParallaxLayerElement layer = _layers[i];
             if (layer == null) continue;
 
-            float f = layer.factor;
+            float factorX = layer.factorX;
+            float factorY = layer.factorY;
             Vector3 targetOffset = Vector3.zero;
 
-            // X축 LayerElement 비례 parallax
-            if (_useX && totalDelta.x > 0)
+            float dist = totalDelta.y-100; // 카메라, Layer 간 거리
+            if (dist > 0)
             {
-                targetOffset.x = totalDelta.x * f;
+                dist = 0; // 카메라가 레이어보다 아래로 내려가는 경우 보정
+            }
+            // X축 LayerElement 비례 parallax
+            if (_useX)
+            {
+                targetOffset.x = -factorX * dist * totalDelta.x;
             }
 
             // Y축: 지평선 효과 (카메라와의 거리에 반비례하여 속도 감소)
             if (_useY)
             {
-                float dist = Mathf.Abs(camPos.y - _initialLocalPositions[i].y); // 카메라, Layer 간 거리
-                float perspectiveFactor = - f * Mathf.Max(1f, dist * dist ); // 최소값 1로 고정하여 급발진 방지
-
-                targetOffset.y =  perspectiveFactor;
+                if (dist < -220) // 일정 거리 이상 멀어지면 지평선 효과 적용
+                {
+                    dist = -555;
+                }
+                targetOffset.z =  factorY * dist* dist -1f;
             }
 
             // [핵심] += 가 아니라 초기 위치에서 Offset을 더하는 방식 (오차 없음)

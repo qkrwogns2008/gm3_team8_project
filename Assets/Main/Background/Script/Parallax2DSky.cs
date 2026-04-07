@@ -62,7 +62,7 @@ public class Parallax2DSky : MonoBehaviour
                     continue;
                 }
 
-                float f = layer.factor;
+                float f = layer.factorY;
                 Vector3 move = Vector3.zero;
                 // 설정된 축에 따라 이동량 계산
                 if (_useX)
