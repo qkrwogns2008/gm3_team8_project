@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 052d6623105bc5847984325fe0f4e478, type: 3}
   m_Name: HeroDataSO_Baskin
   m_EditorClassIdentifier: 
-  _unitName: Jak
+  _unitName: Baskin
   _baseMaxHp: 150
   _baseAttackDamage: 20
   _baseAttackInterval: 1
@@ -25,7 +25,7 @@ MonoBehaviour:
   _moveSpeedMultiplier: 1
   _detectionRange: 50
   _heroId: 1
-  _baseDefense: 3
+  _baseDefense: 0
   _attackEffect: {fileID: 0}
   _criticalEffect: {fileID: 0}
   _criticalChance: 5

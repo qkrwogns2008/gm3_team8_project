@@ -14,7 +14,7 @@ public class MissileBase : MonoBehaviour
 	protected bool LookAtTarget;
 	#endregion
 
-	private void OnDisable()
+	protected virtual void OnDisable()
 	{
 		OriginPrefab = null;
 		Target = null;
@@ -23,7 +23,7 @@ public class MissileBase : MonoBehaviour
 		Damage = 0f;
 	}
 
-	public void Init(MissileBase origin, MissileDataSO data, float damage, CUnitBase target, CUnitBase attacker)
+	public virtual void Init(MissileBase origin, MissileDataSO data, float damage, CUnitBase target, CUnitBase attacker)
 	{
 		OriginPrefab = origin;
 
@@ -36,7 +36,7 @@ public class MissileBase : MonoBehaviour
 		Attacker = attacker;
 	}
 
-	private void Update()
+	protected virtual void Update()
 	{
 		if (Target == null || Target.IsUnitDead)
 		{
@@ -69,7 +69,7 @@ public class MissileBase : MonoBehaviour
 		transform.rotation = Quaternion.Euler(0, 0, rotAngle);
 	}
 
-	protected void MoveToTarget(Vector2 pos, Vector2 targetPos)
+	protected virtual void MoveToTarget(Vector2 pos, Vector2 targetPos)
 	{
 		float moveDelta = MoveSpeed * Time.deltaTime;
 
@@ -85,7 +85,7 @@ public class MissileBase : MonoBehaviour
 		}
 	}
 
-	protected void OnArrivedTarget()
+	protected virtual void OnArrivedTarget()
 	{
 		if (Target != null)
 		{
@@ -94,8 +94,7 @@ public class MissileBase : MonoBehaviour
 		ReturnToPool();
 	}
 
-
-	protected void ReturnToPool()
+	protected virtual void ReturnToPool()
 	{
 		PoolManager.Instance.Push(OriginPrefab, this);
 	}
