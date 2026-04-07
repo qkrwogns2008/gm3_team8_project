@@ -3,8 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
+[System.Serializable]
+public class CMonsterItemData
+{
+    public string itemName;         // 아이템 이름
+    public GameObject itemPrefab;   // 프리팹
+    [Range(0f, 100f)]
+    public float probability;       // 드랍 확률
+}
 
 
 [CreateAssetMenu(fileName = "MonsterDataSO", menuName = "Monster_Data(SO)")]
@@ -24,7 +30,7 @@ public class EnemyBaseSO : UnitDataSO
     [SerializeField] protected GameObject _attackEffectPrefab;      // 공격 이펙트 프리펩
 
     [Header("드랍 테이블")]
-    public List<CDropInfo> _dropTable = new List<CDropInfo>();
+    public List<CMonsterItemData> _dropTable = new List<CMonsterItemData>();
 
 
     public int GoldReward => _goldReward;

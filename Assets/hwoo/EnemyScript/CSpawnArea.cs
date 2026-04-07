@@ -26,6 +26,7 @@ public class CSpawnArea : MonoBehaviour
     {
         CEnemyBase enemyScript = _monsterPrefab.GetComponent<CEnemyBase>();
 
+
         if (enemyScript != null && enemyScript.EnemyData != null)
         {
             _spawnCoolTime = enemyScript.EnemyData.SpawnCooltime;

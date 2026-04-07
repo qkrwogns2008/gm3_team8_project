@@ -11,7 +11,7 @@ public class ItemManager : MonoBehaviour
         Instance = this;
     }
 
-    public void ProcessDrop(List<CDropInfo> dropTable, Vector3 spawnPosition)
+    public void ProcessDrop(List<CMonsterItemData> dropTable, Vector3 spawnPosition)
     {
         if (dropTable == null || dropTable.Count == 0)
         {
