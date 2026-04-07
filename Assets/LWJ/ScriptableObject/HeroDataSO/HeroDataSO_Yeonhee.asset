@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: HeroDataSO_Yeonhee
   m_EditorClassIdentifier: 
   _unitName: Yeonhee
-  _baseMaxHp: 150
+  _baseMaxHp: 400
   _baseAttackDamage: 50
   _baseAttackInterval: 1
   _normalAttackDamageRatio: 1.75
@@ -29,9 +29,10 @@ MonoBehaviour:
   _attackEffect: {fileID: 11400000, guid: 7d571b2d6518a344191e579366a51673, type: 2}
   _criticalEffect: {fileID: 11400000, guid: 445cd60fff8b89a42a4ded4d489b44f5, type: 2}
   _criticalChance: 5
+  _baseCriticalDamageRatio: 2
   _criticalAttackMultiplier: 2
   _skillEffect: {fileID: 11400000, guid: 92ceadcf804d09244a1d5182b9a4fc2d, type: 2}
   _skillActionInterval: 2
-  _baseSkillDamageRate: 8
+  _baseSkillDamageRatio: 2.5
   _baseSkillCooldown: 10
   _cooldownMultiplier: 1

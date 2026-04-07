@@ -29,9 +29,10 @@ MonoBehaviour:
   _attackEffect: {fileID: 0}
   _criticalEffect: {fileID: 0}
   _criticalChance: 5
-  _criticalAttackMultiplier: 2.25
+  _baseCriticalDamageRatio: 2.25
+  _criticalAttackMultiplier: 2
   _skillEffect: {fileID: 0}
   _skillActionInterval: 0
-  _baseSkillDamageRate: 7
+  _baseSkillDamageRatio: 2.5
   _baseSkillCooldown: 8
   _cooldownMultiplier: 1

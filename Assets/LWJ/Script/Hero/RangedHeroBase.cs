@@ -19,7 +19,9 @@ public class RangedHeroBase : CHero
 			return;
 		}
 
-		MissileBase missile = PoolManager.Instance.Pop(MissilePrefab, CenterPos, Quaternion.identity);
+		Quaternion rot = Quaternion.Euler(-42f, 0f, 0f);
+
+		MissileBase missile = PoolManager.Instance.Pop(MissilePrefab, CenterPos, rot);
 		missile.Init(MissilePrefab, MissileData, FinalNormalAttackDamage, target, this);
 	}
 }

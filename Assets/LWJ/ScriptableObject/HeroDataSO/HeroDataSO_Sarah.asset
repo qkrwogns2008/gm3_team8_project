@@ -17,7 +17,7 @@ MonoBehaviour:
   _baseAttackDamage: 20
   _baseAttackInterval: 0.8
   _normalAttackDamageRatio: 1.5
-  _attackRange: 3
+  _attackRange: 5
   _baseMoveSpeed: 5
   _maxHPMultiplier: 1
   _attackDamageMultiplier: 1
@@ -29,9 +29,10 @@ MonoBehaviour:
   _attackEffect: {fileID: 11400000, guid: 3d0b1a70daf8d904c8378d1590cf4328, type: 2}
   _criticalEffect: {fileID: 11400000, guid: dc7d9a234ccee4b43838c79409475aae, type: 2}
   _criticalChance: 5
-  _criticalAttackMultiplier: 3.5
+  _baseCriticalDamageRatio: 3.5
+  _criticalAttackMultiplier: 2
   _skillEffect: {fileID: 0}
   _skillActionInterval: 0
-  _baseSkillDamageRate: 7
+  _baseSkillDamageRatio: 2.5
   _baseSkillCooldown: 8
   _cooldownMultiplier: 1

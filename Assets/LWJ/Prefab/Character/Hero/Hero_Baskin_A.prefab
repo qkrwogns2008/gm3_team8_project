@@ -68,7 +68,6 @@ MonoBehaviour:
   EnableUseSkill: 0
   MissilePrefab: {fileID: 1153866754448755752, guid: 01a43ae49e73d7b46bb2dcef19bbd0a8, type: 3}
   MissileData: {fileID: 11400000, guid: 8916bde71a9c2824299bfe1da386a177, type: 2}
-  FirePosOffset: {x: 0, y: 0.5}
 --- !u!114 &1385575880346748945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -398,6 +397,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9046642108580436248, guid: d9b001d91ee30094398bb6b8f786d397, type: 3}
+      propertyPath: _base
+      value: 
+      objectReference: {fileID: 6128072007182516821}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -12,7 +12,14 @@ public class MissileBase : MonoBehaviour
 	protected float Damage;
 
 	protected bool LookAtTarget;
+
+	protected Vector3 Rot;
 	#endregion
+
+	protected virtual void OnEnable()
+	{
+		Rot = transform.rotation.eulerAngles;
+	}
 
 	protected virtual void OnDisable()
 	{
@@ -21,6 +28,7 @@ public class MissileBase : MonoBehaviour
 		Attacker = null;
 		MoveSpeed = 0f;
 		Damage = 0f;
+		Rot = Vector3.zero;
 	}
 
 	public virtual void Init(MissileBase origin, MissileDataSO data, float damage, CUnitBase target, CUnitBase attacker)
@@ -61,12 +69,12 @@ public class MissileBase : MonoBehaviour
 		{
 			return;
 		}
-		
-		Vector2 toTarget = targetPos - pos;
 
+		Vector2 toTarget = targetPos - pos;
 		float rotAngle = Mathf.Atan2(toTarget.y, toTarget.x) * Mathf.Rad2Deg;
 
-		transform.rotation = Quaternion.Euler(0, 0, rotAngle);
+		Rot.z = rotAngle;
+		transform.rotation = Quaternion.Euler(Rot);
 	}
 
 	protected virtual void MoveToTarget(Vector2 pos, Vector2 targetPos)

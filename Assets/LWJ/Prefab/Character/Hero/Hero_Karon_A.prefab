@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5845931139765108105}
-  - component: {fileID: 6128072007182516821}
+  - component: {fileID: 5277605514012499564}
   - component: {fileID: 1385575880346748945}
   m_Layer: 0
   m_Name: Hero_Karon_A
@@ -37,26 +37,26 @@ Transform:
   - {fileID: 8331120324585134367}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6128072007182516821
+--- !u!114 &5277605514012499564
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2209794903314683923}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6dda5b7cd97810e47b3469516349b160, type: 3}
+  m_Script: {fileID: 11500000, guid: 3ddf7b2ba5a3a2141b4a97178999d903, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   unitName: 
   CurrentHp: 0
-  OriginData: {fileID: 11400000, guid: 44ba4f97f886dac409f00347762cf8f3, type: 2}
+  OriginData: {fileID: 11400000, guid: e61084fa433763945883801ee365ba34, type: 2}
   TeamType: 0
   centerTransform: {fileID: 8331120324585134367}
   SkeletonAni: {fileID: 4024569556539796475}
   AttackAnimation: Attack_A
-  AttackEffect: {fileID: 0}
+  AttackEffect: {fileID: 11400000, guid: ad49b124af955d94aa598016298ae2f3, type: 2}
   DeathAnimation: Death
   DeathDisableTime: 0
   PrintLog: 0
@@ -66,8 +66,9 @@ MonoBehaviour:
   EnableAttack: 1
   EnableCriticalAttack: 1
   EnableUseSkill: 0
-  MissilePrefab: {fileID: 1153866754448755752, guid: 01a43ae49e73d7b46bb2dcef19bbd0a8, type: 3}
-  MissileData: {fileID: 11400000, guid: 8916bde71a9c2824299bfe1da386a177, type: 2}
+  MissilePrefab: {fileID: 114709867586078768, guid: c43ee240324dfef46872f9faa411b9de, type: 3}
+  MissileData: {fileID: 11400000, guid: ad1fdb733de44784d803e054c30030a9, type: 2}
+  CriticalHitEffect: {fileID: 11400000, guid: 7ea92b9f402500f40a86910227fdfb9d, type: 2}
 --- !u!114 &1385575880346748945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -397,6 +398,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9046642108580436248, guid: d9b001d91ee30094398bb6b8f786d397, type: 3}
+      propertyPath: _base
+      value: 
+      objectReference: {fileID: 5277605514012499564}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

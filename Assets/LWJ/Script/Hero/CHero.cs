@@ -48,11 +48,12 @@ public class CHero : CUnitBase
 	protected EffectDataSO CriticalEffect; // 치명타 공격 이펙트
 	//protected float BaseCriticalActionInterval = 1.5f;
 	protected float CriticalChance; // 치명타 확률
+	protected float BaseCriticalDamageRatio; // 치명타 데미지 계수 (1f = 100%)
 	protected float CriticalAttackMultiplier; // 치명타 데미지 승수
 
 	protected EffectDataSO SkillEffect; // 스킬 이펙트
 	protected float SkillActionInterval = 1f; // 스킬 액션 딜레이
-	protected float BaseSkillDamageRate = 1f; // 스킬 데미지 계수 (1f = 100%)
+	protected float BaseSkillDamageRatio = 1f; // 스킬 데미지 계수 (1f = 100%)
 	protected float BaseSkillCooldown = 5.0f; // 쿨타임
 	protected float CooldownMultiplier = 1.0f; // 쿨타임 감소 승수
 
@@ -61,9 +62,9 @@ public class CHero : CUnitBase
 
 	protected bool IsFacingRight => (SkeletonAni.skeleton.ScaleX != 1.0f);
 	protected virtual float FinalDefense => BaseDefense * DefenseMultiplier;
-	protected virtual float CriticalDamage => FinalAttackDamage * CriticalAttackMultiplier;
+	protected virtual float CriticalDamage => FinalAttackDamage * BaseCriticalDamageRatio * CriticalAttackMultiplier;
 	protected virtual float FinalSkillActionInterval => SkillActionInterval / AttackSpeedMultiplier;
-	protected virtual float FinalSkillDamage => FinalAttackDamage * BaseSkillDamageRate;
+	protected virtual float FinalSkillDamage => FinalAttackDamage * BaseSkillDamageRatio;
 	protected virtual float FinalSkillCooldown => BaseSkillCooldown * CooldownMultiplier;
 
 	protected virtual float SpineScale => ScaleMultiplier;
@@ -94,11 +95,12 @@ public class CHero : CUnitBase
 
 			CriticalEffect = HeroData.CriticalEffect;
 			CriticalChance = HeroData.CriticalChance;
+			BaseCriticalDamageRatio = HeroData.BaseCriticalDamageRatio;
 			CriticalAttackMultiplier = HeroData.CriticalAttackMultiplier;
 
 			SkillEffect = HeroData.SkillEffect;
 			SkillActionInterval = HeroData.SkillActionInterval;
-			BaseSkillDamageRate = HeroData.BaseSkillDamageRate;
+			BaseSkillDamageRatio = HeroData.BaseSkillDamageRatio;
 			BaseSkillCooldown = HeroData.BaseSkillCooldown;
 			CooldownMultiplier = HeroData.CooldownMultiplier;
 		}
