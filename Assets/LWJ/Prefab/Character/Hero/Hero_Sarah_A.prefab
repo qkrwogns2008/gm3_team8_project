@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5845931139765108105}
-  - component: {fileID: 6128072007182516821}
+  - component: {fileID: -4534452868800074}
   - component: {fileID: 1385575880346748945}
   m_Layer: 0
   m_Name: Hero_Sarah_A
@@ -37,37 +37,36 @@ Transform:
   - {fileID: 8331120324585134367}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6128072007182516821
+--- !u!114 &-4534452868800074
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2209794903314683923}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6dda5b7cd97810e47b3469516349b160, type: 3}
+  m_Script: {fileID: 11500000, guid: 82a46ec7f26644b4980f2d350cdbbf96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   unitName: 
   CurrentHp: 0
-  OriginData: {fileID: 11400000, guid: 44ba4f97f886dac409f00347762cf8f3, type: 2}
+  OriginData: {fileID: 11400000, guid: ea4e2e77537dcf6459e2f949b3f3707a, type: 2}
   TeamType: 0
   centerTransform: {fileID: 8331120324585134367}
   SkeletonAni: {fileID: 4024569556539796475}
   AttackAnimation: Attack_A
-  AttackEffect: {fileID: 0}
+  AttackEffect: {fileID: 11400000, guid: 3d0b1a70daf8d904c8378d1590cf4328, type: 2}
   DeathAnimation: Death
   DeathDisableTime: 0
   PrintLog: 0
   CriticalAnimation: Critical
-  SkillAnimation: Active_A
+  SkillAnimation: 
   CurrentState: 0
   EnableAttack: 1
   EnableCriticalAttack: 1
   EnableUseSkill: 0
-  MissilePrefab: {fileID: 1153866754448755752, guid: 01a43ae49e73d7b46bb2dcef19bbd0a8, type: 3}
-  MissileData: {fileID: 11400000, guid: 8916bde71a9c2824299bfe1da386a177, type: 2}
+  CriticalAttackCount: 2
 --- !u!114 &1385575880346748945
 MonoBehaviour:
   m_ObjectHideFlags: 0

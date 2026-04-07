@@ -12,8 +12,15 @@ public enum EHeroID
 	None = 0,
 	Baskin = 1,
 	Nami = 2,
+
 	Loto = 1001,
 	Jak = 1002,
+
+	Sarah = 2001,
+	Elga = 2002,
+	Karon = 2003,
+	Rook = 2004,
+
 	Teo = 3001,
 	Yeonhee = 3002,
 }
