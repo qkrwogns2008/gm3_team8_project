@@ -26,7 +26,8 @@ public class CDataManager : MonoBehaviour
         }
         else { Destroy(gameObject); }
     }
-    // [저장] 데이터 -> JSON -> 파일
+    // [저장] 데이터 -> JSON -> 파
+    // 일
     public void SaveUserData()
     {
         UserData.LastLogoutTime = System.DateTime.Now.Ticks;
