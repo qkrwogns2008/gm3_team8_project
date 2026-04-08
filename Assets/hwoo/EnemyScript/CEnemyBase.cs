@@ -49,7 +49,6 @@ public class CEnemyBase : CUnitBase
 
         if (EnemyData != null)
         {
-            Debug.Log($"<color=green>{gameObject.name}</color> SO 연결 확인: {EnemyData.UnitName}");
             unitName = EnemyData.UnitName;
             CurrentHp = EnemyData.BaseMaxHp;
             DetectionRange = EnemyData.DetectionRange;
