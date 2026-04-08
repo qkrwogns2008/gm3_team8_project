@@ -381,6 +381,67 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!1001 &1383722711
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3899819637224094853, guid: 5733fcb405e92284e9d03eb5522d20aa, type: 3}
+      propertyPath: m_Name
+      value: Enemy_Boss_Leo
+      objectReference: {fileID: 0}
+    - target: {fileID: 8361872433212783006, guid: 5733fcb405e92284e9d03eb5522d20aa, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 69.43
+      objectReference: {fileID: 0}
+    - target: {fileID: 8361872433212783006, guid: 5733fcb405e92284e9d03eb5522d20aa, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8361872433212783006, guid: 5733fcb405e92284e9d03eb5522d20aa, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8361872433212783006, guid: 5733fcb405e92284e9d03eb5522d20aa, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8361872433212783006, guid: 5733fcb405e92284e9d03eb5522d20aa, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8361872433212783006, guid: 5733fcb405e92284e9d03eb5522d20aa, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8361872433212783006, guid: 5733fcb405e92284e9d03eb5522d20aa, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8361872433212783006, guid: 5733fcb405e92284e9d03eb5522d20aa, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8361872433212783006, guid: 5733fcb405e92284e9d03eb5522d20aa, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8361872433212783006, guid: 5733fcb405e92284e9d03eb5522d20aa, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8403027540895715374, guid: 5733fcb405e92284e9d03eb5522d20aa, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5733fcb405e92284e9d03eb5522d20aa, type: 3}
 --- !u!1001 &1559473464
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -641,6 +702,37 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 36aa282f753fc5b4581f3c9ac5433231, type: 3}
+--- !u!1 &2012082912
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2012082913}
+  m_Layer: 0
+  m_Name: DummyUI
+  m_TagString: ItemTarget
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2012082913
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2012082912}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 275, y: 360, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &255396909636266109
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1310,3 +1402,5 @@ SceneRoots:
   - {fileID: 5282887966127207255}
   - {fileID: 6002271991313360252}
   - {fileID: 1559473464}
+  - {fileID: 1383722711}
+  - {fileID: 2012082913}

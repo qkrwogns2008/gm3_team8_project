@@ -287,6 +287,11 @@ public class CAutoEnemyMove : MonoBehaviour
     }
     void MoveTo(Vector3 pos)
     {
+        if(_enemyBase.IsAttacking)
+        {
+            return;
+        }
+
         _enemyBase.LookAt(pos);
         Vector3 nextPos = Vector3.MoveTowards(transform.position, pos, MoveSpeed * Time.deltaTime);
         nextPos.z = 0f;

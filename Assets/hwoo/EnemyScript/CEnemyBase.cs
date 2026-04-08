@@ -35,6 +35,8 @@ public class CEnemyBase : CUnitBase
     public virtual float FinalGiveUpRange => _giveupRange * ScaleMultiplier;
     public virtual float FinalWalkRange => _walkRange * ScaleMultiplier;
 
+    public bool IsAttacking { get; protected set; }
+
     protected override void Awake()
     {
         base.Awake();
@@ -47,20 +49,13 @@ public class CEnemyBase : CUnitBase
 
         if (EnemyData != null)
         {
-            
-
+            Debug.Log($"<color=green>{gameObject.name}</color> SO 연결 확인: {EnemyData.UnitName}");
+            unitName = EnemyData.UnitName;
+            CurrentHp = EnemyData.BaseMaxHp;
             DetectionRange = EnemyData.DetectionRange;
         }
         
-        if(OriginData != null)
-        {
-            AtkRange = OriginData.AttackRange;
-            DetectionRange = OriginData.DetectionRange;
-            
-            BaseMaxHp = 100f;
-            BaseAtkDamage = 10f;
-            CurrentHp = FinalMaxHP;
-        }
+        
 
     }
 
@@ -118,6 +113,9 @@ public class CEnemyBase : CUnitBase
 
     protected override IEnumerator Co_PlayMotion(string animationName, CUnitBase target, float damage)
     {
+        //공격시 이동 차단
+        IsAttacking = true;
+
         var trackEntry = SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
         SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
 
@@ -141,6 +139,8 @@ public class CEnemyBase : CUnitBase
         ApplyAttackCooldown();
 
         MotionRoutine = null;
+
+        IsAttacking = false;
     }
 
     protected override void ApplyAttackCooldown()
