@@ -21,8 +21,13 @@ public enum EHeroID
 	Karon = 2003,
 	Rook = 2004,
 
-	Teo = 3001,
-	Yeonhee = 3002,
+	Snipper = 3001,
+	Shane = 3002,
+	Evan = 3003,
+	Alice = 3004,
+
+	Teo = 4001,
+	Yeonhee = 4002,
 }
 
 [CreateAssetMenu(fileName = "HeroDataSO_", menuName = "ScriptableObjects/Hero Data (SO)")]

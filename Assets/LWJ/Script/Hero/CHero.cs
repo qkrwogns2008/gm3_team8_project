@@ -72,6 +72,7 @@ public class CHero : CUnitBase
 
 	public event System.Action<float> OnSkillUsed; // 스킬 쿨타임이 인자로 들어감
 	public event System.Action OnDead;
+	public virtual bool HasCooldown => FinalSkillCooldown > 0;
 
 	// 영웅 공통 데이터 주입
 	protected override void InitUnitStats()
