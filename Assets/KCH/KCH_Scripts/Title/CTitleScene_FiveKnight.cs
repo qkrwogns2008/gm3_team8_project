@@ -24,6 +24,7 @@ public class CTitleScene_FiveKnight : MonoBehaviour
 
     private void Update()
     {
+        // 화면 터치시 코루틴 실행
         if (_isReady == true && Input.GetMouseButtonDown(0))
         {
             _isReady = false;
@@ -31,6 +32,7 @@ public class CTitleScene_FiveKnight : MonoBehaviour
         }
     }
 
+    // Start와 동시에 시작
     private IEnumerator CO_InitializeGame()
     {
         _titleText.text = "리소스 확인 중...";
@@ -44,7 +46,7 @@ public class CTitleScene_FiveKnight : MonoBehaviour
         _isReady = true;
     }
 
-
+    // 비동기 로딩후 씬 전환
     private IEnumerator CO_StartLoading()
     {
         _titleText.gameObject.SetActive(false);
@@ -55,7 +57,7 @@ public class CTitleScene_FiveKnight : MonoBehaviour
         }
 
         // 비동기 씬 로딩
-        AsyncOperation op = SceneManager.LoadSceneAsync("GachaScene");
+        AsyncOperation op = SceneManager.LoadSceneAsync("GameScene");
 
         // 로딩 완료 후 대기
         op.allowSceneActivation = false;

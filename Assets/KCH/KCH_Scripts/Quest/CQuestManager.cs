@@ -9,7 +9,7 @@ public class CQuestProgress
 {
     public int QuestID;          // 퀘스트 ID
     public int CurrentGague;     // 게이지
-    public int RewardCOunt;      // 쌓이는 개수
+    public int RewardCount;      // 쌓이는 개수
 }
 
 public class CQuestManager : MonoBehaviour
@@ -70,7 +70,7 @@ public class CQuestManager : MonoBehaviour
             CQuestProgress progress = new CQuestProgress();
             progress.QuestID = QuestDataList[i].QuestID;
             progress.CurrentGague = 0;
-            progress.RewardCOunt = 0;
+            progress.RewardCount = 0;
             UserProgressList.Add(progress);
         }
     }
@@ -104,7 +104,7 @@ public class CQuestManager : MonoBehaviour
                         progress.CurrentGague -= dataSO.QuestGoal;
 
                         // 보상 개수 증가
-                        progress.RewardCOunt++;
+                        progress.RewardCount++;
                     }
                 }
             }
@@ -124,19 +124,19 @@ public class CQuestManager : MonoBehaviour
         for (int i = 0; i < UserProgressList.Count; i++)
         {
             var progress = UserProgressList[i];
-            if (progress.QuestID == questID && progress.RewardCOunt > 0)
+            if (progress.QuestID == questID && progress.RewardCount > 0)
             {
-                CQuestDataSO dataSO = _questDict[questID];
+                 CQuestDataSO dataSO = _questDict[questID];
 
                  // 실제 유저 재화 시스템과 연결
-                 int rewardTotal = dataSO.RewardQuest * progress.RewardCOunt;
+                 int rewardTotal = dataSO.RewardQuest * progress.RewardCount;
              
                  // 보상 지급
-                 // CDataManager.Instance.UserData.TicketCount += rewardTotal;
+                 //CDataManager.Instance.UserData.TicketCount += rewardTotal;
                  Debug.Log($"{dataSO.QuestName} 보상 : {rewardTotal}개 획득!");
              
                  // 보상 횟수 초기화
-                 progress.RewardCOunt = 0;
+                 progress.RewardCount = 0;
              
                  // UI 갱신
                  OnDataUpdate?.Invoke();
