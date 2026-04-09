@@ -43,7 +43,8 @@ public class CUserData
     public List<UserHeroData> HeroList = new List<UserHeroData>();
     // 보유 중인 아이템ID, 개수 정보
     public List<UserItemData> Inventory = new List<UserItemData>();
-
+    // 퀘스트 정보창
+    public List<UserQuestData> QuestList = new List<UserQuestData>();
     // 마지막 접속 시간
     public long LastLogoutTime = 0;
 }
@@ -61,4 +62,13 @@ public class UserItemData
 {
     public int ItemID;     // 아이템 고유 번호
     public int Quantity;   // 보유 개수
+}
+
+
+[Serializable]
+public class UserQuestData
+{
+    public int QuestID;
+    public int CurrentGague;
+    public int ReewardCount;
 }
