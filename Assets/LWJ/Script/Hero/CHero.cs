@@ -108,14 +108,15 @@ public class CHero : CUnitBase
 	protected override void OnDisable()
 	{
 		base.OnDisable();
+		BuffSystem.RemoveBuffAll();
 		BuffSystem.OnBuffChanged -= ApplyBuffStat;
 	}
 
 	// 버프 갱신 이벤트 수신 시 효과 적용
 	protected virtual void ApplyBuffStat()
 	{
-		float buffCriticalChance = BuffSystem.GetBuffEffectTotalValue(EBuffFlags.CriticalChanceBoost_Alice);
-		FinalCriticalChance = Mathf.Max(CriticalChance + buffCriticalChance, 0);
+		float buffCriticalChance = BuffSystem.GetBuffEffectTotalValue(EBuffFlags.CriticalChanceBoost);
+		FinalCriticalChance = Mathf.Max(CriticalChance + buffCriticalChance, 100f);
 	}
 
 	// 영웅 공통 데이터 주입

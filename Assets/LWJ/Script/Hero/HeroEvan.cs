@@ -23,6 +23,9 @@ public class HeroEvan : CHero
 	{
 		float amount = FinalMaxHP * ratio;
 		CurrentHp = Mathf.Min(CurrentHp + amount, FinalMaxHP);
+
+		NotifyHpChange();
+
 		if (PrintLog)
 		{
 			Debug.Log($"[{UnitName}] 체력 회복 : {amount}. 현재 체력 : {CurrentHp}");
@@ -48,7 +51,7 @@ public class HeroEvan : CHero
 		FindedTargets.Clear();
 
 		IReadOnlyList<CUnitBase> targetList = CEnemyManager.Instance.ActiveEnemies;
-		FindTargetsOnCircleArea(target, ScaledAreaRadius, targetList);
+		FindTargetsOnCircleArea(this, ScaledAreaRadius, targetList);
 
 		SelectedTargetsAttack(FindedTargets, FinalSkillDamage);
 

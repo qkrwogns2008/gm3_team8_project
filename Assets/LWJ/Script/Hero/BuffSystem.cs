@@ -6,35 +6,52 @@ using UnityEngine;
 public enum EBuffFlags
 {
 	None = 0,
-	CriticalChanceBoost_Alice = 1 << 0,
+	CriticalChanceBoost = 1 << 0,
 }
 
 [Serializable]
 public class BuffInfo
 {
-	public EBuffFlags Type;
-	public float Value;
-	public float Duration;
-	public CUnitBase Provider;
+	#region 인스펙터
+	[SerializeField] private EBuffFlags _type;
+	[SerializeField] private float _value;
+	[SerializeField] private float _duration; // -1 : 무한 지속
+	[SerializeField] private CUnitBase _provider;
+	#endregion
 
-	public bool IsDurationEnd => (Duration != -1) && (Duration <= 0);
+	#region 프로퍼티
+	public bool IsDurationEnd => (_duration != -1) && (_duration <= 0);
+	public EBuffFlags Type => _type;
+	public float Value => _value;
+	public float Duration
+	{
+		get => _duration;
+		set => _duration = value;
+	}
+	public CUnitBase Provider => _provider;
+	#endregion
 
 	public BuffInfo(EBuffFlags type, float value, float duration, CUnitBase provider)
 	{
-		Type = type;
-		Value = value;
-		Duration = duration;
-		Provider = provider;
+		_type = type;
+		_value = value;
+		_duration = duration;
+		_provider = provider;
 	}
 }
 
 public class BuffSystem : MonoBehaviour
 {
+	#region 인스펙터
 	[SerializeField] private List<BuffInfo> _buffInfos = new List<BuffInfo>(); // 적용중인 모든 버프 정보
+	#endregion
+
+	#region 내부 변수
 	private EBuffFlags _currentBuffFlags = EBuffFlags.None; // 현재 적용중인 버프 종류
+	#endregion
 
 	public EBuffFlags CurrentBuffFlags => _currentBuffFlags;
-	public event Action OnBuffChanged;
+	public event Action OnBuffChanged; // 버프 변화를 알림
 
 	private void Update()
 	{
@@ -64,6 +81,16 @@ public class BuffSystem : MonoBehaviour
 				_buffInfos.RemoveAt(i);
 			}
 		}
+
+		UpdateBuffFlags();
+	}
+
+	/// <summary>
+	/// 적용 중인 모든 버프를 제거합니다.
+	/// </summary>
+	public void RemoveBuffAll()
+	{
+		_buffInfos.Clear();
 
 		UpdateBuffFlags();
 	}

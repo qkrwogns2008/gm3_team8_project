@@ -29,13 +29,13 @@ public class HeroAlice : RangedHeroBase
 
 	protected virtual IEnumerator Co_WaitSubscribe()
 	{
-		while (HeroManagerDummy.Instance == null)
+		while (CHeroManager.Instance == null)
 		{
 			yield return null;
 		}
 
-		HeroManagerDummy.Instance.OnHeroActived += OnHeroActived;
-		ApplyBuffAllHero(EBuffFlags.CriticalChanceBoost_Alice, 0.16f, -1f, this);
+		CHeroManager.Instance.OnHeroActived += OnHeroActived;
+		ApplyBuffAllHero(EBuffFlags.CriticalChanceBoost, 0.16f, -1f, this);
 		BindCo = null;
 	}
 
@@ -49,9 +49,9 @@ public class HeroAlice : RangedHeroBase
 			BindCo = null;
 		}
 
-		if (HeroManagerDummy.Instance != null)
+		if (CHeroManager.Instance != null)
 		{
-			HeroManagerDummy.Instance.OnHeroActived -= OnHeroActived;
+			CHeroManager.Instance.OnHeroActived -= OnHeroActived;
 			RemoveBuffAllHeroByProvider(this);
 		}
 	}
@@ -94,7 +94,7 @@ public class HeroAlice : RangedHeroBase
 	#region 버프 로직
 	protected virtual void OnHeroActived(CUnitBase hero)
 	{
-		ApplyBuff(hero, EBuffFlags.CriticalChanceBoost_Alice, 0.16f, -1, this);
+		ApplyBuff(hero, EBuffFlags.CriticalChanceBoost, 0.16f, -1, this);
 	}
 
 	protected virtual void ApplyBuff(CUnitBase target, EBuffFlags buffFlags, float value, float duration, CUnitBase provider)
@@ -119,7 +119,7 @@ public class HeroAlice : RangedHeroBase
 	{
 		if (Team == ETeamType.Hero)
 		{
-			IReadOnlyList<CUnitBase> heros = HeroManagerDummy.Instance.ActiveHero;
+			IReadOnlyList<CUnitBase> heros = CHeroManager.Instance.ActiveHero;
 
 			for (int i = 0; i < heros.Count; i++)
 			{
@@ -146,7 +146,7 @@ public class HeroAlice : RangedHeroBase
 	{
 		if (Team == ETeamType.Hero)
 		{
-			IReadOnlyList<CUnitBase> heros = HeroManagerDummy.Instance.ActiveHero;
+			IReadOnlyList<CUnitBase> heros = CHeroManager.Instance.ActiveHero;
 
 			for (int i = 0; i < heros.Count; i++)
 			{

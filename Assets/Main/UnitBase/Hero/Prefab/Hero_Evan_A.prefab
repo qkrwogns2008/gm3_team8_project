@@ -68,7 +68,7 @@ MonoBehaviour:
   enableCriticalAttack: 1
   enableUseSkill: 1
   buffSystem: {fileID: 8177186180137121409}
-  AreaRadius: 4
+  AreaRadius: 5
   PrintSkillLog: 1
 --- !u!114 &1385575880346748945
 MonoBehaviour:
@@ -410,7 +410,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5141622292158793439, guid: d9b001d91ee30094398bb6b8f786d397, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9046642108580436248, guid: d9b001d91ee30094398bb6b8f786d397, type: 3}
       propertyPath: _base

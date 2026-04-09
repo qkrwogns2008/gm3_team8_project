@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HeroManagerDummy : MonoBehaviour
+public class CHeroManager : MonoBehaviour
 {
-    public static HeroManagerDummy Instance;
+    public static CHeroManager Instance;
 	public event Action<CUnitBase> OnHeroActived;
 
     private List<CUnitBase> _activeHero = new List<CUnitBase>();
@@ -28,7 +28,7 @@ public class HeroManagerDummy : MonoBehaviour
         if(!_activeHero.Contains(hero))
         {
             _activeHero.Add(hero);
-            Debug.Log($"HeroManager {hero.name} 등록");
+            Debug.Log($"CHeroManager {hero.name} 등록");
         }
 		OnHeroActived?.Invoke(hero);
 	}
@@ -38,7 +38,7 @@ public class HeroManagerDummy : MonoBehaviour
         if(_activeHero.Contains(hero))
         {
             _activeHero.Remove(hero);
-            Debug.Log($"HeroManager {hero.name} 제거");
+            Debug.Log($"CHeroManager {hero.name} 제거");
         }
     }
 }
