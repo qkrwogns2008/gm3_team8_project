@@ -53,7 +53,7 @@ public class CDataManager : MonoBehaviour
     }
 
     // gold 추가
-    public void AddGold(int amount)       // 승래님과 check
+    public void AddGold(int amount)  
     {
         UserData.Gold += amount;
         SaveUserData();
@@ -61,7 +61,7 @@ public class CDataManager : MonoBehaviour
     }
 
     // gold 사용
-    public bool SpendGold(int amount)       // 승래님과 check
+    public bool SpendGold(int amount)     
     {
         if (UserData.Gold >= amount)
         {
@@ -73,7 +73,48 @@ public class CDataManager : MonoBehaviour
         Debug.Log($"골드가 부족합니다. 필요 골드: {amount}");
         return false;
     }
-    
+    // Ruby 추가
+    public void AddRubby(int amount)    
+    {
+        UserData.Ruby += amount;
+        SaveUserData();
+        Debug.Log($"루비 추가: {amount} / 현재 루비: {UserData.Ruby}");
+    }
+
+    // Ruby 사용
+    public bool SpendRubby(int amount)  
+    {
+        if (UserData.Ruby >= amount)
+        {
+            UserData.Ruby -= amount;
+            SaveUserData();
+            return true;
+        }
+
+        Debug.Log($"루비가 부족합니다. 필요 루비: {amount}");
+        return false;
+    }
+    public void AddPickUpTicket(int amount)
+    {
+        UserData.PickUpTicket += amount;
+        SaveUserData();
+        Debug.Log($"픽업티켓 추가: {amount} / 현재 픽업티켓: {UserData.PickUpTicket}");
+    }
+
+    // Ruby 사용
+    public bool SpendPickUpTicket(int amount)
+    {
+        if (UserData.PickUpTicket >= amount)
+        {
+            UserData.PickUpTicket -= amount;
+            SaveUserData();
+            return true;
+        }
+
+        Debug.Log($"픽업티켓 부족합니다. 필요 픽업티켓: {amount}");
+        return false;
+    }
+
 
     // 공격력 강화
     public void UpgradeBaseDamage(int amount)
@@ -191,6 +232,7 @@ public class CDataManager : MonoBehaviour
         public float HeroAtk;
         public float HeroDef;
         public float HeroHP;
+        public float HeroCriticalRatio;
     }
 
     // 팀원들이 이 함수만 부르면 팀장님의 공식으로 계산된 결과가 나갑니다.
@@ -208,10 +250,11 @@ public class CDataManager : MonoBehaviour
             // 최종 스탯 저장용
             FinalHeroStatus final = new FinalHeroStatus();
 
-        // SO수치  ((영웅 기본 수치 + 영웅 레벨당 수치 * 유저 강화 레벨 )* 영웅 레벨)
-        //final.HeroAtk = (heroSO.BaseAtk + heroSO.AtkPerLevel * upgrade.UserAtkLevel) * (1 + 0.1f * heroData.Level);
-        //final.HeroDef = (heroSO.BaseDefense + heroSO.DefensePerLevel * upgrade.UserDefLevel) * (1 + 0.1f * heroData.Level);
-        //final.HeroHP =  (heroSO.BaseHP + heroSO.HPPerLevel * upgrade.UserLifeLevel) * (1 + 0.1f * heroData.Level);
+        // SO수치  ((영웅 기본 수치 * 영웅 레벨당 수치 * 유저 강화 레벨 * 영웅 승급)
+        final.HeroAtk = (heroSO.BaseAttackDamage * (1 + 0.01f * upgrade.UserAtkLevel) * (1 + 0.1f * heroData.Level)*(1 + 0.05f * heroData.Quantity));
+        final.HeroDef = (heroSO.BaseDefense * (1 + 0.01f * upgrade.UserDefLevel) * (1 + 0.1f * heroData.Level) * (1 + 0.05f * heroData.Quantity));
+        final.HeroHP =  (heroSO.BaseMaxHp * (1 + 0.01f*upgrade.UserLifeLevel) * (1 + 0.1f * heroData.Level) * (1 + 0.05f * heroData.Quantity));
+        final.HeroCriticalRatio = heroSO.CriticalChance* (1 + 0.1f * heroData.Level)*(1 + 0.05f * heroData.Quantity);
 
         return final;
     }
@@ -235,6 +278,7 @@ public class CDataManager : MonoBehaviour
         }
         SaveUserData();
     }
+
     public bool SpendItem(int id, int count)
     {
         UserItemData item = UserData.Inventory.Find(x => x.ItemID == id);
@@ -253,6 +297,7 @@ public class CDataManager : MonoBehaviour
         Debug.Log("아이템이 부족합니다.");
         return false;
     }
+
     // 끝나는 시간 저장
     public double GetOfflineTimeSeconds()
     {

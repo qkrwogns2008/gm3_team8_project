@@ -14,8 +14,9 @@ public class CGachaPresenter : MonoBehaviour
     [SerializeField] private CGachaModel _gachaModel;                           // 모델 연결 
     [SerializeField] private CGachaView _gachaView;                             // 뷰 연결
 
-    [Header("Gacha 데이터 설정")]
+    [Header("Gacha 카테고리 List 설정")]
     [SerializeField] private List<CGachaCategorySO> _gachaCategoryList;         // 소환 리스트 SO (영웅SO : 0, 펫SO : 1)
+    [SerializeField] private CTabChange _tabChange;                             // 카테고리 탭 변경
     [SerializeField] private int _currentCategoryIndex = 0;                     // 카테고리 현재 인덱스
 
     [Header("Card 프리팹 설정")]
@@ -46,20 +47,12 @@ public class CGachaPresenter : MonoBehaviour
         _gachaView.ReRollTenButton.onClick.AddListener(() => OnClickButton(10));
         _gachaView.ReRollThirtyButton.onClick.AddListener(() => OnClickButton(30));
 
-        // 카테고리 버튼
-        _gachaView.HeroTabButton.onClick.AddListener(() => ChangeCatergory(0));
-        _gachaView.PetTabButton.onClick.AddListener(() => ChangeCatergory(1));
-        _gachaView.HolyTabButton.onClick.AddListener(() => ChangeCatergory(2));
-
         // 모두 열기 버튼
         _gachaView.OpenAllCard.onClick.AddListener(() => StartCoroutine(CO_OpenAllCard()));
 
         // 닫기 버튼
         _gachaView.CloseButton.onClick.AddListener(OnClickClose);
         _gachaView.MiniCardButton.onClick.AddListener(OnClickClose);
-
-        // 카테고리 영웅으로 시작
-        ChangeCatergory(0);
 
         // 재화 이미지
         _ticketSprite = _gachaView.SummonCard.transform.parent.GetComponentInChildren<Image>().sprite;
@@ -72,6 +65,17 @@ public class CGachaPresenter : MonoBehaviour
         _gachaView.ResultPanel.SetActive(false);
     }
 
+    private void Start()
+    {
+        if (_tabChange != null)
+        {
+            // 탭 이벤트 연결
+            _tabChange.OnTabChange += ChangeCatergory;
+
+            // 시작 시 0번 탭
+            _tabChange.SelectTab(0);
+        }
+    }
 
     // 인덱스에 따라 소환 카테고리 변경
     private void ChangeCatergory(int index)
@@ -90,6 +94,14 @@ public class CGachaPresenter : MonoBehaviour
         UpdateCategoryUI();
     }
 
+    private void OnDestroy()
+    {
+        if (_tabChange != null)
+        {
+            _tabChange.OnTabChange -= ChangeCatergory;
+        }
+    }
+
     // 뽑기 버튼 클릭
     private void OnClickButton(int count)
     {
@@ -102,6 +114,7 @@ public class CGachaPresenter : MonoBehaviour
         {
             StartCoroutine(Co_GachaClick(count));
         }
+
         else
         {
             NotEnoughMoneyPopup();
@@ -310,14 +323,13 @@ public class CGachaPresenter : MonoBehaviour
                 yield return new WaitForSeconds(0.05f);
             }
 
-            CQuestManager.Instance.QuestProgress(EQuestType.GachaSummon, count);
-
             // 뽑기 중 해제
             _isRolling = false;
             _gachaView.OpenAllCard.gameObject.SetActive(true);
 
         }
-        
+
+        CQuestManager.Instance.QuestProgress(EQuestType.GachaSummon, count);
     }
 
     // 모두 열기 기능 함수

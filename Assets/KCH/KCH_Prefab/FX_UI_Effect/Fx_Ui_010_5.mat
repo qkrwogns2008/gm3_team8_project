@@ -8,25 +8,27 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Fx_Ui_010_5
-  m_Shader: {fileID: 101, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords:
   - _FLIPBOOKBLENDING_OFF
-  - _RGBRGBA_ON
-  m_LightmapFlags: 0
+  - _SURFACE_TYPE_TRANSPARENT
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
+  m_DoubleSidedGI: 1
   m_CustomRenderQueue: -1
   stringTagMap: {}
-  disabledShaderPasses: []
+  disabledShaderPasses:
+  - DepthOnly
+  - SHADOWCASTER
   m_LockedProperties: :m_DoubleSidedGI
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: fe3c0202e84f4ed419d76200f2e92cff, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -110,6 +112,7 @@ Material:
     - _Banding: 0
     - _Bands: 3
     - _Blend: 0
+    - _BlendModePreserveSpecular: 1
     - _BlendOp: 0
     - _BlockSize: 2
     - _BumpScale: 1
@@ -127,7 +130,7 @@ Material:
     - _Cull_Mode: 2
     - _Culling: 2
     - _Custom_Data_Offset_Use: 0
-    - _Cutoff: 0
+    - _Cutoff: 0.302
     - _CutoffSoftness: 0
     - _Depthpower: 1
     - _DetailNormalMapScale: 1
@@ -137,8 +140,8 @@ Material:
     - _DistortionEnabled: 0
     - _DistortionStrength: 1
     - _DistortionStrengthScaled: 0.1
-    - _DstBlend: 0
-    - _DstBlendAlpha: 0
+    - _DstBlend: 10
+    - _DstBlendAlpha: 10
     - _EdgeSoftness: 0.15
     - _EdgeThickness: 0.2
     - _Emission: 1
@@ -176,11 +179,13 @@ Material:
     - _QueueOffset: 0
     - _RGBRGBA: 1
     - _RGBSplit: 0.03
+    - _ReceiveShadows: 1
     - _RectHeight: 0
     - _RectMask: 0
     - _RectMaskCutoff: 0
     - _RectSmoothness: 0
     - _RectWidth: 0
+    - _SampleGI: 0
     - _SecondTex: 0
     - _Smoothness: 0.2
     - _SmoothnessTextureChannel: 0
@@ -190,14 +195,14 @@ Material:
     - _SoftParticlesNearFadeDistance: 0
     - _SpecularHighlights: 1
     - _Speed: 3
-    - _SrcBlend: 1
+    - _SrcBlend: 5
     - _SrcBlendAlpha: 1
     - _Stencil: 0
     - _StencilComp: 8
     - _StencilOp: 0
     - _StencilReadMask: 255
     - _StencilWriteMask: 255
-    - _Surface: 0
+    - _Surface: 1
     - _USEHUE: 0
     - _UVSec: 0
     - _UseCullDistance: 0
@@ -212,20 +217,20 @@ Material:
     - _YOffset: 0
     - _YScale: 1
     - _ZTestMode: 4
-    - _ZWrite: 1
+    - _ZWrite: 0
     - _ZWrite_Mode: 0
     - _Ztest: 4
     - _zWrite: 0
     m_Colors:
     - _Amplitude: {r: 1, g: 1, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _BaseColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
+    - _BaseColorAddSubDiff: {r: -1, g: 1, b: 0, a: 0}
     - _BurnCol: {r: 1, g: 1, b: 1, a: 1}
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
     - _DistortionSpeedXYPowerZ: {r: 0, g: 0, b: 0, a: 0}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _GlowColor: {r: 1, g: 1, b: 1, a: 1}
     - _NeonColor: {r: 1, g: 0, b: 1, a: 1}
     - _NoiseFrequency: {r: 1, g: 1, b: 0, a: 0}
@@ -236,3 +241,16 @@ Material:
     - _SpeedMainTexUVNoiseZW: {r: 0, g: 0, b: 0, a: 0}
     - _TintColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
   m_BuildTextureStacks: []
+--- !u!114 &8867734025910555272
+MonoBehaviour:
+  m_ObjectHideFlags: 11
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 7

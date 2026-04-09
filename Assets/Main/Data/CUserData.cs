@@ -2,8 +2,13 @@ using System;
 using System.Collections.Generic;
 
 [Serializable]
-public class CUserData 
+public class CUserData
 {
+    // 기본 유저 세팅
+    public float BGMVolume = 1;
+    public float SFXVolume = 1;
+    public float UIVolume = 1;
+
     // 재화 및 기본 정보
     public string UserName = "GM3_8Team_FiveKnights_Account";
     public int UserLevel = 100;
@@ -20,6 +25,7 @@ public class CUserData
     public int PetPickUpLevel = 0;
     // 스테이지 관련 함수
     public int MainStageLevel = 1;
+    public int CurrentStageLevel = 1;
     public int GoldDungeonLevel = 1;
     public int EXPDungeonLevel = 1;
     // 강화 UI 관련 함수
