@@ -71,7 +71,7 @@ public class EffectBase : MonoBehaviour
 	/// <summary>
 	/// Effect의 방향, 크기를 설정합니다.
 	/// </summary>
-	/// <param name="isFacingRight">방향</param>
+	/// <param name="direction">방향</param>
 	/// <param name="scale">크기 (기본 1.0f)</param>
 	public virtual void Init(EffectBase prefab , EEffectDirection direction, float scale = 1.0f)
 	{

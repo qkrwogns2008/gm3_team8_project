@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84c152800de289948b8ee43c471c7b79, type: 3}
+  m_Name: EffectDataSO_KaronAttack
+  m_EditorClassIdentifier: 
+  _name: KaronAttack
+  _effectCatalog:
+  - _prefab: {fileID: 4684917972578120927, guid: 3ed0ef74a79af0b46a1c82b31d20fae6, type: 3}
+    _preDelay: 0.5
+    _offset: {x: 0, y: 0, z: 0}
+    _isNoDirection: 0

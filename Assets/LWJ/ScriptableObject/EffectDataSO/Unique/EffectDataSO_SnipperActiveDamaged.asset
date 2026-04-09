@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84c152800de289948b8ee43c471c7b79, type: 3}
+  m_Name: EffectDataSO_SnipperActiveDamaged
+  m_EditorClassIdentifier: 
+  _name: SnipperActiveDamaged
+  _effectCatalog:
+  - _prefab: {fileID: 5213284093374315585, guid: 42d45c508f0e4474c91f719fbaf558cc, type: 3}
+    _preDelay: 0
+    _offset: {x: 0, y: 0, z: 0}
+    _isNoDirection: 1
+  - _prefab: {fileID: 114587765826080250, guid: 0b44d4d19a0420041a41d5f2d11aad8c, type: 3}
+    _preDelay: 0.7
+    _offset: {x: 0, y: 0, z: 0}
+    _isNoDirection: 1
+  - _prefab: {fileID: 114587765826080250, guid: 0b44d4d19a0420041a41d5f2d11aad8c, type: 3}
+    _preDelay: 0.1
+    _offset: {x: 0, y: 0, z: 0}
+    _isNoDirection: 1
+  - _prefab: {fileID: 114587765826080250, guid: 0b44d4d19a0420041a41d5f2d11aad8c, type: 3}
+    _preDelay: 0.1
+    _offset: {x: 0, y: 0, z: 0}
+    _isNoDirection: 1

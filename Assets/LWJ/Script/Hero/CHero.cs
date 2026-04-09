@@ -10,6 +10,7 @@ public enum EHeroState
 	Death
 }
 
+[RequireComponent(typeof(BuffSystem))]
 public class CHero : CUnitBase
 {
 	protected enum EAttackType
@@ -30,6 +31,14 @@ public class CHero : CUnitBase
 
 	[Header("유닛 상태")]
 	[SerializeField] public EHeroState CurrentState = EHeroState.Idle;
+
+	[Header("공격 기능")]
+	[SerializeField] protected bool enableAttack = true;
+	[SerializeField] protected bool enableCriticalAttack = true;
+	[SerializeField] protected bool enableUseSkill = true;
+
+	[Header("버프 시스템")]
+	[SerializeField] protected BuffSystem buffSystem;
 	#endregion
 
 	#region 내부 변수
@@ -43,29 +52,71 @@ public class CHero : CUnitBase
 	protected EffectDataSO CriticalEffect; // 치명타 공격 이펙트
 	//protected float BaseCriticalActionInterval = 1.5f;
 	protected float CriticalChance; // 치명타 확률
+	protected float BaseCriticalDamageRatio; // 치명타 데미지 계수 (1f = 100%)
 	protected float CriticalAttackMultiplier; // 치명타 데미지 승수
 
 	protected EffectDataSO SkillEffect; // 스킬 이펙트
 	protected float SkillActionInterval = 1f; // 스킬 액션 딜레이
-	protected float BaseSkillDamageRate = 1f; // 스킬 데미지 계수 (1f = 100%)
-	protected float BaseSkillCooldown = 5.0f; // 쿨타임
+	protected float BaseSkillDamageRatio = 1f; // 스킬 데미지 계수 (1f = 100%)
+	protected float BaseSkillCooldown; // 쿨타임
 	protected float CooldownMultiplier = 1.0f; // 쿨타임 감소 승수
 
 	protected float NextSkillTime;
 	protected bool IsPendingDead = false; // 사망 유예 여부
 
+	#region 버프 계열
+	protected float FinalCriticalChance;
+	#endregion
+
 	protected bool IsFacingRight => (SkeletonAni.skeleton.ScaleX != 1.0f);
 	protected virtual float FinalDefense => BaseDefense * DefenseMultiplier;
-	protected virtual float CriticalDamage => FinalAttackDamage * CriticalAttackMultiplier;
+	protected virtual float CriticalDamage => FinalAttackDamage * BaseCriticalDamageRatio * CriticalAttackMultiplier;
 	protected virtual float FinalSkillActionInterval => SkillActionInterval / AttackSpeedMultiplier;
-	protected virtual float FinalSkillDamage => FinalAttackDamage * BaseSkillDamageRate;
+	protected virtual float FinalSkillDamage => FinalAttackDamage * BaseSkillDamageRatio;
 	protected virtual float FinalSkillCooldown => BaseSkillCooldown * CooldownMultiplier;
-
 	protected virtual float SpineScale => ScaleMultiplier;
 	#endregion
 
 	public event System.Action<float> OnSkillUsed; // 스킬 쿨타임이 인자로 들어감
 	public event System.Action OnDead;
+	public virtual BuffSystem BuffSystem => buffSystem;
+	public virtual bool EnableAttack => enableAttack;
+	public virtual bool EnableCriticalAttack => enableCriticalAttack;
+	public virtual bool EnableUseSkill => enableUseSkill;
+
+	protected override void Awake()
+	{
+		base.Awake();
+		if (buffSystem == null)
+		{
+			buffSystem = GetComponent<BuffSystem>();
+		}
+		if (buffSystem == null)
+		{
+			Debug.LogWarning($"[{UnitName}] buffSystem 부재");
+			gameObject.SetActive(false);
+			return;
+		}
+	}
+
+	protected override void OnEnable()
+	{
+		base.OnEnable();
+		BuffSystem.OnBuffChanged += ApplyBuffStat;
+	}
+
+	protected override void OnDisable()
+	{
+		base.OnDisable();
+		BuffSystem.OnBuffChanged -= ApplyBuffStat;
+	}
+
+	// 버프 갱신 이벤트 수신 시 효과 적용
+	protected virtual void ApplyBuffStat()
+	{
+		float buffCriticalChance = BuffSystem.GetBuffEffectTotalValue(EBuffFlags.CriticalChanceBoost_Alice);
+		FinalCriticalChance = Mathf.Max(CriticalChance + buffCriticalChance, 0);
+	}
 
 	// 영웅 공통 데이터 주입
 	protected override void InitUnitStats()
@@ -89,11 +140,12 @@ public class CHero : CUnitBase
 
 			CriticalEffect = HeroData.CriticalEffect;
 			CriticalChance = HeroData.CriticalChance;
+			BaseCriticalDamageRatio = HeroData.BaseCriticalDamageRatio;
 			CriticalAttackMultiplier = HeroData.CriticalAttackMultiplier;
 
 			SkillEffect = HeroData.SkillEffect;
 			SkillActionInterval = HeroData.SkillActionInterval;
-			BaseSkillDamageRate = HeroData.BaseSkillDamageRate;
+			BaseSkillDamageRatio = HeroData.BaseSkillDamageRatio;
 			BaseSkillCooldown = HeroData.BaseSkillCooldown;
 			CooldownMultiplier = HeroData.CooldownMultiplier;
 		}
@@ -150,7 +202,7 @@ public class CHero : CUnitBase
 	{
 		ApplyAttackCooldown(true);
 
-		if (SkeletonAni == null || AttackEffect == null)
+		if (SkeletonAni == null)
 		{
 			Debug.LogWarning("CHero) 인스펙터 null 감지");
 			return;
@@ -161,31 +213,18 @@ public class CHero : CUnitBase
 			return;
 		}
 
-		// 치명타 체크
-		bool isCriAttack = (Random.Range(0f, 100f) <= CriticalChance);
-
-		if (isCriAttack && CriticalEffect != null)
+		MotionRoutine = StartCoroutine(Co_PlayMotion(AttackEffect, AttackAnimation, target, EAttackType.Normal));
+		if (PrintLog)
 		{
-			MotionRoutine = StartCoroutine(Co_PlayMotion(CriticalEffect, CriticalAnimation, target, EAttackType.Critical));
-			if (PrintLog)
-			{
-				Debug.Log($"{UnitName}의 치명타 공격!");
-			}
-		}
-		else
-		{
-			MotionRoutine = StartCoroutine(Co_PlayMotion(AttackEffect, AttackAnimation, target, EAttackType.Normal));
-			if (PrintLog)
-			{
-				Debug.Log($"{UnitName}의 일반 공격!");
-			}
+			Debug.Log($"{UnitName}의 일반 공격!");
 		}
 	}
 
-	// for test
-	private void OnCritical(CUnitBase target)
+	protected virtual void OnCritical(CUnitBase target)
 	{
-		if (SkeletonAni == null || CriticalEffect == null)
+		ApplyAttackCooldown(true);
+
+		if (SkeletonAni == null)
 		{
 			Debug.LogWarning("CHero) 인스펙터 null 감지");
 			return;
@@ -208,7 +247,7 @@ public class CHero : CUnitBase
 		ApplyAttackCooldown(false);
 		NotifySkillUse();
 
-		if (SkeletonAni == null || SkillEffect == null)
+		if (SkeletonAni == null)
 		{
 			Debug.LogWarning("CHero) 인스펙터 null 감지");
 			return;
@@ -253,7 +292,7 @@ public class CHero : CUnitBase
 	{
 		if (target != null)
 		{
-			target.TakeDamage(FinalAttackDamage, this);
+			target.TakeDamage(FinalNormalAttackDamage, this);
 		}
 	}
 
@@ -289,32 +328,40 @@ public class CHero : CUnitBase
 		SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
 		SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
 
-		// 목록의 이펙트를 순차 출력
-		for (int i = 0; i < effectData.Catalog.Count; i++)
+		if (effectData != null)
 		{
-			EffectCatalog fxData = effectData.Catalog[i];
-
-			if (fxData == null)
+			// 목록의 이펙트를 순차 출력
+			for (int i = 0; i < effectData.Catalog.Count; i++)
 			{
-				Debug.LogWarning($"CHero) 이펙트 NONE. {effectData.Name} 이펙트 목록 확인");
-				continue;
-			}
+				EffectCatalog fxData = effectData.Catalog[i];
 
-			yield return new WaitForSeconds(fxData.PreDelay / AttackSpeedMultiplier);
+				if (fxData == null)
+				{
+					Debug.LogWarning($"CHero) 이펙트 NONE. {effectData.Name} 이펙트 목록 확인");
+					continue;
+				}
 
-			if (fxData.Prefab == null)
-			{
-				Debug.LogWarning($"CHero) 이펙트 프리팹 NONE. {effectData.Name} 이펙트 목록 확인");
-				continue;
-			}
+				yield return new WaitForSeconds(fxData.PreDelay / AttackSpeedMultiplier);
 
-			// 이펙트 생성 실패 시 즉시 종료
-			if (!TrySummonEffect(fxData, transform.position))
-			{
-				Debug.LogWarning($"{name} : {effectData.Name} 이펙트 생성 실패");
-				MotionRoutine = null;
-				yield break;
+				if (fxData.Prefab == null)
+				{
+					Debug.LogWarning($"CHero) 이펙트 프리팹 NONE. {effectData.Name} 이펙트 목록 확인");
+					continue;
+				}
+
+				// 이펙트 생성 실패 시 즉시 종료
+				if (!TrySummonEffect(fxData, transform.position))
+				{
+					Debug.LogWarning($"{name} : {effectData.Name} 이펙트 생성 실패");
+					MotionRoutine = null;
+					yield break;
+				}
 			}
+		}
+		else
+		{
+			Debug.LogWarning($"{UnitName}) 이펙트 null");
+			yield return new WaitForSeconds(0.3f / AttackSpeedMultiplier);
 		}
 
 		ProcessHit(target, type);
@@ -389,13 +436,13 @@ public class CHero : CUnitBase
 			return;
 		}
 
-		// 방어력 연산 후 피해가 있으면 적용
-		float finalDamage = damage - FinalDefense;
-		CurrentHp -= finalDamage > 0 ? finalDamage : 0;
+		// 방어력 연산. 최소 1f의 피해 보장.
+		float finalDamage = Mathf.Max(1f, damage - FinalDefense);
+		CurrentHp = Mathf.Max(CurrentHp - finalDamage, 0);
 
 		if (PrintLog)
 		{
-			if (finalDamage > 0)
+			if (finalDamage > 1)
 			{
 				Debug.Log($"CUnitBase) [{UnitName}] {finalDamage} 피해 입음. [HP:{CurrentHp}]");
 			}
@@ -450,13 +497,23 @@ public class CHero : CUnitBase
 			return;
 		}
 
-		if (CanUseSkill())
+		if (EnableUseSkill && CanUseSkill())
 		{
 			ExecuteCombat(EAttackType.Skill, target);
 		}
 		else
 		{
-			ExecuteCombat(EAttackType.Normal, target);
+			// 치명타 체크
+			bool isCriAttack = (Random.Range(0f, 100f) <= FinalCriticalChance);
+
+			if (EnableCriticalAttack && isCriAttack)
+			{
+				ExecuteCombat(EAttackType.Critical, target);
+			}
+			else if(EnableAttack)
+			{
+				ExecuteCombat(EAttackType.Normal, target);
+			}
 		}
 	}
 
@@ -466,6 +523,9 @@ public class CHero : CUnitBase
 		{
 			case EAttackType.Skill:
 				OnSkill(target);
+				break;
+			case EAttackType.Critical:
+				OnCritical(target);
 				break;
 			case EAttackType.Normal:
 				OnAttack(target);

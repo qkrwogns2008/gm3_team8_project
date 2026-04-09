@@ -17,6 +17,9 @@ public abstract class CUnitBase : MonoBehaviour
 	[Header("감지 세팅")]
 	[SerializeField] protected ETeamType TeamType; // 여기서 Hero인지 Enemy인지 선택 → 추후 미사용 시 제거
 
+	[Header("오브젝트 중앙")]
+	[SerializeField] protected Transform centerTransform;
+
 	[Header("스켈레톤 애니메이션")]
 	[SerializeField] protected SkeletonAnimation SkeletonAni;
 
@@ -45,6 +48,7 @@ public abstract class CUnitBase : MonoBehaviour
 	protected float BaseMaxHp; // 최대 체력
 	protected float BaseAtkDamage; // 공격력
 	protected float BaseAttackActionInterval; // 공격 주기(초)
+	protected float NormalAttackDamageRatio; // 기본 공격 피해 비율
 	protected float AtkRange; // 공격 범위
 	protected float BaseMoveSpeed; // 이동속도
 
@@ -61,11 +65,11 @@ public abstract class CUnitBase : MonoBehaviour
 	protected bool IsDead = false; // 사망 여부
 	protected Coroutine MotionRoutine;
 
-
     protected virtual float FinalMaxHP => BaseMaxHp * MaxHPMultiplier; // 1000 * 1.1 (최대 체력 10%증가) = 1100
 	protected virtual float FinalAttackDamage => BaseAtkDamage * AttackDamageMultiplier;
 	protected virtual float FinalAttackActionInterval => BaseAttackActionInterval / AttackSpeedMultiplier; // 공격 딜레이 (공격 속도 100% 증가 => 공격 딜레이 1/2)
-	protected virtual float FinalMoveSpeed => BaseMoveSpeed * MoveSpeedMultiplier;
+	protected virtual float FinalNormalAttackDamage => BaseAtkDamage * NormalAttackDamageRatio * AttackDamageMultiplier;
+	protected virtual float MoveSpeed => BaseMoveSpeed * MoveSpeedMultiplier;
 
 	private bool _isRegisterd = false; // 중복 등록 방지
 	#endregion
@@ -74,10 +78,12 @@ public abstract class CUnitBase : MonoBehaviour
 
 	public ETeamType Team => TeamType;
 	public string UnitName => unitName;
+	public virtual Vector2 CenterPos => (centerTransform.position == null) ? transform.position : centerTransform.position;
 	public virtual bool IsUnitDead => IsDead;
-    public float ScaleMultiplier => Mathf.Abs(SkeletonAni.transform.localScale.x);
+    public virtual float ScaleMultiplier => Mathf.Abs(SkeletonAni.transform.lossyScale.x);
     public virtual float FinalAtkRange => AtkRange * ScaleMultiplier;
     public virtual float FinalDetectionRange => DetectionRange * ScaleMultiplier;
+	public virtual float FinalMoveSpeed => MoveSpeed * ScaleMultiplier;
 	public UnitDataSO BaseData => OriginData;
 
     protected virtual void Awake()
@@ -91,6 +97,10 @@ public abstract class CUnitBase : MonoBehaviour
 		if (SkeletonAni == null)
 		{
 			Debug.LogWarning($"CUnitBase) {UnitName} SkeletonAnimation 부재");
+		}
+		if (centerTransform == null)
+		{
+			Debug.LogWarning($"CUnitBase) {UnitName} CenterTransform 부재");
 		}
 	}
 	protected virtual void Start()
@@ -186,6 +196,7 @@ public abstract class CUnitBase : MonoBehaviour
 			BaseMaxHp = OriginData.BaseMaxHp;
 			BaseAtkDamage = OriginData.BaseAttackDamage;
 			BaseAttackActionInterval = OriginData.BaseAttackInterval;
+			NormalAttackDamageRatio = OriginData.NormalAttackDamageRatio;
 			AtkRange = OriginData.AttackRange;
 			BaseMoveSpeed = OriginData.BaseMoveSpeed;
 
@@ -218,7 +229,7 @@ public abstract class CUnitBase : MonoBehaviour
 			return;
 		}
 
-		CurrentHp -= damage;
+		CurrentHp = Mathf.Max(CurrentHp - damage, 0);
 
 		if (PrintLog)
 		{
@@ -333,7 +344,7 @@ public abstract class CUnitBase : MonoBehaviour
 
 		if (target != null)
 		{
-			target.TakeDamage(damage, this);
+			target.TakeDamage(FinalNormalAttackDamage, this);
 		}
 
 		MotionRoutine = null;

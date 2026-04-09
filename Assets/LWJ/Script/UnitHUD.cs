@@ -11,6 +11,9 @@ public class UnitHUD : MonoBehaviour
 	[SerializeField] private Image _hpBar;
 	[SerializeField] private Image _coolDownBar;
 
+	[Header("Äð´Ù¿î Äµ¹ö½º")]
+	[SerializeField] private Canvas _cooldownCanvas;
+
 	[Header("Äð´Ù¿î Á¾·á ÀÌÆåÆ®")]
 	[SerializeField] private ParticleSystem _fxCooldownEnd;
 	#endregion
@@ -44,16 +47,37 @@ public class UnitHUD : MonoBehaviour
 	private void OnEnable()
 	{
 		_base.OnHpChanged += SetHPBar;
-		
+
 		if (_herobase != null)
 		{
 			_herobase.OnSkillUsed += StartCooldownUI;
 			_herobase.OnDead += PauseCooldownUI;
 
-			_coolDownBar.fillAmount = 1f;
+			if (!_herobase.EnableUseSkill)
+			{
+				if (_cooldownCanvas != null)
+				{
+					_cooldownCanvas.gameObject.SetActive(false);
+				}
+				else
+				{
+					Debug.LogWarning("UnitHUD) CooldownCanvas null. ÀÎ½ºÆåÅÍ È®ÀÎ");
+				}
+			}
+			else
+			{
+				if (_coolDownBar != null)
+				{
+					_coolDownBar.fillAmount = 1f;
+				}
+			}
 		}
 
-		_hpBar.fillAmount = 1f;
+		if (_hpBar != null)
+		{
+			_hpBar.fillAmount = 1f;
+		}
+
 		_isCooling = false;
 	}
 
