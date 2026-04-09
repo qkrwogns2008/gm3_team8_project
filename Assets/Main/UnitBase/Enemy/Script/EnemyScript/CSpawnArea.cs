@@ -28,7 +28,6 @@ public class CSpawnArea : MonoBehaviour
 
 	#endregion
 
-	private List<Coroutine> _spawnRoutine = new List<Coroutine>();
 
 	private void Start()
 	{
