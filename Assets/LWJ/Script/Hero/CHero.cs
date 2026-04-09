@@ -10,6 +10,7 @@ public enum EHeroState
 	Death
 }
 
+[RequireComponent(typeof(BuffSystem))]
 public class CHero : CUnitBase
 {
 	protected enum EAttackType
@@ -32,9 +33,12 @@ public class CHero : CUnitBase
 	[SerializeField] public EHeroState CurrentState = EHeroState.Idle;
 
 	[Header("공격 기능")]
-	[SerializeField] protected bool EnableAttack = true;
-	[SerializeField] protected bool EnableCriticalAttack = true;
-	[SerializeField] protected bool EnableUseSkill = true;
+	[SerializeField] protected bool enableAttack = true;
+	[SerializeField] protected bool enableCriticalAttack = true;
+	[SerializeField] protected bool enableUseSkill = true;
+
+	[Header("버프 시스템")]
+	[SerializeField] protected BuffSystem buffSystem;
 	#endregion
 
 	#region 내부 변수
@@ -54,11 +58,15 @@ public class CHero : CUnitBase
 	protected EffectDataSO SkillEffect; // 스킬 이펙트
 	protected float SkillActionInterval = 1f; // 스킬 액션 딜레이
 	protected float BaseSkillDamageRatio = 1f; // 스킬 데미지 계수 (1f = 100%)
-	protected float BaseSkillCooldown = 5.0f; // 쿨타임
+	protected float BaseSkillCooldown; // 쿨타임
 	protected float CooldownMultiplier = 1.0f; // 쿨타임 감소 승수
 
 	protected float NextSkillTime;
 	protected bool IsPendingDead = false; // 사망 유예 여부
+
+	#region 버프 계열
+	protected float FinalCriticalChance;
+	#endregion
 
 	protected bool IsFacingRight => (SkeletonAni.skeleton.ScaleX != 1.0f);
 	protected virtual float FinalDefense => BaseDefense * DefenseMultiplier;
@@ -66,13 +74,49 @@ public class CHero : CUnitBase
 	protected virtual float FinalSkillActionInterval => SkillActionInterval / AttackSpeedMultiplier;
 	protected virtual float FinalSkillDamage => FinalAttackDamage * BaseSkillDamageRatio;
 	protected virtual float FinalSkillCooldown => BaseSkillCooldown * CooldownMultiplier;
-
 	protected virtual float SpineScale => ScaleMultiplier;
 	#endregion
 
 	public event System.Action<float> OnSkillUsed; // 스킬 쿨타임이 인자로 들어감
 	public event System.Action OnDead;
-	public virtual bool HasCooldown => FinalSkillCooldown > 0;
+	public virtual BuffSystem BuffSystem => buffSystem;
+	public virtual bool EnableAttack => enableAttack;
+	public virtual bool EnableCriticalAttack => enableCriticalAttack;
+	public virtual bool EnableUseSkill => enableUseSkill;
+
+	protected override void Awake()
+	{
+		base.Awake();
+		if (buffSystem == null)
+		{
+			buffSystem = GetComponent<BuffSystem>();
+		}
+		if (buffSystem == null)
+		{
+			Debug.LogWarning($"[{UnitName}] buffSystem 부재");
+			gameObject.SetActive(false);
+			return;
+		}
+	}
+
+	protected override void OnEnable()
+	{
+		base.OnEnable();
+		BuffSystem.OnBuffChanged += ApplyBuffStat;
+	}
+
+	protected override void OnDisable()
+	{
+		base.OnDisable();
+		BuffSystem.OnBuffChanged -= ApplyBuffStat;
+	}
+
+	// 버프 갱신 이벤트 수신 시 효과 적용
+	protected virtual void ApplyBuffStat()
+	{
+		float buffCriticalChance = BuffSystem.GetBuffEffectTotalValue(EBuffFlags.CriticalChanceBoost_Alice);
+		FinalCriticalChance = Mathf.Max(CriticalChance + buffCriticalChance, 0);
+	}
 
 	// 영웅 공통 데이터 주입
 	protected override void InitUnitStats()
@@ -460,7 +504,7 @@ public class CHero : CUnitBase
 		else
 		{
 			// 치명타 체크
-			bool isCriAttack = (Random.Range(0f, 100f) <= CriticalChance);
+			bool isCriAttack = (Random.Range(0f, 100f) <= FinalCriticalChance);
 
 			if (EnableCriticalAttack && isCriAttack)
 			{

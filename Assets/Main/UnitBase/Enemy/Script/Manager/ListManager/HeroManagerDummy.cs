@@ -1,11 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class HeroManagerDummy : MonoBehaviour
 {
     public static HeroManagerDummy Instance;
+	public event Action<CUnitBase> OnHeroActived;
 
     private List<CUnitBase> _activeHero = new List<CUnitBase>();
 
@@ -29,7 +30,8 @@ public class HeroManagerDummy : MonoBehaviour
             _activeHero.Add(hero);
             Debug.Log($"HeroManager {hero.name} µî·Ï");
         }
-    }
+		OnHeroActived?.Invoke(hero);
+	}
 
     public void UnregisterHero(CUnitBase hero)
     {

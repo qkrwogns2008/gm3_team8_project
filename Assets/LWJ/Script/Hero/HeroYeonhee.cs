@@ -192,7 +192,7 @@ public class HeroYeonhee : RangedHeroBase
 		}
 	}
 
-	protected void OnDrawGizmosSelected()
+	protected virtual void OnDrawGizmosSelected()
 	{
 		if (Target == null)
 		{

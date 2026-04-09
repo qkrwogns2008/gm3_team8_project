@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5845931139765108105}
   - component: {fileID: 3278456846952317465}
   - component: {fileID: 1385575880346748945}
+  - component: {fileID: 8177186180137121409}
   m_Layer: 0
   m_Name: Hero_Teo_A
   m_TagString: Untagged
@@ -63,9 +64,10 @@ MonoBehaviour:
   CriticalAnimation: Critical
   SkillAnimation: Active_A
   CurrentState: 0
-  EnableAttack: 1
-  EnableCriticalAttack: 1
-  EnableUseSkill: 1
+  enableAttack: 1
+  enableCriticalAttack: 1
+  enableUseSkill: 1
+  buffSystem: {fileID: 8177186180137121409}
   SectorRadius: 10
   SectorDegree: 30
   PrintSkillLog: 0
@@ -81,6 +83,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8458d08ebfd40524ebe51fdf3782d5bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8177186180137121409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2209794903314683923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb6e3752423ac8546ba688a392ae72d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _buffInfos: []
 --- !u!1 &5716120598718262879
 GameObject:
   m_ObjectHideFlags: 0

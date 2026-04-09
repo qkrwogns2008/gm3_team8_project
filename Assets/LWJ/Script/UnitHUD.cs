@@ -53,7 +53,7 @@ public class UnitHUD : MonoBehaviour
 			_herobase.OnSkillUsed += StartCooldownUI;
 			_herobase.OnDead += PauseCooldownUI;
 
-			if (!_herobase.HasCooldown)
+			if (!_herobase.EnableUseSkill)
 			{
 				if (_cooldownCanvas != null)
 				{

@@ -9,7 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5845931139765108105}
+  - component: {fileID: 665115235749148430}
   - component: {fileID: 1385575880346748945}
+  - component: {fileID: 8177186180137121409}
   m_Layer: 0
   m_Name: Hero_Snipper_A
   m_TagString: Untagged
@@ -36,6 +38,43 @@ Transform:
   - {fileID: 8331120324585134367}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &665115235749148430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2209794903314683923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dda685b616a8f64195ef7576f367e04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitName: 
+  CurrentHp: 0
+  OriginData: {fileID: 11400000, guid: df2ee70120676f545a50332e76f349d4, type: 2}
+  TeamType: 0
+  centerTransform: {fileID: 8331120324585134367}
+  SkeletonAni: {fileID: 4024569556539796475}
+  AttackAnimation: Attack_A
+  AttackEffect: {fileID: 11400000, guid: 3ad51a00d904ef04690dae317b45ffbc, type: 2}
+  DeathAnimation: Death
+  DeathDisableTime: 0
+  PrintLog: 0
+  CriticalAnimation: Critical
+  SkillAnimation: Active_A
+  CurrentState: 0
+  enableAttack: 1
+  enableCriticalAttack: 1
+  enableUseSkill: 1
+  buffSystem: {fileID: 8177186180137121409}
+  MissilePrefab: {fileID: 114243736805655561, guid: da7681deed3b6f54eb4f07548757d618, type: 3}
+  MissileData: {fileID: 11400000, guid: 09e2dc7bb0af9554382cb73ea5251127, type: 2}
+  SkillAttackCount: 3
+  CriticalHitEffect: {fileID: 11400000, guid: 802fbade7ebfe6844b0604647c7b3303, type: 2}
+  SkillHitEffect: {fileID: 11400000, guid: 944ca67ecc820db49948bb576be30ebd, type: 2}
+  AreaRadius: 4
+  PrintSkillLog: 1
 --- !u!114 &1385575880346748945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48,6 +87,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8458d08ebfd40524ebe51fdf3782d5bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8177186180137121409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2209794903314683923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb6e3752423ac8546ba688a392ae72d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _buffInfos: []
 --- !u!1 &5716120598718262879
 GameObject:
   m_ObjectHideFlags: 0
@@ -363,8 +415,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5141622292158793439, guid: d9b001d91ee30094398bb6b8f786d397, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9046642108580436248, guid: d9b001d91ee30094398bb6b8f786d397, type: 3}
+      propertyPath: _base
+      value: 
+      objectReference: {fileID: 665115235749148430}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -9,10 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5845931139765108105}
-  - component: {fileID: 8457717368112746458}
+  - component: {fileID: 3227790121396876406}
   - component: {fileID: 1385575880346748945}
+  - component: {fileID: 8177186180137121409}
   m_Layer: 0
-  m_Name: Hero_Elga_A
+  m_Name: Hero_Evan_A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37,7 +38,7 @@ Transform:
   - {fileID: 8331120324585134367}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8457717368112746458
+--- !u!114 &3227790121396876406
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -46,30 +47,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 2209794903314683923}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa8332bd289de56459eb3bd52c352346, type: 3}
+  m_Script: {fileID: 11500000, guid: 8660eb80f49351843bad87b367635ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   unitName: 
   CurrentHp: 0
-  OriginData: {fileID: 11400000, guid: e67f0fe7071dee74295e16b90bca3bb8, type: 2}
+  OriginData: {fileID: 11400000, guid: 94a8f5d25a79afd4c9200204152b5a6c, type: 2}
   TeamType: 0
   centerTransform: {fileID: 8331120324585134367}
   SkeletonAni: {fileID: 4024569556539796475}
   AttackAnimation: Attack_A
-  AttackEffect: {fileID: 11400000, guid: af0abe7ad3081134eb9cb9c2c8bdfac3, type: 2}
+  AttackEffect: {fileID: 11400000, guid: c3526653e330f004eb88f6554a9a2faa, type: 2}
   DeathAnimation: Death
   DeathDisableTime: 0
   PrintLog: 0
   CriticalAnimation: Critical
   SkillAnimation: Active_A
   CurrentState: 0
-  EnableAttack: 1
-  EnableCriticalAttack: 1
-  EnableUseSkill: 0
-  MissilePrefab: {fileID: 114587765826080250, guid: e6087f6a9f210c54b8b40cbf7f87522a, type: 3}
-  MissileData: {fileID: 11400000, guid: e21ba98d20748d04c8a192368de82ceb, type: 2}
-  CriticalMissilePrefab: {fileID: 114587765826080250, guid: 4d450eb9825a802489ea270ab3ab5805, type: 3}
-  CriticalMissileData: {fileID: 11400000, guid: e21ba98d20748d04c8a192368de82ceb, type: 2}
+  enableAttack: 1
+  enableCriticalAttack: 1
+  enableUseSkill: 1
+  buffSystem: {fileID: 8177186180137121409}
+  AreaRadius: 4
+  PrintSkillLog: 1
 --- !u!114 &1385575880346748945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,6 +82,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8458d08ebfd40524ebe51fdf3782d5bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8177186180137121409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2209794903314683923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb6e3752423ac8546ba688a392ae72d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _buffInfos: []
 --- !u!1 &5716120598718262879
 GameObject:
   m_ObjectHideFlags: 0
@@ -145,7 +158,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6a7c07d6c21c67346b8cdac459ce7953, type: 2}
+  - {fileID: 2100000, guid: eaca2a09ee2d09b489fa5922baea6337, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -179,7 +192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonDataAsset: {fileID: 11400000, guid: 585f3bf80bcf6d840b197701fc602947, type: 2}
+  skeletonDataAsset: {fileID: 11400000, guid: 8d0ba4405b4271f43b73b9c7486f6190, type: 2}
   initialSkinName: A
   initialFlipX: 0
   initialFlipY: 0
@@ -337,7 +350,7 @@ Transform:
   m_GameObject: {fileID: 7303544824873240990}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalPosition: {x: 0, y: 4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -402,7 +415,7 @@ PrefabInstance:
     - target: {fileID: 9046642108580436248, guid: d9b001d91ee30094398bb6b8f786d397, type: 3}
       propertyPath: _base
       value: 
-      objectReference: {fileID: 8457717368112746458}
+      objectReference: {fileID: 3227790121396876406}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
