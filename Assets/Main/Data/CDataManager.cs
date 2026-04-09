@@ -17,12 +17,13 @@ public class CDataManager : MonoBehaviour
             Instance = this;
             #if UNITY_EDITOR
             // 유니티 에디터(PC 작업 중)일 때는 프로젝트 폴더 바로 옆에 저장 (찾기 쉬움)
-            // _savePath = Path.Combine(Application.dataPath, "..", "SaveData.json");
+            _savePath = Path.Combine(Application.dataPath, "..", "SaveData.json");
             #else
-            // 실제 빌드(모바일, PC 빌드본)일 때는 안전한 영구 저장소에 저장
+            실제 빌드(모바일, PC 빌드본)일 때는 안전한 영구 저장소에 저장
             _savePath = Path.Combine(Application.persistentDataPath, "SaveData.json");
             #endif
             LoadUserData();
+            DontDestroyOnLoad(gameObject);
         }
         else { Destroy(gameObject); }
     }
@@ -214,6 +215,47 @@ public class CDataManager : MonoBehaviour
             Debug.Log($"User가 보유하지 않은 영웅(ID: {id})의 레벨설정 불가.");
         }
         SaveUserData();
+    }
+
+    public void AddUserHeroArray(int x, int y, EHeroID heroID)
+    {
+        int arrayIndex = x + 4 * y;
+        int beforeIndex = -1;
+        int beforeHeroID = -1;
+        // 배열 범위 방지
+        if (arrayIndex < 0 || arrayIndex >= UserData.Hero_Array.Length)
+        {
+            Debug.Log("영웅배치 좌표 범위 초과");
+            return;
+        }
+        // ID 0 입력시 구역 미배치 처리
+        if((int)heroID == 0)
+        {
+            UserData.Hero_Array[arrayIndex] = 0;
+            SaveUserData(); return;
+        }
+        // 기존 배치 중복 여부 확인
+        for(int i = 0; i < UserData.Hero_Array.Length; i++)
+        {
+            if (UserData.Hero_Array[i] == (int)heroID)
+            {
+                beforeIndex = i;
+                break;
+            }
+        }
+        // 기존 배치 제거
+        if (beforeIndex != -1 && UserData.Hero_Array[arrayIndex] != 0)
+        {
+            UserData.Hero_Array[beforeIndex] = UserData.Hero_Array[arrayIndex];
+        }
+        else if (beforeIndex != -1 && UserData.Hero_Array[arrayIndex] == 0)
+        {
+            UserData.Hero_Array[beforeIndex] = 0;
+        }
+            // 새로운 배치 설정
+            UserData.Hero_Array[arrayIndex] = (int)heroID;
+
+        SaveUserData(); return;
     }
 
     public UserHeroData GetHeroData(int id)         // 우재님과 check

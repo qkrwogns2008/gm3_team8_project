@@ -38,6 +38,9 @@ public class CUserData
     public int Life_Level = 1;
     public int Life_Stat = 1;
     public int Life_Cost = 1;
+    //영웅 배치 관련 함수
+    public int[] Hero_Array = new int [16];
+
 
     // 보유 중인 영웅ID, 레벨 정보
     public List<UserHeroData> HeroList = new List<UserHeroData>();
