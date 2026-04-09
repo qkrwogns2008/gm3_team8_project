@@ -183,10 +183,10 @@ public class CDataManager : MonoBehaviour
     }
 
     // 영웅 데이터 조회
-    
 
-    // hero 레벨 설정
-    public void SetHeroLevel(int id, int level)     // 우재님과 check
+
+    // id 영웅의 레벨을 level로 설정하는 함수
+    public void SetHeroLevel(int id, int level)    
     {
         var hero = GetHeroData(id);
         // 영웅 보유 여부 확인
@@ -201,7 +201,9 @@ public class CDataManager : MonoBehaviour
         }
         SaveUserData();
     }
-    public void AddHeroLevel(int id, int level)     // 우재님과 check
+
+    // id 영웅의 레벨을 level만큼 추가하는 함수 
+    public void AddHeroLevel(int id, int level)     
     {
         var hero = GetHeroData(id);
         // 영웅 보유 여부 확인
@@ -217,9 +219,10 @@ public class CDataManager : MonoBehaviour
         SaveUserData();
     }
 
-    public void AddUserHeroArray(int x, int y, EHeroID heroID)
+    // 영웅 Array배치 함수 x,y : 0~3, heroID : 0(미배치)~4002(영웅ID 최대값)
+    public void AddUserHeroArray(int x, int y, EHeroID heroID) 
     {
-        int arrayIndex = x + 4 * y;
+        int arrayIndex = x + 4 * y ;
         int beforeIndex = -1;
         int beforeHeroID = -1;
         // 배열 범위 방지
@@ -258,7 +261,8 @@ public class CDataManager : MonoBehaviour
         SaveUserData(); return;
     }
 
-    public UserHeroData GetHeroData(int id)         // 우재님과 check
+
+    public UserHeroData GetHeroData(int id)
     {
         for (int i = 0; i < UserData.HeroList.Count; i++)
         {
@@ -277,7 +281,7 @@ public class CDataManager : MonoBehaviour
         public float HeroCriticalRatio;
     }
 
-    // 팀원들이 이 함수만 부르면 팀장님의 공식으로 계산된 결과가 나갑니다.
+    
     public FinalHeroStatus GetHeroFinalStatus(int heroID, UnitDataSO unitSO)
     {
         // 유저의 강화/레벨 데이터 로드
