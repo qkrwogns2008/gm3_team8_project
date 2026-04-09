@@ -10,9 +10,9 @@ public enum GameState
     GameOver    // 스테이지 패배 Or 보스 사냥 실패
 }
 
-public class GameManager : MonoBehaviour
+public class CGameManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    public static CGameManager Instance;
 
     [Header("게임 상태")]
     public GameState CurrentState;
