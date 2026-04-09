@@ -1391,6 +1391,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5545955675696673412}
+  - component: {fileID: 3666899990590674682}
   m_Layer: 0
   m_Name: BackGroundStage41~60
   m_TagString: Untagged
@@ -1416,6 +1417,19 @@ Transform:
   - {fileID: 3754420634507216680}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3666899990590674682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1211742772461708265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af8785aae00417b4a9fced08eb54007d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _audioData: {fileID: 11400000, guid: 46ebc5a878d99de4ab88849e05330cd8, type: 2}
 --- !u!1 &1298349255808628776
 GameObject:
   m_ObjectHideFlags: 0
