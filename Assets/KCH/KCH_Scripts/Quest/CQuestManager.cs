@@ -115,7 +115,7 @@ public class CQuestManager : MonoBehaviour
             OnDataUpdate.Invoke();
         }
 
-        // CDataManager.Instance.SaveUserData();
+        CDataManager.Instance.SaveUserData();
     }
 
     // 유저 보상 지급
@@ -141,7 +141,7 @@ public class CQuestManager : MonoBehaviour
                  // UI 갱신
                  OnDataUpdate?.Invoke();
              
-                 // CDataManager.Instance.SaveUserData();
+                 CDataManager.Instance.SaveUserData();
                  return;
             }
         }
