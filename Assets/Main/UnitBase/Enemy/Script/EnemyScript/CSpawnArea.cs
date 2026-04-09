@@ -1,115 +1,125 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CSpawnArea : MonoBehaviour
 {
+	#region 인스펙터
 
-    #region 인스펙터
-    [SerializeField] private GameObject _monsterPrefab;         // 몬스터 프리팹
-    [SerializeField] private float _spawnRadius = 30f;           // 구역 크기
-    [SerializeField] private int _maxMonsterCount = 10;         // 구역당 최대 스폰수
+	[System.Serializable]
+	struct SpawnPointData
+	{
+		public Transform point;
+		public float range;
+	}
 
+	[Header("테마")]
+	[SerializeField] private string _themeName;
+	[Header("몬스터 리스트")]
+	[SerializeField] private List<GameObject> _monsterPrefabs;
+	[Header("현 라운드 출현 몬스터(자동 선택)")]
+	[SerializeField] private GameObject[] _activeMonsters = new GameObject[3];
+	[Header("스폰 구역")]
+	[SerializeField] SpawnPointData[] _spawnPoints = new SpawnPointData[3];
+	[Header("스폰 설정")]
+	[SerializeField] private float _spawnInterval = 5.0f;
+	[SerializeField] private int _maxMonsterCount = 10;
+	[SerializeField] private int _currentMonsterCount = 0;
 
-    #endregion
+	#endregion
 
-    #region 내부 변수
+	private Coroutine _spawnRoutine;
 
-    private List<CEnemyBase> _activeMonsters = new List<CEnemyBase>();
-    private float _spawnCoolTime = 3f;
-
-    private int _waitSpawnCount = 0;
-    #endregion
-
-
-    void Start()
+    private void Start()
     {
-        CEnemyBase enemyScript = _monsterPrefab.GetComponent<CEnemyBase>();
+        if(_spawnPoints.Length != 3)
+		{
+			Debug.Log("Spawn Point가 정확히 3개가 아님");
+			return;
+		}
+        SelectRoundMonsters();
 
-
-        if (enemyScript != null && enemyScript.EnemyData != null)
-        {
-            _spawnCoolTime = enemyScript.EnemyData.SpawnCooltime;
-        }
-
-        for (int i = 0; i< _maxMonsterCount; i++)
-        {
-            SpawnMonster();
-        }
+		_spawnRoutine = StartCoroutine(SpawnMonsterRoutine());
     }
 
+	// 몬스터 3마리 뽑기
+	void SelectRoundMonsters()
+	{
+		if(_monsterPrefabs.Count < 3)
+		{
+			return;
+		}
 
-    void Update()
-    {
-        CleanUpList();
+		List<GameObject> tempList = new List<GameObject>(_monsterPrefabs);
 
-        int currentTotal = _activeMonsters.Count + _waitSpawnCount;
+		for(int i = 0; i < 3; i++)
+		{
+			int randIndex = Random.Range(0, tempList.Count);
+            _activeMonsters[i] = tempList[randIndex];
+			tempList.RemoveAt(randIndex);
+		}
+		Debug.Log("포인트별 몬스터 배정 완료");
+	}
 
-        if(currentTotal < _maxMonsterCount)
-        {
-            StartCoroutine(CoRespawnMonster());
-            currentTotal++;
-        }
-    }
+	private IEnumerator SpawnMonsterRoutine()
+	{
+		yield return new WaitForSeconds(1.0f);
 
-    // 개별 몬스터 리스폰 관리
-    private IEnumerator CoRespawnMonster()
-    {
-        _waitSpawnCount++;
+		while (true)
+		{
+			SpawnRandomMonster();
+			yield return new WaitForSeconds(_spawnInterval);
+		}
+	}
 
-        yield return new WaitForSeconds(_spawnCoolTime);
 
-        SpawnMonster();
+	// 3개의 포인트중 하나 골라 랜덤으로 소환
+	void SpawnRandomMonster()
+	{
+		if(_currentMonsterCount >= _maxMonsterCount)
+		{
+			return;
+		}
 
-        _waitSpawnCount--;
-    }
+		int index = Random.Range(0, 3);
 
-    private void SpawnMonster()
-    {
-        if (_monsterPrefab == null)
-        {
-            return;
-        }
-        Vector2 randomPoint = Random.insideUnitCircle * _spawnRadius;
-        Vector3 spawnPos = transform.position + new Vector3(randomPoint.x, randomPoint.y, 0f);
-        spawnPos.z = 0f;
+		GameObject prefab = _activeMonsters[index];
+		SpawnPointData data = _spawnPoints[index];
 
-        GameObject monster = PoolManager.Instance.Pop(_monsterPrefab, spawnPos, Quaternion.identity);
-        if (monster != null)
-        {
+		Vector2 randomOffset = Random.insideUnitCircle * data.range;
+		Vector3 spawnPos = data.point.position + new Vector3(randomOffset.x, randomOffset.y, 0);
 
-            CEnemyBase enemyScript = monster.GetComponent<CEnemyBase>();
+		GameObject obj = PoolManager.Instance.Pop(prefab, spawnPos, Quaternion.identity);
 
-            if (enemyScript != null)
-            {
-                _activeMonsters.Add(enemyScript);
-                CAutoEnemyMove ai = enemyScript.GetComponent<CAutoEnemyMove>();
-                ai.ChangeState(EUnitState.Idle);
-            }
-            
-        }
-    }
+		_currentMonsterCount++;
+	}
 
-    private void CleanUpList()
-    {
-        for(int i = _activeMonsters.Count - 1; i>= 0; i--)
-        {
-            CEnemyBase enemy = _activeMonsters[i];
+	public void OnMonsterDeath()
+	{
+		_currentMonsterCount --;
+	}
 
-            // 비활성화 수거
-            if(enemy == null || !enemy.gameObject.activeSelf || enemy.IsUnitDead)
-            {
-                _activeMonsters.RemoveAt(i);
-            }
-        }
-    }
+	// 스테이지 종료 혹은 스포너 정지 필요시 호출.
+	public void StopSpawning()
+	{
+		if(_spawnRoutine != null)
+		{
+			StopCoroutine(_spawnRoutine);
+			_spawnRoutine = null;
+		}
+	}
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = new Color(0, 1, 0, 0.15f);
-        Gizmos.DrawSphere(transform.position, _spawnRadius);
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, _spawnRadius);
+		Gizmos.color = Color.blue;
+		foreach(var sp in _spawnPoints)
+		{
+			if(sp.point != null)
+			{
+				Gizmos.DrawWireSphere(sp.point.position, sp.range);
+			}
+		}
     }
 }
