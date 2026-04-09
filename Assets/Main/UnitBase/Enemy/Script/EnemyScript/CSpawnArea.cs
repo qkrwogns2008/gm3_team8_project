@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CSpawnArea : MonoBehaviour
@@ -13,6 +11,7 @@ public class CSpawnArea : MonoBehaviour
 	{
 		public Transform point;
 		public float range;
+		public float respawnTime;
 	}
 
 	[Header("테마")]
@@ -24,13 +23,12 @@ public class CSpawnArea : MonoBehaviour
 	[Header("스폰 구역")]
 	[SerializeField] SpawnPointData[] _spawnPoints = new SpawnPointData[3];
 	[Header("스폰 설정")]
-	[SerializeField] private float _spawnInterval = 5.0f;
 	[SerializeField] private int _maxMonsterCount = 10;
 	[SerializeField] private int _currentMonsterCount = 0;
 
 	#endregion
 
-	private Coroutine _spawnRoutine;
+	private List<Coroutine> _spawnRoutine = new List<Coroutine>();
 
     private void Start()
     {
@@ -41,7 +39,10 @@ public class CSpawnArea : MonoBehaviour
 		}
         SelectRoundMonsters();
 
-		_spawnRoutine = StartCoroutine(SpawnMonsterRoutine());
+		for(int i = 0; i < 3; i++)
+		{
+			StartCoroutine(PointSpawnRoutine(i));
+		}
     }
 
 	// 몬스터 3마리 뽑기
@@ -63,37 +64,44 @@ public class CSpawnArea : MonoBehaviour
 		Debug.Log("포인트별 몬스터 배정 완료");
 	}
 
-	private IEnumerator SpawnMonsterRoutine()
+	private IEnumerator PointSpawnRoutine(int index)
 	{
-		yield return new WaitForSeconds(1.0f);
-
 		while (true)
 		{
-			SpawnRandomMonster();
-			yield return new WaitForSeconds(_spawnInterval);
+			if(_currentMonsterCount < _maxMonsterCount)
+			{
+				GameObject monster = SpawnMonsterAtPoint(index);
+
+				if(monster != null)
+				{
+					StartCoroutine(MonitorMonster(monster));
+				}
+			}
+			yield return new WaitForSeconds(_spawnPoints[index].respawnTime);
 		}
 	}
 
-
-	// 3개의 포인트중 하나 골라 랜덤으로 소환
-	void SpawnRandomMonster()
+	GameObject SpawnMonsterAtPoint(int index)
 	{
-		if(_currentMonsterCount >= _maxMonsterCount)
-		{
-			return;
-		}
-
-		int index = Random.Range(0, 3);
-
 		GameObject prefab = _activeMonsters[index];
 		SpawnPointData data = _spawnPoints[index];
 
 		Vector2 randomOffset = Random.insideUnitCircle * data.range;
-		Vector3 spawnPos = data.point.position + new Vector3(randomOffset.x, randomOffset.y, 0);
+		Vector3 spawnPos = data.point.position + new Vector3(randomOffset.x, randomOffset.y, 0f);
 
 		GameObject obj = PoolManager.Instance.Pop(prefab, spawnPos, Quaternion.identity);
 
 		_currentMonsterCount++;
+
+		return obj;
+	}
+
+	// 몬스터 모니터링(스스로 오브젝트 풀 감시)
+	private IEnumerator MonitorMonster(GameObject monster)
+	{
+		yield return new WaitUntil(() => monster.activeSelf == false);
+
+		OnMonsterDeath();
 	}
 
 	public void OnMonsterDeath()
@@ -104,11 +112,14 @@ public class CSpawnArea : MonoBehaviour
 	// 스테이지 종료 혹은 스포너 정지 필요시 호출.
 	public void StopSpawning()
 	{
-		if(_spawnRoutine != null)
+		foreach(var routine in _spawnRoutine)
 		{
-			StopCoroutine(_spawnRoutine);
-			_spawnRoutine = null;
+			if(routine != null)
+			{
+				StopCoroutine(routine);
+			}
 		}
+		_spawnRoutine.Clear();
 	}
 
     private void OnDrawGizmosSelected()
