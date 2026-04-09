@@ -39,6 +39,10 @@ public class HeroDataSO : UnitDataSO
 
 	[Header("능력치")]
 	[SerializeField] private float _baseDefense;
+	[SerializeField] private float _defenseMultiplier = 1.0f;
+	
+	[Header("특수 능력치")]
+	[SerializeField, Range(0f, 100f)] private float _damageReductionChance; // 피해 경감 확률
 	
 	[Header("기본 공격 이펙트")]
 	[SerializeField] private EffectDataSO _attackEffect; // 기본 공격 이펙트
@@ -61,6 +65,8 @@ public class HeroDataSO : UnitDataSO
 	#region 프로퍼티
 	public EHeroID HeroID => _heroId;
 	public float BaseDefense => _baseDefense;
+	public float DefenseMultiplier => _defenseMultiplier;
+	public float DamageReductionChance => _damageReductionChance;
 	public EffectDataSO AttackEffect => _attackEffect;
 	public EffectDataSO CriticalEffect => _criticalEffect;
 	public float CriticalChance => _criticalChance;

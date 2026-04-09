@@ -48,6 +48,8 @@ public class CHero : CUnitBase
 
 	protected float BaseDefense; // 방어력
 	protected float DefenseMultiplier = 1.0f; // 방어력 승수
+	protected float DamageReductionChance;
+	protected float DamageReductionRatio = 0.3f; // 피해 경감 비율 (0.3 = 30%)
 
 	protected EffectDataSO CriticalEffect; // 치명타 공격 이펙트
 	//protected float BaseCriticalActionInterval = 1.5f;
@@ -136,6 +138,8 @@ public class CHero : CUnitBase
 			}
 
 			BaseDefense = HeroData.BaseDefense;
+			DefenseMultiplier = HeroData.DefenseMultiplier;
+			DamageReductionChance = HeroData.DamageReductionChance;
 
 			AttackEffect = AttackEffect != null ? AttackEffect : HeroData.AttackEffect; // 비었으면 SO에서 할당
 
@@ -437,8 +441,19 @@ public class CHero : CUnitBase
 			return;
 		}
 
-		// 방어력 연산. 최소 1f의 피해 보장.
-		float finalDamage = Mathf.Max(1f, damage - FinalDefense);
+		float finalDamage = damage;
+
+		// 피해 경감 체크
+		bool isReduction = (Random.Range(0f, 100f) <= DamageReductionChance);
+		finalDamage *= isReduction ? DamageReductionRatio : 1f;
+
+		// 방어력 연산.
+		finalDamage -= FinalDefense;
+
+		// 최소 피해 1f 보장
+		finalDamage = Mathf.Max(1f, finalDamage);
+
+		// 체력 0 미만 보정
 		CurrentHp = Mathf.Max(CurrentHp - finalDamage, 0);
 
 		if (PrintLog)
@@ -449,7 +464,7 @@ public class CHero : CUnitBase
 			}
 			else
 			{
-				Debug.Log($"CUnitBase) [{UnitName}] 방어력에 의해 피해 상쇄. [피해:{damage} / 방어력:{FinalDefense}]");
+				Debug.Log($"CUnitBase) [{UnitName}] 방어 수치에 의해 피해 상쇄. [피해:{damage} / HP:{CurrentHp}]");
 			}
 		}
 

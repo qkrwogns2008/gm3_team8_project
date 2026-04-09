@@ -25,7 +25,9 @@ MonoBehaviour:
   _moveSpeedMultiplier: 1
   _detectionRange: 50
   _heroId: 4001
-  _baseDefense: 2
+  _baseDefense: 3
+  _defenseMultiplier: 1
+  _damageReductionChance: 0
   _attackEffect: {fileID: 11400000, guid: eb531b3eb7dcaaf45868d6cb4beedd74, type: 2}
   _criticalEffect: {fileID: 11400000, guid: 43641eaf32843294188424242b43a8a6, type: 2}
   _criticalChance: 5
