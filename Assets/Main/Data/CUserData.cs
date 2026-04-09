@@ -25,6 +25,7 @@ public class CUserData
     public int PetPickUpLevel = 0;
     // 스테이지 관련 함수
     public int MainStageLevel = 1;
+    public int CurrentStageLevel = 1;
     public int GoldDungeonLevel = 1;
     public int EXPDungeonLevel = 1;
     // 강화 UI 관련 함수
