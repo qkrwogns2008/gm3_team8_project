@@ -5,10 +5,16 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/KCH/KCH_Scenes/TitleScene.unity
     guid: eea1cc1fbc0e2a34991b6d449f37db81
-  - enabled: 1
+  - enabled: 0
     path: Assets/KCH/KCH_Scenes/GachaScene.unity
     guid: ccdf14ce2e66448499fc2da3f9aa8a48
+  - enabled: 1
+    path: Assets/Main/Scene/Title.unity
+    guid: 825bed9d387d331429b00cd37595db93
+  - enabled: 1
+    path: Assets/Main/Scene/GameScene.unity
+    guid: ba3e3d7894d7cd442865bf9a5753fc3b
   m_configObjects: {}
