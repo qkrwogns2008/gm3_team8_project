@@ -30,18 +30,19 @@ public class CSpawnArea : MonoBehaviour
 
 	private List<Coroutine> _spawnRoutine = new List<Coroutine>();
 
-    private void Start()
-    {
-        if(_spawnPoints.Length != 3)
+	private void Start()
+	{
+		if (_spawnPoints.Length != 3)
 		{
 			Debug.Log("Spawn Point가 정확히 3개가 아님");
 			return;
 		}
-        SelectRoundMonsters();
+		// 몬스터 3종 선별
+		SelectRoundMonsters();
 
-		for(int i = 0; i < 3; i++)
+		for (int i = 0; i < _maxMonsterCount; i++)
 		{
-			StartCoroutine(PointSpawnRoutine(i));
+			SpawnMonsterAtPoint(i % 3);
 		}
     }
 
@@ -64,22 +65,6 @@ public class CSpawnArea : MonoBehaviour
 		Debug.Log("포인트별 몬스터 배정 완료");
 	}
 
-	private IEnumerator PointSpawnRoutine(int index)
-	{
-		while (true)
-		{
-			if(_currentMonsterCount < _maxMonsterCount)
-			{
-				GameObject monster = SpawnMonsterAtPoint(index);
-
-				if(monster != null)
-				{
-					StartCoroutine(MonitorMonster(monster));
-				}
-			}
-			yield return new WaitForSeconds(_spawnPoints[index].respawnTime);
-		}
-	}
 
 	GameObject SpawnMonsterAtPoint(int index)
 	{
@@ -93,33 +78,36 @@ public class CSpawnArea : MonoBehaviour
 
 		_currentMonsterCount++;
 
+		CEnemyBase enemy = obj.GetComponent<CEnemyBase>();
+		if(enemy != null)
+		{
+			enemy.InitSpawn(this, index);
+		}
+
 		return obj;
 	}
 
-	// 몬스터 모니터링(스스로 오브젝트 풀 감시)
-	private IEnumerator MonitorMonster(GameObject monster)
-	{
-		yield return new WaitUntil(() => monster.activeSelf == false);
-
-		OnMonsterDeath();
-	}
-
-	public void OnMonsterDeath()
+	public void OnMonsterDeath(int index)
 	{
 		_currentMonsterCount --;
+
+		StartCoroutine(RespawnTimer(index));
+	}
+
+	private IEnumerator RespawnTimer(int index)
+	{
+		yield return new WaitForSeconds(_spawnPoints[index].respawnTime);
+
+		if(_currentMonsterCount < _maxMonsterCount)
+		{
+			SpawnMonsterAtPoint(index);
+		}
 	}
 
 	// 스테이지 종료 혹은 스포너 정지 필요시 호출.
 	public void StopSpawning()
 	{
-		foreach(var routine in _spawnRoutine)
-		{
-			if(routine != null)
-			{
-				StopCoroutine(routine);
-			}
-		}
-		_spawnRoutine.Clear();
+		StopAllCoroutines();
 	}
 
     private void OnDrawGizmosSelected()

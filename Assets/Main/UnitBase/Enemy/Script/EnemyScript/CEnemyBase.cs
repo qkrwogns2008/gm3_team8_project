@@ -28,7 +28,7 @@ public class CEnemyBase : CUnitBase
     protected Vector3 _startPosition;
     protected Dictionary<CUnitBase, float> _threatTable = new Dictionary<CUnitBase, float>();
     private float _lastTargetSwitchTime = -900f;    // 마지막으로 타겟이 바뀐 시간. (첫 타겟을 바로 잡기 위해 작은값지정)
-    
+    private int _mySpawnIndex;
     
 
     public override bool IsUnitDead => IsDead;
@@ -36,7 +36,7 @@ public class CEnemyBase : CUnitBase
     public EnemyBaseSO EnemyData => OriginData as EnemyBaseSO;
     public CUnitBase TargetHero => Target;
     private CAutoEnemyMove _moveScript;
-
+    private CSpawnArea _mySpawner;
     public virtual float FinalGiveUpRange => _giveupRange * ScaleMultiplier;
     public virtual float FinalWalkRange => _walkRange * ScaleMultiplier;
 
@@ -116,6 +116,8 @@ public class CEnemyBase : CUnitBase
     {
         base.OnDisable();
     }
+
+
 
     // 공격
     protected override void OnAttack(CUnitBase target)
@@ -282,11 +284,34 @@ public class CEnemyBase : CUnitBase
         }
     }
     #endregion
+
+    public void InitSpawn(CSpawnArea spawner, int index)
+    {
+        _mySpawner = spawner;
+        _mySpawnIndex = index;
+
+        IsDead = false;
+        IsAttacking = false;
+        Target = null;
+        NextAttackTime = 0f;
+
+        // 끼임 방지
+        if(_moveScript != null)
+        {
+            _moveScript.enabled = false;
+            _moveScript.enabled = true;
+        }
+    }
     protected override void Die()
     {
         if (IsDead)
         {
             return;
+        }
+        
+        if(_mySpawner != null)
+        {
+            _mySpawner.OnMonsterDeath(_mySpawnIndex);
         }
 
         if(ItemManager.Instance != null && EnemyData != null)

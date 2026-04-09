@@ -112,6 +112,12 @@ public class CAutoEnemyMove : MonoBehaviour
         
         _homePosition = transform.position;
         _homePosition.z = 0f;
+
+        _timer = 0f;
+        _isForcedAggro = false;
+        _forcedAggroTimer = 0f;
+        _canAttack = false;
+
         ChangeState(EUnitState.Idle);
     }
 
