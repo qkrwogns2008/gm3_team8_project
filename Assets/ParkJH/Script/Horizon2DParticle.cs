@@ -12,6 +12,7 @@ public class Horizon2DParticle
 
     #region 내부변수
     private ParallaxLayerElement[] _layers;
+    private bool _horizonOn = false;
     private Vector3 _startCamPos;
     private Vector3[] _initialLocalPositions; // 자식들의 초기 위치 저장용
     #endregion
@@ -39,6 +40,7 @@ public class Horizon2DParticle
 
     private void LateUpdate()
     {
+        if (!_horizonOn) return;
         Vector3 camPos = _cameraTr.position;
 
         for (int i = 0; i < _layers.Length; i++)
