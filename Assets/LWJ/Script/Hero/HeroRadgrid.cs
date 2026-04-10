@@ -38,7 +38,89 @@ public class HeroRadgrid : CHero
 
 	protected override void ProcessSkillHit(CUnitBase target)
 	{
-		base.ProcessSkillHit(target);
+		BuffSystem.AddBuff
+			(
+			EBuffFlags.StackGuard,
+			10f,
+			10f,
+			this
+			);
+
+		FindedTargets.Clear();
+
+		IReadOnlyList<CUnitBase> targetList = CEnemyManager.Instance.ActiveEnemies;
+		FindTargetsOnCircleArea(this, ScaledAreaRadius, targetList);
+
+		SelectedTargetsAttack(FindedTargets, FinalSkillDamage);
+
+		if (PrintSkillLog)
+		{
+			Debug.Log($"원형 범위 피해 발생. 피해량 : [{FinalSkillDamage}]");
+		}
 	}
 
+	// 주변 타겟 탐색
+	protected virtual void FindTargetsOnCircleArea(CUnitBase originTarget, float radius, IReadOnlyList<CUnitBase> targetList)
+	{
+		Vector2 areaCenterPos = originTarget.transform.position;
+		float sqrRadius = radius * radius;
+
+		for (int i = 0; i < targetList.Count; i++)
+		{
+			CUnitBase target = targetList[i];
+
+			if (target == null)
+			{
+				continue;
+			}
+			if (target.IsUnitDead)
+			{
+				continue;
+			}
+
+			Vector2 targetPos = target.transform.position;
+			Vector2 toTarget = targetPos - areaCenterPos;
+
+			if (toTarget.sqrMagnitude > sqrRadius)
+			{
+				continue;
+			}
+			FindedTargets.Add(target);
+		}
+	}
+
+	protected virtual void SelectedTargetsAttack(IReadOnlyList<CUnitBase> targets, float damage)
+	{
+		// 선택된 타겟 목록 순회
+		for (int i = 0; i < targets.Count; i++)
+		{
+			CUnitBase target = targets[i];
+
+			if (target == null)
+			{
+				continue;
+			}
+			if (target.IsUnitDead)
+			{
+				continue;
+			}
+
+			target.TakeDamage(damage, this);
+		}
+	}
+
+	protected virtual void OnDrawGizmosSelected()
+	{
+		if (Target == null)
+		{
+			return;
+		}
+		if (Target.IsUnitDead)
+		{
+			return;
+		}
+
+		Gizmos.color = Color.yellow;
+		Gizmos.DrawWireSphere(transform.position, ScaledAreaRadius);
+	}
 }

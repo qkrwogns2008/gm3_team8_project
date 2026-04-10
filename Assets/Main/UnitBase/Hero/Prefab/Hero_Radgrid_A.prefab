@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5845931139765108105}
+  - component: {fileID: -2383315907551695118}
   - component: {fileID: 1385575880346748945}
   - component: {fileID: 9008721281802469470}
   m_Layer: 0
@@ -37,6 +38,40 @@ Transform:
   - {fileID: 8745010829249372185}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-2383315907551695118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2209794903314683923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f567e7eeae335504dbadd6a0c0bc63ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitName: 
+  CurrentHp: 0
+  OriginData: {fileID: 11400000, guid: 0d7b170f331439f418ef1284d6ff8462, type: 2}
+  TeamType: 0
+  centerTransform: {fileID: 8745010829249372185}
+  SkeletonAni: {fileID: 4024569556539796475}
+  AttackAnimation: Attack_A
+  AttackEffect: {fileID: 11400000, guid: 787b62fbbaeb8934699a5988e6dcfb27, type: 2}
+  DeathAnimation: Death
+  DeathDisableTime: 0
+  PrintLog: 0
+  CriticalAnimation: Critical
+  SkillAnimation: Active_A
+  CurrentState: 0
+  enableAttack: 1
+  enableCriticalAttack: 1
+  enableUseSkill: 1
+  buffSystem: {fileID: 9008721281802469470}
+  CriticalHitEffect: {fileID: 11400000, guid: ddcc778cc7d57604cbfb32e5e89542f7, type: 2}
+  SkillHitEffect: {fileID: 11400000, guid: ddcc778cc7d57604cbfb32e5e89542f7, type: 2}
+  AreaRadius: 6
+  PrintSkillLog: 0
 --- !u!114 &1385575880346748945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49,6 +84,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8458d08ebfd40524ebe51fdf3782d5bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isAutoMove: 1
 --- !u!114 &9008721281802469470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -317,7 +353,7 @@ Transform:
   m_GameObject: {fileID: 6879251837453392758}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 4, z: 0}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

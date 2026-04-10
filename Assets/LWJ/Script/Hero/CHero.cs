@@ -69,6 +69,7 @@ public class CHero : CUnitBase
 
 	#region 버프 계열
 	protected float FinalCriticalChance;
+	protected float RemainGuardStack;
 	#endregion
 
 	protected bool IsFacingRight => (SkeletonAni.skeleton.ScaleX != 1.0f);
@@ -115,12 +116,45 @@ public class CHero : CUnitBase
 		BuffSystem.OnBuffChanged -= ApplyBuffStat;
 	}
 
+
+	#region 버프 함수
 	// 버프 갱신 이벤트 수신 시 효과 적용
-	protected virtual void ApplyBuffStat()
+	protected virtual void ApplyBuffStat(EBuffFlags type)
+	{
+		switch (type)
+		{
+			case EBuffFlags.CriticalChanceBoost:
+				ApplyBuffCritical();
+				break;
+			case EBuffFlags.StackGuard:
+				ApplyBuffStackGuard();
+				break;
+			default:
+				ApplyBuffCritical();
+				break;
+		}
+	}
+
+	protected virtual void ApplyBuffCritical()
 	{
 		float buffCriticalChance = BuffSystem.GetBuffEffectTotalValue(EBuffFlags.CriticalChanceBoost);
-		FinalCriticalChance = Mathf.Max(CriticalChance + buffCriticalChance, 100f);
+		FinalCriticalChance = Mathf.Min(CriticalChance + buffCriticalChance, 100f);
 	}
+
+	protected virtual void ApplyBuffStackGuard()
+	{
+		float buffGuardStack = BuffSystem.GetBuffEffectTotalValue(EBuffFlags.StackGuard);
+
+		if (buffGuardStack > 0)
+		{
+			RemainGuardStack = buffGuardStack;
+		}
+		else if (RemainGuardStack != 0)
+		{
+			RemainGuardStack = 0;
+		}
+	}
+	#endregion
 
 	// 영웅 공통 데이터 주입
 	protected override void InitUnitStats()
@@ -440,6 +474,24 @@ public class CHero : CUnitBase
 	{
 		if (IsDead)
 		{
+			return;
+		}
+
+		if ((BuffSystem.CurrentBuffFlags & EBuffFlags.StackGuard) != 0)
+		{
+			RemainGuardStack -= 1f;
+
+			if (PrintLog)
+			{
+				Debug.Log($"[{UnitName}] 받는 피해 무효화. 남은 횟수:{RemainGuardStack}");
+			}
+			if (RemainGuardStack <= 0f)
+			{
+				RemainGuardStack = 0f;
+				
+				BuffSystem.RemoveBuffByFlags(EBuffFlags.StackGuard);
+			}
+
 			return;
 		}
 
