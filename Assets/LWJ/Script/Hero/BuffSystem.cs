@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EBuffOverwriteType
+public enum EBuffOverwriteRule
 {
 	None,
 	Overwrite,
@@ -29,7 +29,11 @@ public class BuffInfo
 	#region 프로퍼티
 	public bool IsDurationEnd => (_duration != -1) && (_duration <= 0);
 	public EBuffFlags Type => _type;
-	public float Value => _value;
+	public float Value
+	{
+		get => _value;
+		set => _value = value;
+	}
 	public float Duration
 	{
 		get => _duration;
@@ -58,21 +62,21 @@ public class BuffSystem : MonoBehaviour
 	#endregion
 
 	public EBuffFlags CurrentBuffFlags => _currentBuffFlags;
-	public event Action OnBuffChanged; // 버프 변화를 알림
+	public event Action<EBuffFlags> OnBuffChanged; // 버프 변화를 알림
 
-	private EBuffOverwriteType GetOverwriteType(EBuffFlags flags)
+	private EBuffOverwriteRule GetOverwriteRule(EBuffFlags type)
 	{
-		switch (flags)
+		switch (type)
 		{
 			case EBuffFlags.None:
 			case EBuffFlags.CriticalChanceBoost:
-				return EBuffOverwriteType.None;
+				return EBuffOverwriteRule.None;
 
 			case EBuffFlags.StackGuard:
-				return EBuffOverwriteType.Overwrite;
+				return EBuffOverwriteRule.Overwrite;
 
 			default:
-				return EBuffOverwriteType.None;
+				return EBuffOverwriteRule.None;
 		}
 	}
 
@@ -84,10 +88,61 @@ public class BuffSystem : MonoBehaviour
 	// 버프 등록
 	public void AddBuff(EBuffFlags type, float value, float duration, CUnitBase provider)
 	{
+		EBuffOverwriteRule rule = GetOverwriteRule(type);
+
+		// 중복 금지 버프면 이전 버프 제거
+		if (rule == EBuffOverwriteRule.Overwrite)
+		{
+			for (int i = _buffInfos.Count - 1; i >= 0; i--)
+			{
+				if (_buffInfos[i].Type == type)
+				{
+					_buffInfos.RemoveAt(i);
+				}
+			}
+		}
+		else
+		{
+			// 동일 버프면 갱신
+			for (int i = 0; i < _buffInfos.Count; i++)
+			{
+				if (_buffInfos[i].Provider == provider &&
+					_buffInfos[i].Type == type)
+				{
+					_buffInfos[i].Duration = duration;
+
+					if (_buffInfos[i].Value < value)
+					{
+						_buffInfos[i].Value = value;
+					}
+
+					UpdateBuffFlags(type);
+					return;
+				}
+			}
+		}
+
+		// 버프 부여
 		BuffInfo buff = new BuffInfo(type, value, duration, provider);
 		_buffInfos.Add(buff);
 
-		UpdateBuffFlags();
+		UpdateBuffFlags(type);
+	}
+
+	/// <summary>
+	/// 특정 타입의 버프를 모두 제거합니다.
+	/// </summary>
+	public void RemoveBuffByFlags(EBuffFlags type)
+	{
+		for (int i = _buffInfos.Count - 1; i >= 0; i--)
+		{
+			if (_buffInfos[i].Type == type)
+			{
+				_buffInfos.RemoveAt(i);
+			}
+		}
+
+		UpdateBuffFlags(type);
 	}
 
 	/// <summary>
@@ -96,16 +151,28 @@ public class BuffSystem : MonoBehaviour
 	/// <param name="provider">버프 시전자</param>
 	public void RemoveBuffByProvider(CUnitBase provider)
 	{
+		EBuffFlags removedFlags = EBuffFlags.None;
+
 		for (int i = _buffInfos.Count - 1; i >= 0; i--)
 		{
 			if (_buffInfos[i].Provider == provider &&
 				_buffInfos[i].Duration == -1)
 			{
+				removedFlags |= _buffInfos[i].Type;
 				_buffInfos.RemoveAt(i);
 			}
 		}
 
-		UpdateBuffFlags();
+		if (removedFlags != EBuffFlags.None)
+		{
+			UpdateBuffFlags(EBuffFlags.None);
+
+			// 제거할 버프에 가드 스택이 포함되면 함께 제거
+			if ((removedFlags & EBuffFlags.StackGuard) != 0)
+			{
+				OnBuffChanged?.Invoke(EBuffFlags.StackGuard);
+			}
+		}
 	}
 
 	/// <summary>
@@ -115,7 +182,10 @@ public class BuffSystem : MonoBehaviour
 	{
 		_buffInfos.Clear();
 
-		UpdateBuffFlags();
+		UpdateBuffFlags(EBuffFlags.None);
+
+		// 전체 초기화에 적용되지 않는 옵션 추가로 갱신
+		UpdateBuffFlags(EBuffFlags.StackGuard);
 	}
 
 	// 등록된 버프 지속시간 감소 처리
@@ -132,15 +202,17 @@ public class BuffSystem : MonoBehaviour
 
 			if (_buffInfos[i].IsDurationEnd)
 			{
+				EBuffFlags type = _buffInfos[i].Type;
+
 				_buffInfos.RemoveAt(i);
 
-				UpdateBuffFlags();
+				UpdateBuffFlags(type);
 			}
 		}
 	}
 
 	// 버프 플래그 갱신, 유닛에게 전송
-	private void UpdateBuffFlags()
+	private void UpdateBuffFlags(EBuffFlags type)
 	{
 		_currentBuffFlags = EBuffFlags.None;
 
@@ -149,7 +221,7 @@ public class BuffSystem : MonoBehaviour
 			_currentBuffFlags |= _buffInfos[i].Type;
 		}
 
-		OnBuffChanged?.Invoke();
+		OnBuffChanged?.Invoke(type);
 	}
 
 	/// <summary>

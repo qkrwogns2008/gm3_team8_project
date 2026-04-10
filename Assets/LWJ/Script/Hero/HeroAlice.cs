@@ -35,7 +35,7 @@ public class HeroAlice : RangedHeroBase
 		}
 
 		CHeroManager.Instance.OnHeroActived += OnHeroActived;
-		ApplyBuffAllHero(EBuffFlags.CriticalChanceBoost, 0.16f, -1f, this);
+		ApplyBuffAllHero(EBuffFlags.CriticalChanceBoost, 16f, -1f, this);
 		BindCo = null;
 	}
 
@@ -94,7 +94,7 @@ public class HeroAlice : RangedHeroBase
 	#region 버프 로직
 	protected virtual void OnHeroActived(CUnitBase hero)
 	{
-		ApplyBuff(hero, EBuffFlags.CriticalChanceBoost, 0.16f, -1, this);
+		ApplyBuff(hero, EBuffFlags.CriticalChanceBoost, 16f, -1, this);
 	}
 
 	protected virtual void ApplyBuff(CUnitBase target, EBuffFlags buffFlags, float value, float duration, CUnitBase provider)
