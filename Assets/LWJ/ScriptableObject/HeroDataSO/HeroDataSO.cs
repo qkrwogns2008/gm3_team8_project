@@ -28,6 +28,8 @@ public enum EHeroID
 
 	Teo = 4001,
 	Yeonhee = 4002,
+	Radgrid = 4003,
+	Ecila = 4004,
 }
 
 [CreateAssetMenu(fileName = "HeroDataSO_", menuName = "ScriptableObjects/Hero Data (SO)")]
