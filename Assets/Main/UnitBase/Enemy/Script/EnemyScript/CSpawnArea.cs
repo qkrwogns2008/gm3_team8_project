@@ -16,8 +16,8 @@ public class CSpawnArea : MonoBehaviour
 
 	[Header("테마")]
 	[SerializeField] private string _themeName;
-	[Header("몬스터 리스트")]
-	[SerializeField] private List<GameObject> _monsterPrefabs;
+	[Header("몬스터 리스트SO")]
+	[SerializeField] private SpawnTemeSO _currentTheme;
 	[Header("현 라운드 출현 몬스터(자동 선택)")]
 	[SerializeField] private GameObject[] _activeMonsters = new GameObject[3];
 	[Header("스폰 구역")]
@@ -48,12 +48,14 @@ public class CSpawnArea : MonoBehaviour
 	// 몬스터 3마리 뽑기
 	void SelectRoundMonsters()
 	{
-		if(_monsterPrefabs.Count < 3)
+		List<GameObject> sourceList = _currentTheme.monsterPrefabs;
+
+		if(sourceList.Count < 3)
 		{
 			return;
 		}
 
-		List<GameObject> tempList = new List<GameObject>(_monsterPrefabs);
+		List<GameObject> tempList = new List<GameObject>(sourceList);
 
 		for(int i = 0; i < 3; i++)
 		{
