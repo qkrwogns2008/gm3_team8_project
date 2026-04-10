@@ -49,6 +49,7 @@ public class CHero : CUnitBase
 	protected float BaseDefense; // 방어력
 	protected float DefenseMultiplier = 1.0f; // 방어력 승수
 	protected float DamageReductionChance;
+
 	protected float DamageReductionRatio = 0.3f; // 피해 경감 비율 (0.3 = 30%)
 
 	protected EffectDataSO CriticalEffect; // 치명타 공격 이펙트
@@ -139,6 +140,7 @@ public class CHero : CUnitBase
 
 			BaseDefense = HeroData.BaseDefense;
 			DefenseMultiplier = HeroData.DefenseMultiplier;
+
 			DamageReductionChance = HeroData.DamageReductionChance;
 
 			AttackEffect = AttackEffect != null ? AttackEffect : HeroData.AttackEffect; // 비었으면 SO에서 할당
@@ -445,7 +447,7 @@ public class CHero : CUnitBase
 
 		// 피해 경감 체크
 		bool isReduction = (Random.Range(0f, 100f) <= DamageReductionChance);
-		finalDamage *= isReduction ? DamageReductionRatio : 1f;
+		finalDamage *= isReduction ? 1f - DamageReductionRatio : 1f;
 
 		// 방어력 연산.
 		finalDamage -= FinalDefense;
