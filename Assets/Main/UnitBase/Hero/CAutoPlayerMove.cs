@@ -7,8 +7,8 @@ using UnityEngine;
 public class CAutoPlayerMove : MonoBehaviour
 {
     #region 인스펙터
-    
-    // 타겟 발견시 속도는 기본과 같음
+    [Header("On/Off")]
+    [SerializeField] private bool _isAutoMove = true;
     #endregion
 
     #region 내부변수
@@ -23,6 +23,7 @@ public class CAutoPlayerMove : MonoBehaviour
 
     private void Awake()
     {
+        
         PlayerHero = GetComponent<CHero>();
         _skeletonAnim = GetComponentInChildren<SkeletonAnimation>();
 
@@ -41,12 +42,13 @@ public class CAutoPlayerMove : MonoBehaviour
     }
     void Update()
     {
+
         if (PlayerHero == null || PlayerHero.IsUnitDead)
         {
             return;
         }
 
-        if(_heroData == null && PlayerHero.BaseData != null)
+        if (_heroData == null && PlayerHero.BaseData != null)
         {
             _heroData = PlayerHero.BaseData as HeroDataSO;
         }
@@ -78,7 +80,18 @@ public class CAutoPlayerMove : MonoBehaviour
             }
             else
             {
-                MoveToTarget();
+                // 자동 켜져있을경우
+                if(_isAutoMove)
+                {
+                    MoveToTarget();
+                }
+                else
+                {
+                    if(PlayerHero.CurrentState != EHeroState.Idle)
+                    {
+                        PlayerHero.ChangeState(EHeroState.Idle);
+                    }
+                }
             }
         }
         else
@@ -89,6 +102,13 @@ public class CAutoPlayerMove : MonoBehaviour
             }
         }
 
+    }
+
+    // 버튼 연결
+    public void ToggleAutoMode()
+    {
+        _isAutoMove = !_isAutoMove;
+        _targetEnemy = null;
     }
 
     // 대상 체크
