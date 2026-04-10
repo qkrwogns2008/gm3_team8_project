@@ -2,11 +2,18 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum EBuffOverwriteType
+{
+	None,
+	Overwrite,
+}
+
 [Flags]
 public enum EBuffFlags
 {
 	None = 0,
 	CriticalChanceBoost = 1 << 0,
+	StackGuard = 1 << 1,
 }
 
 [Serializable]
@@ -52,6 +59,22 @@ public class BuffSystem : MonoBehaviour
 
 	public EBuffFlags CurrentBuffFlags => _currentBuffFlags;
 	public event Action OnBuffChanged; // 버프 변화를 알림
+
+	private EBuffOverwriteType GetOverwriteType(EBuffFlags flags)
+	{
+		switch (flags)
+		{
+			case EBuffFlags.None:
+			case EBuffFlags.CriticalChanceBoost:
+				return EBuffOverwriteType.None;
+
+			case EBuffFlags.StackGuard:
+				return EBuffOverwriteType.Overwrite;
+
+			default:
+				return EBuffOverwriteType.None;
+		}
+	}
 
 	private void Update()
 	{
