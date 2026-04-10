@@ -14,6 +14,7 @@ public class CGachaDataSO : ScriptableObject
     }
 
     [Header("유닛 정보")]
+    public EHeroID HeroID;              // 영웅 ID 번호
     public string UnitName;         // 유닛 이름
     public ERarity Rarity;          // 레어도
     public float Weight;            // 뽑힐 확률 - 가중치 (노멀: 58.9%, 레어: 24%, 에픽: 14%, 유니크: 3%, 레전드: 0.1%)

@@ -58,15 +58,17 @@ public class CGachaPresenter : MonoBehaviour
         _ticketSprite = _gachaView.SummonCard.transform.parent.GetComponentInChildren<Image>().sprite;
         _rubySprite = _gachaView.SummonRuby.transform.parent.GetComponentInChildren<Image>().sprite;
 
-        // 재화 표시
-        UpdateMoneyUI();
-
         // 처음에는 뽑기창 비활성화
         _gachaView.ResultPanel.SetActive(false);
     }
 
     private void Start()
     {
+        if (CQuestManager.Instance != null)
+        {
+            CQuestManager.Instance.OnDataUpdate += UpdateMoneyUI;
+        }
+
         if (_tabChange != null)
         {
             // 탭 이벤트 연결
@@ -75,6 +77,9 @@ public class CGachaPresenter : MonoBehaviour
             // 시작 시 0번 탭
             _tabChange.SelectTab(0);
         }
+
+        // 재화 표시
+        UpdateMoneyUI();
     }
 
     // 인덱스에 따라 소환 카테고리 변경
@@ -96,6 +101,11 @@ public class CGachaPresenter : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (CQuestManager.Instance != null)
+        {
+            CQuestManager.Instance.OnDataUpdate -= UpdateMoneyUI;
+        }
+
         if (_tabChange != null)
         {
             _tabChange.OnTabChange -= ChangeCatergory;
@@ -364,6 +374,11 @@ public class CGachaPresenter : MonoBehaviour
         _gachaView.LevelTextPet.text = current.CategoryName + "소환 레벨 " + current.CurrentLevel;
         _gachaView.ExpTextPet.text = current.CurrentExp + " / " + maxExp;
         _gachaView.ExpFillImagePet.fillAmount = (float)current.CurrentExp / maxExp;
+
+        if ((float)current.CurrentExp >= maxExp && current.CurrentLevel == 9)
+        {
+            _gachaView.ExpTextHero.text = "MAX";
+        }
 
         _gachaView.HeroTabGroup.alpha = (_currentCategoryIndex == 0) ? 1.0f : 0.0f;
         _gachaView.PetTabGroup.alpha = (_currentCategoryIndex == 1) ? 1.0f : 0.0f;

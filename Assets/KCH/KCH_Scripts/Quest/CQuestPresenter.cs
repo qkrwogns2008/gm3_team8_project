@@ -1,16 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class CQuestPresenter : MonoBehaviour
 {
     [Header("퀘스트 프리펩 설정")]
-    public GameObject QuestPrefab;      // CQuestUIView
-    public Transform QuestTransform;    // 생성될 Quest의 부모
+    public GameObject QuestPrefab;                      // CQuestUIView 프리팹
+    public Transform QuestTransform;                    // 생성될 Quest의 부모
+
+    [Header("모두 받기 버튼")]
+    [SerializeField] private Button _questAllButton;     // 모두 받기 버튼
+
 
     private void Start()
     {
+        if (_questAllButton)
+        {
+            _questAllButton.onClick.AddListener(() => CQuestManager.Instance.RewardAllQuest());
+        }
+
         // 데이터가 바뀌면 RefreshUI 실행
         CQuestManager.Instance.OnDataUpdate += RefreshUI;
 
@@ -29,7 +39,7 @@ public class CQuestPresenter : MonoBehaviour
 
         // 매니저가 새로 생성
         var dataList = CQuestManager.Instance.QuestDataList;
-        var progressList = CQuestManager.Instance.UserProgressList;
+        var progressList = CQuestManager.Instance.UserQuestList;
 
         int dataCount = dataList.Count;
         for (int i = 0; i < dataCount; i++)

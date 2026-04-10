@@ -7,14 +7,15 @@ using UnityEngine;
 public class CGachaModel : MonoBehaviour
 {
 
-    [Header("보유 재화(임시)")]
-    public int RubyCount = 30000;               // 현재 루비
-    public int TicketCount = 30;                // 현재 소환권
+
+    public int RubyCount => CDataManager.Instance.UserData.Ruby;                // 현재 루비
+    public int TicketCount => CDataManager.Instance.UserData.PickUpTicket;      // 현재 소환권
 
     private CGachaCategorySO _currentCategory;
 
-    private System.Random GachaRandom;
+    private System.Random GachaRandom;                                          // 시스템 랜덤 생성
 
+    // 시드 리셋 기능 함수
     public void ResetSeed(int seed)
     {
         GachaRandom = new System.Random(seed);
@@ -25,6 +26,7 @@ public class CGachaModel : MonoBehaviour
     {
         _currentCategory = category;
 
+        // 랜덤 시드 값
         GachaRandom = new System.Random(12345);
     }
 
@@ -53,33 +55,35 @@ public class CGachaModel : MonoBehaviour
         }
 
     }
+
     public bool CheckRuby(int count)
     {
+        var userData = CDataManager.Instance.UserData;
+
         int needRuby = count * 100;
 
-        if (TicketCount >= count)
-        {
-            return true;
-        }
-
-        if (RubyCount >= needRuby)
-        {
-            return true;
-        }
-
-        return false;
+        return (userData.PickUpTicket >= count) || (userData.Ruby >= needRuby);
     }
 
     public void PayRuby(int count)
     {
-        if (TicketCount >= count) 
+        var userData = CDataManager.Instance;
+
+        if (userData.SpendPickUpTicket(count))
         {
-            TicketCount -= count;
+            return;
+        }
+
+        int needRuby = count * 100;
+
+        if (userData.SpendRubby(needRuby))
+        {
+            Debug.Log($"{needRuby} 루비 결제 완료");
         }
 
         else
         {
-            RubyCount -= (count * 100);
+            Debug.Log("결제 실패 : 재화 부족");
         }
     }
 }
