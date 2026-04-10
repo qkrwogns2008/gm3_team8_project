@@ -2,6 +2,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class Card_Off : MonoBehaviour
 {
     // 카드 소유 여부
@@ -36,12 +40,25 @@ public class Card_Off : MonoBehaviour
         Init();
         ApplyVisual();
 
-        // 에디터에서 isOwned 변경 시 매니저에 반영
+        // 에디터에서 isOwned 변경 시 매니저에 반영 (지연 실행)
+        if (cardManager != null)
+        {
+#if UNITY_EDITOR
+            EditorApplication.delayCall += DelayedRefresh;
+#endif
+        }
+    }
+
+#if UNITY_EDITOR
+    void DelayedRefresh()
+    {
+        if (this == null) return;
         if (cardManager != null)
         {
             cardManager.RefreshOrder();
         }
     }
+#endif
 
     // 각 루트에서 컴포넌트 수집
     void Init()

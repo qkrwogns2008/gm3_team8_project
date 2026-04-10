@@ -12,18 +12,18 @@ public class HeroList : MonoBehaviour
     public void AddHero(GameObject heroPrefab)
     {
         // 프리팹에서 HeroData 가져오기
-        Hero_Connect connect = heroPrefab.GetComponent<Hero_Connect>();
+        Hero_Connect1 connect = heroPrefab.GetComponent<Hero_Connect1>();
 
-        if (connect == null || connect.heroData == null)
+        if (connect == null || connect.heroDataSO == null)
         {
-            Debug.LogWarning("HeroData가 연결되지 않은 프리팹입니다.");
+            Debug.LogWarning("HeroDataSO가 연결되지 않은 프리팹입니다.");
             return;
         }
 
-        HeroData data = connect.heroData;
+        HeroDataSO data = connect.heroDataSO;
 
         // 같은 아이템 찾기
-        HeroListData existingHero = heros.Find(i => i.heroData == data);
+        HeroListData existingHero = heros.Find(i => i.heroDataSO == data);
 
         if (existingHero != null)
         {
@@ -35,7 +35,7 @@ public class HeroList : MonoBehaviour
             // 없으면 새로 추가
             HeroListData newHero = new HeroListData
             {
-                heroData = data,
+                heroDataSO = data,
                 count = 1,
                 prefab = heroPrefab
             };
@@ -84,7 +84,7 @@ public class HeroList : MonoBehaviour
 [System.Serializable]
 public class HeroListData
 {
-    public HeroData heroData;   // 아이템 식별용
+    public HeroDataSO heroDataSO;   // 히어로 식별용
     public int count;           // 개수
     public GameObject prefab;   // UI 생성용 프리팹
 }

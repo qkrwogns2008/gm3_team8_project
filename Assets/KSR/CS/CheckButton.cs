@@ -12,6 +12,11 @@ public class CheckButton : MonoBehaviour
     private bool isChecked = false;
 
     // 버튼 클릭 시 호출
+
+    public bool IsChecked()
+    {
+        return isChecked;
+    }
     public void OnClick()
     {
         isChecked = !isChecked;

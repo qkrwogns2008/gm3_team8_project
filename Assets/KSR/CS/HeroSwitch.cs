@@ -11,6 +11,9 @@ public class HeroSwitch : MonoBehaviour
     public Transform hero_area1;     // 이동할 대상
     public Transform hero_area2;     // 이동될 부모
 
+    [Header("카드 매니저")]
+    public CardManager cardManager;  // 소유 카드 표시용
+
     private RectTransform myRect;
 
     void Awake()
@@ -32,18 +35,21 @@ public class HeroSwitch : MonoBehaviour
         // hero_area1을 hero_area2 아래로 이동
         if (hero_area1 != null && hero_area2 != null)
         {
-            hero_area1.SetParent(hero_area2, false); // 위치 초기화 포함
+            hero_area1.SetParent(hero_area2, false);
 
-            AreaState areaState = hero_area1.GetComponentInChildren<AreaState>(); // 영웅 프리펩 상태 변경
+            AreaState areaState = hero_area1.GetComponentInChildren<AreaState>();
             if (areaState != null)
             {
                 areaState.SetArea(AreaState.AreaType.Area2);
             }
         }
 
-
         // 선택 이미지 이동
         if (selectImage != null && myRect != null)
             selectImage.anchoredPosition = myRect.anchoredPosition;
+
+        // 소유 카드만 표시
+        if (cardManager != null)
+            cardManager.ShowOwnedOnly();
     }
 }
