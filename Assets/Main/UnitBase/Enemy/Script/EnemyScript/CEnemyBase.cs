@@ -2,6 +2,7 @@ using UnityEngine;
 using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 public enum EUnitState
 {
@@ -21,17 +22,21 @@ public class CEnemyBase : CUnitBase
     [Header("어그로 설정")]
     [SerializeField] private float _switchThreshold = 1.2f;
     [SerializeField] private float _minTargetStayTime = 1.0f;
+    [SerializeField] private float _finalMaxHP;
+    [SerializeField] private float _finalMaxAtk;
     protected EnemyBaseSO _enemySO => OriginData as EnemyBaseSO;
     protected Vector3 _startPosition;
     protected Dictionary<CUnitBase, float> _threatTable = new Dictionary<CUnitBase, float>();
     private float _lastTargetSwitchTime = -900f;    // 마지막으로 타겟이 바뀐 시간. (첫 타겟을 바로 잡기 위해 작은값지정)
+    private int _mySpawnIndex;
     
+
     public override bool IsUnitDead => IsDead;
 
     public EnemyBaseSO EnemyData => OriginData as EnemyBaseSO;
     public CUnitBase TargetHero => Target;
     private CAutoEnemyMove _moveScript;
-
+    private CSpawnArea _mySpawner;
     public virtual float FinalGiveUpRange => _giveupRange * ScaleMultiplier;
     public virtual float FinalWalkRange => _walkRange * ScaleMultiplier;
 
@@ -47,14 +52,26 @@ public class CEnemyBase : CUnitBase
         base.InitUnitStats();
         
 
-        if (EnemyData != null)
+        if (EnemyData != null && CDataManager.Instance != null)
         {
+            int stage = CDataManager.Instance.UserData.MainStageLevel;
+
+            #region 성장공식 이후 수정 필요
+
+            // 스테이지당 체력 15%, 공격력 10%
+            float hpGrowth = Mathf.Pow(1.15f, stage - 1);
+            float atkGrowth = Mathf.Pow(1.1f, stage - 1);
+            #endregion
+
             unitName = EnemyData.UnitName;
-            CurrentHp = EnemyData.BaseMaxHp;
-            DetectionRange = EnemyData.DetectionRange;
+
+            _finalMaxHP = Mathf.RoundToInt(EnemyData.BaseMaxHp * hpGrowth);
+            CurrentHp = _finalMaxAtk;
+
+            _finalMaxAtk = Mathf.RoundToInt(EnemyData.BaseAttackDamage * atkGrowth);
         }
-        
-        
+
+
 
     }
 
@@ -100,6 +117,8 @@ public class CEnemyBase : CUnitBase
         base.OnDisable();
     }
 
+
+
     // 공격
     protected override void OnAttack(CUnitBase target)
     {
@@ -132,7 +151,7 @@ public class CEnemyBase : CUnitBase
         
         if(target != null && !target.IsUnitDead)
         {
-            target.TakeDamage(damage, this);
+            target.TakeDamage(_finalMaxAtk, this);
         }
 
         ApplyAttackCooldown();
@@ -265,11 +284,34 @@ public class CEnemyBase : CUnitBase
         }
     }
     #endregion
+
+    public void InitSpawn(CSpawnArea spawner, int index)
+    {
+        _mySpawner = spawner;
+        _mySpawnIndex = index;
+
+        IsDead = false;
+        IsAttacking = false;
+        Target = null;
+        NextAttackTime = 0f;
+
+        // 끼임 방지
+        if(_moveScript != null)
+        {
+            _moveScript.enabled = false;
+            _moveScript.enabled = true;
+        }
+    }
     protected override void Die()
     {
         if (IsDead)
         {
             return;
+        }
+        
+        if(_mySpawner != null)
+        {
+            _mySpawner.OnMonsterDeath(_mySpawnIndex);
         }
 
         if(ItemManager.Instance != null && EnemyData != null)

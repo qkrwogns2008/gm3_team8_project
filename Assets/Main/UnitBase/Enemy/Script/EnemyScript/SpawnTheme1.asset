@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 495fddfbc8da65d4ca5e55a6e2bea380, type: 3}
+  m_Name: SpawnTheme1
+  m_EditorClassIdentifier: 
+  themeName: Stage1
+  monsterPrefabs:
+  - {fileID: 3899819637224094853, guid: d14089ba9ae834a4db4604ce8a29769e, type: 3}
+  - {fileID: 1043958019159779185, guid: 64f6918f86a181a4e9fb72c3dc182625, type: 3}
+  - {fileID: 3899819637224094853, guid: 66e183d5c69dd9240a0cf24026937d89, type: 3}
+  - {fileID: 3899819637224094853, guid: 2f470d8702fba2940a2b7c7d94372bde, type: 3}
+  - {fileID: 1043958019159779185, guid: b098d69dbf1c5ea40bc2540c1e94ae26, type: 3}
+  - {fileID: 3899819637224094853, guid: c177c808b540ca04c83c1bc2de8a0c2a, type: 3}
+  - {fileID: 3899819637224094853, guid: 3cff03da33c57014aa2c08149eba5f2c, type: 3}

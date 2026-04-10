@@ -132,8 +132,8 @@ public abstract class CUnitBase : MonoBehaviour
 
         if (TeamType == ETeamType.Hero)
         {
-            yield return new WaitUntil(() => HeroManagerDummy.Instance != null);
-            HeroManagerDummy.Instance.RegisterHero(this);
+            yield return new WaitUntil(() => CHeroManager.Instance != null);
+            CHeroManager.Instance.RegisterHero(this);
 
         }
         else if (TeamType == ETeamType.Enemy)
@@ -154,9 +154,9 @@ public abstract class CUnitBase : MonoBehaviour
 
         if (TeamType == ETeamType.Hero)
         {
-            if (HeroManagerDummy.Instance != null)
+            if (CHeroManager.Instance != null)
             {
-                HeroManagerDummy.Instance.UnregisterHero(this);
+                CHeroManager.Instance.UnregisterHero(this);
             }
         }
         else if (TeamType == ETeamType.Enemy)

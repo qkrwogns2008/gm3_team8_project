@@ -112,6 +112,12 @@ public class CAutoEnemyMove : MonoBehaviour
         
         _homePosition = transform.position;
         _homePosition.z = 0f;
+
+        _timer = 0f;
+        _isForcedAggro = false;
+        _forcedAggroTimer = 0f;
+        _canAttack = false;
+
         ChangeState(EUnitState.Idle);
     }
 
@@ -242,7 +248,7 @@ public class CAutoEnemyMove : MonoBehaviour
 
     bool FindTarget()
     {
-        if (HeroManagerDummy.Instance == null || HeroManagerDummy.Instance.ActiveHero.Count == 0)
+        if (CHeroManager.Instance == null || CHeroManager.Instance.ActiveHero.Count == 0)
         {
             return false;
         }
@@ -251,7 +257,7 @@ public class CAutoEnemyMove : MonoBehaviour
         float minsqrDistance = FinalDetectionRange * FinalDetectionRange;
 
 
-        foreach(var player in HeroManagerDummy.Instance.ActiveHero)
+        foreach(var player in CHeroManager.Instance.ActiveHero)
         {
             if(player == null || !player.gameObject.activeSelf)
             {
