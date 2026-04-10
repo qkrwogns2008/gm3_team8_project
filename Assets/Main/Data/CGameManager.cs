@@ -49,23 +49,29 @@ public class CGameManager : MonoBehaviour
         switch (CurrentState)
         {
             case GameState.Title:
+                Debug.Log("타이틀 화면으로 전환");
                 // 타이틀 화면 UI
                 break;
             case GameState.MainStage:
+                Debug.Log("메인 스테이지로 전환");
                 // 메인 스테이지 UI 및 활성화
                 break;
             case GameState.Dungeon:
+                Debug.Log("던전으로 전환");
                 // 던전 UI 및 활성화
                 break;
             case GameState.UIScreen:
+                Debug.Log("UI스크린으로 전환");
                 // 전체화면 사이즈 UI 활성화
                 Time.timeScale = 0;
                 break;
             case GameState.Paused:
+                Debug.Log("일시정지로 전환");
                 // 일시정지 관련 UI로직 활성화
                 Time.timeScale = 0;
                 break;
             case GameState.GameOver:
+                Debug.Log("게임오버로 전환");
                 // 게임오버 관련 UI로직 활성화
                 Time.timeScale = 0;
                 break;
