@@ -25,6 +25,9 @@ public class CGachaPresenter : MonoBehaviour
 
     [Header("Card 풀링 설정")]
     [SerializeField] private int _poolSize = 30;                                // 풀링 사이즈
+
+    [Header("자동 소환 설정")]
+    [SerializeField] private GameObject _autoGachaPopup;                        // 자동 소환 팝업
     #endregion
 
     #region 내부 변수
@@ -32,6 +35,7 @@ public class CGachaPresenter : MonoBehaviour
     private Sprite _ticketSprite;                                               // 소환권 이미지
     private Sprite _rubySprite;                                                 // 루비 이미지
     private bool _isRolling = false;                                            // 뽑기 중 유무
+    private bool _isAutoRoll = false;                                           // 자동 소환 팝업
     #endregion
 
     private void Awake()
@@ -81,6 +85,18 @@ public class CGachaPresenter : MonoBehaviour
         // 재화 표시
         UpdateMoneyUI();
     }
+    private void OnDestroy()
+    {
+        if (CQuestManager.Instance != null)
+        {
+            CQuestManager.Instance.OnDataUpdate -= UpdateMoneyUI;
+        }
+
+        if (_tabChange != null)
+        {
+            _tabChange.OnTabChange -= ChangeCatergory;
+        }
+    }
 
     // 인덱스에 따라 소환 카테고리 변경
     private void ChangeCatergory(int index)
@@ -97,19 +113,6 @@ public class CGachaPresenter : MonoBehaviour
 
         // 카테고리 UI 업데이트
         UpdateCategoryUI();
-    }
-
-    private void OnDestroy()
-    {
-        if (CQuestManager.Instance != null)
-        {
-            CQuestManager.Instance.OnDataUpdate -= UpdateMoneyUI;
-        }
-
-        if (_tabChange != null)
-        {
-            _tabChange.OnTabChange -= ChangeCatergory;
-        }
     }
 
     // 뽑기 버튼 클릭
