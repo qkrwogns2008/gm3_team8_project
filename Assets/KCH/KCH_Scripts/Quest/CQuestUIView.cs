@@ -22,7 +22,7 @@ public class CQuestUIView : MonoBehaviour
     public TMP_Text QuestButtonText;    // 버튼 글자
 
     // UI 갱신 함수
-    public void SetUI(CQuestDataSO data, CQuestProgress progress)
+    public void SetUI(CQuestDataSO data, UserQuestData progress)
     {
         QuestIcon.sprite = data.QuestIcon;
         QusetText.text = data.QuestName;
@@ -31,11 +31,12 @@ public class CQuestUIView : MonoBehaviour
         RewardIcon.sprite = data.RewardIcon;
 
         QuestButton.onClick.RemoveAllListeners();
-        QuestButton.onClick.AddListener(() => {CQuestManager.Instance.RewardQuest(progress.QuestID);});
+        QuestButton.onClick.AddListener(() => CQuestManager.Instance.RewardQuest(progress.QuestID));
+        
 
         // 버튼 상태 제어
         // 진행도 게이지
-        if (progress.RewardCount > 0)
+        if (progress.ReewardCount > 0)
         {
             ProgressText.text = $"{data.QuestGoal} / {data.QuestGoal}";
             FillImage.fillAmount = 1f;
@@ -52,7 +53,7 @@ public class CQuestUIView : MonoBehaviour
             QuestButton.interactable = false;
         }
 
-        int totalReward = data.RewardQuest * (progress.RewardCount > 0 ? progress.RewardCount : 1);
+        int totalReward = data.RewardQuest * (progress.ReewardCount > 0 ? progress.ReewardCount : 1);
         RewardText.text = totalReward.ToString();
     }  
 }

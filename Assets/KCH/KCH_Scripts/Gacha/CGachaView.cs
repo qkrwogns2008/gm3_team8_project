@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class CGachaView : MonoBehaviour
 {
+    //[Header("상점 패널 설정")]
+    //public GameObject GachaMainPanel;      // 뽑기 패널
+    //public GameObject ShopMainPanel;       // 상점 패널
 
     [Header("카테고리 탭 그룹 설정")]
     public CanvasGroup CategoryGroup;      // 영웅 / 펫 / 성물 버튼 그룹
@@ -71,4 +74,5 @@ public class CGachaView : MonoBehaviour
     public Button ReRollTenButton;         // 결과창 10회 재뽑기 버튼
     public Button ReRollThirtyButton;      // 결과창 30회 재뽑기 버튼
     public GameObject ResultButtonGroup;   // 결과창 닫기/재뽑기 버튼 그룹
+
 }   

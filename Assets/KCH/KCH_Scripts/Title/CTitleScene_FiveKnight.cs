@@ -68,6 +68,9 @@ public class CTitleScene_FiveKnight : MonoBehaviour
             yield return null;
         }
 
+        // 메인씬 전환
+        CGameManager.Instance.ChangeState(GameState.MainStage);
+
         yield return new WaitForSeconds(5.0f);
 
         // 씬 활성화
