@@ -21,8 +21,8 @@ public class CUserData
     // 픽업 관련 함수
     public int Ruby = 10000;
     public int PickUpTicket = 10000;
-    public int HeroPickUpLevel = 0;
-    public int PetPickUpLevel = 0;
+    public int HeroPickUpLevel = 100;
+    public int PetPickUpLevel = 100;
     // 스테이지 관련 함수
     public int MainStageLevel = 1;
     public int CurrentStageLevel = 1;

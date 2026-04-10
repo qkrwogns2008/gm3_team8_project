@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5685298897839755856
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5901058452743271665}
+  - component: {fileID: 3883465651752659345}
+  - component: {fileID: 4151688687337687715}
+  m_Layer: 5
+  m_Name: QuestManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &5901058452743271665
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5685298897839755856}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.1165322, y: 1.1165322, z: 1.1165322}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 644.85376, y: 1382.853}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &3883465651752659345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5685298897839755856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e1436bdc5d919e48b42051d6ada6c86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  QuestDataList:
+  - {fileID: 11400000, guid: 62bd2cb859ec90644a9093fbd209b92f, type: 2}
+  - {fileID: 11400000, guid: 39669ce81a835a0488defb45d22d34eb, type: 2}
+  - {fileID: 11400000, guid: a3dc43f727c312849806d899cde7f1fd, type: 2}
+  - {fileID: 11400000, guid: 8b4ed27a5f262fa419f7e2619ef9f838, type: 2}
+  - {fileID: 11400000, guid: 8ed0fde6f2f0cf54492d69c394b59762, type: 2}
+--- !u!114 &4151688687337687715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5685298897839755856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41917b8c5aefc264fa4327bccdb4b60e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  QuestPrefab: {fileID: 3997782424088757983, guid: 3d5960c4ac547964fa73944f822910b8, type: 3}
+  QuestTransform: {fileID: 0}
+  _questAllButton: {fileID: 0}

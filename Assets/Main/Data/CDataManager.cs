@@ -18,10 +18,11 @@ public class CDataManager : MonoBehaviour
             #if UNITY_EDITOR
             // 유니티 에디터(PC 작업 중)일 때는 프로젝트 폴더 바로 옆에 저장 (찾기 쉬움)
             _savePath = Path.Combine(Application.dataPath, "..", "SaveData.json");
-            #else
-            실제 빌드(모바일, PC 빌드본)일 때는 안전한 영구 저장소에 저장
+
+            //실제 빌드(모바일, PC 빌드본)일 때는 안전한 영구 저장소에 저장
+#else
             _savePath = Path.Combine(Application.persistentDataPath, "SaveData.json");
-            #endif
+#endif
             LoadUserData();
             DontDestroyOnLoad(gameObject);
         }
