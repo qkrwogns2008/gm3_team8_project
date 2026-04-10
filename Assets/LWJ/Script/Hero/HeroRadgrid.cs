@@ -24,20 +24,28 @@ public class HeroRadgrid : CHero
 	{
 		if (target != null)
 		{
-			target.TakeDamage(CriticalDamage, this);
+			return;
+		}
 
-			BuffSystem.AddBuff
+		SummonHitEffectOnTarget(target, CriticalHitEffect);
+		target.TakeDamage(CriticalDamage, this);
+
+		BuffSystem.AddBuff
 			(
 			EBuffFlags.CriticalChanceBoost,
 			24f,
 			2f,
 			this
 			);
-		}
 	}
 
 	protected override void ProcessSkillHit(CUnitBase target)
 	{
+		if (target == null)
+		{
+			return;
+		}
+
 		BuffSystem.AddBuff
 			(
 			EBuffFlags.StackGuard,
@@ -46,21 +54,13 @@ public class HeroRadgrid : CHero
 			this
 			);
 
-		FindedTargets.Clear();
+		SummonHitEffectOnTarget(target, SkillHitEffect);
 
 		IReadOnlyList<CUnitBase> targetList = CEnemyManager.Instance.ActiveEnemies;
-		FindTargetsOnCircleArea(this, ScaledAreaRadius, targetList);
-
-		SelectedTargetsAttack(FindedTargets, FinalSkillDamage);
-
-		if (PrintSkillLog)
-		{
-			Debug.Log($"원형 범위 피해 발생. 피해량 : [{FinalSkillDamage}]");
-		}
+		CircleAreaAttack(target, ScaledAreaRadius, targetList);
 	}
 
-	// 주변 타겟 탐색
-	protected virtual void FindTargetsOnCircleArea(CUnitBase originTarget, float radius, IReadOnlyList<CUnitBase> targetList)
+	protected virtual void CircleAreaAttack(CUnitBase originTarget, float radius, IReadOnlyList<CUnitBase> targetList)
 	{
 		Vector2 areaCenterPos = originTarget.transform.position;
 		float sqrRadius = radius * radius;
@@ -85,28 +85,33 @@ public class HeroRadgrid : CHero
 			{
 				continue;
 			}
-			FindedTargets.Add(target);
+
+			target.TakeDamage(FinalSkillDamage, this);
+		}
+
+		if (PrintSkillLog)
+		{
+			Debug.Log($"원형 범위 피해 발생. 피해량 : [{FinalSkillDamage}]");
 		}
 	}
 
-	protected virtual void SelectedTargetsAttack(IReadOnlyList<CUnitBase> targets, float damage)
+	protected virtual void SummonHitEffectOnTarget(CUnitBase target, EffectDataSO fxData)
 	{
-		// 선택된 타겟 목록 순회
-		for (int i = 0; i < targets.Count; i++)
+		if (fxData == null)
 		{
-			CUnitBase target = targets[i];
-
-			if (target == null)
-			{
-				continue;
-			}
-			if (target.IsUnitDead)
-			{
-				continue;
-			}
-
-			target.TakeDamage(damage, this);
+			return;
 		}
+		if (fxData.Catalog == null ||
+			fxData.Catalog.Count == 0)
+		{
+			return;
+		}
+		if (fxData.Catalog[0] == null)
+		{
+			return;
+		}
+
+		TrySummonEffect(fxData.Catalog[0], target.transform.position);
 	}
 
 	protected virtual void OnDrawGizmosSelected()
@@ -121,6 +126,6 @@ public class HeroRadgrid : CHero
 		}
 
 		Gizmos.color = Color.yellow;
-		Gizmos.DrawWireSphere(transform.position, ScaledAreaRadius);
+		Gizmos.DrawWireSphere(Target.transform.position, ScaledAreaRadius);
 	}
 }

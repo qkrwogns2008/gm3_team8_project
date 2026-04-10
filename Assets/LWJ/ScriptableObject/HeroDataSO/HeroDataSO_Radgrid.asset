@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _unitName: Radgrid
   _baseMaxHp: 600
-  _baseAttackDamage: 15
+  _baseAttackDamage: 20
   _baseAttackInterval: 1
-  _normalAttackDamageRatio: 1
+  _normalAttackDamageRatio: 9
   _attackRange: 5
   _baseMoveSpeed: 5
   _maxHPMultiplier: 1
@@ -34,7 +34,7 @@ MonoBehaviour:
   _baseCriticalDamageRatio: 9
   _criticalAttackMultiplier: 2
   _skillEffect: {fileID: 11400000, guid: ddcc778cc7d57604cbfb32e5e89542f7, type: 2}
-  _skillActionInterval: 2
+  _skillActionInterval: 1
   _baseSkillDamageRatio: 30
   _baseSkillCooldown: 10
   _cooldownMultiplier: 1
