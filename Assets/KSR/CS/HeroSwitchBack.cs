@@ -11,6 +11,12 @@ public class HeroSwitchBack : MonoBehaviour
     public Transform hero_area1;     // 이동할 대상
     public Transform originalParent; // 원래 부모
 
+    [Header("카드 매니저")]
+    public CardManager cardManager;
+
+    [Header("체크 버튼")]
+    public CheckButton checkButton;  // 체크 상태 확인용
+
     private RectTransform myRect;
 
     void Awake()
@@ -34,7 +40,7 @@ public class HeroSwitchBack : MonoBehaviour
         {
             hero_area1.SetParent(originalParent, false);
 
-            AreaState areaState = hero_area1.GetComponentInChildren<AreaState>(); // 영웅 프리펩 상태 변경
+            AreaState areaState = hero_area1.GetComponentInChildren<AreaState>();
             if (areaState != null)
             {
                 areaState.SetArea(AreaState.AreaType.Area1);
@@ -44,5 +50,14 @@ public class HeroSwitchBack : MonoBehaviour
         // 선택 이미지 이동
         if (selectImage != null && myRect != null)
             selectImage.anchoredPosition = myRect.anchoredPosition;
+
+        // 체크 상태에 따라 카드 표시
+        if (cardManager != null && checkButton != null)
+        {
+            if (checkButton.IsChecked())
+                cardManager.ShowOwnedOnly();
+            else
+                cardManager.ShowAll();
+        }
     }
 }

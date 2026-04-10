@@ -3,6 +3,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class CardManager : MonoBehaviour
 {
     // 카드 리스트 (순서 기준)
@@ -22,10 +26,21 @@ public class CardManager : MonoBehaviour
 
     void OnValidate()
     {
-        // 에디터에서 값 변경 시에도 즉시 정렬 및 텍스트 갱신
+        // 에디터에서 값 변경 시 지연 실행
+#if UNITY_EDITOR
+        EditorApplication.delayCall += DelayedRefresh;
+#endif
+    }
+
+#if UNITY_EDITOR
+    void DelayedRefresh()
+    {
+        if (this == null) return;
+
         RefreshOrder();
         UpdateCountText();
     }
+#endif
 
     // 카드 순서를 소유 여부 기준으로 재정렬
     public void RefreshOrder()

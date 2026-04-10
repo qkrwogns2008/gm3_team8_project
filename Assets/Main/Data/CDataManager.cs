@@ -262,6 +262,7 @@ public class CDataManager : MonoBehaviour
     }
 
 
+
     public UserHeroData GetHeroData(int id)
     {
         for (int i = 0; i < UserData.HeroList.Count; i++)

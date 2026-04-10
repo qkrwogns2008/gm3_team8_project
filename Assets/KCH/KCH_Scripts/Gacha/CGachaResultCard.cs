@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +18,7 @@ public class CGachaResultCard : MonoBehaviour
         public CGachaDataSO.ERarity Rarity;                     // 대상 등급
         public Sprite BackSprite;                               // 해당 등급 뒷면 이미지
         public GameObject IdleEffect;                           // 해당 등급 이펙트
+        public GameObject ReverseEffect;                        // 해당 등급 뒤집힘 이펙트
     }
 
     [Header("Card UI 컴포넌트")]
@@ -38,6 +40,7 @@ public class CGachaResultCard : MonoBehaviour
     #region 내부 변수
     private Sprite _originBackSprite;                           // 카드 기본 뒷면
     private bool _isReversed = false;                           // 카드의 뒤집힘 여부 
+    private CGachaDataSO _currentData;                          // 현재 카드 데이터
     #endregion
 
     private void Awake()
@@ -59,6 +62,9 @@ public class CGachaResultCard : MonoBehaviour
         {
             return;
         }
+
+        // 현재 카드 데이터
+        _currentData = data;
 
         // 유닛 이름
         if (_nameText != null)
@@ -101,6 +107,8 @@ public class CGachaResultCard : MonoBehaviour
         {
             _backCard.SetActive(true);
         }
+
+        SetData(data);
         
         // 에픽(2) 등급 부터 이미지 변경과 이펙트 활성화
         if ((int)data.Rarity >= 2)
@@ -177,6 +185,18 @@ public class CGachaResultCard : MonoBehaviour
                 _effectSet[i].IdleEffect.SetActive(false);
             }
         }
+
+        // 역순 삭제
+        for (int i = transform.childCount - 1; i >= 0; i--)
+        {
+            GameObject child = transform.GetChild(i).gameObject;
+
+            if (child != _backCard && child != _movingCard.gameObject)
+            {
+                child.SetActive(false);
+                Destroy(child);
+            }
+        }
     }
 
     // 카드를 안보이게 크기 조절
@@ -230,6 +250,33 @@ public class CGachaResultCard : MonoBehaviour
         // 카드 뒤집히는 연출
         StartCoroutine(CO_FilpCard());
     }
+    private void PlayReverseEffect()
+    {
+        if (_currentData == null || (int)_currentData.Rarity < 2)
+        {
+            return;
+        }
+
+        for (int i = 0; i < _effectSet.Count; i++)
+        {
+            if (_effectSet[i].Rarity == _currentData.Rarity)
+            {
+                if (_effectSet[i].ReverseEffect != null)
+                {
+                    GameObject effect = Instantiate(_effectSet[i].ReverseEffect, transform);
+
+                    effect.transform.localPosition = Vector3.zero;
+                    effect.transform.localScale = Vector3.one;
+
+                    effect.SetActive(true);
+
+                    Destroy(effect, 2f);
+                }
+                break;
+            }
+        }
+
+    }
 
     // X축을 늘렸다가 다시 늘려 뒤집히는 연출
     private IEnumerator CO_FilpCard()
@@ -253,6 +300,11 @@ public class CGachaResultCard : MonoBehaviour
         // 0
         _backCard.SetActive(false);
 
+        ResetEffect();
+
+        // 뒤집을때 이펙트
+        PlayReverseEffect();
+
         // 0 ~ 1
         timer = 0f;
         while(timer < duration)
@@ -268,4 +320,6 @@ public class CGachaResultCard : MonoBehaviour
 
         transform.localScale = Vector3.one;
     }
+
+
 }
