@@ -18,6 +18,8 @@ public class CAutoPlayerMove : MonoBehaviour
     private SkeletonAnimation _skeletonAnim;
     private CHero PlayerHero;   // 상태 제어용 참조 사용시 CHero참조
     private HeroDataSO _heroData;
+
+    private Vector3 _groupTargetPos;
     #endregion
 
 
@@ -102,6 +104,21 @@ public class CAutoPlayerMove : MonoBehaviour
             }
         }
 
+    }
+
+    // 매니저가 지정해둔 대열 위치로 이동
+    // 수동 조작 사용중일때 호출
+    void ManualGroupMove()
+    {
+        PlayerHero.ChangeState(EHeroState.Move);
+        transform.position = Vector3.MoveTowards(transform.position, _groupTargetPos, PlayerHero.FinalMoveSpeed * Time.deltaTime);
+
+        /// 이동 방향 바라보는 로직 추가
+    }
+
+    public void SetGroupTarget(Vector3 pos)
+    {
+        _groupTargetPos = pos;
     }
 
     // 버튼 연결
