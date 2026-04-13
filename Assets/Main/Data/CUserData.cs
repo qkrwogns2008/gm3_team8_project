@@ -55,7 +55,7 @@ public class CUserData
 [Serializable]
 public class UserHeroData
 {
-    public int HeroID;  // 영웅 고유 번호
+    public EHeroID HeroID;  // 영웅 고유 번호
     public int Level;   // 영웅 레벨
     public int Quantity;   // 보유 개수
 }

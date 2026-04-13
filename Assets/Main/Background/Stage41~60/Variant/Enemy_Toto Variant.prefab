@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3899819637224094853, guid: 5ab20f9d82a466b42a9d0764462dc152, type: 3}
       propertyPath: m_Name
-      value: Enemy_Toto
+      value: Enemy_Toto Variant
       objectReference: {fileID: 0}
     - target: {fileID: 8361872433212783006, guid: 5ab20f9d82a466b42a9d0764462dc152, type: 3}
       propertyPath: m_LocalPosition.x
@@ -55,5 +55,94 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3899819637224094853, guid: 5ab20f9d82a466b42a9d0764462dc152, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6234694722186905808}
+    - targetCorrespondingSourceObject: {fileID: 3762910206280656412, guid: 5ab20f9d82a466b42a9d0764462dc152, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7549517370034559431}
+    - targetCorrespondingSourceObject: {fileID: 6541709915626172389, guid: 5ab20f9d82a466b42a9d0764462dc152, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1142336714152422117}
+    - targetCorrespondingSourceObject: {fileID: 5208655710077697419, guid: 5ab20f9d82a466b42a9d0764462dc152, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8115123222560983717}
   m_SourcePrefab: {fileID: 100100000, guid: 5ab20f9d82a466b42a9d0764462dc152, type: 3}
+--- !u!1 &823383125639854463 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6541709915626172389, guid: 5ab20f9d82a466b42a9d0764462dc152, type: 3}
+  m_PrefabInstance: {fileID: 5883368064734205594}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1142336714152422117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 823383125639854463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2621b222c1d268940a34cfe6fcfda1f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factorX: 0
+  factorY: 0.0095
+--- !u!1 &1868203093848599313 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5208655710077697419, guid: 5ab20f9d82a466b42a9d0764462dc152, type: 3}
+  m_PrefabInstance: {fileID: 5883368064734205594}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8115123222560983717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1868203093848599313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2621b222c1d268940a34cfe6fcfda1f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factorX: 0
+  factorY: 0.0095
+--- !u!1 &7322121750325555334 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3762910206280656412, guid: 5ab20f9d82a466b42a9d0764462dc152, type: 3}
+  m_PrefabInstance: {fileID: 5883368064734205594}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7549517370034559431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7322121750325555334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2621b222c1d268940a34cfe6fcfda1f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factorX: 0
+  factorY: 0.0095
+--- !u!1 &7474600275069217311 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3899819637224094853, guid: 5ab20f9d82a466b42a9d0764462dc152, type: 3}
+  m_PrefabInstance: {fileID: 5883368064734205594}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6234694722186905808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7474600275069217311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 925f4967deca571458622102512d3dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cameraTr: {fileID: 0}
+  _useX: 1
+  _useY: 1

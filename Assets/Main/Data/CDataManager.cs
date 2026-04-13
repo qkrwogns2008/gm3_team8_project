@@ -161,10 +161,10 @@ public class CDataManager : MonoBehaviour
 
 
     // 영웅 추가
-    public void AddHeroData(int id)
+    public void AddHeroData(EHeroID id)
     {
         // 보유 여부 확인
-        var hero = GetHeroData(id);
+        var hero = GetHeroData((int)id);
 
         if (hero != null)
         {
@@ -277,7 +277,7 @@ public class CDataManager : MonoBehaviour
     {
         for (int i = 0; i < UserData.HeroList.Count; i++)
         {
-            if (UserData.HeroList[i].HeroID == id) return UserData.HeroList[i];
+            if (UserData.HeroList[i].HeroID == (EHeroID)id) return UserData.HeroList[i];
         }
         return null; // 없으면 null 반환
     }
@@ -293,11 +293,11 @@ public class CDataManager : MonoBehaviour
     }
 
     
-    public FinalHeroStatus GetHeroFinalStatus(int heroID, UnitDataSO unitSO)
+    public FinalHeroStatus GetHeroFinalStatus(EHeroID heroID, UnitDataSO unitSO)
     {
         // 유저의 강화/레벨 데이터 로드
         UserUpgradeStatus upgrade = GetUserUpgradeStatus();
-        UserHeroData heroData = GetHeroData(heroID);
+        UserHeroData heroData = GetHeroData((int)heroID);
         HeroDataSO heroSO;
         heroSO = unitSO as HeroDataSO;
         if (heroSO != null)

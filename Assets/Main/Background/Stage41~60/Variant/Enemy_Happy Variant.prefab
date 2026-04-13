@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3899819637224094853, guid: 695eed59dd820c742980c520fab58b7b, type: 3}
       propertyPath: m_Name
-      value: Enemy_Happy
+      value: Enemy_Happy Variant
       objectReference: {fileID: 0}
     - target: {fileID: 8361872433212783006, guid: 695eed59dd820c742980c520fab58b7b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -55,5 +55,94 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3899819637224094853, guid: 695eed59dd820c742980c520fab58b7b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 799905571591662069}
+    - targetCorrespondingSourceObject: {fileID: 5552776587104988058, guid: 695eed59dd820c742980c520fab58b7b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 378701108853724793}
+    - targetCorrespondingSourceObject: {fileID: 6541709915626172389, guid: 695eed59dd820c742980c520fab58b7b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6095423082912033564}
+    - targetCorrespondingSourceObject: {fileID: 5208655710077697419, guid: 695eed59dd820c742980c520fab58b7b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 93841364882660597}
   m_SourcePrefab: {fileID: 100100000, guid: 695eed59dd820c742980c520fab58b7b, type: 3}
+--- !u!1 &1313792195568624383 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3899819637224094853, guid: 695eed59dd820c742980c520fab58b7b, type: 3}
+  m_PrefabInstance: {fileID: 2604618005767380602}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &799905571591662069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1313792195568624383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 925f4967deca571458622102512d3dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cameraTr: {fileID: 0}
+  _useX: 1
+  _useY: 1
+--- !u!1 &7577898615052858848 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5552776587104988058, guid: 695eed59dd820c742980c520fab58b7b, type: 3}
+  m_PrefabInstance: {fileID: 2604618005767380602}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &378701108853724793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7577898615052858848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2621b222c1d268940a34cfe6fcfda1f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factorX: 0
+  factorY: 0.0095
+--- !u!1 &7813088409469346801 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5208655710077697419, guid: 695eed59dd820c742980c520fab58b7b, type: 3}
+  m_PrefabInstance: {fileID: 2604618005767380602}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &93841364882660597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7813088409469346801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2621b222c1d268940a34cfe6fcfda1f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factorX: 0
+  factorY: 0.0095
+--- !u!1 &9146147582158156191 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6541709915626172389, guid: 695eed59dd820c742980c520fab58b7b, type: 3}
+  m_PrefabInstance: {fileID: 2604618005767380602}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6095423082912033564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9146147582158156191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2621b222c1d268940a34cfe6fcfda1f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factorX: 0
+  factorY: 0.0095
