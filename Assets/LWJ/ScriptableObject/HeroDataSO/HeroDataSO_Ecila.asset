@@ -10,31 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 052d6623105bc5847984325fe0f4e478, type: 3}
-  m_Name: HeroDataSO_Teo
+  m_Name: HeroDataSO_Ecila
   m_EditorClassIdentifier: 
-  _unitName: Teo
-  _baseMaxHp: 500
-  _baseAttackDamage: 30
+  _unitName: Ecila
+  _baseMaxHp: 300
+  _baseAttackDamage: 20
   _baseAttackInterval: 1
-  _normalAttackDamageRatio: 3.5
-  _attackRange: 4
+  _normalAttackDamageRatio: 2
+  _attackRange: 10
   _baseMoveSpeed: 5
   _maxHPMultiplier: 1
   _attackDamageMultiplier: 1
   _attackSpeedMultiplier: 1
   _moveSpeedMultiplier: 1
   _detectionRange: 50
-  _heroId: 4001
-  _baseDefense: 3
+  _heroId: 4004
+  _baseDefense: 0
   _defenseMultiplier: 1
   _damageReductionChance: 0
-  _attackEffect: {fileID: 11400000, guid: eb531b3eb7dcaaf45868d6cb4beedd74, type: 2}
-  _criticalEffect: {fileID: 11400000, guid: 43641eaf32843294188424242b43a8a6, type: 2}
+  _attackEffect: {fileID: 11400000, guid: 0a76128228f6b674ba614f01ac63e017, type: 2}
+  _criticalEffect: {fileID: 11400000, guid: e31f16e0c8906fe4c95f6d67e3fc696d, type: 2}
   _criticalChance: 5
-  _baseCriticalDamageRatio: 3.5
+  _baseCriticalDamageRatio: 4.5
   _criticalAttackMultiplier: 2
-  _skillEffect: {fileID: 11400000, guid: 3f1e7435205806e41ad8ad78767b0b80, type: 2}
-  _skillActionInterval: 2
-  _baseSkillDamageRatio: 2.5
+  _skillEffect: {fileID: 11400000, guid: 7ea11110ce02162409fdfc70ba9b2e47, type: 2}
+  _skillActionInterval: 1
+  _baseSkillDamageRatio: 10
   _baseSkillCooldown: 10
   _cooldownMultiplier: 1

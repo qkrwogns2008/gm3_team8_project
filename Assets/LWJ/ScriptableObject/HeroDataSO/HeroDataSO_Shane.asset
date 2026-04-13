@@ -17,7 +17,7 @@ MonoBehaviour:
   _baseAttackDamage: 25
   _baseAttackInterval: 0.8
   _normalAttackDamageRatio: 1.25
-  _attackRange: 5
+  _attackRange: 4
   _baseMoveSpeed: 5
   _maxHPMultiplier: 1
   _attackDamageMultiplier: 1
@@ -26,6 +26,8 @@ MonoBehaviour:
   _detectionRange: 50
   _heroId: 3002
   _baseDefense: 0
+  _defenseMultiplier: 1
+  _damageReductionChance: 0
   _attackEffect: {fileID: 11400000, guid: a2e18ed1d15feee4c9c9c1acc2b451c4, type: 2}
   _criticalEffect: {fileID: 11400000, guid: f80371853afc6fe4f97f3811a82377ed, type: 2}
   _criticalChance: 5

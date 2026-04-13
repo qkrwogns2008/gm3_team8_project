@@ -99,8 +99,6 @@ public class HeroTeo : CHero
 			return;
 		}
 
-		float localScale = SkeletonAni.gameObject.transform.localScale.x;
-
 		Gizmos.color = Color.yellow;
 		Vector2 forward = IsFacingRight ? Vector2.right : Vector2.left;
 		Vector2 left = Quaternion.Euler(0, 0, -SectorDegree * 0.5f) * forward;

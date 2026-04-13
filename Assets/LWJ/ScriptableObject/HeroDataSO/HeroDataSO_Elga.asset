@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _unitName: Elga
   _baseMaxHp: 180
-  _baseAttackDamage: 20
+  _baseAttackDamage: 25
   _baseAttackInterval: 1
   _normalAttackDamageRatio: 1.5
   _attackRange: 10
@@ -26,6 +26,8 @@ MonoBehaviour:
   _detectionRange: 50
   _heroId: 2002
   _baseDefense: 0
+  _defenseMultiplier: 1
+  _damageReductionChance: 0
   _attackEffect: {fileID: 11400000, guid: af0abe7ad3081134eb9cb9c2c8bdfac3, type: 2}
   _criticalEffect: {fileID: 11400000, guid: bb6a89ed22c0fe344aac8c74ce521ec0, type: 2}
   _criticalChance: 5

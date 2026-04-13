@@ -165,11 +165,12 @@ public class BuffSystem : MonoBehaviour
 			}
 		}
 
+		// 제거해야 할 버프가 있으면 갱신
 		if (removedFlags != EBuffFlags.None)
 		{
 			UpdateBuffFlags(EBuffFlags.None);
 
-			// 제거할 버프에 가드 스택이 포함되면 함께 제거
+			// 제거할 버프에 가드 스택이 포함되면 가드도 갱신
 			if ((removedFlags & EBuffFlags.StackGuard) != 0)
 			{
 				OnBuffChanged?.Invoke(EBuffFlags.StackGuard);
