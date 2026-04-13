@@ -302,7 +302,7 @@ public class CDataManager : MonoBehaviour
         heroSO = unitSO as HeroDataSO;
         if (heroSO != null)
         { 
-            Debug.Log($"영웅 데이터 조회 성공 (ID: {heroID} / 레벨: {heroData.Level})");
+            // Debug.Log($"영웅 데이터 조회 성공 (ID: {heroID} / 레벨: {heroData.Level})");
         }
             // 최종 스탯 저장용
             FinalHeroStatus final = new FinalHeroStatus();
