@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3899819637224094853, guid: 96c874418bae0204ead7167bb9a0246b, type: 3}
       propertyPath: m_Name
-      value: Enemy_Jak
+      value: Enemy_Jak Variant
       objectReference: {fileID: 0}
     - target: {fileID: 8361872433212783006, guid: 96c874418bae0204ead7167bb9a0246b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -55,5 +55,94 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3899819637224094853, guid: 96c874418bae0204ead7167bb9a0246b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1469788545545742294}
+    - targetCorrespondingSourceObject: {fileID: 4871998144562796221, guid: 96c874418bae0204ead7167bb9a0246b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2780371928111998630}
+    - targetCorrespondingSourceObject: {fileID: 6541709915626172389, guid: 96c874418bae0204ead7167bb9a0246b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3904756762905573485}
+    - targetCorrespondingSourceObject: {fileID: 5208655710077697419, guid: 96c874418bae0204ead7167bb9a0246b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4875299664956360856}
   m_SourcePrefab: {fileID: 100100000, guid: 96c874418bae0204ead7167bb9a0246b, type: 3}
+--- !u!1 &3456047683972402034 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3899819637224094853, guid: 96c874418bae0204ead7167bb9a0246b, type: 3}
+  m_PrefabInstance: {fileID: 1866927049200449527}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1469788545545742294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3456047683972402034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 925f4967deca571458622102512d3dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cameraTr: {fileID: 0}
+  _useX: 1
+  _useY: 1
+--- !u!1 &4837000968164169746 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6541709915626172389, guid: 96c874418bae0204ead7167bb9a0246b, type: 3}
+  m_PrefabInstance: {fileID: 1866927049200449527}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3904756762905573485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4837000968164169746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2621b222c1d268940a34cfe6fcfda1f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factorX: 0
+  factorY: 0.0095
+--- !u!1 &5881829236671810172 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5208655710077697419, guid: 96c874418bae0204ead7167bb9a0246b, type: 3}
+  m_PrefabInstance: {fileID: 1866927049200449527}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4875299664956360856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5881829236671810172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2621b222c1d268940a34cfe6fcfda1f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factorX: 0
+  factorY: 0.0095
+--- !u!1 &6517966765781033290 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4871998144562796221, guid: 96c874418bae0204ead7167bb9a0246b, type: 3}
+  m_PrefabInstance: {fileID: 1866927049200449527}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2780371928111998630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6517966765781033290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2621b222c1d268940a34cfe6fcfda1f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factorX: 0
+  factorY: 0.0095
