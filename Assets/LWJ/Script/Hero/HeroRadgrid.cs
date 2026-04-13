@@ -9,7 +9,7 @@ public class HeroRadgrid : CHero
 	[SerializeField] protected EffectDataSO SkillHitEffect;
 
 	[Header("스킬 속성값")]
-	[SerializeField] protected float AreaRadius = 4f;
+	[SerializeField] protected float AreaRadius = 6f;
 	[SerializeField] protected bool PrintSkillLog = false;
 	#endregion
 
@@ -19,6 +19,25 @@ public class HeroRadgrid : CHero
 	// 스킬 범위에 스파인 크기 반영
 	protected virtual float ScaledAreaRadius => AreaRadius * SpineScale;
 	#endregion
+
+	protected virtual void SummonHitEffectOnTarget(CUnitBase target, EffectDataSO fxData)
+	{
+		if (fxData == null)
+		{
+			return;
+		}
+		if (fxData.Catalog == null ||
+			fxData.Catalog.Count == 0)
+		{
+			return;
+		}
+		if (fxData.Catalog[0] == null)
+		{
+			return;
+		}
+
+		TrySummonEffect(fxData.Catalog[0], target.transform.position);
+	}
 
 	protected override void ProcessCriticalHit(CUnitBase target)
 	{
@@ -95,25 +114,7 @@ public class HeroRadgrid : CHero
 		}
 	}
 
-	protected virtual void SummonHitEffectOnTarget(CUnitBase target, EffectDataSO fxData)
-	{
-		if (fxData == null)
-		{
-			return;
-		}
-		if (fxData.Catalog == null ||
-			fxData.Catalog.Count == 0)
-		{
-			return;
-		}
-		if (fxData.Catalog[0] == null)
-		{
-			return;
-		}
-
-		TrySummonEffect(fxData.Catalog[0], target.transform.position);
-	}
-
+	
 	protected virtual void OnDrawGizmosSelected()
 	{
 		if (Target == null)

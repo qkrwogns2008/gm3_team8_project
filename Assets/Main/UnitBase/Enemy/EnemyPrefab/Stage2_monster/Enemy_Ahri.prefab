@@ -42,13 +42,14 @@ GameObject:
   - component: {fileID: 8361872433212783006}
   - component: {fileID: 6236160786848009556}
   - component: {fileID: 4555792972297042494}
+  - component: {fileID: 117122239851069436}
   m_Layer: 0
-  m_Name: Enemy_Sarah
+  m_Name: Enemy_Ahri
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8361872433212783006
 Transform:
   m_ObjectHideFlags: 0
@@ -62,7 +63,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 242418082643464875}
+  - {fileID: 1537937926501632252}
   - {fileID: 7359598792969422639}
   - {fileID: 5108732672989046900}
   - {fileID: 6976374957925658929}
@@ -85,7 +86,7 @@ MonoBehaviour:
   OriginData: {fileID: 11400000, guid: 4437df723d5d0fa4399b0cbe9eb56590, type: 2}
   TeamType: 1
   centerTransform: {fileID: 6976374957925658929}
-  SkeletonAni: {fileID: 3733297969575254077}
+  SkeletonAni: {fileID: 2050900856590884318}
   AttackAnimation: Attack_A
   AttackEffect: {fileID: 0}
   DeathAnimation: Death
@@ -96,6 +97,8 @@ MonoBehaviour:
   _walkRange: 5
   _switchThreshold: 1.2
   _minTargetStayTime: 1
+  _finalMaxHP: 0
+  _finalMaxAtk: 0
 --- !u!114 &4555792972297042494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,6 +117,18 @@ MonoBehaviour:
   _forcedAggroTimer: 0
   AggroDuration: 5
   _canAttack: 0
+--- !u!210 &117122239851069436
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3899819637224094853}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &6541709915626172389
 GameObject:
   m_ObjectHideFlags: 0
@@ -210,7 +225,7 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: -5
   m_SortAtRoot: 0
---- !u!1 &8301759929704570069
+--- !u!1 &7407797149055020631
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -218,24 +233,24 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 242418082643464875}
-  - component: {fileID: 7657749381381998996}
-  - component: {fileID: 208849935747873813}
-  - component: {fileID: 3733297969575254077}
+  - component: {fileID: 1537937926501632252}
+  - component: {fileID: 6574223089788479991}
+  - component: {fileID: 3327051544802303505}
+  - component: {fileID: 2050900856590884318}
   m_Layer: 0
-  m_Name: Spine GameObject (Monster_Sarah_A)
+  m_Name: Spine GameObject (Ahri_A)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &242418082643464875
+--- !u!4 &1537937926501632252
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8301759929704570069}
+  m_GameObject: {fileID: 7407797149055020631}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -244,21 +259,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8361872433212783006}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &7657749381381998996
+--- !u!33 &6574223089788479991
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8301759929704570069}
+  m_GameObject: {fileID: 7407797149055020631}
   m_Mesh: {fileID: 0}
---- !u!23 &208849935747873813
+--- !u!23 &3327051544802303505
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8301759929704570069}
+  m_GameObject: {fileID: 7407797149055020631}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -272,7 +287,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 32dc692d70ea1434498e3ab79a44b90b, type: 2}
+  - {fileID: 2100000, guid: 59f8a1f800a57984fad4ff864b4bef08, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -294,19 +309,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3733297969575254077
+--- !u!114 &2050900856590884318
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8301759929704570069}
+  m_GameObject: {fileID: 7407797149055020631}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonDataAsset: {fileID: 11400000, guid: 81b0323b134bb5d419b2205b6eb5cdbc, type: 2}
+  skeletonDataAsset: {fileID: 11400000, guid: 6f79d8c2e4679564d85bad7d1ffe2477, type: 2}
   initialSkinName: A
   initialFlipX: 0
   initialFlipY: 0

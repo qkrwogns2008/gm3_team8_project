@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 8361872433212783006}
   - component: {fileID: 6236160786848009556}
   - component: {fileID: 4555792972297042494}
+  - component: {fileID: -1525924451835612891}
   m_Layer: 0
   m_Name: Enemy_Goblin_Warrior
   m_TagString: Untagged
@@ -96,6 +97,8 @@ MonoBehaviour:
   _walkRange: 5
   _switchThreshold: 1.2
   _minTargetStayTime: 1
+  _finalMaxHP: 0
+  _finalMaxAtk: 0
 --- !u!114 &4555792972297042494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,6 +117,18 @@ MonoBehaviour:
   _forcedAggroTimer: 0
   AggroDuration: 5
   _canAttack: 0
+--- !u!210 &-1525924451835612891
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3899819637224094853}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &6087377122290676710
 GameObject:
   m_ObjectHideFlags: 0
