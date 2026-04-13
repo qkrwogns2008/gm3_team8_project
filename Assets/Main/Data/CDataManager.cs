@@ -219,12 +219,22 @@ public class CDataManager : MonoBehaviour
         SaveUserData();
     }
 
+    public int CheckHeroArray(int x, int y)     // x,y 범위 : 0~3 , heroID : 0(미배치)~4002(영웅ID 최대값)  승래님과 Check
+    {
+        int arrayIndex = x + 4 * y;
+        if (arrayIndex < 0 || arrayIndex >= UserData.Hero_Array.Length)
+        {
+            Debug.Log("영웅배치 좌표 범위 초과");
+            return -1; // 범위 초과시 -1 반환
+        }
+        return UserData.Hero_Array[arrayIndex];
+    }
+
     // 영웅 Array배치 함수 x,y : 0~3, heroID : 0(미배치)~4002(영웅ID 최대값)
     public void AddUserHeroArray(int x, int y, EHeroID heroID) 
     {
         int arrayIndex = x + 4 * y ;
         int beforeIndex = -1;
-        int beforeHeroID = -1;
         // 배열 범위 방지
         if (arrayIndex < 0 || arrayIndex >= UserData.Hero_Array.Length)
         {
