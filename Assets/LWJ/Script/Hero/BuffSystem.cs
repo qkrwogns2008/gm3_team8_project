@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 버프 덮어쓰기 규칙
 public enum EBuffOverwriteRule
 {
 	None,
@@ -64,6 +65,7 @@ public class BuffSystem : MonoBehaviour
 	public EBuffFlags CurrentBuffFlags => _currentBuffFlags;
 	public event Action<EBuffFlags> OnBuffChanged; // 버프 변화를 알림
 
+	// 버프 종류에 따라 덮어쓰기 규칙을 확인함.
 	private EBuffOverwriteRule GetOverwriteRule(EBuffFlags type)
 	{
 		switch (type)
