@@ -138,6 +138,7 @@ GameObject:
   - component: {fileID: 4742628236527491349}
   - component: {fileID: 176344657246430296}
   - component: {fileID: 5023023821801228767}
+  - component: {fileID: -2282826751519139507}
   m_Layer: 0
   m_Name: Enemy_Luo
   m_TagString: Untagged
@@ -192,6 +193,8 @@ MonoBehaviour:
   _walkRange: 5
   _switchThreshold: 1.2
   _minTargetStayTime: 1
+  _finalMaxHP: 0
+  _finalMaxAtk: 0
 --- !u!114 &5023023821801228767
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,6 +213,18 @@ MonoBehaviour:
   _forcedAggroTimer: 0
   AggroDuration: 5
   _canAttack: 0
+--- !u!210 &-2282826751519139507
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1043958019159779185}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &8241057533045967377
 GameObject:
   m_ObjectHideFlags: 0
