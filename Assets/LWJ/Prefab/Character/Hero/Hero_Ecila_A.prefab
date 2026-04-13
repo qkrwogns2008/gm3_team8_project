@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5845931139765108105}
-  - component: {fileID: -2383315907551695118}
+  - component: {fileID: 4564229400637035}
   - component: {fileID: 1385575880346748945}
   - component: {fileID: 9008721281802469470}
   m_Layer: 0
-  m_Name: Hero_Radgrid_A
+  m_Name: Hero_Ecila_A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38,7 +38,7 @@ Transform:
   - {fileID: 8745010829249372185}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-2383315907551695118
+--- !u!114 &4564229400637035
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -47,20 +47,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 2209794903314683923}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f567e7eeae335504dbadd6a0c0bc63ee, type: 3}
+  m_Script: {fileID: 11500000, guid: 6873b356f7341484ea556ef69857ccbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   unitName: 
   CurrentHp: 0
-  OriginData: {fileID: 11400000, guid: 0d7b170f331439f418ef1284d6ff8462, type: 2}
+  OriginData: {fileID: 11400000, guid: 70d137330569e304eab00a222bf28f56, type: 2}
   TeamType: 0
   centerTransform: {fileID: 8745010829249372185}
   SkeletonAni: {fileID: 4024569556539796475}
   AttackAnimation: Attack_A
-  AttackEffect: {fileID: 11400000, guid: 787b62fbbaeb8934699a5988e6dcfb27, type: 2}
+  AttackEffect: {fileID: 11400000, guid: 0a76128228f6b674ba614f01ac63e017, type: 2}
   DeathAnimation: Death
   DeathDisableTime: 0
-  PrintLog: 0
+  PrintLog: 1
   CriticalAnimation: Critical
   SkillAnimation: Active_A
   CurrentState: 0
@@ -68,10 +68,12 @@ MonoBehaviour:
   enableCriticalAttack: 1
   enableUseSkill: 1
   buffSystem: {fileID: 9008721281802469470}
-  CriticalHitEffect: {fileID: 11400000, guid: 08365734ed559a5418e5a24b7c3e2272, type: 2}
-  SkillHitEffect: {fileID: 11400000, guid: caf489d26b801934bb50539f84629591, type: 2}
-  AreaRadius: 6
-  PrintSkillLog: 0
+  AttackHitEffect: {fileID: 11400000, guid: 3822befbf06eccc41a9e5081157d29ab, type: 2}
+  CriticalHitEffect: {fileID: 11400000, guid: f1b7606ac5c47c04493f228026583599, type: 2}
+  AreaRadius: 3
+  SectorRadius: 14
+  SectorDegree: 60
+  PrintSkillLog: 1
 --- !u!114 &1385575880346748945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,7 +163,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d365950093d68b74b92dd29d7c54617d, type: 2}
+  - {fileID: 2100000, guid: 9b68ed4b58428604bac36fcd6355f658, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -195,7 +197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonDataAsset: {fileID: 11400000, guid: 96e92e16e77b1834db0641b72fe2c40c, type: 2}
+  skeletonDataAsset: {fileID: 11400000, guid: 7dda469f7366f1c48a72fba410064b1e, type: 2}
   initialSkinName: A
   initialFlipX: 0
   initialFlipY: 0
@@ -353,7 +355,7 @@ Transform:
   m_GameObject: {fileID: 6879251837453392758}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalPosition: {x: 0, y: 4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

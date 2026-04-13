@@ -89,6 +89,12 @@ public class EffectBase : MonoBehaviour
 	{
 		if (direction == EEffectDirection.None)
 		{
+			if (NoDirectionEffect == null)
+			{
+				Debug.LogWarning($"{name} : 인스펙터 null. EffectDataSO 방향 유무 확인");
+				return;
+			}
+
 			NoDirectionEffect.SetActive(true);
 			return;
 		}

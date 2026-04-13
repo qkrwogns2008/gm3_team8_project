@@ -109,11 +109,16 @@ public class HeroAlice : RangedHeroBase
 			}
 
 			hero.BuffSystem.AddBuff(buffFlags, value, duration, provider);
+
+			if (PrintLog)
+			{
+				Debug.Log($"[{UnitName}] {hero}에게 버프 지급");
+			}
 		}
 	}
 
 	/// <summary>
-	/// 모든 영웅에게 패시브 버프를 부여합니다.
+	/// 모든 영웅에게 버프를 부여합니다.
 	/// </summary>
 	protected virtual void ApplyBuffAllHero(EBuffFlags buffFlags, float value, float duration, CUnitBase provider)
 	{
@@ -135,6 +140,11 @@ public class HeroAlice : RangedHeroBase
 				}
 
 				hero.BuffSystem.AddBuff(buffFlags, value, duration, provider);
+			}
+
+			if (PrintLog)
+			{
+				Debug.Log($"[{UnitName}] 모든 아군에게 버프 지급");
 			}
 		}
 	}

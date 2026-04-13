@@ -16,22 +16,6 @@ public class HeroEvan : CHero
 	protected virtual float ScaledAreaRadius => AreaRadius * SpineScale;
 	#endregion
 
-	/// <summary>
-	/// ratio 비율 만큼 체력을 회복합니다. (1 = 100%)
-	/// </summary>
-	protected virtual void AddHPByRatio(float ratio)
-	{
-		float amount = FinalMaxHP * ratio;
-		CurrentHp = Mathf.Min(CurrentHp + amount, FinalMaxHP);
-
-		NotifyHpChange();
-
-		if (PrintLog)
-		{
-			Debug.Log($"[{UnitName}] 체력 회복 : {amount}. 현재 체력 : {CurrentHp}");
-		}
-	}
-
 	protected override void ProcessCriticalHit(CUnitBase target)
 	{
 		if (target != null)

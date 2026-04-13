@@ -145,11 +145,11 @@ public class CHero : CUnitBase
 	{
 		float buffGuardStack = BuffSystem.GetBuffEffectTotalValue(EBuffFlags.StackGuard);
 
-		if (buffGuardStack > 0)
+		if (buffGuardStack > 0) // 가드 횟수가 적으면 갱신
 		{
 			RemainGuardStack = buffGuardStack;
 		}
-		else if (RemainGuardStack != 0)
+		else if (RemainGuardStack != 0) // 스택 가드 버프 해제
 		{
 			RemainGuardStack = 0;
 		}
@@ -239,6 +239,87 @@ public class CHero : CUnitBase
 		}
 	}
 
+	#region 전투 전처리
+	public override void TryAttack(CUnitBase target)
+	{
+		if (!IsAvailable() || target == null)
+		{
+			return;
+		}
+
+		if (EnableUseSkill && CanUseSkill())
+		{
+			ExecuteCombat(EAttackType.Skill, target);
+		}
+		else
+		{
+			// 치명타 체크
+			bool isCriAttack = (Random.Range(0f, 100f) <= FinalCriticalChance);
+
+			if (EnableCriticalAttack && isCriAttack)
+			{
+				ExecuteCombat(EAttackType.Critical, target);
+			}
+			else if (EnableAttack)
+			{
+				ExecuteCombat(EAttackType.Normal, target);
+			}
+		}
+	}
+
+	protected virtual void ExecuteCombat(EAttackType type, CUnitBase target)
+	{
+		switch (type)
+		{
+			case EAttackType.Skill:
+				OnSkill(target);
+				break;
+			case EAttackType.Critical:
+				OnCritical(target);
+				break;
+			case EAttackType.Normal:
+				OnAttack(target);
+				break;
+		}
+	}
+
+	// 스킬 사용 가능 여부 체크
+	protected virtual bool CanUseSkill()
+	{
+		if (BaseSkillCooldown > 0f && Time.time >= NextSkillTime)
+		{
+			return true;
+		}
+
+		return false; // 아직 쿨타임 중이거나 설정 안됨
+	}
+
+	/// <summary>
+	/// 공격 액션 딜레이를 적용합니다. 기본 공격이면 True, 스킬 사용이면 False입니다.
+	/// </summary>
+	/// <param name="isNormal">기본 공격 여부</param>
+	protected void ApplyAttackCooldown(bool isNormal)
+	{
+		if (isNormal) // 기본 공격
+		{
+			if (FinalAttackActionInterval > 0f)
+			{
+				NextAttackTime = Time.time + FinalAttackActionInterval;
+			}
+		}
+		else // 스킬 사용
+		{
+			NextSkillTime = Time.time + FinalSkillCooldown;
+
+			if (FinalSkillActionInterval > 0f)
+			{
+				NextAttackTime = Time.time + FinalSkillActionInterval;
+			}
+		}
+	}
+	#endregion
+
+	#region 전투 로직
 	protected override void OnAttack(CUnitBase target)
 	{
 		ApplyAttackCooldown(true);
@@ -353,7 +434,9 @@ public class CHero : CUnitBase
 			target.TakeDamage(FinalSkillDamage, this);
 		}
 	}
+	#endregion
 
+	#region 연출
 	/// <summary>
 	/// 스파인 애니메이션을 재생하고, effectData의 PreDelay 값에 따라 시간차로 이펙트를 생성합니다. 성공적으로 종료되면 피해를 적용합니다.
 	/// </summary>
@@ -469,7 +552,9 @@ public class CHero : CUnitBase
 
 		return true;
 	}
+	#endregion
 
+	#region 체력 변화 / 사망
 	public override void TakeDamage(float damage, CUnitBase attacker)
 	{
 		if (IsDead)
@@ -560,83 +645,54 @@ public class CHero : CUnitBase
 		OnDead?.Invoke();
 	}
 
-	public override void TryAttack(CUnitBase target)
+	/// <summary>
+	/// ratio 비율 만큼 체력을 회복합니다. (1 = 100%)
+	/// </summary>
+	public virtual void AddHPByRatio(float ratio)
 	{
-		if (!IsAvailable() || target == null)
+		if (CurrentHp >= FinalMaxHP)
 		{
 			return;
 		}
 
-		if (EnableUseSkill && CanUseSkill())
-		{
-			ExecuteCombat(EAttackType.Skill, target);
-		}
-		else
-		{
-			// 치명타 체크
-			bool isCriAttack = (Random.Range(0f, 100f) <= FinalCriticalChance);
+		float amount = FinalMaxHP * ratio;
+		CurrentHp = Mathf.Min(CurrentHp + amount, FinalMaxHP);
 
-			if (EnableCriticalAttack && isCriAttack)
-			{
-				ExecuteCombat(EAttackType.Critical, target);
-			}
-			else if(EnableAttack)
-			{
-				ExecuteCombat(EAttackType.Normal, target);
-			}
-		}
-	}
+		NotifyHpChange();
 
-	protected virtual void ExecuteCombat(EAttackType type, CUnitBase target)
-	{
-		switch (type)
+		if (PrintLog)
 		{
-			case EAttackType.Skill:
-				OnSkill(target);
-				break;
-			case EAttackType.Critical:
-				OnCritical(target);
-				break;
-			case EAttackType.Normal:
-				OnAttack(target);
-				break;
+			Debug.Log($"[{UnitName}] 체력 회복 : {amount}. 현재 체력 : {CurrentHp}");
 		}
-	}
-
-	// 스킬 사용 가능 여부 체크
-	protected virtual bool CanUseSkill()
-	{
-		if (BaseSkillCooldown > 0f && Time.time >= NextSkillTime)
-		{
-			return true;
-		}
-
-		return false; // 아직 쿨타임 중이거나 설정 안됨
 	}
 
 	/// <summary>
-	/// 공격 액션 딜레이를 적용합니다. 기본 공격이면 True, 스킬 사용이면 False입니다.
+	/// ratio 비율만큼 체력을 회복합니다. 현재 체력 비율이 bonusThresholdRatio 미만이면, ratio + bonusRatio 비율만큼 회복합니다. (1.0f = 100%)
 	/// </summary>
-	/// <param name="isNormal">기본 공격 여부</param>
-	protected void ApplyAttackCooldown(bool isNormal)
+	public virtual void AddHPByRatio(float ratio, float bonusThresholdRatio, float bonusRatio)
 	{
-		if (isNormal) // 기본 공격
+		if (CurrentHp >= FinalMaxHP)
 		{
-			if (FinalAttackActionInterval > 0f)
-			{
-				NextAttackTime = Time.time + FinalAttackActionInterval;
-			}
+			return;
 		}
-		else // 스킬 사용
-		{
-			NextSkillTime = Time.time + FinalSkillCooldown;
 
-			if (FinalSkillActionInterval > 0f)
-			{
-				NextAttackTime = Time.time + FinalSkillActionInterval;
-			}
+		float currentHPRatio = CurrentHp / FinalMaxHP;
+		if (currentHPRatio < bonusThresholdRatio)
+		{
+			ratio += bonusRatio;
+		}
+
+		float amount = FinalMaxHP * ratio;
+		CurrentHp = Mathf.Min(CurrentHp + amount, FinalMaxHP);
+
+		NotifyHpChange();
+
+		if (PrintLog)
+		{
+			Debug.Log($"[{UnitName}] 체력 회복 : {amount}. 현재 체력 : {CurrentHp}");
 		}
 	}
+	#endregion
 
 	public void SetAnimation(string animName, bool loop)
 	{
