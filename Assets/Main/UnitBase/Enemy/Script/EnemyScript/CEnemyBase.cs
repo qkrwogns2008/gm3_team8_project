@@ -189,7 +189,7 @@ public class CEnemyBase : CUnitBase
     }
 
     // ÇÇ°Ý
-    public override void TakeDamage(float damage, CUnitBase attacker)
+    public override void TakeDamage(float damage, CUnitBase attacker, bool summonNormalHitEffect = true)
     {
         base.TakeDamage(damage, attacker);
         if(IsDead || attacker == null)

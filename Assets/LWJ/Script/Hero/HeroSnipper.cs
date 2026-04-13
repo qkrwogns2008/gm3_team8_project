@@ -83,25 +83,6 @@ public class HeroSnipper : RangedHeroBase
 		target.TakeDamage(CriticalDamage, this);
 	}
 
-	protected virtual void SummonHitEffectOnTarget(CUnitBase target, EffectDataSO fxData)
-	{
-		if (fxData == null)
-		{
-			return;
-		}
-		if (fxData.Catalog == null ||
-			fxData.Catalog.Count == 0)
-		{
-			return;
-		}
-		if (fxData.Catalog[0] == null)
-		{
-			return;
-		}
-
-		TrySummonEffect(fxData.Catalog[0], target.transform.position);
-	}
-
 	// 스킬 재정의
 	protected override IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type)
 	{
