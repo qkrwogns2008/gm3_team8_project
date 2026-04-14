@@ -45,10 +45,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c96aa3c906a66d4bb081ed846dd6275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _joystick: {fileID: 0}
+  _groupSpeed: 15
+  _spacing: 10
   _heroDatabase:
   - heroID: 1
     dataSO: {fileID: 11400000, guid: 44ba4f97f886dac409f00347762cf8f3, type: 2}
-    prefab: {fileID: 0}
+    prefab: {fileID: 4751497591728099109, guid: 2e8f4f8efcb98dc489db53a6ed655099, type: 3}
   - heroID: 2
     dataSO: {fileID: 11400000, guid: 8444271bf49951b4786dc16e3f9fb0b3, type: 2}
     prefab: {fileID: 911438146664714392, guid: e328131e4ab70d34e97e871db9f7efc3, type: 3}

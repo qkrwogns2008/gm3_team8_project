@@ -38,6 +38,7 @@ public class CGroupManager : MonoBehaviour
 
     private void Start()
     {
+        // 데이터 매니저가 초기화 되었는지 확인 후 실행을 위해 코루틴 사용
         StartCoroutine(CoWaitAndSetup());
     }
 
@@ -70,6 +71,8 @@ public class CGroupManager : MonoBehaviour
 
     public void SetUpGroupFromDB()
     {
+        _activeHeroes.Clear();
+
         CalculateOffset();
         int[] heroArray = CDataManager.Instance.UserData.Hero_Array;
 
@@ -99,7 +102,7 @@ public class CGroupManager : MonoBehaviour
                 CAutoPlayerMove moveScript = obj.GetComponent<CAutoPlayerMove>();
                 if(moveScript != null)
                 {
-                    _activeHeroes.Add(i, moveScript);
+                    _activeHeroes[i] = moveScript;
                     moveScript.SetGroupTarget(spawnPos);
                 }
             }
