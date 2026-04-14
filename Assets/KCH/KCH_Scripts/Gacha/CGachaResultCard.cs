@@ -43,6 +43,9 @@ public class CGachaResultCard : MonoBehaviour
     private CGachaDataSO _currentData;                          // 현재 카드 데이터
     #endregion
 
+    // 현재 데이터 정보 캡슐화
+    public CGachaDataSO CurrentData => _currentData;
+
     private void Awake()
     {
         // 카드 뒤집기 함수 연결

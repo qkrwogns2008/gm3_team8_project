@@ -1,6 +1,8 @@
+using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -159,7 +161,6 @@ public class CGachaPresenter : MonoBehaviour
         }
     }
 
-
     // 결과 창 닫고 초기화
     private void OnClickClose()
     {
@@ -196,6 +197,52 @@ public class CGachaPresenter : MonoBehaviour
 
         StopCoroutine("CO_HidePopup");
         StartCoroutine("CO_HidePopup");
+    }
+
+
+
+    private IEnumerator CO_ShowLegendEffect(CGachaDataSO data)
+    {
+        if (data != null)
+        {
+            _gachaView.LegendIllust.skeletonDataAsset = data.IllustAsset;
+            _gachaView.LegendSD.skeletonDataAsset = data.SDAsset;
+
+            _gachaView.LegendIllust.Initialize(true);
+            _gachaView.LegendSD.Initialize(true);
+
+            RectTransform rect = _gachaView.LegendIllust.rectTransform;
+            rect.anchoredPosition = data.IllustOffset;
+            rect.localScale = new Vector3(data.IllustScale, data.IllustScale, 1f);
+
+            _gachaView.LegendIllust.AnimationState.SetAnimation(0, "Idle", true);
+            _gachaView.LegendSD.AnimationState.SetAnimation(0, "Idle", true);
+        }
+
+        _gachaView.LegendPopup.SetActive(true);
+        _gachaView.LegendNameText.text = $"{data.UnitName}";
+
+        for(int i = 1; i <= 10; i++)
+        {
+            _gachaView.LegendTimerText.text = $"{11 - i}초 후 다음 결과로 넘어갑니다.";
+
+            float timer = 0f;
+            while (timer < 1f)
+            {
+                timer += Time.deltaTime;
+
+                // 꺼질 때 까지
+                if (!_gachaView.LegendPopup.activeSelf || Input.GetMouseButtonDown(0))
+                {
+                    break;
+                }
+
+                yield return null;
+            }
+        }
+
+        _gachaView.LegendPopup.SetActive(false);
+
     }
 
     // 팝업을 점점 투명하게 변경 코루틴
@@ -446,7 +493,6 @@ public class CGachaPresenter : MonoBehaviour
 
                     _cardList.Add(cardUI);
                 }
-
             }
 
             for (int i = 0; i < _cardList.Count; i++)
@@ -532,6 +578,12 @@ public class CGachaPresenter : MonoBehaviour
             // 카드 뒤집기 로직
             _cardList[i].ReverseCard();
 
+            // 레전드 카드 정지 코루틴
+            if (_cardList[i].CurrentData.Rarity == CGachaDataSO.ERarity.Legend)
+            {
+                yield return StartCoroutine(CO_ShowLegendEffect(_cardList[i].CurrentData));
+            }
+
             yield return new WaitForSeconds(0.05f);
         }
 
@@ -546,8 +598,6 @@ public class CGachaPresenter : MonoBehaviour
             // 슬라이드로 메뉴 활성화
             StartCoroutine(CO_SlideUpMenu(_gachaView.GachaMenu));
         }
-
-        
     }
 
     // 자동 소환 종료 함수
