@@ -488,7 +488,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 411267471587722693}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7388,7 +7388,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6756010608277466142}
   - component: {fileID: 963294516994180177}
-  - component: {fileID: 2870321287620190264}
   m_Layer: 5
   m_Name: QuestManager
   m_TagString: Untagged
@@ -7433,21 +7432,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a3dc43f727c312849806d899cde7f1fd, type: 2}
   - {fileID: 11400000, guid: 8b4ed27a5f262fa419f7e2619ef9f838, type: 2}
   - {fileID: 11400000, guid: 8ed0fde6f2f0cf54492d69c394b59762, type: 2}
---- !u!114 &2870321287620190264
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4226704210990964703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41917b8c5aefc264fa4327bccdb4b60e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  QuestPrefab: {fileID: 3997782424088757983, guid: 3d5960c4ac547964fa73944f822910b8, type: 3}
-  QuestTransform: {fileID: 7954594810352520886}
-  _questAllButton: {fileID: 7389111174343815299}
 --- !u!1 &4230336439182378839
 GameObject:
   m_ObjectHideFlags: 0
@@ -9717,6 +9701,7 @@ GameObject:
   - component: {fileID: 6672440660567954723}
   - component: {fileID: 3939236208899612955}
   - component: {fileID: 1402307103889088033}
+  - component: {fileID: 3790955661327622155}
   m_Layer: 5
   m_Name: Quest_Main_Canvas
   m_TagString: Untagged
@@ -9816,6 +9801,21 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &3790955661327622155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5415365114344402667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41917b8c5aefc264fa4327bccdb4b60e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  QuestPrefab: {fileID: 3997782424088757983, guid: 3d5960c4ac547964fa73944f822910b8, type: 3}
+  QuestTransform: {fileID: 7954594810352520886}
+  _questAllButton: {fileID: 7389111174343815299}
 --- !u!1 &5477685445842591465
 GameObject:
   m_ObjectHideFlags: 0
@@ -15701,7 +15701,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1925788589284626083
 RectTransform:
   m_ObjectHideFlags: 0
