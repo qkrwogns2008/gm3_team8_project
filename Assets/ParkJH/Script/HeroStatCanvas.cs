@@ -27,12 +27,12 @@ public class HeroStatCanvas : MonoBehaviour
     }
 	void Update()
     {
-        
+        GetHeroDataInText(_heroDataSO);
     }
 
 
 
-    public void GetHeroDataInText( HeroDataSO heroSO)
+    public void GetHeroDataInText(HeroDataSO heroSO)
     {
         EHeroID HeroID;
         HeroID = heroSO.HeroID;
