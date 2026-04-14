@@ -43,6 +43,8 @@ public class HeroEvan : CHero
 		{
 			Debug.Log($"원형 범위 피해 발생. 피해량 : [{FinalSkillDamage}]");
 		}
+
+		BuffSystem.AddBuff(EBuffFlags.DefenseBoost, 0.2f, 10f, this);
 	}
 
 	// 주변 타겟 탐색

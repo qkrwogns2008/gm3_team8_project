@@ -1,7 +1,6 @@
 using Spine.Unity;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UIElements;
 using static CDataManager;
 
 public enum EHeroState
@@ -49,6 +48,7 @@ public class CHero : CUnitBase
 	protected EHeroID HeroID; // ID
 
 	protected float BaseDefense; // 방어력
+	protected float DefaultDefenseMultiplier = 1.0f; // 기본 방어력 승수
 	protected float DefenseMultiplier = 1.0f; // 방어력 승수
 	protected float DamageReductionChance;
 
@@ -135,8 +135,12 @@ public class CHero : CUnitBase
 			case EBuffFlags.StackGuard:
 				ApplyBuffStackGuard();
 				break;
+			case EBuffFlags.DefenseBoost:
+				ApplyBuffDefense();
+				break;
 			default:
 				ApplyBuffCritical();
+				ApplyBuffDefense();
 				break;
 		}
 	}
@@ -247,6 +251,12 @@ public class CHero : CUnitBase
 		}
 
 		fx.transform.SetParent(transform);
+	}
+
+	protected virtual void ApplyBuffDefense()
+	{
+		float buffDefenseRatio = BuffSystem.GetBuffEffectTotalValue(EBuffFlags.DefenseBoost);
+		DefenseMultiplier = DefaultDefenseMultiplier + buffDefenseRatio;
 	}
 	#endregion
 
