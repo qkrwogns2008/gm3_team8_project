@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class ItemManager : MonoBehaviour
@@ -18,6 +19,8 @@ public class ItemManager : MonoBehaviour
             Debug.Log("드랍 테이블 비어있음");
             return;
         }
+
+        int stage = CDataManager.Instance.UserData.MainStageLevel;
         foreach(var info in dropTable)
         {
             if (info.itemPrefab == null)
@@ -32,6 +35,21 @@ public class ItemManager : MonoBehaviour
                 if(itemObj != null)
                 {
                     itemObj.transform.localScale = info.itemScale;
+                }
+
+                int finalAmount = Mathf.RoundToInt(info.dropAmount * Mathf.Pow(1.5f, stage - 1));
+
+                switch(info.itemName)
+                {
+                    case "Gold":
+                        CDataManager.Instance.AddGold(info.dropAmount);
+                        break;
+                    case "Ruby":
+                        CDataManager.Instance.AddRubby(info.dropAmount);
+                        break;
+                    case "Exp":
+                        CDataManager.Instance.AddExp(info.dropAmount);
+                        break;
                 }
             }
         }
