@@ -264,26 +264,26 @@ public abstract class CUnitBase : MonoBehaviour
 			return;
 		}
 
-		EffectCatalog catalog = fxData.Catalog[0];
+		EffectInfo effectInfo = fxData.Catalog[0];
 
-		if (catalog == null)
+		if (effectInfo == null)
 		{
 			return;
 		}
 
-		Vector2 summonPos = target.transform.position + catalog.Offset;
+		Vector2 summonPos = target.transform.position + effectInfo.Offset;
 
-		if (catalog.UseRandomOffset)
+		if (effectInfo.UseRandomOffset)
 		{
-			summonPos += Random.insideUnitCircle * catalog.RandomOffsetRange;
+			summonPos += Random.insideUnitCircle * effectInfo.RandomOffsetRange;
 		}
 
-		TrySummonEffect(catalog, summonPos);
+		TrySummonEffect(effectInfo, summonPos);
 	}
 
-	protected virtual bool TrySummonEffect(EffectCatalog fxData, Vector3 position)
+	protected virtual bool TrySummonEffect(EffectInfo effectInfo, Vector3 position)
 	{
-		EffectBase prefab = fxData.Prefab;
+		EffectBase prefab = effectInfo.Prefab;
 		if (prefab == null)
 		{
 			return false;
@@ -299,7 +299,7 @@ public abstract class CUnitBase : MonoBehaviour
 
 		EEffectDirection dir;
 
-		if (fxData.IsNoDirection) // 무방향 이펙트인지 체크
+		if (effectInfo.IsNoDirection) // 무방향 이펙트인지 체크
 		{
 			dir = EEffectDirection.None;
 		}
