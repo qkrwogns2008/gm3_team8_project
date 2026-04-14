@@ -1,6 +1,7 @@
 using Spine.Unity;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
 using static CDataManager;
 
 public enum EHeroState
@@ -69,6 +70,11 @@ public class CHero : CUnitBase
 	protected bool IsPendingDead = false; // 사망 유예 여부
 
 	#region 버프 계열
+	protected EffectDataSO BarrierEffect;
+	protected EffectDataSO TakeHealEffect;
+
+	protected EffectBase ActiveBarrierEffect;
+
 	protected float FinalCriticalChance;
 	protected float RemainGuardStack;
 	#endregion
@@ -148,11 +154,99 @@ public class CHero : CUnitBase
 		if (buffGuardStack > 0) // 가드 횟수가 적으면 갱신
 		{
 			RemainGuardStack = buffGuardStack;
+			SetGuardEffect(new Vector2(0, 1));
 		}
-		else if (RemainGuardStack != 0) // 스택 가드 버프 해제
+		else // 스택 가드 버프 해제
+		//else if (RemainGuardStack != 0) // 스택 가드 버프 해제
 		{
 			RemainGuardStack = 0;
+			RemoveGuardEffect();
 		}
+	}
+
+	protected virtual void SetGuardEffect(Vector2 offset)
+	{
+		if (ActiveBarrierEffect != null)
+		{
+			return;
+		}
+		if (BarrierEffect == null || BarrierEffect.Catalog.Count == 0)
+		{
+			return;
+		}
+
+		Vector3 pos = CenterPos + offset;
+		ActiveBarrierEffect = SummonLoopEffect(BarrierEffect.Catalog[0], pos);
+
+		if (ActiveBarrierEffect == null)
+		{
+			Debug.LogWarning($"[{UnitName}] ActiveBarrierEffect null. HeroDataSO 확인");
+			return;
+		}
+
+		ActiveBarrierEffect.transform.SetParent(transform);
+	}
+
+	protected virtual void RemoveGuardEffect()
+	{
+		if (ActiveBarrierEffect == null)
+		{
+			return;
+		}
+
+		ActiveBarrierEffect.DisableLoopEffect();
+		ActiveBarrierEffect = null;
+	}
+
+	protected virtual EffectBase SummonLoopEffect(EffectInfo effectInfo, Vector3 position)
+	{
+		EffectBase prefab = effectInfo.Prefab;
+		if (prefab == null)
+		{
+			return null;
+		}
+
+		Quaternion rot = Quaternion.Euler(-42f, 0f, 0f);
+		EffectBase fx = PoolManager.Instance.Pop(prefab, position, rot);
+
+		if (fx == null)
+		{
+			return null;
+		}
+
+		EEffectDirection dir;
+
+		if (effectInfo.IsNoDirection) // 무방향 이펙트인지 체크
+		{
+			dir = EEffectDirection.None;
+		}
+		else
+		{
+			dir = IsFacingRight ? EEffectDirection.Right : EEffectDirection.Left;
+		}
+
+		fx.Init(prefab, dir);
+
+		return fx;
+	}
+
+	protected virtual void PlayHealEffect(Vector3 offset)
+	{
+		if (TakeHealEffect == null || TakeHealEffect.Catalog.Count == 0)
+		{
+			return;
+		}
+
+		Vector3 pos = transform.position + offset;
+		EffectBase fx = SummonLoopEffect(TakeHealEffect.Catalog[0], pos);
+
+		if (fx == null)
+		{
+			Debug.LogWarning($"[{UnitName}] TakeHealEffect null. HeroDataSO 확인");
+			return;
+		}
+
+		fx.transform.SetParent(transform);
 	}
 	#endregion
 
@@ -215,6 +309,9 @@ public class CHero : CUnitBase
 			BaseSkillDamageRatio = HeroData.BaseSkillDamageRatio;
 			BaseSkillCooldown = HeroData.BaseSkillCooldown;
 			CooldownMultiplier = HeroData.CooldownMultiplier;
+
+			BarrierEffect = HeroData.BarrierEffect;
+			TakeHealEffect = HeroData.TakeHealEffect;
 		}
 	}
 
@@ -663,6 +760,7 @@ public class CHero : CUnitBase
 		float amount = FinalMaxHP * ratio;
 		CurrentHp = Mathf.Min(CurrentHp + amount, FinalMaxHP);
 
+		PlayHealEffect(Vector3.zero);
 		NotifyHpChange();
 
 		if (PrintLog)
@@ -690,6 +788,7 @@ public class CHero : CUnitBase
 		float amount = FinalMaxHP * ratio;
 		CurrentHp = Mathf.Min(CurrentHp + amount, FinalMaxHP);
 
+		PlayHealEffect(Vector3.zero);
 		NotifyHpChange();
 
 		if (PrintLog)
