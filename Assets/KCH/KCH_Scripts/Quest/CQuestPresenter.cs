@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class CQuestPresenter : MonoBehaviour
 {
     [Header("퀘스트 프리펩 설정")]
-    public GameObject QuestPrefab;                      // CQuestUIView 프리팹
-    public Transform QuestTransform;                    // 생성될 Quest의 부모
+    public GameObject QuestPrefab;                       // CQuestUIView 프리팹
+    public Transform QuestTransform;                     // 생성될 Quest의 부모
 
     [Header("모두 받기 버튼")]
     [SerializeField] private Button _questAllButton;     // 모두 받기 버튼

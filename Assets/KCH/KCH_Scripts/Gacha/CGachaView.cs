@@ -71,8 +71,21 @@ public class CGachaView : MonoBehaviour
     public Button MiniCardButton;          // 닫기 버튼
 
     [Header("결과창 재뽑기 버튼")]
+    public RectTransform GachaMenu;        // 결과창 메뉴창 1. 10, 30회
+    public RectTransform GachaMiniMenu;    // 결과창 메뉴창 300회
     public Button ReRollTenButton;         // 결과창 10회 재뽑기 버튼
     public Button ReRollThirtyButton;      // 결과창 30회 재뽑기 버튼
-    public GameObject ResultButtonGroup;   // 결과창 닫기/재뽑기 버튼 그룹
+    public Button ReRollMiniThirtyButton;  // 결과창 30회 재뽑기 버튼
+    public Button ReRollMiniHThirtyButton; // 결과창 300회 재뽑기 버튼
+
+    [Header("자동 소환 설정")]
+    public GameObject AutoGachaPopup;      // 자동 소환 팝업
+    public Button AllOpenAutoGachaButton;  // 자동 소환 버튼
+    public Image AllOpenAutoGachaCheckIcon;// 자동 소환 아이콘
+    public Button AutoGachaButton;         // 자동 소환 버튼 (300회)
+    public Image AutoGachaCheckIcon;       // 자동 소환 아이콘 (300회)
+
+    [Header("레전드 연출 팝업")]
+    public GameObject LegendPopup;         // 레전드 뽑기 연출
 
 }   

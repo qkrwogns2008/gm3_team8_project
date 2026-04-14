@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class TestHeroAdd : MonoBehaviour
 {
-    CGroupManager groupManager;
     void Awake()
     {
 
@@ -20,6 +19,22 @@ public class TestHeroAdd : MonoBehaviour
         CDataManager.Instance.AddUserHeroArray(1, 3, EHeroID.Sarah);
         CDataManager.Instance.AddUserHeroArray(3, 3, EHeroID.Elga);
         */
+        CDataManager.Instance.AddHeroData(EHeroID.Baskin);
+        CDataManager.Instance.AddHeroData(EHeroID.Nami);
+        CDataManager.Instance.AddHeroData(EHeroID.Loto);
+        CDataManager.Instance.AddHeroData(EHeroID.Jak);
+        CDataManager.Instance.AddHeroData(EHeroID.Sarah);
+        CDataManager.Instance.AddHeroData(EHeroID.Elga);
+        CDataManager.Instance.AddHeroData(EHeroID.Karon);
+        CDataManager.Instance.AddHeroData(EHeroID.Rook);
+        CDataManager.Instance.AddHeroData(EHeroID.Snipper);
+        CDataManager.Instance.AddHeroData(EHeroID.Shane);
+        CDataManager.Instance.AddHeroData(EHeroID.Evan);
+        CDataManager.Instance.AddHeroData(EHeroID.Alice);
+        CDataManager.Instance.AddHeroData(EHeroID.Teo);
+        CDataManager.Instance.AddHeroData(EHeroID.Yeonhee);
+        CDataManager.Instance.AddHeroData(EHeroID.Radgrid);
+        CDataManager.Instance.AddHeroData(EHeroID.Ecila);
         CGroupManager.instance.SetUpGroupFromDB();
     }
 }
