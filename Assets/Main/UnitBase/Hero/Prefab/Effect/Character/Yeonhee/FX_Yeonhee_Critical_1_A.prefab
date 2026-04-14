@@ -13949,6 +13949,7 @@ GameObject:
   - component: {fileID: 4672306508523268}
   - component: {fileID: 198808113985169905}
   - component: {fileID: 199060945828524476}
+  - component: {fileID: 8979515382702693245}
   m_Layer: 0
   m_Name: Right
   m_TagString: Untagged
@@ -16268,6 +16269,20 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &8979515382702693245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1587765826080250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2621b222c1d268940a34cfe6fcfda1f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factorX: 0
+  factorY: 0.0095
 --- !u!1 &1589667821646929
 GameObject:
   m_ObjectHideFlags: 0
@@ -25612,6 +25627,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4977153420339851}
   - component: {fileID: -6890618399156171491}
+  - component: {fileID: 6728607422196781284}
   m_Layer: 0
   m_Name: FX_Yeonhee_Critical_1_A
   m_TagString: Untagged
@@ -25652,8 +25668,24 @@ MonoBehaviour:
   LeftEffect: {fileID: 1730242686860875}
   RightEffect: {fileID: 1587765826080250}
   EffectLifeTime: 1
+  IsLooping: 0
   EnableParticleBaseScaleMultiplier: 1
   BaseScaleMultiplier: 1
+--- !u!114 &6728607422196781284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709254077376921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cfb411ede0678442808700649116a53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cameraTr: {fileID: 0}
+  _useX: 1
+  _useY: 1
 --- !u!1 &1709867586078768
 GameObject:
   m_ObjectHideFlags: 0
@@ -30293,6 +30325,7 @@ GameObject:
   - component: {fileID: 4336590748365959}
   - component: {fileID: 198256069497284392}
   - component: {fileID: 199161607090078389}
+  - component: {fileID: 5316598756315219007}
   m_Layer: 0
   m_Name: Left
   m_TagString: Untagged
@@ -32612,6 +32645,20 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &5316598756315219007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730242686860875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2621b222c1d268940a34cfe6fcfda1f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factorX: 0
+  factorY: 0.0095
 --- !u!1 &1884547391421755
 GameObject:
   m_ObjectHideFlags: 0

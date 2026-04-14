@@ -51161,6 +51161,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4711914853252429}
   - component: {fileID: 7809792906697084380}
+  - component: {fileID: 3077944044029041460}
   m_Layer: 0
   m_Name: FX_Yeonhee_Active_Demeged_1_A
   m_TagString: Untagged
@@ -51200,8 +51201,24 @@ MonoBehaviour:
   LeftEffect: {fileID: 0}
   RightEffect: {fileID: 0}
   EffectLifeTime: 2.5
+  IsLooping: 0
   EnableParticleBaseScaleMultiplier: 1
   BaseScaleMultiplier: 1
+--- !u!114 &3077944044029041460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709254077376921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cfb411ede0678442808700649116a53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cameraTr: {fileID: 0}
+  _useX: 1
+  _useY: 1
 --- !u!1 &1709867586078768
 GameObject:
   m_ObjectHideFlags: 0
@@ -55875,6 +55892,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4918264173551851}
+  - component: {fileID: 4285055540550848940}
   m_Layer: 0
   m_Name: Right
   m_TagString: Untagged
@@ -55907,6 +55925,20 @@ Transform:
   - {fileID: 4167524263268962}
   m_Father: {fileID: 4711914853252429}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!114 &4285055540550848940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730242686860875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2621b222c1d268940a34cfe6fcfda1f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factorX: 0
+  factorY: 0.0095
 --- !u!1 &1884547391421755
 GameObject:
   m_ObjectHideFlags: 0
