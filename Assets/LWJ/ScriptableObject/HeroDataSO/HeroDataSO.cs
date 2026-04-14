@@ -62,6 +62,10 @@ public class HeroDataSO : UnitDataSO
 	[SerializeField] private float _baseSkillDamageRatio = 2.5f; // 스킬 데미지 계수 (1f = 100%)
 	[SerializeField] private float _baseSkillCooldown = 8.0f; // 쿨타임
 	[SerializeField] private float _cooldownMultiplier = 1.0f; // 쿨타임 감소 승수
+
+	[Header("Hit 이펙트")]
+	[SerializeField] private EffectDataSO _barrierEffect;
+	[SerializeField] private EffectDataSO _takeHealEffect;
 	#endregion
 
 	#region 프로퍼티
@@ -79,5 +83,7 @@ public class HeroDataSO : UnitDataSO
 	public float BaseSkillDamageRatio => _baseSkillDamageRatio;
 	public float BaseSkillCooldown => _baseSkillCooldown;
 	public float CooldownMultiplier => _cooldownMultiplier;
+	public EffectDataSO BarrierEffect => _barrierEffect;
+	public EffectDataSO TakeHealEffect => _takeHealEffect;
 	#endregion
 }

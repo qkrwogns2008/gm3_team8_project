@@ -22,6 +22,7 @@ public class EffectBase : MonoBehaviour
 
 	[Header("Effect Life")]
 	[SerializeField] protected float EffectLifeTime = 2f;
+	[SerializeField] protected bool IsLooping = false;
 
 	[Header("Praticle Scale Multiplier")]
 	[SerializeField] protected bool EnableParticleBaseScaleMultiplier = true;
@@ -73,12 +74,15 @@ public class EffectBase : MonoBehaviour
 	/// </summary>
 	/// <param name="direction">방향</param>
 	/// <param name="scale">크기 (기본 1.0f)</param>
-	public virtual void Init(EffectBase prefab , EEffectDirection direction, float scale = 1.0f)
+	public virtual void Init(EffectBase prefab, EEffectDirection direction, float scale = 1.0f)
 	{
 		OriginPrefab = prefab;
 
 		SetEffectDirection(direction);
-		DisableAfterTime(EffectLifeTime);
+		if (!IsLooping)
+		{
+			DisableAfterTime(EffectLifeTime);
+		}
 		if (!EnableParticleBaseScaleMultiplier)
 		{
 			SetEffectScale(scale);
@@ -129,6 +133,23 @@ public class EffectBase : MonoBehaviour
 	}
 
 	/// <summary>
+	/// (외부 제어용) Loop 이펙트를 비활성화합니다.
+	/// </summary>
+	public virtual void DisableLoopEffect()
+	{
+		if (!gameObject.activeInHierarchy)
+		{
+			PoolManager.Instance.Push(OriginPrefab, this);
+			Routine = null;
+		}
+		else
+		{
+			DisableAfterTime(0f);
+			transform.SetParent(null);
+		}
+	}
+
+	/// <summary>
 	/// time 뒤에 해당 오브젝트를 비활성화하고 EffectPool로 복귀시킵니다.
 	/// </summary>
 	/// <param name="time"></param>
@@ -136,6 +157,7 @@ public class EffectBase : MonoBehaviour
 	{
 		if (Routine != null)
 		{
+			StopCoroutine(Routine);
 			Routine = null;
 		}
 		Routine = StartCoroutine(Co_ReturnToPoolAfterTime(time));
@@ -144,12 +166,18 @@ public class EffectBase : MonoBehaviour
 	protected virtual IEnumerator Co_ReturnToPoolAfterTime(float time)
 	{
 		yield return new WaitForSeconds(time);
+		transform.SetParent(null);
 		PoolManager.Instance.Push(OriginPrefab, this);
 		Routine = null;
 	}
 
 	protected virtual void OnDisable()
 	{
+		if (Routine != null)
+		{
+			StopCoroutine(Routine);
+			Routine = null;
+		}
 		DisableAllChildEffect();
 	}
 }
