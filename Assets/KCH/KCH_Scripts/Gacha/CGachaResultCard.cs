@@ -250,6 +250,7 @@ public class CGachaResultCard : MonoBehaviour
         // 카드 뒤집히는 연출
         StartCoroutine(CO_FilpCard());
     }
+
     private void PlayReverseEffect()
     {
         if (_currentData == null || (int)_currentData.Rarity < 2)
@@ -300,6 +301,7 @@ public class CGachaResultCard : MonoBehaviour
         // 0
         _backCard.SetActive(false);
 
+        // 이펙트 초기화
         ResetEffect();
 
         // 뒤집을때 이펙트
@@ -320,6 +322,5 @@ public class CGachaResultCard : MonoBehaviour
 
         transform.localScale = Vector3.one;
     }
-
 
 }

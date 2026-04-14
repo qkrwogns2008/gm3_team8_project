@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,12 +20,6 @@ public class CGachaPresenter : MonoBehaviour
     [Header("Card 프리팹 설정")]
     [SerializeField] private GameObject _cardPrefab;                            // 카드 프리팹
     [SerializeField] private GameObject _miniCardPrefab;                        // 카드 프리팹
-
-    [Header("Card 풀링 설정")]
-    [SerializeField] private int _poolSize = 30;                                // 풀링 사이즈
-
-    [Header("자동 소환 설정")]
-    [SerializeField] private GameObject _autoGachaPopup;                        // 자동 소환 팝업
     #endregion
 
     #region 내부 변수
@@ -35,7 +27,8 @@ public class CGachaPresenter : MonoBehaviour
     private Sprite _ticketSprite;                                               // 소환권 이미지
     private Sprite _rubySprite;                                                 // 루비 이미지
     private bool _isRolling = false;                                            // 뽑기 중 유무
-    private bool _isAutoRoll = false;                                           // 자동 소환 팝업
+    private bool _isAutoRoll = false;                                           // 자동 소환 유무
+    private int _currentCount = 0;                                              // 뽑기중인 개수
     #endregion
 
     private void Awake()
@@ -50,9 +43,15 @@ public class CGachaPresenter : MonoBehaviour
         // 재뽑기 버튼
         _gachaView.ReRollTenButton.onClick.AddListener(() => OnClickButton(10));
         _gachaView.ReRollThirtyButton.onClick.AddListener(() => OnClickButton(30));
+        _gachaView.ReRollMiniThirtyButton.onClick.AddListener(() => OnClickButton(30));
+        _gachaView.ReRollMiniHThirtyButton.onClick.AddListener(() => OnClickButton(300));
 
         // 모두 열기 버튼
         _gachaView.OpenAllCard.onClick.AddListener(() => StartCoroutine(CO_OpenAllCard()));
+
+        // 자동 소환 토글 버튼
+        _gachaView.AllOpenAutoGachaButton.onClick.AddListener(ToggleAutoRoll);
+        _gachaView.AutoGachaButton.onClick.AddListener(ToggleAutoRoll);
 
         // 닫기 버튼
         _gachaView.CloseButton.onClick.AddListener(OnClickClose);
@@ -65,6 +64,7 @@ public class CGachaPresenter : MonoBehaviour
         // 처음에는 뽑기창 비활성화
         _gachaView.ResultPanel.SetActive(false);
     }
+
 
     private void Start()
     {
@@ -85,6 +85,7 @@ public class CGachaPresenter : MonoBehaviour
         // 재화 표시
         UpdateMoneyUI();
     }
+
     private void OnDestroy()
     {
         if (CQuestManager.Instance != null)
@@ -130,17 +131,53 @@ public class CGachaPresenter : MonoBehaviour
 
         else
         {
+            // 재화 부족 팝업
             NotEnoughMoneyPopup();
         }
 
     }
 
+    // 자동 뽑기 토글 함수
+    private void ToggleAutoRoll()
+    {
+        _isAutoRoll = !_isAutoRoll;
+
+        if (_gachaView.AutoGachaCheckIcon != null)
+        {
+            _gachaView.AutoGachaCheckIcon.gameObject.SetActive(_isAutoRoll);
+        }
+
+        if (_gachaView.AllOpenAutoGachaCheckIcon != null)
+        {
+            _gachaView.AllOpenAutoGachaCheckIcon.gameObject.SetActive(_isAutoRoll);
+        }
+
+        // 깜빡이는 코루틴
+        if (_isAutoRoll)
+        {
+            StartCoroutine(CO_PlayAutoGachaBlick());
+        }
+    }
+
+
     // 결과 창 닫고 초기화
     private void OnClickClose()
     {
+        // 자동 소환
+        if (_isAutoRoll)
+        {
+            StopAutoRoll();
+
+            if (_currentCount == 300)
+            {
+                StartCoroutine(CO_SlideUpMenu(_gachaView.GachaMiniMenu));
+            }
+
+            return;
+        }
+
         _gachaView.ResultPanel.SetActive(false);
         _gachaView.MiniCardPanel.SetActive(false);
-
         _isRolling = false;
     }
 
@@ -164,7 +201,7 @@ public class CGachaPresenter : MonoBehaviour
     // 팝업을 점점 투명하게 변경 코루틴
     private IEnumerator CO_HidePopup()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.5f);
 
         CanvasGroup canvasGroup = _gachaView.MsgPopupPanel.GetComponent<CanvasGroup>();
 
@@ -190,9 +227,64 @@ public class CGachaPresenter : MonoBehaviour
         _gachaView.MsgPopupPanel.SetActive(false);
     }
 
+    // 자동 뽑기 깜빡임 연출
+    private IEnumerator CO_PlayAutoGachaBlick()
+    {
+        CanvasGroup autoCanvas = _gachaView.AutoGachaPopup.GetComponent<CanvasGroup>();
+
+        // 알파 값 변경
+        while (_isAutoRoll)
+        {
+            if (autoCanvas != null)
+            {
+                autoCanvas.alpha = Mathf.PingPong(Time.time * 0.5f, 1f);
+
+                yield return null;
+            }
+
+        }
+
+        // 알파 값 복구
+        if (autoCanvas != null)
+        {
+            autoCanvas.alpha = 1f;
+            _gachaView.AutoGachaPopup.SetActive(false);
+        }
+    }
+
+    // 슬라이드 올라오는 연출
+    private IEnumerator CO_SlideUpMenu(RectTransform menu)
+    {
+        Vector2 startPos = new Vector2(0, -400f);
+        Vector2 targetPos = new Vector2(0, 50f);
+
+        menu.anchoredPosition = startPos;
+        menu.gameObject.SetActive(true);
+
+        float duration = 0.5f;
+        float timer = 0f;
+
+        while(timer < duration)
+        {
+            timer += Time.deltaTime;
+            float progress = timer / duration;
+
+            // 커브 함수
+            float smoothProgress = Mathf.SmoothStep(0f, 1f, progress);
+
+            menu.anchoredPosition = Vector2.Lerp(startPos, targetPos  , smoothProgress);
+
+            yield return null;
+        }
+
+        menu.anchoredPosition = targetPos;
+    }
+
     // 뽑기 연출, 데이터 처리 코루틴
     private IEnumerator Co_GachaClick(int count)
     {
+        _currentCount = count;
+
         // 재화 검사 차감
         if (!_gachaModel.CheckRuby(count))
         {
@@ -203,10 +295,28 @@ public class CGachaPresenter : MonoBehaviour
         _gachaModel.PayRuby(count);
         UpdateMoneyUI();
 
-        // 뽑기 전 UI 제어
-        _gachaView.ResultButtonGroup.SetActive(false);
-        _gachaView.CloseButton.gameObject.SetActive(false);
-        _gachaView.OpenAllCard.gameObject.SetActive(false);
+        // 자동 뽑기 시 닫기만 출력
+        if (_isAutoRoll)
+        {
+            RectTransform target = (count == 300) ? _gachaView.GachaMiniMenu : _gachaView.GachaMenu;
+
+            target.anchoredPosition = new Vector2(0, 50f);
+            target.gameObject.SetActive(true);
+
+            _gachaView.ReRollTenButton.gameObject.SetActive(false);
+            _gachaView.ReRollThirtyButton.gameObject.SetActive(false);
+            _gachaView.ReRollMiniThirtyButton.gameObject.SetActive(false);
+            _gachaView.ReRollMiniHThirtyButton.gameObject.SetActive(false);
+            _gachaView.AllOpenAutoGachaButton.gameObject.SetActive(false);
+
+            _gachaView.CloseButton.gameObject.SetActive(true);
+        }
+
+        else
+        {
+            _gachaView.GachaMenu.gameObject.SetActive(false);
+            _gachaView.GachaMiniMenu.gameObject.SetActive(false);
+        }
 
         // 뽑기 중 활성
         _isRolling = true;
@@ -267,6 +377,7 @@ public class CGachaPresenter : MonoBehaviour
                 miniCard.transform.localPosition = Vector3.zero;
 
                 CGachaResultCard cardUI = miniCard.GetComponent<CGachaResultCard>();
+
                 if (cardUI != null)
                 {
                     // 데이터 세팅
@@ -279,6 +390,20 @@ public class CGachaPresenter : MonoBehaviour
 
             _isRolling = false;
             _gachaView.CloseButton.gameObject.SetActive(true);
+
+            if (!_isAutoRoll)
+            {
+                _gachaView.ReRollMiniThirtyButton.gameObject.SetActive(true);
+                _gachaView.ReRollMiniHThirtyButton.gameObject.SetActive(true);
+
+                StartCoroutine(CO_SlideUpMenu(_gachaView.GachaMiniMenu));
+            }
+
+            else
+            {
+                _gachaView.ReRollMiniThirtyButton.gameObject.SetActive(false);
+                _gachaView.ReRollMiniHThirtyButton.gameObject.SetActive(false);
+            }
 
         }
         
@@ -297,7 +422,6 @@ public class CGachaPresenter : MonoBehaviour
             // 뽑기 결과 창 활성화
             _gachaView.ResultPanel.SetActive(true);
             _gachaView.MiniCardPanel.SetActive(false);
-            _gachaView.CloseButton.gameObject.SetActive(false);
 
             for (int i = 0; i < results.Count; i++)
             {
@@ -336,13 +460,66 @@ public class CGachaPresenter : MonoBehaviour
                 yield return new WaitForSeconds(0.05f);
             }
 
+            // 카드 세팅 대기
+            yield return new WaitForSeconds(0.3f);
+
             // 뽑기 중 해제
             _isRolling = false;
-            _gachaView.OpenAllCard.gameObject.SetActive(true);
+
+            // 모두 열기 버튼 표시
+            if (!_isAutoRoll)
+            {
+                _gachaView.OpenAllCard.gameObject.SetActive(true);
+            }
 
         }
 
+        // 퀘스트 매니저 진행도 업데이트
         CQuestManager.Instance.QuestProgress(EQuestType.GachaSummon, count);
+
+        // 자동 뽑기 시 재 시작
+        if (_isAutoRoll)
+        {
+            // 깜빡이는 팝업
+            _gachaView.AutoGachaPopup.SetActive(true);
+            StartCoroutine(CO_PlayAutoGachaBlick());
+
+            // 300회 제외 카드 오픈
+            if (count < 300)
+            {
+                yield return StartCoroutine(CO_OpenAllCard());
+
+                yield return new WaitForSeconds(0.5f);
+            }
+
+            // 300회
+            else
+            {
+                yield return new WaitForSeconds(1.5f);
+            }
+
+            // 재뽑기 재귀
+            if (_isAutoRoll && _gachaModel.CheckRuby(count))
+            {
+                StartCoroutine(Co_GachaClick(count));
+            }
+
+            // 재화 부족
+            else
+            {
+                StopAutoRoll();
+
+                if (count == 300)
+                {
+                    StartCoroutine(CO_SlideUpMenu(_gachaView.GachaMiniMenu));
+                }
+
+                if (!_gachaModel.CheckRuby(count))
+                {
+                    NotEnoughMoneyPopup();
+                }
+            }
+        }
     }
 
     // 모두 열기 기능 함수
@@ -358,9 +535,41 @@ public class CGachaPresenter : MonoBehaviour
             yield return new WaitForSeconds(0.05f);
         }
 
-        // 카드 오픈 시 재뽑기, 닫기 버튼 활성화
-        _gachaView.ResultButtonGroup.SetActive(true);
-        _gachaView.CloseButton.gameObject.SetActive(true);
+        if (!_isAutoRoll)
+        {
+            // 버튼 활성화
+            _gachaView.AllOpenAutoGachaButton.gameObject.SetActive(true);
+            _gachaView.ReRollTenButton.gameObject.SetActive(true);
+            _gachaView.ReRollThirtyButton.gameObject.SetActive(true);
+            _gachaView.CloseButton.gameObject.SetActive(true);
+
+            // 슬라이드로 메뉴 활성화
+            StartCoroutine(CO_SlideUpMenu(_gachaView.GachaMenu));
+        }
+
+        
+    }
+
+    // 자동 소환 종료 함수
+    private void StopAutoRoll()
+    {
+        _isAutoRoll = false;
+
+        if (_gachaView.AutoGachaPopup != null)
+        {
+            _gachaView.AutoGachaPopup.SetActive(false);
+        }
+
+        // 체크 아이콘 표시
+        if (_gachaView.AutoGachaCheckIcon != null)
+        {
+            _gachaView.AutoGachaCheckIcon.gameObject.SetActive(false);
+        }
+
+        if (_gachaView.AllOpenAutoGachaCheckIcon != null)
+        {
+            _gachaView.AllOpenAutoGachaCheckIcon.gameObject.SetActive(false);
+        }
     }
 
     // 카테고리 경험치 게이지 업데이트
