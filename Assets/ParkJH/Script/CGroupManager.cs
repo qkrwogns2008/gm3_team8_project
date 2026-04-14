@@ -102,7 +102,7 @@ public class CGroupManager : MonoBehaviour
                 CAutoPlayerMove moveScript = obj.GetComponent<CAutoPlayerMove>();
                 if(moveScript != null)
                 {
-                    _activeHeroes.Add(i, moveScript);
+                    _activeHeroes[i] = moveScript;
                     moveScript.SetGroupTarget(spawnPos);
                 }
             }
