@@ -41,6 +41,11 @@ public class Horizon2DParticle
     private void LateUpdate()
     {
         if (!_horizonOn) return;
+        GameState gameState = CGameManager.Instance.CurrentState;
+        if(gameState != GameState.MainStage)
+        {
+            return;
+        }
         Vector3 camPos = _cameraTr.position;
 
         for (int i = 0; i < _layers.Length; i++)

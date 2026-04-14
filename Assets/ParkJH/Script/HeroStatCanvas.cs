@@ -18,20 +18,24 @@ public class HeroStatCanvas : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _levelText;
     [SerializeField] private TextMeshProUGUI _rankText;
 
+    [Header("영웅 SO 데이터")]
+    [SerializeField] private HeroDataSO _heroDataSO;
+
     void Start()
     {
         
     }
 	void Update()
     {
-        
+        GetHeroDataInText(_heroDataSO);
     }
 
 
 
-    private void GetHeroDataInText(EHeroID HeroID, UnitDataSO heroSO)
+    public void GetHeroDataInText(HeroDataSO heroSO)
     {
-
+        EHeroID HeroID;
+        HeroID = heroSO.HeroID;
         UserHeroData userHeroData;
         userHeroData = CDataManager.Instance.GetHeroData(HeroID);
         FinalHeroStatus finalStats = CDataManager.Instance.GetHeroFinalStatus(HeroID, heroSO);
@@ -56,10 +60,10 @@ public class HeroStatCanvas : MonoBehaviour
             _criticalDamageText.text = (200f).ToString("F1") + "%";
         // 이동 속도 (SO 기준 Multiplier 으로 책정)
         if (_moveSpeedText != null)
-            _moveSpeedText.text = (heroSO.MoveSpeedMultiplier).ToString("F1");
+            _moveSpeedText.text = (heroSO.BaseMoveSpeed).ToString("F1");
         // 피해 감소율 항상 0%으로 책정
         if (_reduceRatioText != null)
-            _reduceRatioText.text = (0f).ToString("") + "%";
+            _reduceRatioText.text = (heroSO.DamageReductionChance).ToString("") + "%";
         // 레벨
         if (_levelText != null)
             _levelText.text = (userHeroData.Level).ToString("");
