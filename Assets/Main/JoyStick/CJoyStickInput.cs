@@ -21,12 +21,14 @@ public class CJoyStickInput : MonoBehaviour, IDragHandler, IPointerUpHandler, IP
 		Vector2 pos;
 		if(RectTransformUtility.ScreenPointToLocalPointInRectangle(_bgRect, eventData.position, eventData.pressEventCamera, out pos))
 		{
+			// 터치 위치
 			pos.x = (pos.x / _bgRect.sizeDelta.x);
 			pos.y = (pos.y / _bgRect.sizeDelta.y);
 
 			_inputVector = new Vector2(pos.x * 2, pos.y * 2);
 			_inputVector = (_inputVector.magnitude > 1.0f) ? _inputVector.normalized : _inputVector;
 
+			// 핸들 이미지 이동
 			_handleRect.anchoredPosition = new Vector2(_inputVector.x * (_bgRect.sizeDelta.x / 2), _inputVector.y * (_bgRect.sizeDelta.y / 2));
 		}
     }
