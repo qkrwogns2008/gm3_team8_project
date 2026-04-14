@@ -38,6 +38,11 @@ public class Horizon2DUnit : MonoBehaviour
 
     private void LateUpdate()
     {
+        GameState gameState = CGameManager.Instance.CurrentState;
+        if (gameState != GameState.MainStage)
+        {
+            return;
+        }
         Vector3 camPos = _cameraTr.position;
         Vector3 ParentPos = transform.position;
 
