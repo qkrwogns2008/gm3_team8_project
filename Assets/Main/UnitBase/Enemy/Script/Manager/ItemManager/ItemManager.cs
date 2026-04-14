@@ -27,7 +27,12 @@ public class ItemManager : MonoBehaviour
            
             if (Random.Range(0f, 100f) <= info.probability)
             {
-                PoolManager.Instance.Pop(info.itemPrefab, spawnPosition, Quaternion.identity);
+                GameObject itemObj = PoolManager.Instance.Pop(info.itemPrefab, spawnPosition, Quaternion.identity);
+
+                if(itemObj != null)
+                {
+                    itemObj.transform.localScale = info.itemScale;
+                }
             }
         }
     }
