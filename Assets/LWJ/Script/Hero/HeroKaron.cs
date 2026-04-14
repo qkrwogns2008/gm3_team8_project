@@ -6,26 +6,7 @@ public class HeroKaron : RangedHeroBase
 	[Header("타격 이펙트(적)")]
 	[SerializeField] protected EffectDataSO CriticalHitEffect;
 	#endregion
-
-	protected virtual void SummonHitEffectOnTarget(CUnitBase target, EffectDataSO fxData)
-	{
-		if (fxData == null)
-		{
-			return;
-		}
-		if (fxData.Catalog == null ||
-			fxData.Catalog.Count == 0)
-		{
-			return;
-		}
-		if (fxData.Catalog[0] == null)
-		{
-			return;
-		}
-
-		TrySummonEffect(fxData.Catalog[0], target.transform.position);
-	}
-
+	
 	protected override void ProcessCriticalHit(CUnitBase target)
 	{
 		if (target == null)
@@ -34,6 +15,6 @@ public class HeroKaron : RangedHeroBase
 		}
 
 		SummonHitEffectOnTarget(target, CriticalHitEffect);
-		target.TakeDamage(CriticalDamage, this);
+		target.TakeDamage(CriticalDamage, this, false);
 	}
 }

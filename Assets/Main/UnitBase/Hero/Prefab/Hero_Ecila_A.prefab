@@ -60,7 +60,7 @@ MonoBehaviour:
   AttackEffect: {fileID: 11400000, guid: 0a76128228f6b674ba614f01ac63e017, type: 2}
   DeathAnimation: Death
   DeathDisableTime: 0
-  PrintLog: 1
+  PrintLog: 0
   CriticalAnimation: Critical
   SkillAnimation: Active_A
   CurrentState: 0
@@ -73,7 +73,7 @@ MonoBehaviour:
   AreaRadius: 3
   SectorRadius: 14
   SectorDegree: 60
-  PrintSkillLog: 1
+  PrintSkillLog: 0
 --- !u!114 &1385575880346748945
 MonoBehaviour:
   m_ObjectHideFlags: 0

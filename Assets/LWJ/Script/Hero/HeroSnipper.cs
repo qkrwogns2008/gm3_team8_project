@@ -80,26 +80,7 @@ public class HeroSnipper : RangedHeroBase
 		}
 
 		SummonHitEffectOnTarget(target, CriticalHitEffect);
-		target.TakeDamage(CriticalDamage, this);
-	}
-
-	protected virtual void SummonHitEffectOnTarget(CUnitBase target, EffectDataSO fxData)
-	{
-		if (fxData == null)
-		{
-			return;
-		}
-		if (fxData.Catalog == null ||
-			fxData.Catalog.Count == 0)
-		{
-			return;
-		}
-		if (fxData.Catalog[0] == null)
-		{
-			return;
-		}
-
-		TrySummonEffect(fxData.Catalog[0], target.transform.position);
+		target.TakeDamage(CriticalDamage, this, false);
 	}
 
 	// 스킬 재정의
@@ -271,7 +252,7 @@ public class HeroSnipper : RangedHeroBase
 
 					if (i != 0) // 조준 이펙트가 아니면
 					{
-						target.TakeDamage(damage, this);
+						target.TakeDamage(damage, this, false);
 					}
 				}
 			}
