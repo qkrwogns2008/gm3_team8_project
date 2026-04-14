@@ -191,6 +191,10 @@ public class CHero : CUnitBase
 			else
 			{
 				Debug.LogWarning($"[{UnitName}] DataManager Instance null.");
+
+				BaseMaxHp = HeroData.BaseMaxHp;
+				BaseAtkDamage = HeroData.BaseAttackDamage;
+				BaseDefense = HeroData.BaseDefense;
 				CriticalChance = HeroData.CriticalChance;
 			}
 

@@ -263,12 +263,22 @@ public abstract class CUnitBase : MonoBehaviour
 		{
 			return;
 		}
-		if (fxData.Catalog[0] == null)
+
+		EffectCatalog catalog = fxData.Catalog[0];
+
+		if (catalog == null)
 		{
 			return;
 		}
 
-		TrySummonEffect(fxData.Catalog[0], target.transform.position);
+		Vector2 summonPos = target.transform.position + catalog.Offset;
+
+		if (catalog.UseRandomOffset)
+		{
+			summonPos += Random.insideUnitCircle * catalog.RandomOffsetRange;
+		}
+
+		TrySummonEffect(catalog, summonPos);
 	}
 
 	protected virtual bool TrySummonEffect(EffectCatalog fxData, Vector3 position)
@@ -279,9 +289,8 @@ public abstract class CUnitBase : MonoBehaviour
 			return false;
 		}
 
-		Vector3 pos = position + fxData.Offset;
 		Quaternion rot = Quaternion.Euler(-42f, 0f, 0f);
-		EffectBase fx = PoolManager.Instance.Pop(prefab, pos, rot);
+		EffectBase fx = PoolManager.Instance.Pop(prefab, position, rot);
 
 		if (fx == null)
 		{

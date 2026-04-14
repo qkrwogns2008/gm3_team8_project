@@ -28,7 +28,7 @@ public class HeroRadgrid : CHero
 		}
 
 		SummonHitEffectOnTarget(target, CriticalHitEffect);
-		target.TakeDamage(CriticalDamage, this);
+		target.TakeDamage(CriticalDamage, this, false);
 
 		BuffSystem.AddBuff
 			(
@@ -86,7 +86,7 @@ public class HeroRadgrid : CHero
 				continue;
 			}
 
-			target.TakeDamage(FinalSkillDamage, this);
+			target.TakeDamage(FinalSkillDamage, this, false);
 		}
 
 		if (PrintSkillLog)

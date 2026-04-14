@@ -15,6 +15,6 @@ public class HeroKaron : RangedHeroBase
 		}
 
 		SummonHitEffectOnTarget(target, CriticalHitEffect);
-		target.TakeDamage(CriticalDamage, this);
+		target.TakeDamage(CriticalDamage, this, false);
 	}
 }

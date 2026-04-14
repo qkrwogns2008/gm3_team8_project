@@ -6,11 +6,22 @@ public class DebugHeroPickupManager : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.F1))
 		{
-			GetHeroCard(EHeroID.Baskin);
 			GetHeroCard(EHeroID.Alice);
+			GetHeroCard(EHeroID.Baskin);
 			GetHeroCard(EHeroID.Teo);
+			GetHeroCard(EHeroID.Yeonhee);
+			GetHeroCard(EHeroID.Ecila);
 			GetHeroCard(EHeroID.Elga);
-			Debug.Log("Ä«µå È¹µæ");
+			GetHeroCard(EHeroID.Evan);
+			GetHeroCard(EHeroID.Jak);
+			GetHeroCard(EHeroID.Karon);
+			GetHeroCard(EHeroID.Loto);
+			GetHeroCard(EHeroID.Nami);
+			GetHeroCard(EHeroID.Radgrid);
+			GetHeroCard(EHeroID.Rook);
+			GetHeroCard(EHeroID.Sarah);
+			GetHeroCard(EHeroID.Shane);
+			GetHeroCard(EHeroID.Snipper);
 		}
 	}
 

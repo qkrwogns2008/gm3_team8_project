@@ -17,10 +17,16 @@ public class EffectCatalog
 	[Header("방향 유무")]
 	[SerializeField] private bool _isNoDirection = false;
 
+	[Header("랜덤 오프셋")]
+	[SerializeField] private bool _useRandomOffset = false;
+	[SerializeField] private Vector2 _randomOffsetRange;
+
 	public EffectBase Prefab => _prefab;
 	public Vector3 Offset => _offset;
 	public float PreDelay => _preDelay;
 	public bool IsNoDirection => _isNoDirection;
+	public bool UseRandomOffset => _useRandomOffset;
+	public Vector2 RandomOffsetRange => _randomOffsetRange;
 }
 
 [CreateAssetMenu(fileName = "EffectDataSO_", menuName = "ScriptableObjects/Effect Data (SO)")]
