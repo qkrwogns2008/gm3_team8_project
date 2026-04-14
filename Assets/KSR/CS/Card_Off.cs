@@ -8,8 +8,9 @@ using UnityEditor;
 
 public class Card_Off : MonoBehaviour
 {
-    // 카드 소유 여부
-    [SerializeField] private bool isOwned = false;
+
+    // 동일 카드 보유 개수
+    [SerializeField] private int ownedCount = 0;
 
     // 이미지 전체 어둡게 처리할 루트
     [SerializeField] private GameObject imageRoot;
@@ -40,7 +41,7 @@ public class Card_Off : MonoBehaviour
         Init();
         ApplyVisual();
 
-        // 에디터에서 isOwned 변경 시 매니저에 반영 (지연 실행)
+        // 에디터에서 값 변경 시 매니저에 반영 (지연 실행)
         if (cardManager != null)
         {
 #if UNITY_EDITOR
@@ -73,45 +74,51 @@ public class Card_Off : MonoBehaviour
             dimTexts = dimTextRoot.GetComponentsInChildren<TMP_Text>(true);
     }
 
-    // 소유 여부 설정
+    // 소유 여부 설정 (개수 기준으로 변경)
     public void SetOwned(bool value)
     {
-        isOwned = value;
+        ownedCount = value ? 1 : 0;
         ApplyVisual();
 
-        // 상태 변경 시 매니저에 반영
         if (cardManager != null)
         {
             cardManager.RefreshOrder();
         }
     }
 
-    // 카드 획득 처리
+    // 카드 획득 처리 (개수 증가)
     public void Acquire()
     {
-        isOwned = true;
+        ownedCount++;
         ApplyVisual();
 
-        // 상태 변경 시 매니저에 반영
         if (cardManager != null)
         {
             cardManager.RefreshOrder();
         }
     }
 
-    // 외부에서 소유 여부 확인
+    // 외부에서 소유 여부 확인 (개수 기준)
     public bool IsOwned()
     {
-        return isOwned;
+        return ownedCount > 0;
+    }
+
+    // 외부에서 개수 확인
+    public int GetOwnedCount()
+    {
+        return ownedCount;
     }
 
     // 시각 상태 적용
     void ApplyVisual()
     {
+        bool owned = ownedCount > 0;
+
         // 이미지 색상 처리
         if (images != null)
         {
-            Color imgColor = isOwned ? Color.white : new Color(0.5f, 0.5f, 0.5f, 1f);
+            Color imgColor = owned ? Color.white : new Color(0.5f, 0.5f, 0.5f, 1f);
             foreach (var img in images)
                 img.color = imgColor;
         }
@@ -121,13 +128,13 @@ public class Card_Off : MonoBehaviour
         {
             foreach (var txt in hideTexts)
                 if (txt != null)
-                    txt.gameObject.SetActive(isOwned);
+                    txt.gameObject.SetActive(owned);
         }
 
         // 텍스트 색상 처리
         if (dimTexts != null)
         {
-            Color textColor = isOwned ? Color.white : new Color(0.6f, 0.6f, 0.6f, 1f);
+            Color textColor = owned ? Color.white : new Color(0.6f, 0.6f, 0.6f, 1f);
             foreach (var txt in dimTexts)
                 if (txt != null)
                     txt.color = textColor;

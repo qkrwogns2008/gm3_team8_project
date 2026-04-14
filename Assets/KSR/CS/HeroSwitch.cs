@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class HeroSwitch : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class HeroSwitch : MonoBehaviour
 
     [Header("카드 매니저")]
     public CardManager cardManager;  // 소유 카드 표시용
+
+    [Header("영웅인포")]
+    public List<GameObject> targetPrefabs = new List<GameObject>();
 
     private RectTransform myRect;
 
@@ -51,5 +55,24 @@ public class HeroSwitch : MonoBehaviour
         // 소유 카드만 표시
         if (cardManager != null)
             cardManager.ShowOwnedOnly();
+
+        // 인포 파일 제거
+        foreach (var obj in targetPrefabs)
+        {
+            if (obj == null) continue;
+
+            // 안전 처리
+            List<Transform> children = new List<Transform>();
+            foreach (Transform child in obj.transform)
+            {
+                children.Add(child);
+            }
+
+            // 자식 제거
+            foreach (var child in children)
+            {
+                Destroy(child.gameObject);
+            }
+        }
     }
 }
