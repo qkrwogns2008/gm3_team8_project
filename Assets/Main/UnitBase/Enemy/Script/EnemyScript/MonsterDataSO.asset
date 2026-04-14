@@ -33,15 +33,18 @@ MonoBehaviour:
   _attackSpeed: 0
   _attackEffectPrefab: {fileID: 0}
   _dropTable:
-  - itemName: gold
+  - itemName: Gold
+    dropAmount: 100
     itemPrefab: {fileID: 1729656739897060948, guid: cd8f0d4b4bf57a1478de967c8168c811, type: 3}
     probability: 100
     itemScale: {x: 1, y: 1, z: 1}
-  - itemName: exp
+  - itemName: Exp
+    dropAmount: 100
     itemPrefab: {fileID: 6936558790917411360, guid: 856db6c9bc9bbb940a0bd9e2600c12a2, type: 3}
     probability: 100
     itemScale: {x: 1, y: 1, z: 1}
   - itemName: Ruby
+    dropAmount: 100
     itemPrefab: {fileID: 4156097127677570079, guid: d8a436e938361b949bcc0c745dd8d388, type: 3}
-    probability: 100
+    probability: 30
     itemScale: {x: 1, y: 1, z: 1}
