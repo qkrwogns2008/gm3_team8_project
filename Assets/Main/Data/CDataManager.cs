@@ -116,6 +116,12 @@ public class CDataManager : MonoBehaviour
         return false;
     }
 
+    public void AddExp(int amount)
+    {
+        UserData.expPoint += amount;
+        SaveUserData();
+        Debug.Log($"경험치 추가: {amount} / 현재 경험치: {UserData.PickUpTicket}");
+    }
 
     // 공격력 강화
     public void UpgradeBaseDamage(int amount)
