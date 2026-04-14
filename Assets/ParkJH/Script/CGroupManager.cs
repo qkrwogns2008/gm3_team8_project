@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using System.Reflection;
 
 [System.Serializable]
 public struct HeroEntry
@@ -15,6 +17,10 @@ public class CGroupManager : MonoBehaviour
     public static CGroupManager instance;
 
     #region 인스펙터
+    [Header("조작 설정")]
+    [SerializeField] private CJoyStickInput _joystick;
+    [SerializeField] private float _groupSpeed = 15f;
+    [SerializeField] private float _spacing = 10f; // 영웅 간격
     [Header("데이터베이스 매칭 리스트")]
     [SerializeField] private List<HeroEntry> _heroDatabase;
 
@@ -22,9 +28,9 @@ public class CGroupManager : MonoBehaviour
     [SerializeField] private Dictionary<int, CAutoPlayerMove> _activeHeroes = new Dictionary<int, CAutoPlayerMove>();
     [SerializeField] private Vector3[] _slotOffsets;
     #endregion
-    
 
-
+    public bool IsJoystickActive => _joystick != null && _joystick.InputVector.sqrMagnitude > 0.01f;
+    public float JoystickX => _joystick != null ? _joystick.InputVector.x : 0;
     private void Awake()
     {
         instance = this;
@@ -32,8 +38,10 @@ public class CGroupManager : MonoBehaviour
 
     private void Start()
     {
-
+        SetUpGroupFromDB();
     }
+
+   
 
     void CalculateOffset()
     {
@@ -42,7 +50,6 @@ public class CGroupManager : MonoBehaviour
             _slotOffsets = new Vector3[CDataManager.Instance.UserData.Hero_Array.Length];
         }
         // 사이 간격
-        float spacing = 10.0f;
 
         for(int i = 0; i < CDataManager.Instance.UserData.Hero_Array.Length; i++)
         {
@@ -50,8 +57,8 @@ public class CGroupManager : MonoBehaviour
             int row = i / 4;
 
             // 중앙 정렬
-            float x = (col - 1.5f) * spacing;
-            float y = (row - 1.5f) * -spacing;
+            float x = (col - 1.5f) * _spacing;
+            float y = (row - 1.5f) * -_spacing;
 
             _slotOffsets[i] = new Vector3(x, y, 0);
         }
@@ -79,9 +86,11 @@ public class CGroupManager : MonoBehaviour
                 // 소환 (PoolManager사용)
                 GameObject obj = PoolManager.Instance.Pop(entry.prefab, spawnPos, Quaternion.identity); // PoolManager.Pop = 오브젝트 소환
 
-                /// 초기화
-
-                ///
+                CHero hero = obj.GetComponent<CHero>();
+                if(hero != null)
+                {
+                    InjectHeroData(hero, entry.dataSO);
+                }
 
                 CAutoPlayerMove moveScript = obj.GetComponent<CAutoPlayerMove>();
                 if(moveScript != null)
@@ -95,6 +104,18 @@ public class CGroupManager : MonoBehaviour
         }
     }
 
+    private void InjectHeroData(CHero hero, HeroDataSO data)
+    {
+        FieldInfo field = typeof(CUnitBase).GetField("OriginData", BindingFlags.NonPublic | BindingFlags.Instance);
+        if(field != null)
+        {
+            field.SetValue(hero, data);
+            // 초기화 메서드 강제 호출
+            MethodInfo initMethod = typeof(CHero).GetMethod("InitUnitStats", BindingFlags.NonPublic | BindingFlags.Instance);
+            initMethod.Invoke(hero, null);
+        }
+    }
+   
     private void HeroGroupMoving()  // 우재님과 Moving 함수 확인해보기
     { 
         Vector3 Center = transform.position;
@@ -107,12 +128,12 @@ public class CGroupManager : MonoBehaviour
 
     private void Update()
     {
-        
-        // 대열 유지
-        foreach(var pair in _activeHeroes)
+        if (IsJoystickActive)
         {
-            Vector3 targetWorldPos = transform.position + _slotOffsets[pair.Key];
-            pair.Value.SetGroupTarget(targetWorldPos);
+            Vector3 moveDir = new Vector3(_joystick.InputVector.x, _joystick.InputVector.y, 0);
+            transform.position += moveDir * _groupSpeed * Time.deltaTime;
         }
+        // 대열 유지
+        HeroGroupMoving();
     }
 }

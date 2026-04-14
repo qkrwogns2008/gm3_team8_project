@@ -101,7 +101,7 @@ public class HeroSnipper : RangedHeroBase
 			// 목록의 이펙트를 순차 출력
 			for (int i = 0; i < effectData.Catalog.Count; i++)
 			{
-				EffectCatalog fxData = effectData.Catalog[i];
+				EffectInfo fxData = effectData.Catalog[i];
 
 				if (fxData == null)
 				{
@@ -212,7 +212,7 @@ public class HeroSnipper : RangedHeroBase
 			// 목록의 이펙트를 순차 출력
 			for (int i = 0; i < effectData.Catalog.Count; i++)
 			{
-				EffectCatalog fxData = effectData.Catalog[i];
+				EffectInfo fxData = effectData.Catalog[i];
 
 				if (fxData == null)
 				{
