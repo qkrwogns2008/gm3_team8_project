@@ -13,6 +13,9 @@ public class Menu_UI : MonoBehaviour
     public GameObject offTarget; // 꺼질 대상 (A)
     public GameObject onTarget;  // 켜질 대상 (B)
 
+    [Header("영웅인포")]
+    public List<GameObject> targetPrefabs = new List<GameObject>();
+
     public void OnClick()
     {
         if (myPrefab == null) return;
@@ -44,6 +47,24 @@ public class Menu_UI : MonoBehaviour
             // 2. 센터 버튼 전환 (반대로)
             if (offTarget != null) offTarget.SetActive(true);
             if (onTarget != null) onTarget.SetActive(false);
+        }
+        // 인포 파일 제거
+        foreach (var obj in targetPrefabs)
+        {
+            if (obj == null) continue;
+
+            // 안전 처리
+            List<Transform> children = new List<Transform>();
+            foreach (Transform child in obj.transform)
+            {
+                children.Add(child);
+            }
+
+            // 자식 제거
+            foreach (var child in children)
+            {
+                Destroy(child.gameObject);
+            }
         }
     }
 }
