@@ -19,7 +19,6 @@ public class TestHeroAdd : MonoBehaviour
         CDataManager.Instance.AddUserHeroArray(1, 3, EHeroID.Sarah);
         CDataManager.Instance.AddUserHeroArray(3, 3, EHeroID.Elga);
         */
-        /*
         CDataManager.Instance.AddHeroData(EHeroID.Baskin);
         CDataManager.Instance.AddHeroData(EHeroID.Nami);
         CDataManager.Instance.AddHeroData(EHeroID.Loto);
@@ -36,7 +35,6 @@ public class TestHeroAdd : MonoBehaviour
         CDataManager.Instance.AddHeroData(EHeroID.Yeonhee);
         CDataManager.Instance.AddHeroData(EHeroID.Radgrid);
         CDataManager.Instance.AddHeroData(EHeroID.Ecila);
-        */
         CGroupManager.instance.SetUpGroupFromDB();
     }
 }

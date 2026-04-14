@@ -38,10 +38,14 @@ public class CGroupManager : MonoBehaviour
 
     private void Start()
     {
-        SetUpGroupFromDB();
+        StartCoroutine(CoWaitAndSetup());
     }
 
-   
+   IEnumerator CoWaitAndSetup()
+    {
+        yield return new WaitUntil(() => CDataManager.Instance != null && CDataManager.Instance.UserData != null);
+        SetUpGroupFromDB();
+    }
 
     void CalculateOffset()
     {
