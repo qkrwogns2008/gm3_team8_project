@@ -77,7 +77,7 @@ public class HeroTeo : CHero
 				continue;
 			}
 
-			target.TakeDamage(FinalSkillDamage, this);
+			target.TakeDamage(FinalSkillDamage, this, false);
 		}
 
 		if (PrintSkillLog)
@@ -88,7 +88,7 @@ public class HeroTeo : CHero
 		// 부채꼴 바깥이어도 타겟은 무조건 피해를 입도록 보장
 		if (originTarget != null)
 		{
-			originTarget.TakeDamage(FinalSkillDamage, this);
+			originTarget.TakeDamage(FinalSkillDamage, this, false);
 		}
 	}
 

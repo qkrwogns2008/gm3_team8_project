@@ -35,12 +35,6 @@ public abstract class CUnitBase : MonoBehaviour
 
 	[Header("log")]
 	[SerializeField] protected bool PrintLog = false;
-
-	/*
-	[Header("이동 스크립트")]
-	[SerializeField] protected CAutoEnemyMove _moveEnemy;
-	[SerializeField] protected CAutoPlayerMove _movePlayer;
-	*/
 	#endregion
 
 	#region 내부 변수
@@ -59,6 +53,7 @@ public abstract class CUnitBase : MonoBehaviour
 	protected float MoveSpeedMultiplier = 1.0f;
 
 	protected float DetectionRange;
+	protected EffectDataSO CommonHitEffect;
 
 	protected float NextAttackTime;
 	protected CUnitBase Target; // 현재 목표 타겟
@@ -81,7 +76,8 @@ public abstract class CUnitBase : MonoBehaviour
 	public virtual Vector2 CenterPos => (centerTransform.position == null) ? transform.position : centerTransform.position;
 	public virtual bool IsUnitDead => IsDead;
     public virtual float ScaleMultiplier => Mathf.Abs(SkeletonAni.transform.lossyScale.x);
-    public virtual float FinalAtkRange => AtkRange * ScaleMultiplier;
+	protected bool IsFacingRight => (SkeletonAni.skeleton.ScaleX != 1.0f);
+	public virtual float FinalAtkRange => AtkRange * ScaleMultiplier;
     public virtual float FinalDetectionRange => DetectionRange * ScaleMultiplier;
 	public virtual float FinalMoveSpeed => MoveSpeed * ScaleMultiplier;
 	public UnitDataSO BaseData => OriginData;
@@ -103,6 +99,7 @@ public abstract class CUnitBase : MonoBehaviour
 			Debug.LogWarning($"CUnitBase) {UnitName} CenterTransform 부재");
 		}
 	}
+
 	protected virtual void Start()
 	{
     }
@@ -206,23 +203,22 @@ public abstract class CUnitBase : MonoBehaviour
 			MoveSpeedMultiplier = OriginData.MoveSpeedMultiplier;
 
 			DetectionRange = OriginData.DetectionRange;
-			/*
-			if (_moveEnemy != null)
+
+			if (OriginData.CommonHitEffect == null)
 			{
-
+				Debug.LogWarning($"[{name}] Common Hit Effect null");
 			}
-			if (_movePlayer != null)
+			else
 			{
-
+				CommonHitEffect = OriginData.CommonHitEffect;
 			}
-			*/
-
+			
 			CurrentHp = FinalMaxHP;
 		}
 	}
 
 	// 데미지 받을 시 호출
-	public virtual void TakeDamage(float damage, CUnitBase attacker)
+	public virtual void TakeDamage(float damage, CUnitBase attacker, bool summonCommonHitEffect = true)
 	{
 		if (IsDead)
 		{
@@ -236,12 +232,85 @@ public abstract class CUnitBase : MonoBehaviour
 			Debug.Log($"CUnitBase) [{UnitName}] {damage} 피해 입음. [HP:{CurrentHp}]");
 		}
 
+		if (summonCommonHitEffect)
+		{
+			if (CommonHitEffect == null)
+			{
+				Debug.LogWarning($"CUnitBase) {UnitName} CommonHitEffect 부재");
+			}
+			else
+			{
+				SummonHitEffectOnTarget(this, CommonHitEffect);
+			}
+		}
+
 		NotifyHpChange();
 
 		if (CurrentHp <= 0)
 		{
 			Die();
 		}
+	}
+
+	protected virtual void SummonHitEffectOnTarget(CUnitBase target, EffectDataSO fxData)
+	{
+		if (fxData == null)
+		{
+			return;
+		}
+		if (fxData.Catalog == null ||
+			fxData.Catalog.Count == 0)
+		{
+			return;
+		}
+
+		EffectInfo effectInfo = fxData.Catalog[0];
+
+		if (effectInfo == null)
+		{
+			return;
+		}
+
+		Vector2 summonPos = target.transform.position + effectInfo.Offset;
+
+		if (effectInfo.UseRandomOffset)
+		{
+			summonPos += Random.insideUnitCircle * effectInfo.RandomOffsetRange;
+		}
+
+		TrySummonEffect(effectInfo, summonPos);
+	}
+
+	protected virtual bool TrySummonEffect(EffectInfo effectInfo, Vector3 position)
+	{
+		EffectBase prefab = effectInfo.Prefab;
+		if (prefab == null)
+		{
+			return false;
+		}
+
+		Quaternion rot = Quaternion.Euler(-42f, 0f, 0f);
+		EffectBase fx = PoolManager.Instance.Pop(prefab, position, rot);
+
+		if (fx == null)
+		{
+			return false;
+		}
+
+		EEffectDirection dir;
+
+		if (effectInfo.IsNoDirection) // 무방향 이펙트인지 체크
+		{
+			dir = EEffectDirection.None;
+		}
+		else
+		{
+			dir = IsFacingRight ? EEffectDirection.Right : EEffectDirection.Left;
+		}
+
+		fx.Init(prefab, dir);
+
+		return true;
 	}
 
 	protected virtual void NotifyHpChange()

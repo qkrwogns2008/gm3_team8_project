@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class EffectCatalog
+public class EffectInfo
 {
 	[Header("¿Ã∆Â∆Æ «¡∏Æ∆’")]
 	[SerializeField] private EffectBase _prefab;
@@ -17,10 +17,16 @@ public class EffectCatalog
 	[Header("πÊ«‚ ¿Øπ´")]
 	[SerializeField] private bool _isNoDirection = false;
 
+	[Header("∑£¥˝ ø¿«¡º¬")]
+	[SerializeField] private bool _useRandomOffset = false;
+	[SerializeField] private Vector2 _randomOffsetRange;
+
 	public EffectBase Prefab => _prefab;
 	public Vector3 Offset => _offset;
 	public float PreDelay => _preDelay;
 	public bool IsNoDirection => _isNoDirection;
+	public bool UseRandomOffset => _useRandomOffset;
+	public Vector2 RandomOffsetRange => _randomOffsetRange;
 }
 
 [CreateAssetMenu(fileName = "EffectDataSO_", menuName = "ScriptableObjects/Effect Data (SO)")]
@@ -30,8 +36,8 @@ public class EffectDataSO : ScriptableObject
 	[SerializeField] private string _name;
 
 	[Header("¿Ã∆Â∆Æ ∏Ò∑œ")]
-	[SerializeField] private List<EffectCatalog> _effectCatalog;
+	[SerializeField] private List<EffectInfo> _effectCatalog;
 
 	public string Name => _name;
-	public IReadOnlyList<EffectCatalog> Catalog => _effectCatalog;
+	public IReadOnlyList<EffectInfo> Catalog => _effectCatalog;
 }

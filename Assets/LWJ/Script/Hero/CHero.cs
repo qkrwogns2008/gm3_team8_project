@@ -1,6 +1,7 @@
 using Spine.Unity;
 using System.Collections;
 using UnityEngine;
+using static CDataManager;
 
 public enum EHeroState
 {
@@ -72,7 +73,6 @@ public class CHero : CUnitBase
 	protected float RemainGuardStack;
 	#endregion
 
-	protected bool IsFacingRight => (SkeletonAni.skeleton.ScaleX != 1.0f);
 	protected virtual float FinalDefense => BaseDefense * DefenseMultiplier;
 	protected virtual float CriticalDamage => FinalAttackDamage * BaseCriticalDamageRatio * CriticalAttackMultiplier;
 	protected virtual float FinalSkillActionInterval => SkillActionInterval / AttackSpeedMultiplier;
@@ -172,6 +172,32 @@ public class CHero : CUnitBase
 				Debug.LogWarning($"{UnitName} ID 설정 필요.");
 			}
 
+			FinalHeroStatus stat;
+			if (CDataManager.Instance != null)
+			{
+				stat = CDataManager.Instance.GetHeroFinalStatus(HeroID, HeroData);
+
+				BaseMaxHp = stat.HeroHP;
+				BaseAtkDamage = stat.HeroAtk;
+				BaseDefense = stat.HeroDef;
+				CriticalChance = stat.HeroCriticalRatio;
+
+				CurrentHp = FinalMaxHP;
+				if (PrintLog)
+				{
+					Debug.Log($"[{UnitName}] userData 적용 완료. {stat.HeroHP}/{stat.HeroAtk}/{stat.HeroDef}/{stat.HeroCriticalRatio}");
+				}
+			}
+			else
+			{
+				Debug.LogWarning($"[{UnitName}] DataManager Instance null.");
+
+				BaseMaxHp = HeroData.BaseMaxHp;
+				BaseAtkDamage = HeroData.BaseAttackDamage;
+				BaseDefense = HeroData.BaseDefense;
+				CriticalChance = HeroData.CriticalChance;
+			}
+
 			BaseDefense = HeroData.BaseDefense;
 			DefenseMultiplier = HeroData.DefenseMultiplier;
 
@@ -180,7 +206,7 @@ public class CHero : CUnitBase
 			AttackEffect = AttackEffect != null ? AttackEffect : HeroData.AttackEffect; // 비었으면 SO에서 할당
 
 			CriticalEffect = HeroData.CriticalEffect;
-			CriticalChance = HeroData.CriticalChance;
+			
 			BaseCriticalDamageRatio = HeroData.BaseCriticalDamageRatio;
 			CriticalAttackMultiplier = HeroData.CriticalAttackMultiplier;
 
@@ -457,7 +483,7 @@ public class CHero : CUnitBase
 			// 목록의 이펙트를 순차 출력
 			for (int i = 0; i < effectData.Catalog.Count; i++)
 			{
-				EffectCatalog fxData = effectData.Catalog[i];
+				EffectInfo fxData = effectData.Catalog[i];
 
 				if (fxData == null)
 				{
@@ -519,43 +545,10 @@ public class CHero : CUnitBase
 
 		MotionRoutine = null;
 	}
-
-	protected virtual bool TrySummonEffect(EffectCatalog fxData, Vector3 position)
-	{
-		EffectBase prefab = fxData.Prefab;
-		if (prefab == null)
-		{
-			return false;
-		}
-
-		Vector3 pos = position + fxData.Offset;
-		Quaternion rot = Quaternion.Euler(-42f, 0f, 0f);
-		EffectBase fx = PoolManager.Instance.Pop(prefab, pos, rot);
-
-		if (fx == null)
-		{
-			return false;
-		}
-
-		EEffectDirection dir;
-
-		if (fxData.IsNoDirection) // 무방향 이펙트인지 체크
-		{
-			dir = EEffectDirection.None;
-		}
-		else
-		{
-			dir = IsFacingRight ? EEffectDirection.Right : EEffectDirection.Left;
-		}
-
-		fx.Init(prefab, dir);
-
-		return true;
-	}
 	#endregion
 
 	#region 체력 변화 / 사망
-	public override void TakeDamage(float damage, CUnitBase attacker)
+	public override void TakeDamage(float damage, CUnitBase attacker, bool summonNormalHitEffect = true)
 	{
 		if (IsDead)
 		{
@@ -604,6 +597,18 @@ public class CHero : CUnitBase
 			else
 			{
 				Debug.Log($"CUnitBase) [{UnitName}] 방어 수치에 의해 피해 상쇄. [피해:{damage} / HP:{CurrentHp}]");
+			}
+		}
+
+		if (summonNormalHitEffect)
+		{
+			if (CommonHitEffect == null)
+			{
+				Debug.LogWarning($"CUnitBase) {UnitName} CommonHitEffect 부재");
+			}
+			else
+			{
+				SummonHitEffectOnTarget(this, CommonHitEffect);
 			}
 		}
 

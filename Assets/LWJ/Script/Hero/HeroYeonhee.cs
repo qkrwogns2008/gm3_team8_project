@@ -35,25 +35,6 @@ public class HeroYeonhee : RangedHeroBase
 		}
 	}
 
-	protected virtual void SummonHitEffectOnTarget(CUnitBase target, EffectDataSO fxData)
-	{
-		if (fxData == null)
-		{
-			return;
-		}
-		if (fxData.Catalog == null ||
-			fxData.Catalog.Count == 0)
-		{
-			return;
-		}
-		if (fxData.Catalog[0] == null)
-		{
-			return;
-		}
-
-		TrySummonEffect(fxData.Catalog[0], target.transform.position);
-	}
-
 	protected override void ProcessCriticalHit(CUnitBase target)
 	{
 		if (target == null)
@@ -62,7 +43,7 @@ public class HeroYeonhee : RangedHeroBase
 		}
 
 		SummonHitEffectOnTarget(target, CriticalHitEffect);
-		target.TakeDamage(CriticalDamage, this);
+		target.TakeDamage(CriticalDamage, this, false);
 
 		// Ãß°¡ Å¸°Ù Å½»ö
 		IReadOnlyList<CUnitBase> targetList = CEnemyManager.Instance.ActiveEnemies;
@@ -72,7 +53,7 @@ public class HeroYeonhee : RangedHeroBase
 		if (additionalTarget != null)
 		{
 			SummonHitEffectOnTarget(additionalTarget, CriticalHitEffect);
-			additionalTarget.TakeDamage(FinalAdditionalTargetDamage, this);
+			additionalTarget.TakeDamage(FinalAdditionalTargetDamage, this, false);
 
 			if (PrintLog)
 			{
@@ -183,7 +164,7 @@ public class HeroYeonhee : RangedHeroBase
 				continue;
 			}
 
-			target.TakeDamage(FinalSkillDamage, this);
+			target.TakeDamage(FinalSkillDamage, this, false);
 		}
 
 		if (PrintSkillLog)

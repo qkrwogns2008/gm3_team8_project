@@ -30,7 +30,7 @@ public class HeroEcila : CHero
 		if (target != null)
 		{
 			SummonHitEffectOnTarget(target, AttackHitEffect);
-			target.TakeDamage(FinalNormalAttackDamage, this);
+			target.TakeDamage(FinalNormalAttackDamage, this, false);
 		}
 	}
 
@@ -45,25 +45,6 @@ public class HeroEcila : CHero
 
 			RecoverHPAllHero(0.015f, 0.5f, 0.075f);
 		}
-	}
-
-	protected virtual void SummonHitEffectOnTarget(CUnitBase target, EffectDataSO fxData)
-	{
-		if (fxData == null)
-		{
-			return;
-		}
-		if (fxData.Catalog == null ||
-			fxData.Catalog.Count == 0)
-		{
-			return;
-		}
-		if (fxData.Catalog[0] == null)
-		{
-			return;
-		}
-
-		TrySummonEffect(fxData.Catalog[0], target.transform.position);
 	}
 
 	protected virtual void CircleAreaAttack(CUnitBase originTarget, float radius, IReadOnlyList<CUnitBase> targetList)
@@ -92,7 +73,7 @@ public class HeroEcila : CHero
 				continue;
 			}
 
-			target.TakeDamage(CriticalDamage, this);
+			target.TakeDamage(CriticalDamage, this, false);
 		}
 
 		if (PrintSkillLog)
@@ -189,7 +170,7 @@ public class HeroEcila : CHero
 				continue;
 			}
 
-			target.TakeDamage(FinalSkillDamage, this);
+			target.TakeDamage(FinalSkillDamage, this, false);
 		}
 
 		if (PrintSkillLog)
@@ -200,7 +181,7 @@ public class HeroEcila : CHero
 		// 부채꼴 바깥이어도 타겟은 무조건 피해를 입도록 보장
 		if (originTarget != null)
 		{
-			originTarget.TakeDamage(FinalSkillDamage, this);
+			originTarget.TakeDamage(FinalSkillDamage, this, false);
 		}
 	}
 

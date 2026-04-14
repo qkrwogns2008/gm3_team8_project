@@ -21,6 +21,9 @@ public class UnitDataSO : ScriptableObject
 
 	[Header("추격")]
 	[SerializeField] private float _detectionRange;
+
+	[Header("Common Hit Effect")]
+	[SerializeField] private EffectDataSO _commonHitEffect;
 	#endregion
 
 	#region 프로퍼티
@@ -36,5 +39,6 @@ public class UnitDataSO : ScriptableObject
 	public float AttackSpeedMultiplier => _attackSpeedMultiplier;
 	public float MoveSpeedMultiplier => _moveSpeedMultiplier;
 	public float DetectionRange => _detectionRange;
+	public EffectDataSO CommonHitEffect => _commonHitEffect;
 	#endregion
 }
