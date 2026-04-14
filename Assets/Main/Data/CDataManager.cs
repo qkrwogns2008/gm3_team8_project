@@ -9,7 +9,7 @@ public class CDataManager : MonoBehaviour
     public CUserData UserData { get; private set; }
 
     private string _savePath;
-
+    [SerializeField] bool isDebugMode = false; // 디버그 모드 여부
     private void Awake()
     {
         if (Instance == null)
@@ -34,7 +34,10 @@ public class CDataManager : MonoBehaviour
         UserData.LastLogoutTime = System.DateTime.Now.Ticks;
         string json = JsonUtility.ToJson(UserData, true);
         File.WriteAllText(_savePath, json);
-        Debug.Log($"저장 완료: {_savePath}");
+        if (isDebugMode)
+        {
+            Debug.Log($"저장 완료: {_savePath}");
+        }
     }
 
     // [로드] 파일 -> JSON -> 데이터
@@ -58,7 +61,10 @@ public class CDataManager : MonoBehaviour
     {
         UserData.Gold += amount;
         SaveUserData();
-        Debug.Log($"골드 추가: {amount} / 현재 골드: {UserData.Gold}");
+        if (isDebugMode)
+        {
+            Debug.Log($"골드 추가: {amount} / 현재 골드: {UserData.Gold}");
+        }
     }
 
     // gold 사용
@@ -71,7 +77,10 @@ public class CDataManager : MonoBehaviour
             return true;
         }
 
-        Debug.Log($"골드가 부족합니다. 필요 골드: {amount}");
+        if (isDebugMode)
+        {
+            Debug.Log($"골드가 부족합니다. 필요 골드: {amount}");
+        }
         return false;
     }
     // Ruby 추가
@@ -79,7 +88,10 @@ public class CDataManager : MonoBehaviour
     {
         UserData.Ruby += amount;
         SaveUserData();
-        Debug.Log($"루비 추가: {amount} / 현재 루비: {UserData.Ruby}");
+        if (isDebugMode)
+        {
+            Debug.Log($"루비 추가: {amount} / 현재 루비: {UserData.Ruby}");
+        }
     }
 
     // Ruby 사용
@@ -92,14 +104,20 @@ public class CDataManager : MonoBehaviour
             return true;
         }
 
-        Debug.Log($"루비가 부족합니다. 필요 루비: {amount}");
+        if (isDebugMode)
+        {
+            Debug.Log($"루비가 부족합니다. 필요 루비: {amount}");
+        }
         return false;
     }
     public void AddPickUpTicket(int amount)
     {
         UserData.PickUpTicket += amount;
         SaveUserData();
-        Debug.Log($"픽업티켓 추가: {amount} / 현재 픽업티켓: {UserData.PickUpTicket}");
+        if (isDebugMode)
+        {
+            Debug.Log($"픽업티켓 추가: {amount} / 현재 픽업티켓: {UserData.PickUpTicket}");
+        }
     }
 
     // Ruby 사용
@@ -112,7 +130,10 @@ public class CDataManager : MonoBehaviour
             return true;
         }
 
-        Debug.Log($"픽업티켓 부족합니다. 필요 픽업티켓: {amount}");
+        if (isDebugMode)
+        {
+            Debug.Log($"픽업티켓 부족합니다. 필요 픽업티켓: {amount}");
+        }
         return false;
     }
 
@@ -121,7 +142,10 @@ public class CDataManager : MonoBehaviour
     public void UpgradeBaseDamage(int amount)
     {
         UserData.Atk_Level += amount;
-        Debug.Log($"[강화] 기본 공격력 상승 현재: {UserData.Atk_Level}");
+        if (isDebugMode)
+        {
+            Debug.Log($"[강화] 기본 공격력 상승 현재: {UserData.Atk_Level}");
+        }
         SaveUserData();
     }
 
@@ -129,7 +153,10 @@ public class CDataManager : MonoBehaviour
     public void UpgradeBaseShield(int amount)
     {
         UserData.Def_Level += amount;
-        Debug.Log($"[강화] 기본 방어력 상승 현재: {UserData.Def_Level}");
+        if (isDebugMode)
+        {
+            Debug.Log($"[강화] 기본 방어력 상승 현재: {UserData.Def_Level}");
+        }
         SaveUserData();
     }
 
@@ -137,7 +164,10 @@ public class CDataManager : MonoBehaviour
     public void UpgradeBaseHP(int amount)
     {
         UserData.Life_Level += amount;
-        Debug.Log($"[강화] 기본 체력 상승 현재: {UserData.Life_Level}");
+        if (isDebugMode)
+        {
+            Debug.Log($"[강화] 기본 체력 상승 현재: {UserData.Life_Level}");
+        }
         SaveUserData();
     }
 
@@ -170,13 +200,19 @@ public class CDataManager : MonoBehaviour
         {
             // 이미 보유 중
             hero.Quantity++;
-            Debug.Log($"이미 보유 중인 영웅입니다. 레벨업! (ID: {id} / 현재 레벨: {hero.Level})");
+            if (isDebugMode)
+            {
+                Debug.Log($"이미 보유 중인 영웅입니다. 레벨업! (ID: {id} / 현재 레벨: {hero.Level})");
+            }
         }
         else
         {
             // 신규 획득
             UserData.HeroList.Add(new UserHeroData { HeroID = id, Quantity = 1 });
-            Debug.Log($"새로운 영웅 획득! (ID: {id})");
+            if (isDebugMode)
+            {
+                Debug.Log($"새로운 영웅 획득! (ID: {id})");
+            }   
         }
 
         SaveUserData();
@@ -197,7 +233,10 @@ public class CDataManager : MonoBehaviour
         else
         {
             // 영웅 미보유시
-            Debug.Log($"User가 보유하지 않은 영웅(ID: {id})의 레벨설정 불가.");
+            if (isDebugMode)
+            {
+                Debug.Log($"User가 보유하지 않은 영웅(ID: {id})의 레벨설정 불가.");
+            }
         }
         SaveUserData();
     }
@@ -214,7 +253,10 @@ public class CDataManager : MonoBehaviour
         else
         {
             // 영웅 미보유시
-            Debug.Log($"User가 보유하지 않은 영웅(ID: {id})의 레벨설정 불가.");
+            if (isDebugMode)
+            {
+                Debug.Log($"User가 보유하지 않은 영웅(ID: {id})의 레벨설정 불가.");
+            }
         }
         SaveUserData();
     }
@@ -224,10 +266,24 @@ public class CDataManager : MonoBehaviour
         int arrayIndex = x + 4 * y;
         if (arrayIndex < 0 || arrayIndex >= UserData.Hero_Array.Length)
         {
-            Debug.Log("영웅배치 좌표 범위 초과");
+            if (isDebugMode)
+            {
+                Debug.Log("영웅배치 좌표 범위 초과");
+            }
             return -1; // 범위 초과시 -1 반환
         }
         return UserData.Hero_Array[arrayIndex];
+    }
+    public int CheckHeroArrayID(EHeroID heroID)     // heroID : 0(미배치)~4002(영웅ID 최대값) 
+    {
+        for (int i = 0; i < UserData.Hero_Array.Length; i++)
+        {
+            if (UserData.Hero_Array[i] == (int)heroID)
+            { 
+                return i; // heroID가 배치된 인덱스 반환
+            }
+        }
+        return -1; // heroID가 배치되지 않았을 경우 -1 반환
     }
 
     // 영웅 Array배치 함수 x,y : 0~3, heroID : 0(미배치)~4002(영웅ID 최대값)
@@ -238,7 +294,10 @@ public class CDataManager : MonoBehaviour
         // 배열 범위 방지
         if (arrayIndex < 0 || arrayIndex >= UserData.Hero_Array.Length)
         {
-            Debug.Log("영웅배치 좌표 범위 초과");
+            if (isDebugMode)
+            {
+                Debug.Log("영웅배치 좌표 범위 초과");
+            }
             return;
         }
         // ID 0 입력시 구역 미배치 처리
@@ -351,7 +410,10 @@ public class CDataManager : MonoBehaviour
             return true;
         }
 
-        Debug.Log("아이템이 부족합니다.");
+        if (isDebugMode)
+        {
+            Debug.Log("아이템이 부족합니다.");
+        }
         return false;
     }
 
