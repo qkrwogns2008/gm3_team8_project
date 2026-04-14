@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Forming_Button : MonoBehaviour, IPointerClickHandler
 {
@@ -15,9 +17,22 @@ public class Forming_Button : MonoBehaviour, IPointerClickHandler
     [Header("위치 기준 (선택)")]
     public Transform targetPoint;
 
+    [Header("이 버튼들을 누르면 해제")]
+    public List<Button> closeButtons = new List<Button>();
+
     private Transform originalParent;
 
     private static Forming_Button currentSelected;
+
+    private void Start()
+    {
+        // 리스트에 있는 버튼들에 클릭 이벤트 연결
+        foreach (var btn in closeButtons)
+        {
+            if (btn != null)
+                btn.onClick.AddListener(HandleExternalClose);
+        }
+    }
 
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -50,6 +65,16 @@ public class Forming_Button : MonoBehaviour, IPointerClickHandler
         {
             originalParent = topVisual.parent;
             topVisual.SetParent(buttonB.transform, false);
+        }
+    }
+
+    // 외부 버튼 눌렸을 때 → 원상복구 + 버튼 비활성화
+    public void HandleExternalClose()
+    {
+        if (currentSelected != null)
+        {
+            currentSelected.ResetVisual();
+            currentSelected = null;
         }
     }
 
