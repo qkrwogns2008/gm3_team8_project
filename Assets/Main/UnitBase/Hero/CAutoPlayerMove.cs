@@ -1,3 +1,4 @@
+using Spine;
 using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
@@ -59,49 +60,15 @@ public class CAutoPlayerMove : MonoBehaviour
         {
             return;
         }
-		CheckTarget();
-
-		if (_targetEnemy == null)
-		{
-			FindClosestEnemy();
-		}
-        
-        if(_targetEnemy != null)
+		
+        // 제어 로직
+        if(CGroupManager.instance != null && CGroupManager.instance.IsJoystickActive)
         {
-            _targetPos = _targetEnemy.transform.position;
-            _targetPos.z = 0f;
-
-            float sqrDistance = (transform.position - _targetPos).sqrMagnitude;
-
-            float finalRange = PlayerHero.FinalAtkRange;
-            float sqrAttackRange = finalRange * finalRange;
-
-            if(sqrDistance <= sqrAttackRange)
-            {
-                StopAndAttack();
-            }
-            else
-            {
-                // 자동 켜져있을경우
-                if(_isAutoMove)
-                {
-                    MoveToTarget();
-                }
-                else
-                {
-                    if(PlayerHero.CurrentState != EHeroState.Idle)
-                    {
-                        PlayerHero.ChangeState(EHeroState.Idle);
-                    }
-                }
-            }
+            ManualGroupMove();
         }
         else
         {
-            if(PlayerHero.CurrentState != EHeroState.Idle)
-            {
-                PlayerHero.ChangeState(EHeroState.Idle);
-            }
+            HandleAutoCombat();
         }
 
     }
@@ -110,10 +77,23 @@ public class CAutoPlayerMove : MonoBehaviour
     // 수동 조작 사용중일때 호출
     void ManualGroupMove()
     {
+        // 상태 변경
         PlayerHero.ChangeState(EHeroState.Move);
+
+        // 지정 대열 좌표로 이동
+        float moveSpeed = PlayerHero.FinalMoveSpeed;
         transform.position = Vector3.MoveTowards(transform.position, _groupTargetPos, PlayerHero.FinalMoveSpeed * Time.deltaTime);
 
-        /// 이동 방향 바라보는 로직 추가
+        // 이동방향 바라보기
+        float joystickX = CGroupManager.instance.JoystickX;
+        if(_skeletonAnim != null && Mathf.Abs(joystickX) > 0.1f)
+        {
+            // 조이스틱에 따른 방향전환
+            _skeletonAnim.Skeleton.ScaleX = (joystickX > 0) ? -1f : 1f;
+        }
+
+        // 수동 이동중에 공격대상 비우기
+        _targetEnemy = null;
     }
 
     public void SetGroupTarget(Vector3 pos)
@@ -121,6 +101,65 @@ public class CAutoPlayerMove : MonoBehaviour
         _groupTargetPos = pos;
     }
 
+    #region 자동전투
+    void HandleAutoCombat()
+    {
+        CheckTarget();
+
+        if(_targetEnemy == null)
+        {
+            FindClosestEnemy();
+        }
+        if(_targetEnemy != null)
+        {
+            _targetPos = _targetEnemy.transform.position;
+            _targetPos.z = 0f;
+
+            float sqrDistance = (transform.position - _targetPos).sqrMagnitude;
+            float sqrAttackRange = PlayerHero.FinalAtkRange * PlayerHero.FinalAtkRange;
+
+            if(sqrDistance <= sqrAttackRange)
+            {
+                StopAndAttack();
+            }
+            else
+            {
+                if(_isAutoMove)
+                {
+                    MoveToTarget();
+                }
+                else
+                {
+                    PlayerHero.ChangeState(EHeroState.Idle);
+                }
+            }
+        }
+        else
+        {
+            // 적이 없을때: 대열 위치로 복귀
+            float distToGroup = Vector3.Distance(transform.position, _groupTargetPos);
+            if (distToGroup > 0.5f)
+            {
+                PlayerHero.ChangeState(EHeroState.Move);
+                transform.position = Vector3.MoveTowards(transform.position, _groupTargetPos, PlayerHero.FinalAtkRange * Time.deltaTime);
+
+                // 대열 복귀시 바라보는 방향
+                if(_skeletonAnim != null)
+                {
+                    _skeletonAnim.Skeleton.ScaleX = (_groupTargetPos.x > transform.position.x) ? -1f : 1f;
+                }
+
+            }
+            else
+            {
+                if(PlayerHero.CurrentState != EHeroState.Idle)
+                {
+                    PlayerHero.ChangeState(EHeroState.Idle);
+                }
+            }
+        }
+    }
+    #endregion
     // 버튼 연결
     public void ToggleAutoMode()
     {
