@@ -7,6 +7,7 @@ using UnityEngine;
 public class CMonsterItemData
 {
     public string itemName;         // 아이템 이름
+    public int dropAmount;          // 수량
     public GameObject itemPrefab;   // 프리팹
     [Range(0f, 100f)]
     public float probability;       // 드랍 확률
