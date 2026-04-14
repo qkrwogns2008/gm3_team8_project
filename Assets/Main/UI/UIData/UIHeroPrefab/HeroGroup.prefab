@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2673728002869998683
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 353830875193459871}
+  - component: {fileID: 1764106787800585470}
+  - component: {fileID: 3200481368380936695}
+  m_Layer: 0
+  m_Name: HeroGroup
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &353830875193459871
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2673728002869998683}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 8.548835, y: 21.684769, z: -0.8733162}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1764106787800585470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2673728002869998683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c96aa3c906a66d4bb081ed846dd6275, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _heroDatabase:
+  - heroID: 1
+    dataSO: {fileID: 11400000, guid: 44ba4f97f886dac409f00347762cf8f3, type: 2}
+    prefab: {fileID: 0}
+  - heroID: 2
+    dataSO: {fileID: 11400000, guid: 8444271bf49951b4786dc16e3f9fb0b3, type: 2}
+    prefab: {fileID: 911438146664714392, guid: e328131e4ab70d34e97e871db9f7efc3, type: 3}
+  - heroID: 1001
+    dataSO: {fileID: 11400000, guid: 45470d908973fa6429def0cace9d8c56, type: 2}
+    prefab: {fileID: 9120953212122982376, guid: f5b67d9383e44064b8f96399f7c09cde, type: 3}
+  - heroID: 1002
+    dataSO: {fileID: 11400000, guid: f1e116eae0a94d44f9befeb3adf0d621, type: 2}
+    prefab: {fileID: 235347742955885182, guid: 158afec614a3fc645b5ed856243fc5be, type: 3}
+  - heroID: 2001
+    dataSO: {fileID: 11400000, guid: ea4e2e77537dcf6459e2f949b3f3707a, type: 2}
+    prefab: {fileID: 492215096908588561, guid: ca85629ef87a14547ab15552328ed28e, type: 3}
+  - heroID: 2002
+    dataSO: {fileID: 11400000, guid: e67f0fe7071dee74295e16b90bca3bb8, type: 2}
+    prefab: {fileID: 6795863319084355237, guid: 36382638209ebff468f37746400051b3, type: 3}
+  - heroID: 2003
+    dataSO: {fileID: 11400000, guid: e61084fa433763945883801ee365ba34, type: 2}
+    prefab: {fileID: 8037120009649546741, guid: c4f290eaee6c6c949be9ebe1c453c6d7, type: 3}
+  - heroID: 2004
+    dataSO: {fileID: 11400000, guid: 0d0e6876ae682794dab41264936d2d49, type: 2}
+    prefab: {fileID: 7266550456365818613, guid: 7e1699da5f7ede94192e26d8f5b07117, type: 3}
+  - heroID: 3001
+    dataSO: {fileID: 11400000, guid: df2ee70120676f545a50332e76f349d4, type: 2}
+    prefab: {fileID: 1749262136350513176, guid: 014d5c7c64e25af4eb7915a542acfad1, type: 3}
+  - heroID: 3002
+    dataSO: {fileID: 11400000, guid: 4229f5894d780c74db83dcf39191cbbe, type: 2}
+    prefab: {fileID: 8898652299073439884, guid: 5a9c35fe6b6f3cf45a5864d51a2e875b, type: 3}
+  - heroID: 3003
+    dataSO: {fileID: 11400000, guid: 94a8f5d25a79afd4c9200204152b5a6c, type: 2}
+    prefab: {fileID: 3116816790577781310, guid: d9e027ec852cad84ba08ba5d1ea75224, type: 3}
+  - heroID: 3004
+    dataSO: {fileID: 11400000, guid: dce03fc2e3cad924d855d614802c8a87, type: 2}
+    prefab: {fileID: 8053006144969708783, guid: d23d52be1b48f7d42bdba0161d1f8de9, type: 3}
+  - heroID: 4001
+    dataSO: {fileID: 11400000, guid: 9c752abebd1754e4f98bd68cb06cf613, type: 2}
+    prefab: {fileID: 7898900210732884496, guid: 3792b414468cd134e9172e476a584772, type: 3}
+  - heroID: 4002
+    dataSO: {fileID: 11400000, guid: 7a4a9fd1fa1fc264b8b55caebb897584, type: 2}
+    prefab: {fileID: 5154091690818788663, guid: 8cc246b70547dcf43859023a6446abd5, type: 3}
+  - heroID: 4003
+    dataSO: {fileID: 11400000, guid: 0d7b170f331439f418ef1284d6ff8462, type: 2}
+    prefab: {fileID: 2209794903314683923, guid: cbf82088eb5e35f49a6b6110136a088c, type: 3}
+  _slotOffsets: []
+--- !u!114 &3200481368380936695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2673728002869998683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f39b1c65bbc1c9d49bcbd29c5c0f7bf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

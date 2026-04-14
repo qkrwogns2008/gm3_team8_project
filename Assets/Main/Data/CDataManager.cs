@@ -164,18 +164,18 @@ public class CDataManager : MonoBehaviour
     public void AddHeroData(EHeroID id)
     {
         // 보유 여부 확인
-        var hero = GetHeroData((int)id);
+        var hero = GetHeroData(id);
 
         if (hero != null)
         {
             // 이미 보유 중
-            hero.Level++;
+            hero.Quantity++;
             Debug.Log($"이미 보유 중인 영웅입니다. 레벨업! (ID: {id} / 현재 레벨: {hero.Level})");
         }
         else
         {
             // 신규 획득
-            UserData.HeroList.Add(new UserHeroData { HeroID = id, Level = 1 });
+            UserData.HeroList.Add(new UserHeroData { HeroID = id, Quantity = 1 });
             Debug.Log($"새로운 영웅 획득! (ID: {id})");
         }
 
@@ -186,7 +186,7 @@ public class CDataManager : MonoBehaviour
 
 
     // id 영웅의 레벨을 level로 설정하는 함수
-    public void SetHeroLevel(int id, int level)    
+    public void SetHeroLevel(EHeroID id, int level)    
     {
         var hero = GetHeroData(id);
         // 영웅 보유 여부 확인
@@ -203,7 +203,7 @@ public class CDataManager : MonoBehaviour
     }
 
     // id 영웅의 레벨을 level만큼 추가하는 함수 
-    public void AddHeroLevel(int id, int level)     
+    public void AddHeroLevel(EHeroID id, int level)     
     {
         var hero = GetHeroData(id);
         // 영웅 보유 여부 확인
@@ -273,7 +273,7 @@ public class CDataManager : MonoBehaviour
 
 
 
-    public UserHeroData GetHeroData(int id)
+    public UserHeroData GetHeroData(EHeroID id)
     {
         for (int i = 0; i < UserData.HeroList.Count; i++)
         {
@@ -297,7 +297,7 @@ public class CDataManager : MonoBehaviour
     {
         // 유저의 강화/레벨 데이터 로드
         UserUpgradeStatus upgrade = GetUserUpgradeStatus();
-        UserHeroData heroData = GetHeroData((int)heroID);
+        UserHeroData heroData = GetHeroData(heroID);
         HeroDataSO heroSO;
         heroSO = unitSO as HeroDataSO;
         if (heroSO != null)
