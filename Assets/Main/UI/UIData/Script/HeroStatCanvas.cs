@@ -18,6 +18,7 @@ public class HeroStatCanvas : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _levelText;
     [SerializeField] private TextMeshProUGUI _rankText;
     [SerializeField] private TextMeshProUGUI _expText;
+    [SerializeField] private TextMeshProUGUI _userExpText;
 
     [Header("영웅 SO 데이터")]
     [SerializeField] private HeroDataSO _heroDataSO;
@@ -74,6 +75,9 @@ public class HeroStatCanvas : MonoBehaviour
         // 경험치 요구량
         if (_expText != null)
             _expText.text = (userHeroData.Level * 10f).ToString("");
+        // 경험치 보유량
+        if (_userExpText != null)
+            _userExpText.text = (CDataManager.Instance.UserData.expPoint).ToString("");
 
     }
 }
