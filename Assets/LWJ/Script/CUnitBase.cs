@@ -49,6 +49,7 @@ public abstract class CUnitBase : MonoBehaviour
 	// ½Â¼ö
 	protected float MaxHPMultiplier = 1.0f;
 	protected float AttackDamageMultiplier = 1.0f;
+	protected float DefaultAttackDamageMultiplier = 1.0f;
 	protected float AttackSpeedMultiplier = 1.0f;
 	protected float MoveSpeedMultiplier = 1.0f;
 

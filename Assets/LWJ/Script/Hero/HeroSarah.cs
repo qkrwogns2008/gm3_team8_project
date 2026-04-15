@@ -115,10 +115,10 @@ public class HeroSarah : CHero
 		{
 			Debug.Log($"[{UnitName}] ¹«Àû {isInvincible}");
 		}
-		MotionRoutine = StartCoroutine(Co_TeleportToTarget(target));
+		MotionRoutine = StartCoroutine(Co_TeleportToTargetBehind(target));
 	}
 
-	protected virtual IEnumerator Co_TeleportToTarget(CUnitBase target)
+	protected virtual IEnumerator Co_TeleportToTargetBehind(CUnitBase target)
 	{
 		yield return new WaitForSeconds(TeleportWaitTime);
 		float offsetX = target.IsFacingRight ? -TeleportOffset : TeleportOffset;

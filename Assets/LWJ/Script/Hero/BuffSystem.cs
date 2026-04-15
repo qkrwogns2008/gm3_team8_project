@@ -16,6 +16,7 @@ public enum EBuffFlags
 	CriticalChanceBoost = 1 << 0,
 	StackGuard = 1 << 1,
 	DefenseBoost = 1 << 2,
+	AttackDamageBoost = 1 << 3,
 }
 
 [Serializable]
@@ -74,6 +75,7 @@ public class BuffSystem : MonoBehaviour
 			case EBuffFlags.None:
 			case EBuffFlags.CriticalChanceBoost:
 			case EBuffFlags.DefenseBoost:
+			case EBuffFlags.AttackDamageBoost:
 				return EBuffOverwriteRule.None;
 
 			case EBuffFlags.StackGuard:

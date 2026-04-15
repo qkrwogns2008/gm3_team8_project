@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitName: 
-  CurrentHp: 0
+  currentHp: 0
   OriginData: {fileID: 11400000, guid: f1e116eae0a94d44f9befeb3adf0d621, type: 2}
   TeamType: 0
   centerTransform: {fileID: 4406096368426059009}
@@ -66,8 +66,9 @@ MonoBehaviour:
   CurrentState: 0
   enableAttack: 1
   enableCriticalAttack: 1
-  enableUseSkill: 0
+  enableUseSkill: 1
   buffSystem: {fileID: 8177186180137121409}
+  isInvincible: 0
 --- !u!114 &1385575880346748945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80,6 +81,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8458d08ebfd40524ebe51fdf3782d5bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isAutoMove: 1
 --- !u!114 &8177186180137121409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -408,7 +410,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5141622292158793439, guid: d9b001d91ee30094398bb6b8f786d397, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9046642108580436248, guid: d9b001d91ee30094398bb6b8f786d397, type: 3}
       propertyPath: _base
