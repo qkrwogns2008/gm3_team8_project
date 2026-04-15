@@ -64,7 +64,7 @@ public class CEnemyBase : CUnitBase
             unitName = EnemyData.UnitName;
 
             _finalMaxHP = Mathf.RoundToInt(EnemyData.BaseMaxHp * hpGrowth);
-            CurrentHp = _finalMaxHP;
+            currentHp = _finalMaxHP;
 
             _finalMaxAtk = Mathf.RoundToInt(EnemyData.BaseAttackDamage * atkGrowth);
         }
