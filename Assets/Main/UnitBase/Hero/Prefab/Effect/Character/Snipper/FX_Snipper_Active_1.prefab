@@ -4764,6 +4764,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4884547391421755}
   - component: {fileID: 5213284093374315585}
+  - component: {fileID: 2039150320964383545}
   m_Layer: 0
   m_Name: FX_Snipper_Active_1
   m_TagString: Untagged
@@ -4803,8 +4804,24 @@ MonoBehaviour:
   LeftEffect: {fileID: 0}
   RightEffect: {fileID: 0}
   EffectLifeTime: 0.5
+  IsLooping: 0
   EnableParticleBaseScaleMultiplier: 1
   BaseScaleMultiplier: 1
+--- !u!114 &2039150320964383545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709254077376921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cfb411ede0678442808700649116a53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cameraTr: {fileID: 0}
+  _useX: 1
+  _useY: 1
 --- !u!1 &1724804207875695
 GameObject:
   m_ObjectHideFlags: 0
@@ -7193,6 +7210,7 @@ GameObject:
   - component: {fileID: 4099118695303065}
   - component: {fileID: 198243736805655561}
   - component: {fileID: 199061268324235159}
+  - component: {fileID: 8972425440691080908}
   m_Layer: 0
   m_Name: glow
   m_TagString: Untagged
@@ -9562,3 +9580,17 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &8972425440691080908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730242686860875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2621b222c1d268940a34cfe6fcfda1f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factorX: 0
+  factorY: 0.0095

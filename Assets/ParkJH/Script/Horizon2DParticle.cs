@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Horizon2DParticle
-    : MonoBehaviour
+public class Horizon2DParticle : MonoBehaviour
 {
     #region 인스펙터
     [SerializeField] private Transform _cameraTr;
@@ -12,9 +11,8 @@ public class Horizon2DParticle
 
     #region 내부변수
     private ParallaxLayerElement[] _layers;
-    private bool _horizonOn = false;
     private Vector3 _startCamPos;
-    private Vector3[] _initialLocalPositions; // 자식들의 초기 위치 저장용
+    // private Vector3[] _initialLocalPositions; // 자식들의 초기 위치 저장용
     #endregion
 
     private void Awake()
@@ -26,10 +24,10 @@ public class Horizon2DParticle
         _layers = GetComponentsInChildren<ParallaxLayerElement>();
 
         // 초기 위치 캐싱 (누적 오차 방지)
-        _initialLocalPositions = new Vector3[_layers.Length];
+        // _initialLocalPositions = new Vector3[_layers.Length];
         for (int i = 0; i < _layers.Length; i++)
         {
-            _initialLocalPositions[i] = _layers[i].transform.localPosition;
+            //    _initialLocalPositions[i] = _layers[i].transform.localPosition;
         }
     }
 
@@ -38,28 +36,29 @@ public class Horizon2DParticle
         _startCamPos = _cameraTr.position;
     }
 
-    private void LateUpdate()
+    private void Update()
     {
-        if (!_horizonOn) return;
         GameState gameState = CGameManager.Instance.CurrentState;
-        if(gameState != GameState.MainStage)
+        if (gameState != GameState.MainStage)
         {
             return;
         }
         Vector3 camPos = _cameraTr.position;
+        Vector3 ParentPos = transform.position;
 
         for (int i = 0; i < _layers.Length; i++)
         {
             // 카메라와 start X, Y값 차이
-            Vector3 totalDelta = camPos - _initialLocalPositions[i];
             ParallaxLayerElement layer = _layers[i];
+            Vector3 totalDelta = camPos - ParentPos;
+
             if (layer == null) continue;
 
-            float factorX = layer.factorX;
-            float factorY = layer.factorY;
-            Vector3 targetOffset = Vector3.zero;
+            // float factorX = layer.factorX;
+            //float factorY = layer.factorY;
+            Vector3 ChildrenPos = Vector3.zero;
 
-            float dist = totalDelta.y-100; // 카메라, Layer 간 거리
+            float dist = totalDelta.y - 100; // 카메라, Layer 간 거리
             if (dist > 0)
             {
                 dist = 0; // 카메라가 레이어보다 아래로 내려가는 경우 보정
@@ -67,7 +66,7 @@ public class Horizon2DParticle
             // X축 LayerElement 비례 parallax
             if (_useX)
             {
-                targetOffset.x = -factorX * dist * totalDelta.x;
+                ChildrenPos.x = -layer.factorX * dist * totalDelta.x;
             }
 
             // Y축: 지평선 효과 (카메라와의 거리에 반비례하여 속도 감소)
@@ -77,11 +76,10 @@ public class Horizon2DParticle
                 {
                     dist = -555;
                 }
-                targetOffset.z =  factorY * dist* dist -1f;
+                ChildrenPos.z = layer.factorY * dist * dist - 5f;
             }
-
-            // [핵심] += 가 아니라 초기 위치에서 Offset을 더하는 방식 (오차 없음)
-            layer.transform.localPosition = _initialLocalPositions[i] + targetOffset;
+            // 초기 위치에서 ChildrenPos 더해줌
+            layer.transform.position = ParentPos + ChildrenPos;
         }
     }
 }

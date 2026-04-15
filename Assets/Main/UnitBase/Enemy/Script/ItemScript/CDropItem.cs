@@ -1,8 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class CDropItem : MonoBehaviour
 {
@@ -17,9 +14,17 @@ public class CDropItem : MonoBehaviour
 
 	private float _initialFlySpeed;
 
-	#endregion
+    #endregion
 
+    private void Awake()
+    {
+		_initialFlySpeed = _flySpeed;
+    }
 
+	public void Init(GameObject origin)
+	{
+		_originPrefab = origin;
+	}
     private void OnEnable()
     {
 		transform.localScale = Vector3.one;
@@ -51,42 +56,30 @@ public class CDropItem : MonoBehaviour
 		// 잠깐 멈추기
 		yield return new WaitForSeconds(0.2f);
 
-		GameObject targetObj = GameObject.FindGameObjectWithTag("ItemTarget");
 
-		if(targetObj != null)
+		while(true)
 		{
-			float distanceToCamera = Mathf.Abs(Camera.main.transform.position.z - transform.position.z);
+			Vector3 targetWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(0.5f, 0.5f, 0f));
+			targetWorldPos.z = 0f;
 
-			while(true)
+			float dist = Vector3.Distance(transform.position, targetWorldPos);
+
+			// 목적지에 가까우면 종료
+			if(dist < 0.2f)
 			{
-				Vector3 uiPos = targetObj.transform.position;
-
-				Vector3 targetWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(
-					uiPos.x,
-					uiPos.y,
-					distanceToCamera
-					));
-				
-				float dist = Vector3.Distance(transform.position, targetWorldPos);
-
-				// 목적지에 가까우면 종료
-				if(dist < 0.2f)
-				{
-					break;
-				}
-
-				// 목적지로 이동
-				transform.position = Vector3.MoveTowards(
-					transform.position,
-					targetWorldPos,
-					_flySpeed * Time.deltaTime
-					);
-				_flySpeed += 0.8f;
-
-				yield return null;
+				break;
 			}
-		}
 
+			// 목적지로 이동
+			transform.position = Vector3.MoveTowards(
+				transform.position,
+				targetWorldPos,
+				_flySpeed * Time.deltaTime
+				);
+			_flySpeed += 0.8f;
+
+			yield return null;
+		}
 		// 풀 반납
 		if(_originPrefab != null)
 		{

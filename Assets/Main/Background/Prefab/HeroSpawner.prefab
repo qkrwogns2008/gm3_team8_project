@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 353830875193459871}
   - component: {fileID: 1764106787800585470}
-  - component: {fileID: 3200481368380936695}
   m_Layer: 0
   m_Name: HeroSpawner
   m_TagString: Untagged
@@ -95,15 +94,3 @@ MonoBehaviour:
     dataSO: {fileID: 11400000, guid: 0d7b170f331439f418ef1284d6ff8462, type: 2}
     prefab: {fileID: 2209794903314683923, guid: cbf82088eb5e35f49a6b6110136a088c, type: 3}
   _slotOffsets: []
---- !u!114 &3200481368380936695
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2673728002869998683}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f39b1c65bbc1c9d49bcbd29c5c0f7bf7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Hero_Ecila_A_Material
-  m_Shader: {fileID: 4800000, guid: 0000000deadbeef15deadf00d0000000, type: 2}
+  m_Shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -39,6 +39,7 @@ Material:
     m_Ints: []
     m_Floats:
     - PixelSnap: 0
+    - _ColorMask: 15
     - _Cull: 0
     - _Cutoff: 0.1
     - _EnableCurvedTransform: 1
@@ -49,11 +50,16 @@ Material:
     - _OutlineSize: 1
     - _OutlineSmoothness: 1
     - _OutlineWidth: 3
+    - _Stencil: 0
     - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
     - _StencilRef: 1
+    - _StencilWriteMask: 255
     - _StraightAlphaInput: 0
     - _ThresholdEnd: 0.25
     - _Use8Neighbourhood: 1
+    - _UseUIAlphaClip: 0
     m_Colors:
     - _BehindColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}

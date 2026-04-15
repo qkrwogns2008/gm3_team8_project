@@ -43,6 +43,15 @@ public class CGachaResultCard : MonoBehaviour
     private CGachaDataSO _currentData;                          // 현재 카드 데이터
     #endregion
 
+    // 현재 데이터 정보 캡슐화
+    public CGachaDataSO CurrentData => _currentData;
+
+    // 뒤집힘 정보 캡슐화 
+    public bool IsReversed => _isReversed;
+
+    // 뒤집힘 이벤트
+    public Action<CGachaResultCard> OnFliped;
+
     private void Awake()
     {
         // 카드 뒤집기 함수 연결
@@ -321,6 +330,9 @@ public class CGachaResultCard : MonoBehaviour
         }
 
         transform.localScale = Vector3.one;
+
+        // 이벤트 자신 호출
+        OnFliped?.Invoke(this);
     }
 
 }

@@ -224,7 +224,6 @@ public class CDataManager : MonoBehaviour
             }   
         }
 
-        SaveUserData();
     }
 
     // 영웅 데이터 조회
