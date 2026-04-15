@@ -161,7 +161,6 @@ public class CHero : CUnitBase
 			SetGuardEffect(new Vector2(0, 1));
 		}
 		else // 스택 가드 버프 해제
-		//else if (RemainGuardStack != 0) // 스택 가드 버프 해제
 		{
 			RemainGuardStack = 0;
 			RemoveGuardEffect();
