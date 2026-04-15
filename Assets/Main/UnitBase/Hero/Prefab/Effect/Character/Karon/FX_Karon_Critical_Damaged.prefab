@@ -18588,6 +18588,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4372920208702427}
   - component: {fileID: -4306750037469042552}
+  - component: {fileID: 1088827159611928453}
   m_Layer: 0
   m_Name: FX_Karon_Critical_Damaged
   m_TagString: Untagged
@@ -18627,8 +18628,24 @@ MonoBehaviour:
   LeftEffect: {fileID: 0}
   RightEffect: {fileID: 0}
   EffectLifeTime: 0.9
+  IsLooping: 0
   EnableParticleBaseScaleMultiplier: 1
   BaseScaleMultiplier: 1
+--- !u!114 &1088827159611928453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709254077376921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cfb411ede0678442808700649116a53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cameraTr: {fileID: 0}
+  _useX: 1
+  _useY: 1
 --- !u!1 &1709867586078768
 GameObject:
   m_ObjectHideFlags: 0
@@ -23286,6 +23303,7 @@ GameObject:
   - component: {fileID: 4025901758691103}
   - component: {fileID: 198985305603660343}
   - component: {fileID: 199705390221481576}
+  - component: {fileID: 8768352111124227731}
   m_Layer: 0
   m_Name: mid
   m_TagString: Untagged
@@ -25578,6 +25596,20 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &8768352111124227731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730242686860875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2621b222c1d268940a34cfe6fcfda1f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factorX: 0
+  factorY: 0.0095
 --- !u!1 &1884547391421755
 GameObject:
   m_ObjectHideFlags: 0

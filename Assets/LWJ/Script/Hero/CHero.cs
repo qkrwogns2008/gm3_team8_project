@@ -1,7 +1,6 @@
 using Spine.Unity;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UIElements;
 using static CDataManager;
 
 public enum EHeroState
@@ -136,8 +135,12 @@ public class CHero : CUnitBase
 			case EBuffFlags.StackGuard:
 				ApplyBuffStackGuard();
 				break;
+			case EBuffFlags.DefenseBoost:
+				ApplyBuffDefense();
+				break;
 			default:
 				ApplyBuffCritical();
+				ApplyBuffDefense();
 				break;
 		}
 	}
@@ -158,7 +161,6 @@ public class CHero : CUnitBase
 			SetGuardEffect(new Vector2(0, 1));
 		}
 		else // 스택 가드 버프 해제
-		//else if (RemainGuardStack != 0) // 스택 가드 버프 해제
 		{
 			RemainGuardStack = 0;
 			RemoveGuardEffect();
