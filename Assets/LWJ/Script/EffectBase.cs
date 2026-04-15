@@ -145,7 +145,6 @@ public class EffectBase : MonoBehaviour
 		else
 		{
 			DisableAfterTime(0f);
-			transform.SetParent(null);
 		}
 	}
 
