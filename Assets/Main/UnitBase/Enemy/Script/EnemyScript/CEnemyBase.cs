@@ -1,8 +1,6 @@
 using UnityEngine;
-using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 
 public enum EUnitState
 {

@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class ItemManager : MonoBehaviour
@@ -30,11 +28,18 @@ public class ItemManager : MonoBehaviour
            
             if (Random.Range(0f, 100f) <= info.probability)
             {
+                // 아이템 꺼내기
                 GameObject itemObj = PoolManager.Instance.Pop(info.itemPrefab, spawnPosition, Quaternion.identity);
 
                 if(itemObj != null)
                 {
                     itemObj.transform.localScale = info.itemScale;
+
+                    var dropScript = itemObj.GetComponent<CDropItem>();
+                    if(dropScript != null)
+                    {
+                        dropScript.Init(info.itemPrefab);
+                    }
                 }
 
                 int finalAmount = Mathf.RoundToInt(info.dropAmount * Mathf.Pow(1.5f, stage - 1));
