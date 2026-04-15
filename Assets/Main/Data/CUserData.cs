@@ -40,6 +40,8 @@ public class CUserData
     public int Life_Cost = 1;
     //영웅 배치 관련 함수
     public int[] Hero_Array = new int [16];
+    //영웅 카메라 배치 변수
+    public int Hero_Camera_Array = 0;
 
 
     // 보유 중인 영웅ID, 레벨 정보

@@ -19,7 +19,7 @@ public class CDataManager : MonoBehaviour
             // 유니티 에디터(PC 작업 중)일 때는 프로젝트 폴더 바로 옆에 저장 (찾기 쉬움)
             _savePath = Path.Combine(Application.dataPath, "..", "SaveData.json");
             #else
-            실제 빌드(모바일, PC 빌드본)일 때는 안전한 영구 저장소에 저장
+            // 실제 빌드(모바일, PC 빌드본)일 때는 안전한 영구 저장소에 저장
             _savePath = Path.Combine(Application.persistentDataPath, "SaveData.json");
             #endif
             LoadUserData();
@@ -57,13 +57,43 @@ public class CDataManager : MonoBehaviour
     }
 
     // gold 추가
-    public void AddGold(int amount)  
+    public void AddGold(int amount)
     {
         UserData.Gold += amount;
         SaveUserData();
         if (isDebugMode)
         {
             Debug.Log($"골드 추가: {amount} / 현재 골드: {UserData.Gold}");
+        }
+    }
+
+    // 스테이지 레벨업
+    public void MainStageLevelUP(int amount) // 보통 1로 쓸것
+    {
+        UserData.MainStageLevel += amount;
+        SaveUserData();
+        if (isDebugMode)
+        {
+            Debug.Log($" 최대 스테이지 : {UserData.MainStageLevel}");
+        }
+    }
+
+    // 스테이지 변경
+    public void ChangeCurrentStageLevel(int amount) // 보통 1로 쓸것
+    {
+        if(amount < 1 || amount > UserData.MainStageLevel)
+        {
+            if (isDebugMode)
+            {
+                Debug.Log($"스테이지 레벨 변경 취소");
+            }
+            return;
+        }
+        UserData.CurrentStageLevel = amount;
+        SaveUserData();
+        if (isDebugMode)
+        {
+            Debug.Log($" 현재 스테이지 : {UserData.CurrentStageLevel}");
         }
     }
 
@@ -208,10 +238,18 @@ public class CDataManager : MonoBehaviour
         if (hero != null)
         {
             // 이미 보유 중
+            if(hero.Quantity >= 5)
+            {
+                if (isDebugMode)
+                {
+                    Debug.Log($"영웅 최대 랭크입니다. (ID: {id} / 현재 랭크: {hero.Quantity})");
+                }
+                return;
+            }
             hero.Quantity++;
             if (isDebugMode)
             {
-                Debug.Log($"이미 보유 중인 영웅입니다. 레벨업! (ID: {id} / 현재 레벨: {hero.Level})");
+                Debug.Log($"이미 보유 중인 영웅입니다. 레벨업! (ID: {id} / 현재 랭크: {hero.Quantity})");
             }
         }
         else
@@ -438,5 +476,15 @@ public class CDataManager : MonoBehaviour
         return Math.Min(seconds, 3600*24); 
     }
 
+    public void AddHeroDummy(EHeroID id)
+    {
+        // 보유 여부 확인
+        var hero = GetHeroData(id);
+        if (hero == null)
+        {
+            UserData.HeroList.Add(new UserHeroData { HeroID = id, Quantity = 0 });
+        }
+
+    }
 
 }
