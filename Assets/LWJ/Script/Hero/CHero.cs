@@ -40,6 +40,9 @@ public class CHero : CUnitBase
 
 	[Header("버프 시스템")]
 	[SerializeField] protected BuffSystem buffSystem;
+
+	[Header("무적")]
+	[SerializeField] protected bool isInvincible = false;
 	#endregion
 
 	#region 내부 변수
@@ -350,15 +353,15 @@ public class CHero : CUnitBase
 	// for Test
 	protected override void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Alpha1))
+		if (Input.GetKeyDown(KeyCode.Alpha1) && enableAttack)
 		{
 			OnAttack(Target);
 		}
-		if (Input.GetKeyDown(KeyCode.Alpha2))
+		if (Input.GetKeyDown(KeyCode.Alpha2) && enableCriticalAttack)
 		{
 			OnCritical(Target);
 		}
-		if (Input.GetKeyDown(KeyCode.Alpha3))
+		if (Input.GetKeyDown(KeyCode.Alpha3) && enableUseSkill)
 		{
 			OnSkill(Target);
 		}
@@ -658,6 +661,11 @@ public class CHero : CUnitBase
 	public override void TakeDamage(float damage, CUnitBase attacker, bool summonNormalHitEffect = true)
 	{
 		if (IsDead)
+		{
+			return;
+		}
+
+		if (isInvincible)
 		{
 			return;
 		}

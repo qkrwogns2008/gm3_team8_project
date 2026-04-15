@@ -14104,6 +14104,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4709867586078768}
   - component: {fileID: 2044098879162187135}
+  - component: {fileID: 9054763781262763622}
   m_Layer: 0
   m_Name: FX_Hero_Rook_A_Active_3
   m_TagString: Untagged
@@ -14142,6 +14143,25 @@ MonoBehaviour:
   _cameraTr: {fileID: 0}
   _useX: 1
   _useY: 1
+--- !u!114 &9054763781262763622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709254077376921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b5e7618439229f439e0910602e9a73a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NoDirectionEffect: {fileID: 1730242686860875}
+  LeftEffect: {fileID: 0}
+  RightEffect: {fileID: 0}
+  EffectLifeTime: 0.7
+  IsLooping: 0
+  EnableParticleBaseScaleMultiplier: 1
+  BaseScaleMultiplier: 1
 --- !u!1 &1724804207875695
 GameObject:
   m_ObjectHideFlags: 0
