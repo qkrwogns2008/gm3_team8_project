@@ -27983,6 +27983,7 @@ GameObject:
   - component: {fileID: 4719342369648492}
   - component: {fileID: 198726790013014859}
   - component: {fileID: 199436073260064126}
+  - component: {fileID: 3649931831676563228}
   m_Layer: 0
   m_Name: Right
   m_TagString: Untagged
@@ -30305,6 +30306,20 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &3649931831676563228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1589667821646929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2621b222c1d268940a34cfe6fcfda1f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factorX: 0
+  factorY: 0.0095
 --- !u!1 &1618682377417806
 GameObject:
   m_ObjectHideFlags: 0
@@ -37314,6 +37329,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4313026266067498}
   - component: {fileID: 3821613948687759642}
+  - component: {fileID: 482136422415435133}
   m_Layer: 0
   m_Name: FX_Radgrid_Attack_1_A
   m_TagString: Untagged
@@ -37354,8 +37370,24 @@ MonoBehaviour:
   LeftEffect: {fileID: 1730242686860875}
   RightEffect: {fileID: 1589667821646929}
   EffectLifeTime: 1
+  IsLooping: 0
   EnableParticleBaseScaleMultiplier: 1
   BaseScaleMultiplier: 1
+--- !u!114 &482136422415435133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709254077376921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cfb411ede0678442808700649116a53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cameraTr: {fileID: 0}
+  _useX: 1
+  _useY: 1
 --- !u!1 &1709867586078768
 GameObject:
   m_ObjectHideFlags: 0
@@ -42031,6 +42063,7 @@ GameObject:
   - component: {fileID: 4621510681728303}
   - component: {fileID: 198632457200066912}
   - component: {fileID: 199634108722742392}
+  - component: {fileID: 7691168888015789691}
   m_Layer: 0
   m_Name: Left
   m_TagString: Untagged
@@ -44353,6 +44386,20 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &7691168888015789691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730242686860875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2621b222c1d268940a34cfe6fcfda1f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factorX: 0
+  factorY: 0.0095
 --- !u!1 &1884547391421755
 GameObject:
   m_ObjectHideFlags: 0

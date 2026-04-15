@@ -86537,6 +86537,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4632746491512912}
   - component: {fileID: -6060166778149346835}
+  - component: {fileID: 2554969086322054848}
   m_Layer: 0
   m_Name: FX_Ecila_Active_1_A
   m_TagString: Untagged
@@ -86577,8 +86578,24 @@ MonoBehaviour:
   LeftEffect: {fileID: 1969106005120503}
   RightEffect: {fileID: 1730242686860875}
   EffectLifeTime: 1.3
+  IsLooping: 0
   EnableParticleBaseScaleMultiplier: 1
   BaseScaleMultiplier: 1
+--- !u!114 &2554969086322054848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709254077376921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cfb411ede0678442808700649116a53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cameraTr: {fileID: 0}
+  _useX: 1
+  _useY: 1
 --- !u!1 &1709867586078768
 GameObject:
   m_ObjectHideFlags: 0
@@ -93613,6 +93630,7 @@ GameObject:
   - component: {fileID: 4719342369648492}
   - component: {fileID: 198726790013014859}
   - component: {fileID: 199436073260064126}
+  - component: {fileID: 8290855112374994970}
   m_Layer: 0
   m_Name: Right
   m_TagString: Untagged
@@ -95902,6 +95920,20 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &8290855112374994970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730242686860875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2621b222c1d268940a34cfe6fcfda1f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factorX: 0
+  factorY: 0.0095
 --- !u!1 &1733206282342372
 GameObject:
   m_ObjectHideFlags: 0
@@ -121836,6 +121868,7 @@ GameObject:
   - component: {fileID: 4824317463469755}
   - component: {fileID: 198561126880652180}
   - component: {fileID: 199275549183895104}
+  - component: {fileID: 691154889341802019}
   m_Layer: 0
   m_Name: Left
   m_TagString: Untagged
@@ -124118,6 +124151,20 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &691154889341802019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1969106005120503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2621b222c1d268940a34cfe6fcfda1f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factorX: 0
+  factorY: 0
 --- !u!1 &1977153420339851
 GameObject:
   m_ObjectHideFlags: 0
