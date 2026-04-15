@@ -16,12 +16,10 @@ public class CGachaView : MonoBehaviour
     public CanvasGroup CategoryGroup;                   // 영웅 / 펫 / 성물 버튼 그룹
     public CanvasGroup HeroTabGroup;                    // 영웅 탭 그룹 (투명도)
     public CanvasGroup PetTabGroup;                     // 펫 탭 그룹 (투명도)
-    public CanvasGroup HolyTabGroup;                    // 성물 탭 버튼 (투명도)
 
     [Header("카테고리 탭 버튼 설정")]
     public Button HeroTabButton;                        // 영웅 탭 버튼
     public Button PetTabButton;                         // 펫 탭 버튼
-    public Button HolyTabButton;                        // 성물 탭 버튼
 
     [Header("영웅 소환 레벨 경험치")]
     public Image ExpFillImageHero;                      // FIll Amount 조절용 이미지
