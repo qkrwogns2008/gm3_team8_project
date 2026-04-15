@@ -23,6 +23,8 @@ public class CGroupManager : MonoBehaviour
     [SerializeField] private float _spacing = 10f; // 영웅 간격
     [Header("데이터베이스 매칭 리스트")]
     [SerializeField] private List<HeroEntry> _heroDatabase;
+    [Header("타겟팅 시스템")]
+    [SerializeField] private CTargetScanner _scanner;
 
     [Header("영웅 배치 데이터")]
     [SerializeField] private Dictionary<int, CAutoPlayerMove> _activeHeroes = new Dictionary<int, CAutoPlayerMove>();
@@ -132,6 +134,33 @@ public class CGroupManager : MonoBehaviour
             pair.Value.SetGroupTarget(targetWorldPos);
         }
     }
+
+    #region 타겟팅 지휘
+    private void HandleTargetSharing()
+    {
+        if(_scanner == null)
+        {
+            return;
+        }
+
+        // 스캐너를 통해 카메라 주인 기준 가까운 적 찾기
+        CUnitBase targetEnemy = _scanner.ScanTargetFromList();
+
+        // 영웅에게 해당 타겟 정보 전달
+        BroadcastSharedTarget(targetEnemy);
+    }
+
+    private void BroadcastSharedTarget(CUnitBase target)
+    {
+        foreach(var pair in _activeHeroes)
+        {
+            if(pair.Value != null)
+            {
+                pair.Value.SetSharedTarget(target);
+            }
+        }
+    }
+    #endregion
 
     private void Update()
     {
