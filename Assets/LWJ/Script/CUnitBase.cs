@@ -327,6 +327,21 @@ public abstract class CUnitBase : MonoBehaviour
 		// 사망 애니메이션 등 추가
 	}
 
+	/// <summary>
+	/// X축으로 knockbackRange만큼 밀림.
+	/// </summary>
+	public virtual void OnKnockbackX(float knockbackRange)
+	{
+		Vector3 pos, posPrev;
+		posPrev = pos = transform.position;
+		pos.x -= knockbackRange;
+		transform.position = pos;
+		if (PrintLog)
+		{
+			Debug.Log($"[{UnitName}] 넉백됨. [{posPrev:F2} → {pos:F2}]");
+		}
+	}
+
 	// 공격 가능 여부 확인
 	protected virtual bool IsAvailable()
 	{

@@ -68,6 +68,10 @@ MonoBehaviour:
   enableCriticalAttack: 1
   enableUseSkill: 1
   buffSystem: {fileID: 8177186180137121409}
+  isInvincible: 0
+  TeleportOffset: 5
+  TeleportWaitTime: 0.5
+  KnockbackPower: 2.5
   PrintSkillLog: 0
 --- !u!114 &1385575880346748945
 MonoBehaviour:

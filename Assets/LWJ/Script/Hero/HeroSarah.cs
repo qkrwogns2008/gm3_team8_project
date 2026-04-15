@@ -22,9 +22,16 @@ public class HeroSarah : CHero
 	#endregion
 
 	#region 내부 변수
+	protected bool isSkillUsing = false;
 	// 스킬 범위에 스파인 크기 반영
 	protected virtual float ScaledAreaRadius => AreaRadius * SpineScale;
 	#endregion
+
+	protected override void OnDisable()
+	{
+		base.OnDisable();
+		isSkillUsing = false;
+	}
 
 	protected override IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type)
 	{
@@ -73,7 +80,20 @@ public class HeroSarah : CHero
 					yield break;
 				}
 
-				ProcessHit(target, type);
+				if (isSkillUsing)
+				{
+					ProcessTeleportHit(target);
+				}
+				else
+				{
+					ProcessHit(target, type);
+
+					if (type == EAttackType.Skill)
+					{
+						MotionRoutine = null;
+						yield break;
+					}
+				}
 			}
 		}
 		else
@@ -81,7 +101,10 @@ public class HeroSarah : CHero
 			Debug.LogWarning($"{UnitName}) 이펙트 null");
 			yield return new WaitForSeconds(0.3f / AttackSpeedMultiplier);
 
-			ProcessHit(target, type);
+			if (type != EAttackType.Skill)
+			{
+				ProcessHit(target, type);
+			}
 		}
 
 		if (type != EAttackType.Skill)
@@ -110,17 +133,20 @@ public class HeroSarah : CHero
 			return;
 		}
 
-		isInvincible = true; // 무적 활성화
-		if (PrintSkillLog)
-		{
-			Debug.Log($"[{UnitName}] 무적 {isInvincible}");
-		}
+		isSkillUsing = true;
 		MotionRoutine = StartCoroutine(Co_TeleportToTargetBehind(target));
 	}
 
 	protected virtual IEnumerator Co_TeleportToTargetBehind(CUnitBase target)
 	{
+		isInvincible = true; // 무적 활성화
+		if (PrintSkillLog)
+		{
+			Debug.Log($"[{UnitName}] 무적 {isInvincible}");
+		}
+
 		yield return new WaitForSeconds(TeleportWaitTime);
+
 		float offsetX = target.IsFacingRight ? -TeleportOffset : TeleportOffset;
 		Vector3 pos = target.transform.position + new Vector3(offsetX, 0, 0);
 
@@ -131,53 +157,9 @@ public class HeroSarah : CHero
 			Debug.Log($"[{UnitName}] 무적 {isInvincible}");
 		}
 
-		if (string.IsNullOrEmpty(SkillAnimation2))
-		{
-			Debug.LogWarning("애니메이션 NONE. 인스펙터 확인");
-			MotionRoutine = null;
-			yield break;
-		}
+		yield return StartCoroutine(Co_PlayMotion(SkillEffect2, SkillAnimation2, target, EAttackType.Skill));
 
-		SkeletonAni.AnimationState.SetAnimation(0, SkillAnimation2, false);
-		SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
-
-		if (SkillEffect2 != null)
-		{
-			// 목록의 이펙트를 순차 출력
-			for (int i = 0; i < SkillEffect2.Catalog.Count; i++)
-			{
-				EffectInfo fxData = SkillEffect2.Catalog[i];
-
-				if (fxData == null)
-				{
-					Debug.LogWarning($"CHero) 이펙트 NONE. {SkillEffect2.Name} 이펙트 목록 확인");
-					continue;
-				}
-
-				yield return new WaitForSeconds(fxData.PreDelay / AttackSpeedMultiplier);
-
-				if (fxData.Prefab == null)
-				{
-					Debug.LogWarning($"CHero) 이펙트 프리팹 NONE. {SkillEffect2.Name} 이펙트 목록 확인");
-					continue;
-				}
-
-				// 이펙트 생성 실패 시 즉시 종료
-				if (!TrySummonEffect(fxData, transform.position))
-				{
-					Debug.LogWarning($"{name} : {SkillEffect2.Name} 이펙트 생성 실패");
-					MotionRoutine = null;
-					yield break;
-				}
-
-				ProcessTeleportHit(target);
-			}
-		}
-		else
-		{
-			Debug.LogWarning($"{UnitName}) 이펙트 null");
-		}
-
+		isSkillUsing = false;
 		MotionRoutine = null;
 
 		if (IsPendingDead)
