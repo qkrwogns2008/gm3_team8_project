@@ -13,24 +13,48 @@ public class CGachaCategorySO : ScriptableObject
     [Header("소환 테이블 연결")]
     public CGachaTableSO GachaTable;            // TableSO 연결
 
-    [Header("소환 레벨과 경험치 설정")]
-    public int CurrentLevel = 1;                // 소환 레벨
-    public int CurrentExp = 0;                  // 소환 경험치
-
     // 레벨업 경험치 테이블 = 1: 100, 2: 300, 3: 1000, 4: 2500, 5: 5000, 6: 10000, 7: 15000, 8:25000, 9: 35000
     public int[] _maxExpTable = { 100, 300, 1000, 2500, 5000, 10000, 15000, 25000, 35000};                   
 
-    public void AddExp(int amount)
+    // 레벨 표시
+    public int GetLevel(int totalExp)
     {
-        CurrentExp += amount;
+        int level = 1;
+        int tempExp = totalExp;
 
-        // 현재 레벨이 최대 레벨이 같거나 크면 레벨업, 최대 레벨보다 작을 때만 레벨업
-        while (CurrentExp >= _maxExpTable[CurrentLevel - 1] && CurrentLevel < _maxExpTable.Length)
+        for (int i = 0; i < _maxExpTable.Length; i++)
         {
-            // 누적 경험치
-            CurrentExp -= _maxExpTable[CurrentLevel - 1];
-            // 레벨 업
-            CurrentLevel++;
+            if (tempExp >= _maxExpTable[i])
+            {
+                tempExp -= _maxExpTable[i];
+                level++;
+            }
+
+            else
+            {
+                break;
+            }
+
         }
+        return Mathf.Min(level, _maxExpTable.Length + 1);
     }
+
+    // 현재 경험치
+    public int GetCurrentExp(int totalExp)
+    {
+        int tempExp = totalExp;
+
+        for (int i = 0; i < _maxExpTable.Length; i++)
+        {
+            if (tempExp >= _maxExpTable[i])
+            {
+                tempExp -= _maxExpTable[i];
+            }
+
+            else break;
+        }
+
+        return tempExp;
+    }
+
 }
