@@ -2187,7 +2187,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1027, y: 1185}
+  m_AnchoredPosition: {x: 1667, y: 1185}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5619632412066746449
@@ -7209,6 +7209,7 @@ GameObject:
   - component: {fileID: 7887000052137686405}
   - component: {fileID: 1492828726256625444}
   - component: {fileID: 3058580020170613889}
+  - component: {fileID: 5643879700804185723}
   m_Layer: 5
   m_Name: BP
   m_TagString: Untagged
@@ -7332,6 +7333,22 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &5643879700804185723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6703493677612583255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 275c609f02ff41e48a5ef1b6e7fc8316, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textA: {fileID: 2459637090493077079}
+  textB: {fileID: 5148042208514966993}
+  resultText1: {fileID: 3058580020170613889}
+  resultText2: {fileID: 6635006806854943609}
 --- !u!1 &6784429371735774864
 GameObject:
   m_ObjectHideFlags: 0
@@ -8547,7 +8564,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1246510446451568499
 RectTransform:
   m_ObjectHideFlags: 0
