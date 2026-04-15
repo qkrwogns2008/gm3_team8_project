@@ -11,7 +11,7 @@ public class CQuestManager : MonoBehaviour
     public List<CQuestDataSO> QuestDataList = new List<CQuestDataSO>();
     private Dictionary<int, CQuestDataSO> _questDict = new Dictionary<int, CQuestDataSO>();
 
-    // 임시 데이터
+    // CDataManager 연결
     public List<UserQuestData> UserQuestList => CDataManager.Instance.UserData.QuestList;
 
     // 옵저버 알림
@@ -33,7 +33,7 @@ public class CQuestManager : MonoBehaviour
         // 딕셔너리 매핑
         BuildMaps();
 
-        // 임시 데이터 생성
+        // 데이터 생성
         InitProgress();
     }
 
@@ -75,7 +75,7 @@ public class CQuestManager : MonoBehaviour
         CDataManager.Instance.SaveUserData();
     }
 
-    /// 퀘스트 진행도 업데이트 함수
+    // 퀘스트 진행도 업데이트 함수
     public void QuestProgress(EQuestType questType, int amount)
     {
         var userData = CDataManager.Instance.UserData;
@@ -126,23 +126,25 @@ public class CQuestManager : MonoBehaviour
             var progress = UserQuestList[i];
             if (progress.QuestID == questID && progress.ReewardCount > 0)
             {
-                 
-                CQuestDataSO dataSO = _questDict[questID];
+                if (_questDict.ContainsKey(questID))
+                {
+                    CQuestDataSO dataSO = _questDict[questID];
 
-                // 실제 유저 재화 시스템과 연결
-                int rewardTotal = dataSO.RewardQuest * progress.ReewardCount;
-             
-                // 보상 지급
-                CDataManager.Instance.AddPickUpTicket(rewardTotal);                 
-                Debug.Log($"{dataSO.QuestName} 보상 : {rewardTotal}개 획득");
-             
-                // 보상 횟수 초기화
-                progress.ReewardCount = 0;
-             
-                // UI 갱신
-                OnDataUpdate?.Invoke();
-             
-                CDataManager.Instance.SaveUserData();
+                    // 실제 유저 재화 시스템과 연결
+                    int rewardTotal = dataSO.RewardQuest * progress.ReewardCount;
+
+                    // 보상 지급
+                    CDataManager.Instance.AddPickUpTicket(rewardTotal);
+                    Debug.Log($"{dataSO.QuestName} 보상 : {rewardTotal}개 획득");
+
+                    // 보상 횟수 초기화
+                    progress.ReewardCount = 0;
+
+                    // UI 갱신
+                    OnDataUpdate?.Invoke();
+
+                    CDataManager.Instance.SaveUserData();
+                }
                 return;
             }
         }
@@ -150,6 +152,7 @@ public class CQuestManager : MonoBehaviour
 
     public void RewardAllQuest()
     {
+        // 모두 받기
         bool isAllReward = false;
 
         for (int i = 0; i < UserQuestList.Count; i++)
@@ -172,6 +175,7 @@ public class CQuestManager : MonoBehaviour
             }
         }
 
+        // 모두 받기
         if (isAllReward)
         {
             // UI 갱신

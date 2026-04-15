@@ -11,7 +11,7 @@ public class CGachaModel : MonoBehaviour
     public int RubyCount => CDataManager.Instance.UserData.Ruby;                // 현재 루비
     public int TicketCount => CDataManager.Instance.UserData.PickUpTicket;      // 현재 소환권
 
-    private CGachaCategorySO _currentCategory;
+    private CGachaCategorySO _currentCategory;                                  // 현재 카테고리
 
     private System.Random GachaRandom;                                          // 시스템 랜덤 생성
 
