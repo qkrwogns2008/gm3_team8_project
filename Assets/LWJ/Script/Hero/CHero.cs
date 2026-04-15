@@ -142,9 +142,13 @@ public class CHero : CUnitBase
 			case EBuffFlags.DefenseBoost:
 				ApplyBuffDefense();
 				break;
+			case EBuffFlags.AttackDamageBoost:
+				ApplyBuffAttackDamage();
+				break;
 			default:
 				ApplyBuffCritical();
 				ApplyBuffDefense();
+				ApplyBuffAttackDamage();
 				break;
 		}
 	}
@@ -260,6 +264,12 @@ public class CHero : CUnitBase
 	{
 		float buffDefenseRatio = BuffSystem.GetBuffEffectTotalValue(EBuffFlags.DefenseBoost);
 		DefenseMultiplier = DefaultDefenseMultiplier + buffDefenseRatio;
+	}
+
+	protected virtual void ApplyBuffAttackDamage()
+	{
+		float buffAttackDamageRatio = BuffSystem.GetBuffEffectTotalValue(EBuffFlags.AttackDamageBoost);
+		AttackDamageMultiplier = DefaultAttackDamageMultiplier + buffAttackDamageRatio;
 	}
 	#endregion
 
@@ -621,7 +631,7 @@ public class CHero : CUnitBase
 		}
 		else
 		{
-			Debug.LogWarning($"{UnitName}) ¿Ã∆Â∆Æ null");
+			Debug.LogWarning($"{UnitName}) effectData null");
 			yield return new WaitForSeconds(0.3f / AttackSpeedMultiplier);
 		}
 
@@ -775,6 +785,7 @@ public class CHero : CUnitBase
 	/// </summary>
 	public virtual void AddHPByRatio(float ratio)
 	{
+		PlayBindingEffect(TakeHealEffect, Vector3.zero);
 		if (currentHp >= FinalMaxHP)
 		{
 			return;
@@ -783,7 +794,6 @@ public class CHero : CUnitBase
 		float amount = FinalMaxHP * ratio;
 		currentHp = Mathf.Min(currentHp + amount, FinalMaxHP);
 
-		PlayBindingEffect(TakeHealEffect, Vector3.zero);
 		NotifyHpChange();
 
 		if (PrintLog)
@@ -797,6 +807,7 @@ public class CHero : CUnitBase
 	/// </summary>
 	public virtual void AddHPByRatio(float ratio, float bonusThresholdRatio, float bonusRatio)
 	{
+		PlayBindingEffect(TakeHealEffect, Vector3.zero);
 		if (currentHp >= FinalMaxHP)
 		{
 			return;
@@ -811,7 +822,6 @@ public class CHero : CUnitBase
 		float amount = FinalMaxHP * ratio;
 		currentHp = Mathf.Min(currentHp + amount, FinalMaxHP);
 
-		PlayBindingEffect(TakeHealEffect, Vector3.zero);
 		NotifyHpChange();
 
 		if (PrintLog)

@@ -112,6 +112,10 @@ public class HeroEcila : CHero
 		SectorAreaAttack(target, SectorDegree, ScaledSectorRadius, targetList);
 
 		ApplyBuffAllHero(EBuffFlags.StackGuard, 3f, 10f, this);
+		if (PrintSkillLog)
+		{
+			Debug.Log($"[{UnitName}] 모든 아군에게 버프 지급");
+		}
 	}
 
 	/// <summary>
@@ -204,11 +208,6 @@ public class HeroEcila : CHero
 				}
 
 				hero.BuffSystem.AddBuff(buffFlags, value, duration, provider);
-			}
-
-			if (PrintLog)
-			{
-				Debug.Log($"[{UnitName}] 모든 아군에게 버프 지급");
 			}
 		}
 	}

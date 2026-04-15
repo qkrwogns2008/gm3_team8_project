@@ -1,4 +1,3 @@
-using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,8 +15,30 @@ public class HeroLoto : NoEffectHeroBase
 	[Header("스킬 속성값")]
 	[SerializeField] protected float TeleportOffset = 5.0f;
 	[SerializeField] protected float TeleportWaitTime = 0.5f;
-	[SerializeField] protected bool PrintSkillLog = false;
 	#endregion
+
+	protected override void OnSkill(CUnitBase target)
+	{
+		ApplyAttackCooldown(false);
+		NotifySkillUse();
+
+		if (SkeletonAni == null)
+		{
+			Debug.LogWarning("CHero) 인스펙터 null 감지");
+			return;
+		}
+
+		if (MotionRoutine != null)
+		{
+			return;
+		}
+
+		MotionRoutine = StartCoroutine(Co_PlayMotion(SkillAnimation, target, EAttackType.Skill));
+		if (PrintLog)
+		{
+			Debug.Log($"{UnitName}의 스킬 발동!");
+		}
+	}
 
 	// multi attack
 	protected override IEnumerator Co_PlayMotion(string animationName, CUnitBase target, EAttackType type)
@@ -78,54 +99,25 @@ public class HeroLoto : NoEffectHeroBase
 		}
 	}
 
-	protected virtual IEnumerator Co_TeleportToTarget(CUnitBase target, EffectDataSO effectData)
+	protected override void ProcessSkillHit(CUnitBase target)
+	{
+		if (target == null)
+		{
+			return;
+		}
+
+		MotionRoutine = StartCoroutine(Co_TeleportToTarget(target));
+	}
+
+	protected virtual IEnumerator Co_TeleportToTarget(CUnitBase target)
 	{
 		yield return new WaitForSeconds(TeleportWaitTime);
-		float offsetX = target.IsFacingRight ? -TeleportOffset : TeleportOffset;
+		float offsetX = IsFacingRight ? -TeleportOffset : TeleportOffset;
 		Vector3 pos = target.transform.position + new Vector3(offsetX, 0, 0);
 
 		transform.position = pos;
-		if (PrintSkillLog)
-		{
-			Debug.Log($"[{UnitName}] 무적 {isInvincible}");
-		}
-
-		if (effectData != null)
-		{
-			// 목록의 이펙트를 순차 출력
-			for (int i = 0; i < effectData.Catalog.Count; i++)
-			{
-				EffectInfo fxData = effectData.Catalog[i];
-
-				if (fxData == null)
-				{
-					Debug.LogWarning($"CHero) 이펙트 NONE. {effectData.Name} 이펙트 목록 확인");
-					continue;
-				}
-
-				yield return new WaitForSeconds(fxData.PreDelay / AttackSpeedMultiplier);
-
-				if (fxData.Prefab == null)
-				{
-					Debug.LogWarning($"CHero) 이펙트 프리팹 NONE. {effectData.Name} 이펙트 목록 확인");
-					continue;
-				}
-
-				// 이펙트 생성 실패 시 즉시 종료
-				if (!TrySummonEffect(fxData, transform.position))
-				{
-					Debug.LogWarning($"{name} : {effectData.Name} 이펙트 생성 실패");
-					MotionRoutine = null;
-					yield break;
-				}
-
-				ProcessTeleportHit(target);
-			}
-		}
-		else
-		{
-			Debug.LogWarning($"{UnitName}) 이펙트 null");
-		}
+		
+		ProcessTeleportHit(target);
 
 		MotionRoutine = null;
 
@@ -137,6 +129,9 @@ public class HeroLoto : NoEffectHeroBase
 
 	protected virtual void ProcessTeleportHit(CUnitBase target)
 	{
-
+		if (target != null)
+		{
+			target.TakeDamage(FinalSkillDamage, this);
+		}
 	}
 }
