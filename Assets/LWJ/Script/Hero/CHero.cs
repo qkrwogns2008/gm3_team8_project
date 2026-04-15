@@ -48,7 +48,7 @@ public class CHero : CUnitBase
 	#region 내부 변수
 	protected HeroDataSO HeroData;
 
-	protected EHeroID HeroID; // ID
+	protected EHeroID heroID; // ID
 
 	protected float BaseDefense; // 방어력
 	protected float DefaultDefenseMultiplier; // 기본 방어력 승수
@@ -93,6 +93,7 @@ public class CHero : CUnitBase
 	public event System.Action<float> OnSkillUsed; // 스킬 쿨타임이 인자로 들어감
 	public event System.Action OnDead;
 	public virtual BuffSystem BuffSystem => buffSystem;
+	public EHeroID HeroID => heroID;
 	public virtual bool EnableAttack => enableAttack;
 	public virtual bool EnableCriticalAttack => enableCriticalAttack;
 	public virtual bool EnableUseSkill => enableUseSkill;
@@ -272,7 +273,7 @@ public class CHero : CUnitBase
 		HeroData = OriginData as HeroDataSO;
 		if (HeroData != null)
 		{
-			HeroID = HeroData.HeroID;
+			heroID = HeroData.HeroID;
 			if (HeroID == EHeroID.None)
 			{
 				Debug.LogWarning($"{UnitName} ID 설정 필요.");
