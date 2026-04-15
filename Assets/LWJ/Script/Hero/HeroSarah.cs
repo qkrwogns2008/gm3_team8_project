@@ -1,11 +1,30 @@
+using Spine.Unity;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class HeroSarah : CHero
 {
 	#region 인스펙터
 	[Header("Multi Attack 설정")]
 	[SerializeField] protected int CriticalAttackCount = 2;
+
+	[Header("스킬 속성값")]
+	[SpineAnimation(dataField = "SkeletonAni")]
+	[SerializeField] protected string SkillAnimation2;
+	[SerializeField] protected EffectDataSO SkillEffect2;
+	[SerializeField] protected float TeleportBehindOffset = 5.0f;
+	[SerializeField] protected float TeleportWaitTime = 0.5f;
+
+	[SerializeField] protected float AreaRadius = 3f;
+
+	[SerializeField] protected bool PrintSkillLog = false;
+	#endregion
+
+	#region 내부 변수
+	// 스킬 범위에 스파인 크기 반영
+	protected virtual float ScaledAreaRadius => AreaRadius * SpineScale;
 	#endregion
 
 	protected override IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type)
@@ -66,11 +85,14 @@ public class HeroSarah : CHero
 			ProcessHit(target, type);
 		}
 
-		MotionRoutine = null;
-
-		if (IsPendingDead)
+		if (type != EAttackType.Skill)
 		{
-			DeathSequence();
+			MotionRoutine = null;
+
+			if (IsPendingDead)
+			{
+				DeathSequence();
+			}
 		}
 	}
 
@@ -80,5 +102,144 @@ public class HeroSarah : CHero
 		{
 			target.TakeDamage(CriticalDamage / CriticalAttackCount, this);
 		}
+	}
+
+	protected override void ProcessSkillHit(CUnitBase target)
+	{
+		if (target == null)
+		{
+			return;
+		}
+
+		isInvincible = true; // 무적 활성화
+		if (PrintSkillLog)
+		{
+			Debug.Log($"[{UnitName}] 무적 {isInvincible}");
+		}
+		MotionRoutine = StartCoroutine(Co_ProcessSkillHit(target));
+	}
+
+	protected virtual IEnumerator Co_ProcessSkillHit(CUnitBase target)
+	{
+		yield return new WaitForSeconds(TeleportWaitTime);
+		float offsetX = target.IsFacingRight ? -TeleportBehindOffset : TeleportBehindOffset;
+		Vector3 pos = target.transform.position + new Vector3(offsetX, 0, 0);
+
+		transform.position = pos;
+		isInvincible = false; // 무적 비활성화
+		if (PrintSkillLog)
+		{
+			Debug.Log($"[{UnitName}] 무적 {isInvincible}");
+		}
+
+		if (string.IsNullOrEmpty(SkillAnimation2))
+		{
+			Debug.LogWarning("애니메이션 NONE. 인스펙터 확인");
+			MotionRoutine = null;
+			yield break;
+		}
+
+		SkeletonAni.AnimationState.SetAnimation(0, SkillAnimation2, false);
+		SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
+
+		if (SkillEffect2 != null)
+		{
+			// 목록의 이펙트를 순차 출력
+			for (int i = 0; i < SkillEffect2.Catalog.Count; i++)
+			{
+				EffectInfo fxData = SkillEffect2.Catalog[i];
+
+				if (fxData == null)
+				{
+					Debug.LogWarning($"CHero) 이펙트 NONE. {SkillEffect2.Name} 이펙트 목록 확인");
+					continue;
+				}
+
+				yield return new WaitForSeconds(fxData.PreDelay / AttackSpeedMultiplier);
+
+				if (fxData.Prefab == null)
+				{
+					Debug.LogWarning($"CHero) 이펙트 프리팹 NONE. {SkillEffect2.Name} 이펙트 목록 확인");
+					continue;
+				}
+
+				// 이펙트 생성 실패 시 즉시 종료
+				if (!TrySummonEffect(fxData, transform.position))
+				{
+					Debug.LogWarning($"{name} : {SkillEffect2.Name} 이펙트 생성 실패");
+					MotionRoutine = null;
+					yield break;
+				}
+
+				ProcessSkillHitAfter(target);
+			}
+		}
+		else
+		{
+			Debug.LogWarning($"{UnitName}) 이펙트 null");
+		}
+
+		MotionRoutine = null;
+
+		if (IsPendingDead)
+		{
+			DeathSequence();
+		}
+	}
+
+	protected virtual void ProcessSkillHitAfter(CUnitBase target)
+	{
+		IReadOnlyList<CUnitBase> targetList = CEnemyManager.Instance.ActiveEnemies;
+		CircleAreaAttack(target, ScaledAreaRadius, targetList, FinalSkillDamage);
+	}
+
+	protected virtual void CircleAreaAttack(CUnitBase originTarget, float radius, IReadOnlyList<CUnitBase> targetList, float damage)
+	{
+		Vector2 areaCenterPos = originTarget.transform.position;
+		float sqrRadius = radius * radius;
+
+		for (int i = 0; i < targetList.Count; i++)
+		{
+			CUnitBase target = targetList[i];
+
+			if (target == null)
+			{
+				continue;
+			}
+			if (target.IsUnitDead)
+			{
+				continue;
+			}
+
+			Vector2 targetPos = target.transform.position;
+			Vector2 toTarget = targetPos - areaCenterPos;
+
+			if (toTarget.sqrMagnitude > sqrRadius)
+			{
+				continue;
+			}
+
+			target.TakeDamage(damage, this, false);
+		}
+
+		if (PrintSkillLog)
+		{
+			Debug.Log($"원형 범위 피해 발생. 피해량 : [{damage}]");
+		}
+	}
+
+	protected virtual void OnDrawGizmosSelected()
+	{
+		if (Target == null)
+		{
+			return;
+		}
+		if (Target.IsUnitDead)
+		{
+			return;
+		}
+
+		Gizmos.color = Color.yellow;
+		Gizmos.DrawWireSphere(Target.transform.position, ScaledAreaRadius);
 	}
 }

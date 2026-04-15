@@ -40,6 +40,9 @@ public class CHero : CUnitBase
 
 	[Header("버프 시스템")]
 	[SerializeField] protected BuffSystem buffSystem;
+
+	[Header("무적")]
+	[SerializeField] protected bool isInvincible = false;
 	#endregion
 
 	#region 내부 변수
@@ -233,19 +236,19 @@ public class CHero : CUnitBase
 		return fx;
 	}
 
-	protected virtual void PlayHealEffect(Vector3 offset)
+	protected virtual void PlayBindingEffect(EffectDataSO effectData, Vector3 offset)
 	{
-		if (TakeHealEffect == null || TakeHealEffect.Catalog.Count == 0)
+		if (effectData == null || effectData.Catalog.Count == 0)
 		{
 			return;
 		}
 
 		Vector3 pos = transform.position + offset;
-		EffectBase fx = SummonEffect(TakeHealEffect.Catalog[0], pos);
+		EffectBase fx = SummonEffect(effectData.Catalog[0], pos);
 
 		if (fx == null)
 		{
-			Debug.LogWarning($"[{UnitName}] TakeHealEffect null. HeroDataSO 확인");
+			Debug.LogWarning($"[{UnitName}] BindingEffect({effectData}) null. HeroDataSO 확인");
 			return;
 		}
 
@@ -285,7 +288,7 @@ public class CHero : CUnitBase
 				BaseDefense = stat.HeroDef;
 				CriticalChance = stat.HeroCriticalRatio;
 
-				CurrentHp = FinalMaxHP;
+				currentHp = FinalMaxHP;
 				if (PrintLog)
 				{
 					Debug.Log($"[{UnitName}] userData 적용 완료. {stat.HeroHP}/{stat.HeroAtk}/{stat.HeroDef}/{stat.HeroCriticalRatio}");
@@ -350,15 +353,15 @@ public class CHero : CUnitBase
 	// for Test
 	protected override void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Alpha1))
+		if (Input.GetKeyDown(KeyCode.Alpha1) && enableAttack)
 		{
 			OnAttack(Target);
 		}
-		if (Input.GetKeyDown(KeyCode.Alpha2))
+		if (Input.GetKeyDown(KeyCode.Alpha2) && enableCriticalAttack)
 		{
 			OnCritical(Target);
 		}
-		if (Input.GetKeyDown(KeyCode.Alpha3))
+		if (Input.GetKeyDown(KeyCode.Alpha3) && enableUseSkill)
 		{
 			OnSkill(Target);
 		}
@@ -662,6 +665,11 @@ public class CHero : CUnitBase
 			return;
 		}
 
+		if (isInvincible)
+		{
+			return;
+		}
+
 		if ((BuffSystem.CurrentBuffFlags & EBuffFlags.StackGuard) != 0)
 		{
 			RemainGuardStack -= 1f;
@@ -685,6 +693,10 @@ public class CHero : CUnitBase
 		// 피해 경감 체크
 		bool isReduction = (Random.Range(0f, 100f) <= DamageReductionChance);
 		finalDamage *= isReduction ? 1f - DamageReductionRatio : 1f;
+		if (isReduction && PrintLog)
+		{
+			Debug.Log($"[{UnitName}] 피해 경감 발동.");
+		}
 
 		// 방어력 연산.
 		finalDamage -= FinalDefense;
@@ -693,17 +705,17 @@ public class CHero : CUnitBase
 		finalDamage = Mathf.Max(1f, finalDamage);
 
 		// 체력 0 미만 보정
-		CurrentHp = Mathf.Max(CurrentHp - finalDamage, 0);
+		currentHp = Mathf.Max(currentHp - finalDamage, 0);
 
 		if (PrintLog)
 		{
 			if (finalDamage > 1)
 			{
-				Debug.Log($"[{UnitName}] {finalDamage} 피해 입음. [HP:{CurrentHp}]");
+				Debug.Log($"[{UnitName}] {damage} → {finalDamage} 피해 입음. [HP:{currentHp}]");
 			}
 			else
 			{
-				Debug.Log($"[{UnitName}] 방어 수치에 의해 피해 상쇄. [피해:{damage} / HP:{CurrentHp}]");
+				Debug.Log($"[{UnitName}] 방어 수치에 의해 피해 상쇄. [피해:{damage} / HP:{currentHp}]");
 			}
 		}
 
@@ -721,7 +733,7 @@ public class CHero : CUnitBase
 
 		NotifyHpChange();
 
-		if (CurrentHp <= 0)
+		if (currentHp <= 0)
 		{
 			Die();
 		}
@@ -762,20 +774,20 @@ public class CHero : CUnitBase
 	/// </summary>
 	public virtual void AddHPByRatio(float ratio)
 	{
-		if (CurrentHp >= FinalMaxHP)
+		if (currentHp >= FinalMaxHP)
 		{
 			return;
 		}
 
 		float amount = FinalMaxHP * ratio;
-		CurrentHp = Mathf.Min(CurrentHp + amount, FinalMaxHP);
+		currentHp = Mathf.Min(currentHp + amount, FinalMaxHP);
 
-		PlayHealEffect(Vector3.zero);
+		PlayBindingEffect(TakeHealEffect, Vector3.zero);
 		NotifyHpChange();
 
 		if (PrintLog)
 		{
-			Debug.Log($"[{UnitName}] 체력 회복 : {amount}. 현재 체력 : {CurrentHp}");
+			Debug.Log($"[{UnitName}] 체력 회복 : {amount}. 현재 체력 : {currentHp}");
 		}
 	}
 
@@ -784,26 +796,26 @@ public class CHero : CUnitBase
 	/// </summary>
 	public virtual void AddHPByRatio(float ratio, float bonusThresholdRatio, float bonusRatio)
 	{
-		if (CurrentHp >= FinalMaxHP)
+		if (currentHp >= FinalMaxHP)
 		{
 			return;
 		}
 
-		float currentHPRatio = CurrentHp / FinalMaxHP;
+		float currentHPRatio = currentHp / FinalMaxHP;
 		if (currentHPRatio < bonusThresholdRatio)
 		{
 			ratio += bonusRatio;
 		}
 
 		float amount = FinalMaxHP * ratio;
-		CurrentHp = Mathf.Min(CurrentHp + amount, FinalMaxHP);
+		currentHp = Mathf.Min(currentHp + amount, FinalMaxHP);
 
-		PlayHealEffect(Vector3.zero);
+		PlayBindingEffect(TakeHealEffect, Vector3.zero);
 		NotifyHpChange();
 
 		if (PrintLog)
 		{
-			Debug.Log($"[{UnitName}] 체력 회복 : {amount}. 현재 체력 : {CurrentHp}");
+			Debug.Log($"[{UnitName}] 체력 회복 : {amount}. 현재 체력 : {currentHp}");
 		}
 	}
 	#endregion
