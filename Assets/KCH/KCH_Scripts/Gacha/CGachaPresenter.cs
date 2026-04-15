@@ -30,6 +30,7 @@ public class CGachaPresenter : MonoBehaviour
     private Sprite _rubySprite;                                                 // 루비 이미지
     private bool _isRolling = false;                                            // 뽑기 중 유무
     private bool _isAutoRoll = false;                                           // 자동 소환 유무
+    private bool _isLegendShow = false;                                         // 레전드 연출 중 유무
     private int _currentCount = 0;                                              // 뽑기중인 개수
     #endregion
 
@@ -169,11 +170,6 @@ public class CGachaPresenter : MonoBehaviour
         {
             StopAutoRoll();
 
-            if (_currentCount == 300)
-            {
-                StartCoroutine(CO_SlideUpMenu(_gachaView.GachaMiniMenu));
-            }
-
             return;
         }
 
@@ -199,10 +195,13 @@ public class CGachaPresenter : MonoBehaviour
         StartCoroutine("CO_HidePopup");
     }
 
-
-
+    // 레전드 이펙트 팝업
     private IEnumerator CO_ShowLegendEffect(CGachaDataSO data)
     {
+        _isLegendShow = true;
+
+        yield return new WaitForSeconds(0.5f);
+
         if (data != null)
         {
             _gachaView.LegendIllust.skeletonDataAsset = data.IllustAsset;
@@ -242,6 +241,7 @@ public class CGachaPresenter : MonoBehaviour
         }
 
         _gachaView.LegendPopup.SetActive(false);
+        _isLegendShow = false;
 
     }
 
@@ -352,8 +352,11 @@ public class CGachaPresenter : MonoBehaviour
 
             _gachaView.ReRollTenButton.gameObject.SetActive(false);
             _gachaView.ReRollThirtyButton.gameObject.SetActive(false);
+
             _gachaView.ReRollMiniThirtyButton.gameObject.SetActive(false);
             _gachaView.ReRollMiniHThirtyButton.gameObject.SetActive(false);
+
+            _gachaView.AutoGachaButton.gameObject.SetActive(false);
             _gachaView.AllOpenAutoGachaButton.gameObject.SetActive(false);
 
             _gachaView.CloseButton.gameObject.SetActive(true);
@@ -380,10 +383,7 @@ public class CGachaPresenter : MonoBehaviour
         {
             _gachaView.MiniCardPanel.SetActive(true);
             _gachaView.ResultPanel.SetActive(false);
-
-            _gachaView.OpenAllCard.gameObject.SetActive(false);
-            _gachaView.CloseButton.gameObject.SetActive(true);
-
+     
             // 미니 카드 풀에 반납 (역순)
             for (int i = _gachaView.MiniCardTransform.childCount - 1; i >= 0; i--)
             {
@@ -436,12 +436,13 @@ public class CGachaPresenter : MonoBehaviour
             }
 
             _isRolling = false;
-            _gachaView.CloseButton.gameObject.SetActive(true);
 
             if (!_isAutoRoll)
             {
                 _gachaView.ReRollMiniThirtyButton.gameObject.SetActive(true);
                 _gachaView.ReRollMiniHThirtyButton.gameObject.SetActive(true);
+                _gachaView.AutoGachaButton.gameObject.SetActive(true);
+                _gachaView.CloseButton.gameObject.SetActive(true);
 
                 StartCoroutine(CO_SlideUpMenu(_gachaView.GachaMiniMenu));
             }
@@ -490,6 +491,12 @@ public class CGachaPresenter : MonoBehaviour
 
                     // 카드 위치 먼저 세팅
                     cardUI.HideVisual();
+
+                    // 이벤트 구독 초기화
+                    cardUI.OnFliped -= FilpLegendCard;
+
+                    // 이벤트 구독
+                    cardUI.OnFliped += FilpLegendCard;
 
                     _cardList.Add(cardUI);
                 }
@@ -557,6 +564,9 @@ public class CGachaPresenter : MonoBehaviour
 
                 if (count == 300)
                 {
+                    _gachaView.ReRollMiniThirtyButton.gameObject.SetActive(true);
+                    _gachaView.ReRollMiniHThirtyButton.gameObject.SetActive(true);
+                    _gachaView.AutoGachaButton.gameObject.SetActive(true);
                     StartCoroutine(CO_SlideUpMenu(_gachaView.GachaMiniMenu));
                 }
 
@@ -575,19 +585,37 @@ public class CGachaPresenter : MonoBehaviour
 
         for (int i = 0; i < _cardList.Count; i++)
         {
+            // 뒤집힌 카드 스킵
+            if (_cardList[i].IsReversed)
+            {
+                continue;
+            }
+
             // 카드 뒤집기 로직
             _cardList[i].ReverseCard();
 
-            // 레전드 카드 정지 코루틴
-            if (_cardList[i].CurrentData.Rarity == CGachaDataSO.ERarity.Legend)
+            bool isLegend = _cardList[i].CurrentData.Rarity == CGachaDataSO.ERarity.Legend;
+
+            // 레전드 카드
+            if (isLegend)
             {
-                yield return StartCoroutine(CO_ShowLegendEffect(_cardList[i].CurrentData));
+                yield return new WaitForSeconds(0.15f);
+
+                // 팝업 띄워진동안 대기
+                while (_isLegendShow)
+                {
+                    yield return null;
+                }
             }
 
-            yield return new WaitForSeconds(0.05f);
+            // 레전드 카드 제외
+            else
+            {
+                yield return new WaitForSeconds(0.03f);
+            }
         }
 
-        if (!_isAutoRoll)
+        if (!_isAutoRoll && !_gachaView.GachaMenu.gameObject.activeSelf)
         {
             // 버튼 활성화
             _gachaView.AllOpenAutoGachaButton.gameObject.SetActive(true);
@@ -598,6 +626,51 @@ public class CGachaPresenter : MonoBehaviour
             // 슬라이드로 메뉴 활성화
             StartCoroutine(CO_SlideUpMenu(_gachaView.GachaMenu));
         }
+    }
+
+    // 레전드 카드 판정 함수
+    private void FilpLegendCard(CGachaResultCard card)
+    {
+        if (card.CurrentData.Rarity == CGachaDataSO.ERarity.Legend)
+        {
+            _isLegendShow = true;
+            StartCoroutine(CO_ShowLegendEffect(card.CurrentData));
+        }
+
+        CheckAllCardsOpend();
+    }
+
+    // 카드 뒤집힘 확인 함수
+    private void CheckAllCardsOpend()
+    {
+        if (_currentCount == 300)
+        {
+            return;
+        }
+
+        for (int i = 0; i < _cardList.Count; i++)
+        {
+            if (!_cardList[i].IsReversed)
+            {
+                return;
+            }
+        }
+
+        // 자동 소환중 리턴
+        if (_isAutoRoll)
+        {
+            return;
+        }
+
+        _gachaView.OpenAllCard.gameObject.SetActive(false);
+
+        _gachaView.AllOpenAutoGachaButton.gameObject.SetActive(true);
+        _gachaView.ReRollTenButton.gameObject.SetActive(true);
+        _gachaView.ReRollThirtyButton.gameObject.SetActive(true);
+        _gachaView.CloseButton.gameObject.SetActive(true);
+
+        // 슬라이드로 메뉴 활성화
+        StartCoroutine(CO_SlideUpMenu(_gachaView.GachaMenu));
     }
 
     // 자동 소환 종료 함수
@@ -724,4 +797,6 @@ public class CGachaPresenter : MonoBehaviour
             buttonTransform.sizeDelta = _gachaView.DisabledButtonSize;
         }
     }
+
+    
 }

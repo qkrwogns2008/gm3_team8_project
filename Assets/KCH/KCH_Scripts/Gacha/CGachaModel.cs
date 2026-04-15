@@ -39,10 +39,15 @@ public class CGachaModel : MonoBehaviour
         // 카운트 횟수
         for (int i = 0; i < count; i++)
         {
+            CGachaDataSO data = _currentCategory.GachaTable.WeightRandomGacha(GachaRandom);
+
             // 횟수 만큼 실행후 값 추가
-            result.Add(_currentCategory.GachaTable.WeightRandomGacha(GachaRandom));
+            result.Add(data);
+
+            CDataManager.Instance.AddHeroData(data.HeroID);
         }
 
+        CDataManager.Instance.SaveUserData();
         return result;
     }
 
