@@ -375,7 +375,6 @@ public class CGachaPresenter : MonoBehaviour
         List<CGachaDataSO> results = _gachaModel.RollGacha(count);
 
         // 경험치 증가
-        _gachaModel.AddExp(count);
         UpdateCategoryUI();
 
         // 300회 뽑기 시 로직
@@ -700,24 +699,46 @@ public class CGachaPresenter : MonoBehaviour
     {
         CGachaCategorySO current = _gachaCategoryList[_currentCategoryIndex];
 
-        int maxExp = current._maxExpTable[current.CurrentLevel - 1];
+        int totalExp = (current.CategoryName == "영웅") ?
+            CDataManager.Instance.UserData.HeroPickUpLevel :
+            CDataManager.Instance.UserData.PetPickUpLevel;
 
-        _gachaView.LevelTextHero.text = current.CategoryName + "소환 레벨 " + current.CurrentLevel;
-        _gachaView.ExpTextHero.text = current.CurrentExp + " / " + maxExp;
-        _gachaView.ExpFillImageHero.fillAmount = (float)current.CurrentExp / maxExp;
+        int currentLevel = current.GetLevel(totalExp);
+        int currentExp = current.GetCurrentExp(totalExp);
 
-        _gachaView.LevelTextPet.text = current.CategoryName + "소환 레벨 " + current.CurrentLevel;
-        _gachaView.ExpTextPet.text = current.CurrentExp + " / " + maxExp;
-        _gachaView.ExpFillImagePet.fillAmount = (float)current.CurrentExp / maxExp;
+        int maxExp = 0;
+        float fillAmount = 0f;
+        string expStr = "";
 
-        if ((float)current.CurrentExp >= maxExp && current.CurrentLevel == 9)
+        if (currentLevel <= current._maxExpTable.Length)
         {
-            _gachaView.ExpTextHero.text = "MAX";
+            maxExp = current._maxExpTable[currentLevel - 1];
+            fillAmount = (float)currentExp / maxExp;
+            expStr = currentExp.ToString("N0") + " / " + maxExp.ToString("N0");
+        }
+
+        else
+        {
+            fillAmount = 1.0f;
+            expStr = "MAX";
+        }
+
+        if (_currentCategoryIndex == 0)
+        {
+            _gachaView.LevelTextHero.text = current.CategoryName + "소환 레벨 " + currentLevel;
+            _gachaView.ExpFillImageHero.fillAmount = fillAmount;
+            _gachaView.ExpTextHero.text = expStr;
+        }
+
+        if (_currentCategoryIndex == 1)
+        {
+            _gachaView.LevelTextPet.text = current.CategoryName + "소환 레벨 " + currentLevel;
+            _gachaView.ExpFillImagePet.fillAmount = fillAmount;
+            _gachaView.ExpTextPet.text = expStr;
         }
 
         _gachaView.HeroTabGroup.alpha = (_currentCategoryIndex == 0) ? 1.0f : 0.0f;
         _gachaView.PetTabGroup.alpha = (_currentCategoryIndex == 1) ? 1.0f : 0.0f;
-        _gachaView.HolyTabGroup.alpha = (_currentCategoryIndex == 2) ? 1.0f : 0.0f;
     }
 
     // 재화 정보  UI 업데이트
