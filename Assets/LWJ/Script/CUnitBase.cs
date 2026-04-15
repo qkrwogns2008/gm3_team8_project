@@ -77,7 +77,7 @@ public abstract class CUnitBase : MonoBehaviour
 	public virtual Vector2 CenterPos => (centerTransform.position == null) ? transform.position : centerTransform.position;
 	public virtual bool IsUnitDead => IsDead;
     public virtual float ScaleMultiplier => Mathf.Abs(SkeletonAni.transform.lossyScale.x);
-	protected bool IsFacingRight => (SkeletonAni.skeleton.ScaleX != 1.0f);
+	public bool IsFacingRight => (SkeletonAni.skeleton.ScaleX != 1.0f);
 	public virtual float FinalAtkRange => AtkRange * ScaleMultiplier;
     public virtual float FinalDetectionRange => DetectionRange * ScaleMultiplier;
 	public virtual float FinalMoveSpeed => MoveSpeed * ScaleMultiplier;
