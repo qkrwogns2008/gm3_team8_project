@@ -229,7 +229,7 @@ public abstract class CUnitBase : MonoBehaviour
 
 		if (PrintLog)
 		{
-			Debug.Log($"CUnitBase) [{UnitName}] {damage} 피해 입음. [HP:{CurrentHp}]");
+			Debug.Log($"[{UnitName}] {damage} 피해 입음. [HP:{CurrentHp}]");
 		}
 
 		if (summonCommonHitEffect)
