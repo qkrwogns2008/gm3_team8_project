@@ -141,7 +141,10 @@ public class CDataManager : MonoBehaviour
     {
         UserData.expPoint += amount;
         SaveUserData();
-        Debug.Log($"경험치 추가: {amount} / 현재 경험치: {UserData.PickUpTicket}");
+        if (isDebugMode)
+        {
+            Debug.Log($"경험치 추가: {amount} / 현재 경험치: {UserData.PickUpTicket}");
+        }
     }
 
     // 공격력 강화
@@ -221,7 +224,6 @@ public class CDataManager : MonoBehaviour
             }   
         }
 
-        SaveUserData();
     }
 
     // 영웅 데이터 조회

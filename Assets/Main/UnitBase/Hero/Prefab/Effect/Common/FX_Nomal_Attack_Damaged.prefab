@@ -4677,6 +4677,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4884547391421755}
   - component: {fileID: 114099118695303065}
+  - component: {fileID: 9128347167874062067}
   m_Layer: 0
   m_Name: FX_Nomal_Attack_Damaged
   m_TagString: Untagged
@@ -4716,8 +4717,24 @@ MonoBehaviour:
   LeftEffect: {fileID: 0}
   RightEffect: {fileID: 0}
   EffectLifeTime: 0.7
+  IsLooping: 0
   EnableParticleBaseScaleMultiplier: 1
   BaseScaleMultiplier: 0.3
+--- !u!114 &9128347167874062067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709254077376921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cfb411ede0678442808700649116a53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cameraTr: {fileID: 0}
+  _useX: 1
+  _useY: 1
 --- !u!1 &1724804207875695
 GameObject:
   m_ObjectHideFlags: 0
@@ -7052,6 +7069,8 @@ GameObject:
   - component: {fileID: 4243736805655561}
   - component: {fileID: 198061268324235159}
   - component: {fileID: 199587765826080250}
+  - component: {fileID: 5911355406394329117}
+  - component: {fileID: 862101476067664876}
   m_Layer: 0
   m_Name: Glow1
   m_TagString: Untagged
@@ -9358,3 +9377,31 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &5911355406394329117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730242686860875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2621b222c1d268940a34cfe6fcfda1f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factorX: 0
+  factorY: 0.0095
+--- !u!114 &862101476067664876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730242686860875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2621b222c1d268940a34cfe6fcfda1f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factorX: 0
+  factorY: 0.0095

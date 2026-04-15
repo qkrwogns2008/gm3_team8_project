@@ -92856,6 +92856,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000955326284023}
   - component: {fileID: 114397768327470545}
+  - component: {fileID: 2325082316077483501}
   m_Layer: 0
   m_Name: FX_Radgrid_Active_Dameged_A
   m_TagString: Untagged
@@ -92895,8 +92896,24 @@ MonoBehaviour:
   LeftEffect: {fileID: 0}
   RightEffect: {fileID: 0}
   EffectLifeTime: 2.2
+  IsLooping: 0
   EnableParticleBaseScaleMultiplier: 1
   BaseScaleMultiplier: 1
+--- !u!114 &2325082316077483501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709254077376921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cfb411ede0678442808700649116a53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cameraTr: {fileID: 0}
+  _useX: 1
+  _useY: 1
 --- !u!1 &1709867586078768
 GameObject:
   m_ObjectHideFlags: 0
@@ -104533,6 +104550,7 @@ GameObject:
   - component: {fileID: 4571718729274231}
   - component: {fileID: 198581786255902400}
   - component: {fileID: 199477046003934300}
+  - component: {fileID: 1726769206285766732}
   m_Layer: 0
   m_Name: Left (1)
   m_TagString: Untagged
@@ -106819,6 +106837,20 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &1726769206285766732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730242686860875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2621b222c1d268940a34cfe6fcfda1f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factorX: 0
+  factorY: 0.0095
 --- !u!1 &1733206282342372
 GameObject:
   m_ObjectHideFlags: 0
