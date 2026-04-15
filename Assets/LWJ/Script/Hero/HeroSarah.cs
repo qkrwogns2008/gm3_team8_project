@@ -2,7 +2,6 @@ using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class HeroSarah : CHero
 {
@@ -14,7 +13,7 @@ public class HeroSarah : CHero
 	[SpineAnimation(dataField = "SkeletonAni")]
 	[SerializeField] protected string SkillAnimation2;
 	[SerializeField] protected EffectDataSO SkillEffect2;
-	[SerializeField] protected float TeleportBehindOffset = 5.0f;
+	[SerializeField] protected float TeleportOffset = 5.0f;
 	[SerializeField] protected float TeleportWaitTime = 0.5f;
 
 	[SerializeField] protected float AreaRadius = 3f;
@@ -116,13 +115,13 @@ public class HeroSarah : CHero
 		{
 			Debug.Log($"[{UnitName}] ¹«Àû {isInvincible}");
 		}
-		MotionRoutine = StartCoroutine(Co_ProcessSkillHit(target));
+		MotionRoutine = StartCoroutine(Co_TeleportToTarget(target));
 	}
 
-	protected virtual IEnumerator Co_ProcessSkillHit(CUnitBase target)
+	protected virtual IEnumerator Co_TeleportToTarget(CUnitBase target)
 	{
 		yield return new WaitForSeconds(TeleportWaitTime);
-		float offsetX = target.IsFacingRight ? -TeleportBehindOffset : TeleportBehindOffset;
+		float offsetX = target.IsFacingRight ? -TeleportOffset : TeleportOffset;
 		Vector3 pos = target.transform.position + new Vector3(offsetX, 0, 0);
 
 		transform.position = pos;
@@ -171,7 +170,7 @@ public class HeroSarah : CHero
 					yield break;
 				}
 
-				ProcessSkillHitAfter(target);
+				ProcessTeleportHit(target);
 			}
 		}
 		else
@@ -187,7 +186,7 @@ public class HeroSarah : CHero
 		}
 	}
 
-	protected virtual void ProcessSkillHitAfter(CUnitBase target)
+	protected virtual void ProcessTeleportHit(CUnitBase target)
 	{
 		IReadOnlyList<CUnitBase> targetList = CEnemyManager.Instance.ActiveEnemies;
 		CircleAreaAttack(target, ScaledAreaRadius, targetList, FinalSkillDamage);
