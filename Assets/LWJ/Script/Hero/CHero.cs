@@ -48,7 +48,7 @@ public class CHero : CUnitBase
 	protected EHeroID HeroID; // ID
 
 	protected float BaseDefense; // 방어력
-	protected float DefaultDefenseMultiplier = 1.0f; // 기본 방어력 승수
+	protected float DefaultDefenseMultiplier; // 기본 방어력 승수
 	protected float DefenseMultiplier = 1.0f; // 방어력 승수
 	protected float DamageReductionChance;
 
@@ -179,7 +179,7 @@ public class CHero : CUnitBase
 		}
 
 		Vector3 pos = CenterPos + offset;
-		ActiveBarrierEffect = SummonLoopEffect(BarrierEffect.Catalog[0], pos);
+		ActiveBarrierEffect = SummonEffect(BarrierEffect.Catalog[0], pos);
 
 		if (ActiveBarrierEffect == null)
 		{
@@ -201,7 +201,7 @@ public class CHero : CUnitBase
 		ActiveBarrierEffect = null;
 	}
 
-	protected virtual EffectBase SummonLoopEffect(EffectInfo effectInfo, Vector3 position)
+	protected virtual EffectBase SummonEffect(EffectInfo effectInfo, Vector3 position)
 	{
 		EffectBase prefab = effectInfo.Prefab;
 		if (prefab == null)
@@ -241,7 +241,7 @@ public class CHero : CUnitBase
 		}
 
 		Vector3 pos = transform.position + offset;
-		EffectBase fx = SummonLoopEffect(TakeHealEffect.Catalog[0], pos);
+		EffectBase fx = SummonEffect(TakeHealEffect.Catalog[0], pos);
 
 		if (fx == null)
 		{
@@ -303,6 +303,7 @@ public class CHero : CUnitBase
 
 			BaseDefense = HeroData.BaseDefense;
 			DefenseMultiplier = HeroData.DefenseMultiplier;
+			DefaultDefenseMultiplier = DefenseMultiplier;
 
 			DamageReductionChance = HeroData.DamageReductionChance;
 
@@ -698,11 +699,11 @@ public class CHero : CUnitBase
 		{
 			if (finalDamage > 1)
 			{
-				Debug.Log($"CUnitBase) [{UnitName}] {finalDamage} 피해 입음. [HP:{CurrentHp}]");
+				Debug.Log($"[{UnitName}] {finalDamage} 피해 입음. [HP:{CurrentHp}]");
 			}
 			else
 			{
-				Debug.Log($"CUnitBase) [{UnitName}] 방어 수치에 의해 피해 상쇄. [피해:{damage} / HP:{CurrentHp}]");
+				Debug.Log($"[{UnitName}] 방어 수치에 의해 피해 상쇄. [피해:{damage} / HP:{CurrentHp}]");
 			}
 		}
 
