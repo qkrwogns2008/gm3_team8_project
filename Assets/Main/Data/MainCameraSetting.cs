@@ -20,4 +20,6 @@ public class MainCameraSetting : MonoBehaviour
     {
         target = newTarget;
     }
+
+
 }

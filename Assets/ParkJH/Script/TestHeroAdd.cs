@@ -19,22 +19,22 @@ public class TestHeroAdd : MonoBehaviour
         CDataManager.Instance.AddUserHeroArray(1, 3, EHeroID.Sarah);
         CDataManager.Instance.AddUserHeroArray(3, 3, EHeroID.Elga);
         */
-        CDataManager.Instance.AddHeroData(EHeroID.Baskin);
-        CDataManager.Instance.AddHeroData(EHeroID.Nami);
-        CDataManager.Instance.AddHeroData(EHeroID.Loto);
-        CDataManager.Instance.AddHeroData(EHeroID.Jak);
-        CDataManager.Instance.AddHeroData(EHeroID.Sarah);
-        CDataManager.Instance.AddHeroData(EHeroID.Elga);
-        CDataManager.Instance.AddHeroData(EHeroID.Karon);
-        CDataManager.Instance.AddHeroData(EHeroID.Rook);
-        CDataManager.Instance.AddHeroData(EHeroID.Snipper);
-        CDataManager.Instance.AddHeroData(EHeroID.Shane);
-        CDataManager.Instance.AddHeroData(EHeroID.Evan);
-        CDataManager.Instance.AddHeroData(EHeroID.Alice);
-        CDataManager.Instance.AddHeroData(EHeroID.Teo);
-        CDataManager.Instance.AddHeroData(EHeroID.Yeonhee);
-        CDataManager.Instance.AddHeroData(EHeroID.Radgrid);
-        CDataManager.Instance.AddHeroData(EHeroID.Ecila);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Baskin);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Nami);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Loto);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Jak);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Sarah);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Elga);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Karon);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Rook);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Snipper);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Shane);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Evan);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Alice);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Teo);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Yeonhee);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Radgrid);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Ecila);
         CGroupManager.instance.SetUpGroupFromDB();
     }
 }
