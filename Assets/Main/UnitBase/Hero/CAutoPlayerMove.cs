@@ -65,6 +65,7 @@ public class CAutoPlayerMove : MonoBehaviour
         // 제어 로직
         if(CGroupManager.instance != null && CGroupManager.instance.IsJoystickActive)
         {
+            Debug.Log($"{gameObject.name}: 조이스틱 활성 상태 확인됨. ManualGroupMove 호출!");
             // 조이스틱 사용 시 대열 이동
             ManualGroupMove();
         }

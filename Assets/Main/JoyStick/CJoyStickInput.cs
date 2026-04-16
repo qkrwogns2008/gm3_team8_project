@@ -20,7 +20,7 @@ public class CJoyStickInput : MonoBehaviour, IDragHandler, IPointerUpHandler, IP
 	[Header("설정")]
 	[SerializeField] private float _longPressDelay = 0.15f;
 	#endregion
-
+		
 	public Vector2 InputVector => _inputVector;
 
 	private Coroutine _pressCheckRoutine;	// 시간 체크용 코루틴
