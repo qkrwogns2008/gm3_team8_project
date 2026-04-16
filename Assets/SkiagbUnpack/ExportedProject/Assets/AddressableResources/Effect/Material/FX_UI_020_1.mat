@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FX_UI_042
+  m_Name: FX_UI_020_1
   m_Shader: {fileID: 4800000, guid: ecfa8f5732b504ef98fba10aa18d0326, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -24,15 +24,15 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _Flow:
-        m_Texture: {fileID: 2800000, guid: 5b33291d5dd2ff046ad4fe1c6963f3a0, type: 3}
-        m_Scale: {x: 1, y: 0.5}
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 2292398eb9d32ba4ba0c702819951e48, type: 3}
-        m_Scale: {x: 0.1, y: 0.5}
+        m_Texture: {fileID: 2800000, guid: 7918ddfbc9bf0d348b3444eb74bbe24c, type: 3}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Noise:
-        m_Texture: {fileID: 2800000, guid: d2243e5710cc5444294f556dbdf830c5, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _texcoord:
@@ -49,7 +49,7 @@ Material:
     - _Cutoff: 0
     - _CutoffSoftness: 0
     - _Depthpower: 1
-    - _Emission: 5
+    - _Emission: 1
     - _EnableCurvedTransform: 0
     - _FOG: 0
     - _FogRange: 1
@@ -73,7 +73,7 @@ Material:
     m_Colors:
     - _Amplitude: {r: 1, g: 1, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DistortionSpeedXYPowerZ: {r: -0.2, g: 0, b: 0.2, a: 0}
+    - _DistortionSpeedXYPowerZ: {r: 0, g: 0, b: 0, a: 0}
     - _NoiseFrequency: {r: 1, g: 1, b: 0, a: 0}
     - _NoiseSpeed: {r: 1, g: 1, b: 0, a: 0}
     - _SpeedMainTexUVNoiseZW: {r: 0, g: 0, b: 0, a: 0}
