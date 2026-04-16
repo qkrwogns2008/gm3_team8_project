@@ -602,7 +602,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10da088abb522824aa9c351bb4c91c2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  addExp: 10
   heroDataSO: {fileID: 11400000, guid: 9c752abebd1754e4f98bd68cb06cf613, type: 2}
   disableTarget: {fileID: 280045315764845207}
   expCombinedText: {fileID: 2589410501752031669}
@@ -2981,7 +2980,7 @@ MonoBehaviour:
   initialSkinName: default
   initialFlipX: 0
   initialFlipY: 0
-  startingAnimation: 
+  startingAnimation: Idle
   startingLoop: 1
   timeScale: 1
   freeze: 0
