@@ -533,7 +533,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 078583d8b0a89134f9568cb0af38e854, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 706818601}
+  target: {fileID: 0}
   offset: {x: 0, y: 0, z: -350}
   smoothTime: 0.1
 --- !u!1 &462414574
@@ -613,11 +613,6 @@ GameObject:
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2151364976345212362, guid: 43e5e3b9b45d752488ba9351890bbf4b, type: 3}
   m_PrefabInstance: {fileID: 183923234}
-  m_PrefabAsset: {fileID: 0}
---- !u!224 &706818601 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 4442539267696978174, guid: f0185dde6298d3d40a07eee43e061d24, type: 3}
-  m_PrefabInstance: {fileID: 1432731609}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &712807037
 GameObject:
@@ -1060,7 +1055,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cameraSetting: {fileID: 348992234}
-  _defaultScanRange: 15
+  _targetDataSO: {fileID: 11400000, guid: 9c752abebd1754e4f98bd68cb06cf613, type: 2}
 --- !u!4 &1384325508
 Transform:
   m_ObjectHideFlags: 0
