@@ -151,7 +151,7 @@ public class CAutoPlayerMove : MonoBehaviour
             if (distToGroup > 0.5f)
             {
                 PlayerHero.ChangeState(EHeroState.Move);
-                transform.position = Vector3.MoveTowards(transform.position, _groupTargetPos, PlayerHero.FinalAtkRange * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, _groupTargetPos, PlayerHero.FinalMoveSpeed * Time.deltaTime);
 
                 // 대열 복귀시 바라보는 방향
                 if(_skeletonAnim != null)
@@ -182,7 +182,7 @@ public class CAutoPlayerMove : MonoBehaviour
         else
         {
             // 내 위치에서 가까운 적 찾기
-            FindClosestEnemy();
+            //FindClosestEnemy();
         }
         if(_targetEnemy != null)
         {
