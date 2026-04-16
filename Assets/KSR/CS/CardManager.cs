@@ -17,16 +17,20 @@ public class CardManager : MonoBehaviour
 
     void Start()
     {
-        // 시작 시 정렬 적용
+        // 시작 시 정렬 및 텍스트 갱신
         RefreshOrder();
+        UpdateCountText();
+    }
 
-        // 시작 시 텍스트 갱신
+    void Update()
+    {
+        // 외부 텍스트 기반이라 매 프레임 갱신 필요
+        RefreshOrder();
         UpdateCountText();
     }
 
     void OnValidate()
     {
-        // 에디터에서 값 변경 시 지연 실행
 #if UNITY_EDITOR
         EditorApplication.delayCall += DelayedRefresh;
 #endif
@@ -47,7 +51,7 @@ public class CardManager : MonoBehaviour
     {
         int index = 0;
 
-        // 소유 카드 먼저 배치
+        // 소유 카드 먼저
         foreach (var card in cards)
         {
             if (card != null && card.IsOwned())
@@ -57,7 +61,7 @@ public class CardManager : MonoBehaviour
             }
         }
 
-        // 미소유 카드 뒤에 배치
+        // 미소유 카드 뒤로
         foreach (var card in cards)
         {
             if (card != null && !card.IsOwned())
@@ -71,10 +75,8 @@ public class CardManager : MonoBehaviour
     // 카드 획득 처리 후 정렬 갱신
     public void OnCardAcquired(Card_Off card)
     {
-        card.Acquire();
+        card.Acquire(); // 호환용
         RefreshOrder();
-
-        // 텍스트 갱신
         UpdateCountText();
     }
 
@@ -98,20 +100,21 @@ public class CardManager : MonoBehaviour
         }
     }
 
-    // 카드 개수 텍스트 갱신
+    // 카드 종류 개수 텍스트 갱신
     void UpdateCountText()
     {
-        int ownedCount = 0;
+        int ownedTypeCount = 0;
 
+        // "종류" 기준: 1장 이상이면 카운트
         foreach (var card in cards)
         {
             if (card != null && card.IsOwned())
-                ownedCount++;
+                ownedTypeCount++;
         }
 
         int totalCount = cards.Count;
 
         if (countText != null)
-            countText.text = ownedCount + "/" + totalCount;
+            countText.text = ownedTypeCount + "/" + totalCount;
     }
 }

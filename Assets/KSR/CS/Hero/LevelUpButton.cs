@@ -20,12 +20,21 @@ public class LevelUpButton : MonoBehaviour
     // 버튼 OnClick에 연결
     public void OnClick()
     {
+        // 데이터 없으면 실행 안함
         if (heroDataSO == null) return;
 
         var userHeroData = CDataManager.Instance.GetHeroData(heroDataSO.HeroID);
         var userData = CDataManager.Instance.UserData;
 
-        // 맥스 레벨이면 아무것도 하지 않음
+        // 영웅 미보유 → 동작 중단
+        if (userHeroData.Quantity <= 0)
+        {
+            if (disableTarget != null)
+                disableTarget.SetActive(false);
+            return;
+        }
+
+        // 맥스 레벨 → 동작 중단
         if (userHeroData.Level >= 50)
         {
             if (disableTarget != null)
@@ -35,7 +44,7 @@ public class LevelUpButton : MonoBehaviour
 
         int requiredExp = userHeroData.Level * 10;
 
-        // 경험치 부족
+        // 경험치 부족 → 동작 중단
         if (userData.expPoint < requiredExp)
         {
             if (disableTarget != null)
@@ -43,22 +52,34 @@ public class LevelUpButton : MonoBehaviour
             return;
         }
 
-        // 1레벨만 상승
+        // 1레벨 상승 처리
         if (userData.expPoint >= requiredExp)
         {
             userData.expPoint -= requiredExp;
-            // userHeroData.Level++;
-            CDataManager.Instance.AddHeroLevel(heroDataSO.HeroID,1);
+
+            // 레벨 증가 (외부 시스템 사용)
+            CDataManager.Instance.AddHeroLevel(heroDataSO.HeroID, 1);
         }
     }
 
     // UI 갱신
     void UpdateUI()
     {
+        // 데이터 없으면 실행 안함
         if (heroDataSO == null || expCombinedText == null) return;
 
         var userHeroData = CDataManager.Instance.GetHeroData(heroDataSO.HeroID);
         var userData = CDataManager.Instance.UserData;
+
+        // 영웅 미보유 → 비활성화 표시
+        if (userHeroData.Quantity <= 0)
+        {
+            if (disableTarget != null)
+                disableTarget.SetActive(false);
+
+            expCombinedText.text = "미보유";
+            return;
+        }
 
         // 맥스 레벨 표시
         if (userHeroData.Level >= 50)
@@ -103,10 +124,10 @@ public class LevelUpButton : MonoBehaviour
     string Format4(float v)
     {
         if (v >= 100)
-            return v.ToString("F0");
+            return v.ToString("F0");   // 123
         else if (v >= 10)
-            return v.ToString("F1");
+            return v.ToString("F1");   // 12.3
         else
-            return v.ToString("F2");
+            return v.ToString("F2");   // 1.23
     }
 }
