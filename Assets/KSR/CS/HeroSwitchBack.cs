@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class HeroSwitchBack : MonoBehaviour
 {
@@ -16,6 +17,9 @@ public class HeroSwitchBack : MonoBehaviour
 
     [Header("체크 버튼")]
     public CheckButton checkButton;  // 체크 상태 확인용
+
+    [Header("영웅인포")]
+    public List<GameObject> targetPrefabs = new List<GameObject>();
 
     private RectTransform myRect;
 
@@ -58,6 +62,25 @@ public class HeroSwitchBack : MonoBehaviour
                 cardManager.ShowOwnedOnly();
             else
                 cardManager.ShowAll();
+        }
+
+        // 인포 파일 제거
+        foreach (var obj in targetPrefabs)
+        {
+            if (obj == null) continue;
+
+            // 안전 처리
+            List<Transform> children = new List<Transform>();
+            foreach (Transform child in obj.transform)
+            {
+                children.Add(child);
+            }
+
+            // 자식 제거
+            foreach (var child in children)
+            {
+                Destroy(child.gameObject);
+            }
         }
     }
 }
