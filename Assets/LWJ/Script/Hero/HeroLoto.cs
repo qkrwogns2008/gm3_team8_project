@@ -11,7 +11,34 @@ public class HeroLoto : NoEffectHeroBase
 
 	[SerializeField] protected int CriticalAttackCount = 2;
 	[SerializeField] protected List<float> MultiHitPredelayCritical = new List<float>() { 0.3f, 0.4f };
+
+	[Header("스킬 속성값")]
+	[SerializeField] protected float TeleportOffset = 5.0f;
+	[SerializeField] protected float TeleportWaitTime = 0.5f;
 	#endregion
+
+	protected override void OnSkill(CUnitBase target)
+	{
+		ApplyAttackCooldown(false);
+		NotifySkillUse();
+
+		if (SkeletonAni == null)
+		{
+			Debug.LogWarning("CHero) 인스펙터 null 감지");
+			return;
+		}
+
+		if (MotionRoutine != null)
+		{
+			return;
+		}
+
+		MotionRoutine = StartCoroutine(Co_PlayMotion(SkillAnimation, target, EAttackType.Skill));
+		if (PrintLog)
+		{
+			Debug.Log($"{UnitName}의 스킬 발동!");
+		}
+	}
 
 	// multi attack
 	protected override IEnumerator Co_PlayMotion(string animationName, CUnitBase target, EAttackType type)
@@ -69,6 +96,42 @@ public class HeroLoto : NoEffectHeroBase
 		if (target != null)
 		{
 			target.TakeDamage(CriticalDamage / CriticalAttackCount, this);
+		}
+	}
+
+	protected override void ProcessSkillHit(CUnitBase target)
+	{
+		if (target == null)
+		{
+			return;
+		}
+
+		MotionRoutine = StartCoroutine(Co_TeleportToTarget(target));
+	}
+
+	protected virtual IEnumerator Co_TeleportToTarget(CUnitBase target)
+	{
+		yield return new WaitForSeconds(TeleportWaitTime);
+		float offsetX = IsFacingRight ? -TeleportOffset : TeleportOffset;
+		Vector3 pos = target.transform.position + new Vector3(offsetX, 0, 0);
+
+		transform.position = pos;
+		
+		ProcessTeleportHit(target);
+
+		MotionRoutine = null;
+
+		if (IsPendingDead)
+		{
+			DeathSequence();
+		}
+	}
+
+	protected virtual void ProcessTeleportHit(CUnitBase target)
+	{
+		if (target != null)
+		{
+			target.TakeDamage(FinalSkillDamage, this);
 		}
 	}
 }

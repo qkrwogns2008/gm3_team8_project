@@ -9,7 +9,7 @@ public abstract class CUnitBase : MonoBehaviour
 {
 	#region 인스펙터
 	[SerializeField] protected string unitName; // 로그용
-	[SerializeField] protected float CurrentHp; // 현재 체력
+	[SerializeField] protected float currentHp; // 현재 체력
 
 	[Header("유닛 데이터 SO")]
 	[SerializeField] protected UnitDataSO OriginData;
@@ -49,6 +49,7 @@ public abstract class CUnitBase : MonoBehaviour
 	// 승수
 	protected float MaxHPMultiplier = 1.0f;
 	protected float AttackDamageMultiplier = 1.0f;
+	protected float DefaultAttackDamageMultiplier = 1.0f;
 	protected float AttackSpeedMultiplier = 1.0f;
 	protected float MoveSpeedMultiplier = 1.0f;
 
@@ -72,11 +73,12 @@ public abstract class CUnitBase : MonoBehaviour
 	public virtual event System.Action<float, float> OnHpChanged;
 
 	public ETeamType Team => TeamType;
+	public float CurrnetHP => currentHp;
 	public string UnitName => unitName;
 	public virtual Vector2 CenterPos => (centerTransform.position == null) ? transform.position : centerTransform.position;
 	public virtual bool IsUnitDead => IsDead;
     public virtual float ScaleMultiplier => Mathf.Abs(SkeletonAni.transform.lossyScale.x);
-	protected bool IsFacingRight => (SkeletonAni.skeleton.ScaleX != 1.0f);
+	public bool IsFacingRight => (SkeletonAni.skeleton.ScaleX != 1.0f);
 	public virtual float FinalAtkRange => AtkRange * ScaleMultiplier;
     public virtual float FinalDetectionRange => DetectionRange * ScaleMultiplier;
 	public virtual float FinalMoveSpeed => MoveSpeed * ScaleMultiplier;
@@ -213,7 +215,7 @@ public abstract class CUnitBase : MonoBehaviour
 				CommonHitEffect = OriginData.CommonHitEffect;
 			}
 			
-			CurrentHp = FinalMaxHP;
+			currentHp = FinalMaxHP;
 		}
 	}
 
@@ -225,11 +227,11 @@ public abstract class CUnitBase : MonoBehaviour
 			return;
 		}
 
-		CurrentHp = Mathf.Max(CurrentHp - damage, 0);
+		currentHp = Mathf.Max(currentHp - damage, 0);
 
 		if (PrintLog)
 		{
-			Debug.Log($"[{UnitName}] {damage} 피해 입음. [HP:{CurrentHp}]");
+			Debug.Log($"[{UnitName}] {damage} 피해 입음. [HP:{currentHp}]");
 		}
 
 		if (summonCommonHitEffect)
@@ -246,7 +248,7 @@ public abstract class CUnitBase : MonoBehaviour
 
 		NotifyHpChange();
 
-		if (CurrentHp <= 0)
+		if (currentHp <= 0)
 		{
 			Die();
 		}
@@ -315,7 +317,7 @@ public abstract class CUnitBase : MonoBehaviour
 
 	protected virtual void NotifyHpChange()
 	{
-		OnHpChanged?.Invoke(CurrentHp, FinalMaxHP);
+		OnHpChanged?.Invoke(currentHp, FinalMaxHP);
 	}
 
 	// 사망 시 호출
@@ -323,6 +325,21 @@ public abstract class CUnitBase : MonoBehaviour
 	{
 		IsDead = true;
 		// 사망 애니메이션 등 추가
+	}
+
+	/// <summary>
+	/// X축으로 knockbackRange만큼 밀림.
+	/// </summary>
+	public virtual void OnKnockbackX(float knockbackRange)
+	{
+		Vector3 pos, posPrev;
+		posPrev = pos = transform.position;
+		pos.x -= knockbackRange;
+		transform.position = pos;
+		if (PrintLog)
+		{
+			Debug.Log($"[{UnitName}] 넉백됨. [{posPrev:F2} → {pos:F2}]");
+		}
 	}
 
 	// 공격 가능 여부 확인

@@ -14,13 +14,14 @@ public class CAutoPlayerMove : MonoBehaviour
 
     #region 내부변수
     private CUnitBase _targetEnemy;                     // 현재 목표 타겟
+    private CUnitBase _sharedTarget;                    // 매니저가 공유해준 타겟
     private Vector3 _targetPos;                          // 타겟 위치
 
     private SkeletonAnimation _skeletonAnim;
     private CHero PlayerHero;   // 상태 제어용 참조 사용시 CHero참조
     private HeroDataSO _heroData;
 
-    private Vector3 _groupTargetPos;
+    private Vector3 _groupTargetPos;                // 내 대열 위치
     #endregion
 
 
@@ -50,7 +51,7 @@ public class CAutoPlayerMove : MonoBehaviour
         {
             return;
         }
-
+        // 데이터 로드 체크
         if (_heroData == null && PlayerHero.BaseData != null)
         {
             _heroData = PlayerHero.BaseData as HeroDataSO;
@@ -64,14 +65,23 @@ public class CAutoPlayerMove : MonoBehaviour
         // 제어 로직
         if(CGroupManager.instance != null && CGroupManager.instance.IsJoystickActive)
         {
+            // 조이스틱 사용 시 대열 이동
             ManualGroupMove();
         }
         else
         {
+            // 그 이외 상황 자동 전투 및 복귀
             HandleAutoCombat();
         }
 
     }
+
+    // 매니저가 타겟을 쏴주고
+    public void SetSharedTarget(CUnitBase target)
+    {
+        _sharedTarget = target;
+    }
+
 
     // 매니저가 지정해둔 대열 위치로 이동
     // 수동 조작 사용중일때 호출
@@ -108,7 +118,7 @@ public class CAutoPlayerMove : MonoBehaviour
 
         if(_targetEnemy == null)
         {
-            FindClosestEnemy();
+            DetermineTarget();
         }
         if(_targetEnemy != null)
         {
@@ -157,6 +167,26 @@ public class CAutoPlayerMove : MonoBehaviour
                     PlayerHero.ChangeState(EHeroState.Idle);
                 }
             }
+        }
+    }
+
+    // 어떤 적을 타겟할지
+    void DetermineTarget()
+    {
+        // 타겟이 유효한지
+        if(_sharedTarget != null && !_sharedTarget.IsUnitDead && _sharedTarget.gameObject.activeSelf)
+        {
+            _targetEnemy = _sharedTarget;
+        }
+        // 공유 타겟이 없다면
+        else
+        {
+            // 내 위치에서 가까운 적 찾기
+            FindClosestEnemy();
+        }
+        if(_targetEnemy != null)
+        {
+            PlayerHero.SetTarget(_targetEnemy);
         }
     }
     #endregion

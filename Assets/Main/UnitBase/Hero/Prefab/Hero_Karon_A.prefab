@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitName: 
-  CurrentHp: 0
+  currentHp: 0
   OriginData: {fileID: 11400000, guid: e61084fa433763945883801ee365ba34, type: 2}
   TeamType: 0
   centerTransform: {fileID: 8331120324585134367}
@@ -66,11 +66,12 @@ MonoBehaviour:
   CurrentState: 0
   enableAttack: 1
   enableCriticalAttack: 1
-  enableUseSkill: 0
+  enableUseSkill: 1
   buffSystem: {fileID: 8177186180137121409}
   MissilePrefab: {fileID: 114709867586078768, guid: c43ee240324dfef46872f9faa411b9de, type: 3}
   MissileData: {fileID: 11400000, guid: ad1fdb733de44784d803e054c30030a9, type: 2}
   CriticalHitEffect: {fileID: 11400000, guid: 7ea92b9f402500f40a86910227fdfb9d, type: 2}
+  PrintSkillLog: 0
 --- !u!114 &1385575880346748945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83,6 +84,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8458d08ebfd40524ebe51fdf3782d5bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isAutoMove: 1
 --- !u!114 &8177186180137121409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -411,7 +413,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5141622292158793439, guid: d9b001d91ee30094398bb6b8f786d397, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9046642108580436248, guid: d9b001d91ee30094398bb6b8f786d397, type: 3}
       propertyPath: _base

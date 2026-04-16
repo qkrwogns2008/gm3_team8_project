@@ -32,7 +32,6 @@ public class CQuestUIView : MonoBehaviour
 
         QuestButton.onClick.RemoveAllListeners();
         QuestButton.onClick.AddListener(() => CQuestManager.Instance.RewardQuest(progress.QuestID));
-        
 
         // 버튼 상태 제어
         // 진행도 게이지

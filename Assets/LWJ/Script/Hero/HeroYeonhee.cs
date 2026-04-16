@@ -129,7 +129,7 @@ public class HeroYeonhee : RangedHeroBase
 		SummonHitEffectOnTarget(target, SkillHitEffect);
 
 		IReadOnlyList<CUnitBase> targetList = CEnemyManager.Instance.ActiveEnemies;
-		CircleAreaAttack(target, ScaledAreaRadius, targetList);
+		CircleAreaAttack(target, ScaledAreaRadius, targetList, FinalSkillDamage);
 	}
 
 	/// <summary>
@@ -138,7 +138,8 @@ public class HeroYeonhee : RangedHeroBase
 	/// <param name="originTarget">공격 매개 대상입니다. 해당 대상을 중심으로 범위 피해가 발생합니다.</param>
 	/// <param name="radius">원 반지름</param>
 	/// <param name="targetList">타겟 목록</param>
-	protected virtual void CircleAreaAttack(CUnitBase originTarget, float radius, IReadOnlyList<CUnitBase> targetList)
+	/// <param name="damage">피해량</param>
+	protected virtual void CircleAreaAttack(CUnitBase originTarget, float radius, IReadOnlyList<CUnitBase> targetList, float damage)
 	{
 		Vector2 areaCenterPos = originTarget.transform.position;
 		float sqrRadius = radius * radius;
@@ -164,12 +165,12 @@ public class HeroYeonhee : RangedHeroBase
 				continue;
 			}
 
-			target.TakeDamage(FinalSkillDamage, this, false);
+			target.TakeDamage(damage, this, false);
 		}
 
 		if (PrintSkillLog)
 		{
-			Debug.Log($"원형 범위 피해 발생. 피해량 : [{FinalSkillDamage}]");
+			Debug.Log($"원형 범위 피해 발생. 피해량 : [{damage}]");
 		}
 	}
 

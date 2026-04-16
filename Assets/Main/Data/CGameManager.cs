@@ -54,11 +54,9 @@ public class CGameManager : MonoBehaviour
                 break;
             case GameState.MainStage:
                 Debug.Log("메인 스테이지로 전환");
-                CGroupManager.instance.SetUpGroupFromDB();
                 // 메인 스테이지 UI 및 활성화
                 break;
             case GameState.Dungeon:
-                CGroupManager.instance.SetUpGroupFromDB();
                 Debug.Log("던전으로 전환");
                 // 던전 UI 및 활성화
                 break;

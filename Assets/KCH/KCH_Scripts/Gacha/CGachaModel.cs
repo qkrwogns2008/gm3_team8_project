@@ -11,7 +11,7 @@ public class CGachaModel : MonoBehaviour
     public int RubyCount => CDataManager.Instance.UserData.Ruby;                // 현재 루비
     public int TicketCount => CDataManager.Instance.UserData.PickUpTicket;      // 현재 소환권
 
-    private CGachaCategorySO _currentCategory;
+    private CGachaCategorySO _currentCategory;                                  // 현재 카테고리
 
     private System.Random GachaRandom;                                          // 시스템 랜덤 생성
 
@@ -36,29 +36,39 @@ public class CGachaModel : MonoBehaviour
         // 결과 값 리스트
         List<CGachaDataSO> result = new List<CGachaDataSO>();
 
-        // 카운트 횟수
+        int totalExp = (_currentCategory.CategoryName == "영웅") ? 
+            CDataManager.Instance.UserData.HeroPickUpLevel : 
+            CDataManager.Instance.UserData.PetPickUpLevel; ;
+
+        // 현재 레벨 계산
+        int currentLevel = _currentCategory.GetLevel(totalExp);
+
+        _currentCategory.GachaTable.BuildRarityMaps();
+
+        // 뽑기 카운트 횟수
         for (int i = 0; i < count; i++)
         {
-            CGachaDataSO data = _currentCategory.GachaTable.WeightRandomGacha(GachaRandom);
+            CGachaDataSO data = _currentCategory.GachaTable.WeightRandomGacha(currentLevel, GachaRandom);
 
             // 횟수 만큼 실행후 값 추가
             result.Add(data);
 
+            // 영웅 데이터 증가
             CDataManager.Instance.AddHeroData(data.HeroID);
+        }
+
+        if (_currentCategory.CategoryName == "영웅")
+        {
+            CDataManager.Instance.UserData.HeroPickUpLevel += count;
+        }
+
+        else
+        {
+            CDataManager.Instance.UserData.PetPickUpLevel += count;
         }
 
         CDataManager.Instance.SaveUserData();
         return result;
-    }
-
-    // 카테고리에 현재 경험치 증가 함수
-    public void AddExp(int amount)
-    {
-        if (_currentCategory != null)
-        {
-            _currentCategory.AddExp(amount);
-        }
-
     }
 
     public bool CheckRuby(int count)

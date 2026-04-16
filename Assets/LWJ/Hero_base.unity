@@ -772,15 +772,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2209794903314683923, guid: 902175a0a3631b8459c3920a942092c8, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5845931139765108105, guid: 902175a0a3631b8459c3920a942092c8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -96.2
+      value: -15.9
       objectReference: {fileID: 0}
     - target: {fileID: 5845931139765108105, guid: 902175a0a3631b8459c3920a942092c8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 37.6
+      value: 29.6
       objectReference: {fileID: 0}
     - target: {fileID: 5845931139765108105, guid: 902175a0a3631b8459c3920a942092c8, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1272,7 +1272,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2209794903314683923, guid: 1468f1774e0bb084b9bc6d2d1287cfd0, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5845931139765108105, guid: 1468f1774e0bb084b9bc6d2d1287cfd0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1790,7 +1790,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2209794903314683923, guid: 1968bd51be1e74b46afa2158803c1a39, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3227790121396876406, guid: 1968bd51be1e74b46afa2158803c1a39, type: 3}
+      propertyPath: PrintSkillLog
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5845931139765108105, guid: 1968bd51be1e74b46afa2158803c1a39, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2230,18 +2234,18 @@ SceneRoots:
   - {fileID: 533228147}
   - {fileID: 364592932680682934}
   - {fileID: 822041507}
-  - {fileID: 633546455}
-  - {fileID: 692050822}
-  - {fileID: 362792002}
-  - {fileID: 237450615}
   - {fileID: 571484379}
   - {fileID: 1014674833}
   - {fileID: 1474774760}
   - {fileID: 69931473}
   - {fileID: 483447515}
   - {fileID: 1250990707}
-  - {fileID: 299185949}
   - {fileID: 1539438862}
-  - {fileID: 1497759166}
   - {fileID: 547054187}
+  - {fileID: 1497759166}
   - {fileID: 843866975}
+  - {fileID: 299185949}
+  - {fileID: 633546455}
+  - {fileID: 692050822}
+  - {fileID: 362792002}
+  - {fileID: 237450615}

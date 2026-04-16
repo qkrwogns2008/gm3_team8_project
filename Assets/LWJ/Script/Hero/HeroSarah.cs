@@ -1,4 +1,6 @@
+using Spine.Unity;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class HeroSarah : CHero
@@ -6,7 +8,30 @@ public class HeroSarah : CHero
 	#region 인스펙터
 	[Header("Multi Attack 설정")]
 	[SerializeField] protected int CriticalAttackCount = 2;
+
+	[Header("스킬 속성값")]
+	[SpineAnimation(dataField = "SkeletonAni")]
+	[SerializeField] protected string SkillAnimation2;
+	[SerializeField] protected EffectDataSO SkillEffect2;
+	[SerializeField] protected float TeleportOffset = 5.0f;
+	[SerializeField] protected float TeleportWaitTime = 0.5f;
+
+	[SerializeField] protected float AreaRadius = 3f;
+
+	[SerializeField] protected bool PrintSkillLog = false;
 	#endregion
+
+	#region 내부 변수
+	protected bool isSkillUsing = false;
+	// 스킬 범위에 스파인 크기 반영
+	protected virtual float ScaledAreaRadius => AreaRadius * SpineScale;
+	#endregion
+
+	protected override void OnDisable()
+	{
+		base.OnDisable();
+		isSkillUsing = false;
+	}
 
 	protected override IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type)
 	{
@@ -55,7 +80,20 @@ public class HeroSarah : CHero
 					yield break;
 				}
 
-				ProcessHit(target, type);
+				if (isSkillUsing)
+				{
+					ProcessTeleportHit(target);
+				}
+				else
+				{
+					ProcessHit(target, type);
+
+					if (type == EAttackType.Skill)
+					{
+						MotionRoutine = null;
+						yield break;
+					}
+				}
 			}
 		}
 		else
@@ -63,14 +101,20 @@ public class HeroSarah : CHero
 			Debug.LogWarning($"{UnitName}) 이펙트 null");
 			yield return new WaitForSeconds(0.3f / AttackSpeedMultiplier);
 
-			ProcessHit(target, type);
+			if (type != EAttackType.Skill)
+			{
+				ProcessHit(target, type);
+			}
 		}
 
-		MotionRoutine = null;
-
-		if (IsPendingDead)
+		if (type != EAttackType.Skill)
 		{
-			DeathSequence();
+			MotionRoutine = null;
+
+			if (IsPendingDead)
+			{
+				DeathSequence();
+			}
 		}
 	}
 
@@ -80,5 +124,103 @@ public class HeroSarah : CHero
 		{
 			target.TakeDamage(CriticalDamage / CriticalAttackCount, this);
 		}
+	}
+
+	protected override void ProcessSkillHit(CUnitBase target)
+	{
+		if (target == null)
+		{
+			return;
+		}
+
+		isSkillUsing = true;
+		MotionRoutine = StartCoroutine(Co_TeleportToTargetBehind(target));
+	}
+
+	protected virtual IEnumerator Co_TeleportToTargetBehind(CUnitBase target)
+	{
+		isInvincible = true; // 무적 활성화
+		if (PrintSkillLog)
+		{
+			Debug.Log($"[{UnitName}] 무적 {isInvincible}");
+		}
+
+		yield return new WaitForSeconds(TeleportWaitTime);
+
+		float offsetX = target.IsFacingRight ? -TeleportOffset : TeleportOffset;
+		Vector3 pos = target.transform.position + new Vector3(offsetX, 0, 0);
+
+		transform.position = pos;
+		isInvincible = false; // 무적 비활성화
+		if (PrintSkillLog)
+		{
+			Debug.Log($"[{UnitName}] 무적 {isInvincible}");
+		}
+
+		yield return StartCoroutine(Co_PlayMotion(SkillEffect2, SkillAnimation2, target, EAttackType.Skill));
+
+		isSkillUsing = false;
+		MotionRoutine = null;
+
+		if (IsPendingDead)
+		{
+			DeathSequence();
+		}
+	}
+
+	protected virtual void ProcessTeleportHit(CUnitBase target)
+	{
+		IReadOnlyList<CUnitBase> targetList = CEnemyManager.Instance.ActiveEnemies;
+		CircleAreaAttack(target, ScaledAreaRadius, targetList, FinalSkillDamage);
+	}
+
+	protected virtual void CircleAreaAttack(CUnitBase originTarget, float radius, IReadOnlyList<CUnitBase> targetList, float damage)
+	{
+		Vector2 areaCenterPos = originTarget.transform.position;
+		float sqrRadius = radius * radius;
+
+		for (int i = 0; i < targetList.Count; i++)
+		{
+			CUnitBase target = targetList[i];
+
+			if (target == null)
+			{
+				continue;
+			}
+			if (target.IsUnitDead)
+			{
+				continue;
+			}
+
+			Vector2 targetPos = target.transform.position;
+			Vector2 toTarget = targetPos - areaCenterPos;
+
+			if (toTarget.sqrMagnitude > sqrRadius)
+			{
+				continue;
+			}
+
+			target.TakeDamage(damage, this, false);
+		}
+
+		if (PrintSkillLog)
+		{
+			Debug.Log($"원형 범위 피해 발생. 피해량 : [{damage}]");
+		}
+	}
+
+	protected virtual void OnDrawGizmosSelected()
+	{
+		if (Target == null)
+		{
+			return;
+		}
+		if (Target.IsUnitDead)
+		{
+			return;
+		}
+
+		Gizmos.color = Color.yellow;
+		Gizmos.DrawWireSphere(Target.transform.position, ScaledAreaRadius);
 	}
 }

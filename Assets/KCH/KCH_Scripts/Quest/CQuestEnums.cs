@@ -5,10 +5,15 @@ using UnityEngine;
 // Quest Enum을 관리하는 스크립트
 public enum EQuestType
 {
-    None,                   // 디폴트
-    GachaSummon = 1,        // 영웅 소환
-    MonsterKill = 2,        // 몬스터 처치
+    GachaSummon = 0,        // 영웅 소환
+    PetSummon = 1,          // 펫소환
+    StateUp = 2,            // 스테이지 업
     UseItem = 3,            // 아이템 사용
+    AtkLevel = 4,           // 공격력 영향력 레벨업 
+    DefLevel = 5,           // 방어력 영향력 레벨업 
+    LifeLevel = 6,          // 생명력 영향력 레벨업 
+    HeroLevel = 7,          // 영웅 레벨업
+    DungeonClear = 8,       // 던전 클리어
 }
 
 public enum EQuestState
