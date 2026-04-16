@@ -8,9 +8,8 @@ using UnityEditor;
 
 public class Card_Off : MonoBehaviour
 {
-
-    // 동일 카드 보유 개수
-    [SerializeField] private int ownedCount = 0;
+    // 외부에서 가져올 카드 개수 텍스트
+    [SerializeField] private TextMeshProUGUI ownedText;
 
     // 이미지 전체 어둡게 처리할 루트
     [SerializeField] private GameObject imageRoot;
@@ -29,7 +28,6 @@ public class Card_Off : MonoBehaviour
     private TMP_Text[] hideTexts;
     private TMP_Text[] dimTexts;
 
-
     void Awake()
     {
         Init();
@@ -41,7 +39,7 @@ public class Card_Off : MonoBehaviour
         Init();
         ApplyVisual();
 
-        // 에디터에서 값 변경 시 매니저에 반영 (지연 실행)
+        // 에디터에서 값 변경 시 매니저에 반영
         if (cardManager != null)
         {
 #if UNITY_EDITOR
@@ -61,6 +59,11 @@ public class Card_Off : MonoBehaviour
     }
 #endif
 
+    void Update()
+    {
+        ApplyVisual();
+    }
+
     // 각 루트에서 컴포넌트 수집
     void Init()
     {
@@ -74,45 +77,31 @@ public class Card_Off : MonoBehaviour
             dimTexts = dimTextRoot.GetComponentsInChildren<TMP_Text>(true);
     }
 
-    // 소유 여부 설정 (개수 기준으로 변경)
-    public void SetOwned(bool value)
+    // 외부 텍스트에서 개수 가져오기
+    int GetOwnedCount()
     {
-        ownedCount = value ? 1 : 0;
-        ApplyVisual();
+        if (ownedText == null) return 0;
 
-        if (cardManager != null)
-        {
-            cardManager.RefreshOrder();
-        }
+        int count = 0;
+        int.TryParse(ownedText.text, out count);
+        return count;
     }
 
-    // 카드 획득 처리 (개수 증가)
-    public void Acquire()
-    {
-        ownedCount++;
-        ApplyVisual();
-
-        if (cardManager != null)
-        {
-            cardManager.RefreshOrder();
-        }
-    }
-
-    // 외부에서 소유 여부 확인 (개수 기준)
+    // 소유 여부 확인
     public bool IsOwned()
     {
-        return ownedCount > 0;
+        return GetOwnedCount() > 0;
     }
 
-    // 외부에서 개수 확인
-    public int GetOwnedCount()
+    // CardManager 호환용 (기능 없음)
+    public void Acquire()
     {
-        return ownedCount;
     }
 
     // 시각 상태 적용
     void ApplyVisual()
     {
+        int ownedCount = GetOwnedCount();
         bool owned = ownedCount > 0;
 
         // 이미지 색상 처리

@@ -1,10 +1,10 @@
 using TMPro;
 using UnityEngine;
 
-public class SimpleCalcUI : MonoBehaviour
+public class BP : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI textA;
-    [SerializeField] private TextMeshProUGUI textB;
+    [Header("영웅 데이터")]
+    [SerializeField] private HeroDataSO heroDataSO;
 
     [Header("출력 텍스트")]
     [SerializeField] private TextMeshProUGUI resultText1;
@@ -12,19 +12,23 @@ public class SimpleCalcUI : MonoBehaviour
 
     void Update()
     {
-        if (textA == null || textB == null) return;
+        // 데이터 없으면 실행 안함
+        if (heroDataSO == null) return;
 
-        int a = 0;
-        int b = 0;
+        // 최종 스탯 가져오기
+        var finalStats = CDataManager.Instance.GetHeroFinalStatus(heroDataSO.HeroID, heroDataSO);
 
-        int.TryParse(textA.text, out a);
-        int.TryParse(textB.text, out b);
+        // float → int 변환 (반올림)
+        int atk = Mathf.RoundToInt(finalStats.HeroAtk);
+        int hp = Mathf.RoundToInt(finalStats.HeroHP);
 
-        int result = a * 5 + b;
+        // 공격력 * 5 + 체력
+        int result = atk * 5 + hp;
 
+        // K, M 포맷 적용
         string formatted = FormatNumber(result);
 
-        // 두 개의 출력칸에 동일하게 출력
+        // 두 텍스트에 동일 출력
         if (resultText1 != null)
             resultText1.text = formatted;
 
@@ -32,6 +36,7 @@ public class SimpleCalcUI : MonoBehaviour
             resultText2.text = formatted;
     }
 
+    // 숫자를 K, M 단위로 변환
     string FormatNumber(int value)
     {
         if (value >= 1000000)
@@ -50,13 +55,14 @@ public class SimpleCalcUI : MonoBehaviour
         }
     }
 
+    // 최대 4자리로 포맷
     string Format4(float v)
     {
         if (v >= 100)
-            return v.ToString("F0");
+            return v.ToString("F0");   // 123
         else if (v >= 10)
-            return v.ToString("F1");
+            return v.ToString("F1");   // 12.3
         else
-            return v.ToString("F2");
+            return v.ToString("F2");   // 1.23
     }
 }
