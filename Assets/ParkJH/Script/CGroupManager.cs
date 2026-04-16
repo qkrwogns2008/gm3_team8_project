@@ -152,7 +152,7 @@ public class CGroupManager : MonoBehaviour
 
     private void BroadcastSharedTarget(CUnitBase target)
     {
-        foreach(var pair in _activeHeroes)
+        foreach (var pair in _activeHeroes)
         {
             if(pair.Value != null)
             {
@@ -169,6 +169,9 @@ public class CGroupManager : MonoBehaviour
             Vector3 moveDir = new Vector3(_joystick.InputVector.x, _joystick.InputVector.y, 0);
             transform.position += moveDir * _groupSpeed * Time.deltaTime;
         }
+
+        HandleTargetSharing();
+
         // 대열 유지
         HeroGroupMoving();
     }
