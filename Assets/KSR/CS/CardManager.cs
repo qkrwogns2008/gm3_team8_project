@@ -24,7 +24,7 @@ public class CardManager : MonoBehaviour
 
     void Update()
     {
-        // 외부 텍스트 기반이라 매 프레임 갱신 필요
+        // 외부 상태 변화 반영을 위해 매 프레임 갱신
         RefreshOrder();
         UpdateCountText();
     }
@@ -46,30 +46,59 @@ public class CardManager : MonoBehaviour
     }
 #endif
 
-    // 카드 순서를 소유 여부 기준으로 재정렬
+    // 카드 순서를 편성 → 소유 → 나머지 기준으로 재정렬
     public void RefreshOrder()
     {
         int index = 0;
 
-        // 소유 카드 먼저
+        // 1. 편성된 카드
         foreach (var card in cards)
         {
-            if (card != null && card.IsOwned())
+            if (card != null && IsCardPlaced(card))
             {
                 card.transform.SetSiblingIndex(index);
                 index++;
             }
         }
 
-        // 미소유 카드 뒤로
+        // 2. 소유 카드 (편성되지 않은)
         foreach (var card in cards)
         {
-            if (card != null && !card.IsOwned())
+            if (card != null && !IsCardPlaced(card) && card.IsOwned())
             {
                 card.transform.SetSiblingIndex(index);
                 index++;
             }
         }
+
+        // 3. 미소유 카드
+        foreach (var card in cards)
+        {
+            if (card != null && !IsCardPlaced(card) && !card.IsOwned())
+            {
+                card.transform.SetSiblingIndex(index);
+                index++;
+            }
+        }
+    }
+
+    // JSON 기준으로 카드가 편성되어 있는지 확인
+    bool IsCardPlaced(Card_Off card)
+    {
+        if (CDataManager.Instance == null) return false;
+
+        Hero_Connect1 connect = card.GetComponent<Hero_Connect1>();
+        if (connect == null || connect.heroDataSO == null) return false;
+
+        int[] heroArray = CDataManager.Instance.UserData.Hero_Array;
+
+        for (int i = 0; i < heroArray.Length; i++)
+        {
+            if (heroArray[i] == (int)connect.heroDataSO.HeroID)
+                return true;
+        }
+
+        return false;
     }
 
     // 카드 획득 처리 후 정렬 갱신
