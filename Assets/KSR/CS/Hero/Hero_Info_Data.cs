@@ -18,6 +18,7 @@ public class Hero_Info_Data : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _levelText;
     [SerializeField] private TextMeshProUGUI _rankText;
     [SerializeField] private TextMeshProUGUI _expText;
+    [SerializeField] private TextMeshProUGUI _userExpText;
 
 
     [SerializeField] private TextMeshProUGUI _hpText1;
@@ -26,6 +27,7 @@ public class Hero_Info_Data : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _levelText1;
 
     [SerializeField] private TextMeshProUGUI _levelText2;
+
 
     [Header("영웅 SO 데이터")]
     [SerializeField] private HeroDataSO _heroDataSO;
@@ -82,6 +84,9 @@ public class Hero_Info_Data : MonoBehaviour
         // 경험치 요구량
         if (_expText != null)
             _expText.text = (userHeroData.Level * 10f).ToString("");
+        // 경험치 보유량
+        if (_userExpText != null)
+            _userExpText.text = (CDataManager.Instance.UserData.expPoint).ToString("");
 
 
         // 채력
@@ -100,5 +105,6 @@ public class Hero_Info_Data : MonoBehaviour
         // 레벨
         if (_levelText2 != null)
             _levelText2.text = "Lv." + userHeroData.Level.ToString();
+
     }
 }
