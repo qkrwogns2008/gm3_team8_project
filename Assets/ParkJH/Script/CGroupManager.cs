@@ -126,7 +126,7 @@ public class CGroupManager : MonoBehaviour
     }
    
     private void HeroGroupMoving()  // 우재님과 Moving 함수 확인해보기
-    { 
+    {
         Vector3 Center = transform.position;
         foreach(var pair in _activeHeroes)
         {

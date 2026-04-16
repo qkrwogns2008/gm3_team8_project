@@ -50,14 +50,6 @@ public class CTargetScanner : MonoBehaviour
 			}
             
         }
-        if (closestEnemy != null)
-        {
-            Debug.Log($"<color=green>2. 스캐너: 적 발견! -> {closestEnemy.name}</color>");
-        }
-        else
-        {
-            Debug.Log("<color=yellow>주의: 주변에 적이 없음 (Range 확인 필요)</color>");
-        }
         return closestEnemy;
 	}
 }
