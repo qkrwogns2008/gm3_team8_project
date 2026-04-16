@@ -56,16 +56,6 @@ public class CDataManager : MonoBehaviour
         }
     }
 
-    // gold 추가
-    public void AddGold(int amount)
-    {
-        UserData.Gold += amount;
-        SaveUserData();
-        if (isDebugMode)
-        {
-            Debug.Log($"골드 추가: {amount} / 현재 골드: {UserData.Gold}");
-        }
-    }
 
     // 스테이지 레벨업
     public void MainStageLevelUP(int amount) // 보통 1로 쓸것
@@ -97,6 +87,17 @@ public class CDataManager : MonoBehaviour
         }
     }
 
+    // gold 추가
+    public void AddGold(int amount)
+    {
+        UserData.Gold += amount;
+        SaveUserData();
+        if (isDebugMode)
+        {
+            Debug.Log($"골드 추가: {amount} / 현재 골드: {UserData.Gold}");
+        }
+    }
+
     // gold 사용
     public bool SpendGold(int amount)     
     {
@@ -113,6 +114,7 @@ public class CDataManager : MonoBehaviour
         }
         return false;
     }
+
     // Ruby 추가
     public void AddRubby(int amount)    
     {
@@ -140,6 +142,7 @@ public class CDataManager : MonoBehaviour
         }
         return false;
     }
+
     public void AddPickUpTicket(int amount)
     {
         UserData.PickUpTicket += amount;
@@ -150,7 +153,7 @@ public class CDataManager : MonoBehaviour
         }
     }
 
-    // Ruby 사용
+    // 픽업 티켓 사용
     public bool SpendPickUpTicket(int amount)
     {
         if (UserData.PickUpTicket >= amount)
@@ -167,6 +170,7 @@ public class CDataManager : MonoBehaviour
         return false;
     }
 
+    // 유저 경험치 획득
     public void AddExp(int amount)
     {
         UserData.expPoint += amount;
@@ -175,6 +179,23 @@ public class CDataManager : MonoBehaviour
         {
             Debug.Log($"경험치 추가: {amount} / 현재 경험치: {UserData.PickUpTicket}");
         }
+    }
+
+    // 유저 경험치 증가
+    public bool SpendExp(int amount)
+    {
+        if (UserData.expPoint >= amount)
+        {
+            UserData.expPoint -= amount;
+            SaveUserData();
+            return true;
+        }
+
+        if (isDebugMode)
+        {
+            Debug.Log($"EXP 보유량이 부족합니다. 필요 EXP: {amount}");
+        }
+        return false;
     }
 
     // 공격력 강화
@@ -287,6 +308,7 @@ public class CDataManager : MonoBehaviour
         SaveUserData();
     }
 
+    
     // id 영웅의 레벨을 level만큼 추가하는 함수 
     public void AddHeroLevel(EHeroID id, int level)     
     {

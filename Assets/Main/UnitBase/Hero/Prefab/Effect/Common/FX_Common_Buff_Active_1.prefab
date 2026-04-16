@@ -9566,6 +9566,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4061268324235159}
   - component: {fileID: -2740265097467389590}
+  - component: {fileID: 5825221516805163196}
   m_Layer: 0
   m_Name: FX_Common_Buff_Active_1
   m_TagString: Untagged
@@ -9608,6 +9609,21 @@ MonoBehaviour:
   IsLooping: 0
   EnableParticleBaseScaleMultiplier: 1
   BaseScaleMultiplier: 1
+--- !u!114 &5825221516805163196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709254077376921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cfb411ede0678442808700649116a53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cameraTr: {fileID: 0}
+  _useX: 1
+  _useY: 1
 --- !u!1 &1724804207875695
 GameObject:
   m_ObjectHideFlags: 0
@@ -12062,6 +12078,7 @@ GameObject:
   - component: {fileID: 4587765826080250}
   - component: {fileID: 198709867586078768}
   - component: {fileID: 199044625135789424}
+  - component: {fileID: 4106612398801860790}
   m_Layer: 0
   m_Name: mid
   m_TagString: Untagged
@@ -14349,6 +14366,20 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &4106612398801860790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730242686860875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2621b222c1d268940a34cfe6fcfda1f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factorX: 0
+  factorY: 0.0095
 --- !u!1 &1884547391421755
 GameObject:
   m_ObjectHideFlags: 0
