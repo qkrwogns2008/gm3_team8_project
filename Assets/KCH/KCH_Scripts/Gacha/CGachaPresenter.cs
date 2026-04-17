@@ -181,7 +181,7 @@ public class CGachaPresenter : MonoBehaviour
     // 재화 부족 팝업
     private void NotEnoughMoneyPopup()
     {
-        _gachaView.MsgPopupText.text = "루비가 부족합니다.";
+        _gachaView.MsgPopupText.text = "재화가 부족하여 자동 소환을 종료합니다.";
         CanvasGroup canvasGroup = _gachaView.MsgPopupPanel.GetComponent<CanvasGroup>();
 
         if (canvasGroup != null)
@@ -215,7 +215,10 @@ public class CGachaPresenter : MonoBehaviour
             rect.localScale = new Vector3(data.IllustScale, data.IllustScale, 1f);
 
             _gachaView.LegendIllust.AnimationState.SetAnimation(0, "Idle", true);
-            _gachaView.LegendSD.AnimationState.SetAnimation(0, "Idle", true);
+            var AnimSpeed = _gachaView.LegendSD.AnimationState.SetAnimation(0, "Appear", false);
+            AnimSpeed.TimeScale = 0.3f;
+
+            _gachaView.LegendSD.AnimationState.AddAnimation(0, "Idle", true, 0.2f);
         }
 
         _gachaView.LegendPopup.SetActive(true);
