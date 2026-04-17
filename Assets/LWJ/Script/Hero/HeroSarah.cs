@@ -33,7 +33,7 @@ public class HeroSarah : CHero
 		isSkillUsing = false;
 	}
 
-	protected override IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type)
+	protected override IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type, AudioClip castAudio = null, AudioClip hitAudio = null)
 	{
 		if (string.IsNullOrEmpty(animationName))
 		{
@@ -44,6 +44,10 @@ public class HeroSarah : CHero
 
 		SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
 		SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
+		if (castAudio != null)
+		{
+			SoundManager.Instance.PlayUnitSFX(castAudio); // 공격 오디오 재생
+		}
 
 		if (effectData != null)
 		{
@@ -82,10 +86,18 @@ public class HeroSarah : CHero
 
 				if (isSkillUsing)
 				{
+					if (target != null && hitAudio != null)
+					{
+						SoundManager.Instance.PlayUnitSFX(hitAudio); // Hit 오디오 재생
+					}
 					ProcessTeleportHit(target);
 				}
 				else
 				{
+					if (target != null && hitAudio != null)
+					{
+						SoundManager.Instance.PlayUnitSFX(hitAudio); // Hit 오디오 재생
+					}
 					ProcessHit(target, type);
 
 					if (type == EAttackType.Skill)
@@ -103,6 +115,10 @@ public class HeroSarah : CHero
 
 			if (type != EAttackType.Skill)
 			{
+				if (target != null && hitAudio != null)
+				{
+					SoundManager.Instance.PlayUnitSFX(hitAudio); // Hit 오디오 재생
+				}
 				ProcessHit(target, type);
 			}
 		}

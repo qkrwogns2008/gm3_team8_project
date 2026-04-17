@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2c5149fbef31bd4e9215a708d837e49, type: 3}
+  m_Name: AudioSO_Teo
+  m_EditorClassIdentifier: 
+  attackSound: {fileID: 8300000, guid: 23a824c77270c1e4ab23d3d4e3c1b61f, type: 3}
+  attackDamagedSound: {fileID: 8300000, guid: b9ea75839ee70c3499b2089c92714bd6, type: 3}
+  criticalSound: {fileID: 8300000, guid: 23a824c77270c1e4ab23d3d4e3c1b61f, type: 3}
+  criticalDamagedSound: {fileID: 8300000, guid: b9ea75839ee70c3499b2089c92714bd6, type: 3}
+  skillSound: {fileID: 0}
+  skillDamagedSound: {fileID: 0}
+  hitSound: {fileID: 0}

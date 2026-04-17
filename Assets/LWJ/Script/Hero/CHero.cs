@@ -50,6 +50,8 @@ public class CHero : CUnitBase
 
 	protected EHeroID heroID; // ID
 
+	protected HeroAudioSO AudioSO; // 오디오 SO
+
 	protected float BaseDefense; // 방어력
 	protected float DefaultDefenseMultiplier; // 기본 방어력 승수
 	protected float DefenseMultiplier = 1.0f; // 방어력 승수
@@ -289,6 +291,12 @@ public class CHero : CUnitBase
 				Debug.LogWarning($"{UnitName} ID 설정 필요.");
 			}
 
+			AudioSO = HeroData.AudioSO;
+			if (AudioSO == null)
+			{
+				Debug.LogWarning($"{UnitName} AudioSO null.");
+			}
+
 			FinalHeroStatus stat;
 			if (CDataManager.Instance != null)
 			{
@@ -482,7 +490,15 @@ public class CHero : CUnitBase
 			return;
 		}
 
-		MotionRoutine = StartCoroutine(Co_PlayMotion(AttackEffect, AttackAnimation, target, EAttackType.Normal));
+		MotionRoutine = StartCoroutine(
+			Co_PlayMotion(
+				AttackEffect,
+				AttackAnimation,
+				target,
+				EAttackType.Normal,
+				AudioSO.Attack,
+				AudioSO.AttackDamaged
+				));
 		if (PrintLog)
 		{
 			Debug.Log($"{UnitName}의 일반 공격!");
@@ -504,7 +520,14 @@ public class CHero : CUnitBase
 			return;
 		}
 
-		MotionRoutine = StartCoroutine(Co_PlayMotion(CriticalEffect, CriticalAnimation, target, EAttackType.Critical));
+		MotionRoutine = StartCoroutine(
+			Co_PlayMotion(
+				CriticalEffect, 
+				CriticalAnimation, 
+				target, 
+				EAttackType.Critical,
+				AudioSO.Critical,
+				AudioSO.CriticalDamaged));
 		if (PrintLog)
 		{
 			Debug.Log($"{UnitName}의 치명타 공격!");
@@ -527,7 +550,14 @@ public class CHero : CUnitBase
 			return;
 		}
 
-		MotionRoutine = StartCoroutine(Co_PlayMotion(SkillEffect, SkillAnimation, target, EAttackType.Skill));
+		MotionRoutine = StartCoroutine(
+			Co_PlayMotion(
+				SkillEffect, 
+				SkillAnimation,
+				target,
+				EAttackType.Skill,
+				AudioSO.Skill,
+				AudioSO.SkillDamaged));
 		if (PrintLog)
 		{
 			Debug.Log($"{UnitName}의 스킬 발동!");
@@ -587,7 +617,7 @@ public class CHero : CUnitBase
 	/// <summary>
 	/// 스파인 애니메이션을 재생하고, effectData의 PreDelay 값에 따라 시간차로 이펙트를 생성합니다. 성공적으로 종료되면 피해를 적용합니다.
 	/// </summary>
-	protected virtual IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type)
+	protected virtual IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type, AudioClip castAudio = null, AudioClip hitAudio = null)
 	{
 		if (string.IsNullOrEmpty(animationName))
 		{
@@ -598,6 +628,10 @@ public class CHero : CUnitBase
 
 		SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
 		SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
+		if (castAudio != null)
+		{
+			SoundManager.Instance.PlayUnitSFX(castAudio); // 공격 오디오 재생
+		}
 
 		if (effectData != null)
 		{
@@ -635,6 +669,10 @@ public class CHero : CUnitBase
 			yield return new WaitForSeconds(0.3f / AttackSpeedMultiplier);
 		}
 
+		if (target != null && hitAudio != null)
+		{
+			SoundManager.Instance.PlayUnitSFX(hitAudio); // Hit 오디오 재생
+		}
 		ProcessHit(target, type);
 
 		MotionRoutine = null;

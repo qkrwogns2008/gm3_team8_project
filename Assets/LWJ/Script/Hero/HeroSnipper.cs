@@ -41,14 +41,14 @@ public class HeroSnipper : RangedHeroBase
 			return;
 		}
 
-		MotionRoutine = StartCoroutine(Co_PlayMotion(CriticalAnimation, target, EAttackType.Critical));
+		MotionRoutine = StartCoroutine(Co_PlayMotion(CriticalAnimation, target, EAttackType.Critical, AudioSO.Critical, AudioSO.CriticalDamaged));
 		if (PrintLog)
 		{
 			Debug.Log($"{UnitName}의 치명타 공격!");
 		}
 	}
 
-	protected virtual IEnumerator Co_PlayMotion(string animationName, CUnitBase target, EAttackType type)
+	protected virtual IEnumerator Co_PlayMotion(string animationName, CUnitBase target, EAttackType type, AudioClip castAudio = null, AudioClip hitAudio = null)
 	{
 		if (string.IsNullOrEmpty(animationName))
 		{
@@ -59,9 +59,17 @@ public class HeroSnipper : RangedHeroBase
 
 		SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
 		SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
+		if (castAudio != null)
+		{
+			SoundManager.Instance.PlayUnitSFX(castAudio); // 공격 오디오 재생
+		}
 
 		yield return new WaitForSeconds(0.3f / AttackSpeedMultiplier);
 
+		if (target != null && hitAudio != null)
+		{
+			SoundManager.Instance.PlayUnitSFX(hitAudio); // Hit 오디오 재생
+		}
 		ProcessHit(target, type);
 
 		MotionRoutine = null;
@@ -84,7 +92,7 @@ public class HeroSnipper : RangedHeroBase
 	}
 
 	// 스킬 재정의
-	protected override IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type)
+	protected override IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type, AudioClip castAudio = null, AudioClip hitAudio = null)
 	{
 		if (string.IsNullOrEmpty(animationName))
 		{
@@ -95,6 +103,10 @@ public class HeroSnipper : RangedHeroBase
 
 		SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
 		SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
+		if (castAudio != null)
+		{
+			SoundManager.Instance.PlayUnitSFX(castAudio); // 공격 오디오 재생
+		}
 
 		if (effectData != null)
 		{
@@ -252,6 +264,11 @@ public class HeroSnipper : RangedHeroBase
 
 					if (i != 0) // 조준 이펙트가 아니면
 					{
+						AudioClip clip = AudioSO.SkillDamaged;
+						if (target != null && clip != null)
+						{
+							SoundManager.Instance.PlayUnitSFX(clip); // 공격 오디오 재생
+						}
 						target.TakeDamage(damage, this, false);
 					}
 				}

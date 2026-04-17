@@ -33,7 +33,7 @@ public class HeroLoto : NoEffectHeroBase
 			return;
 		}
 
-		MotionRoutine = StartCoroutine(Co_PlayMotion(SkillAnimation, target, EAttackType.Skill));
+		MotionRoutine = StartCoroutine(Co_PlayMotion(SkillAnimation, target, EAttackType.Skill, AudioSO.Skill, AudioSO.SkillDamaged));
 		if (PrintLog)
 		{
 			Debug.Log($"{UnitName}의 스킬 발동!");
@@ -41,7 +41,7 @@ public class HeroLoto : NoEffectHeroBase
 	}
 
 	// multi attack
-	protected override IEnumerator Co_PlayMotion(string animationName, CUnitBase target, EAttackType type)
+	protected override IEnumerator Co_PlayMotion(string animationName, CUnitBase target, EAttackType type, AudioClip castAudio = null, AudioClip hitAudio = null)
 	{
 		if (string.IsNullOrEmpty(animationName))
 		{
@@ -52,6 +52,10 @@ public class HeroLoto : NoEffectHeroBase
 
 		SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
 		SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
+		if (castAudio != null)
+		{
+			SoundManager.Instance.PlayUnitSFX(castAudio); // 공격 오디오 재생
+		}
 
 		int count = (type == EAttackType.Normal) ? AttackCount : CriticalAttackCount;
 		List<float> predelay = (type == EAttackType.Normal) ? MultiHitPredelay : MultiHitPredelayCritical;
@@ -72,6 +76,10 @@ public class HeroLoto : NoEffectHeroBase
 				continue;
 			}
 
+			if (target != null && hitAudio != null)
+			{
+				SoundManager.Instance.PlayUnitSFX(hitAudio); // Hit 오디오 재생
+			}
 			ProcessHit(target, type);
 		}
 

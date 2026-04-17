@@ -38,7 +38,7 @@ public class HeroNami : NoEffectHeroBase
 	}
 
 	// multi attack
-	protected override IEnumerator Co_PlayMotion(string animationName, CUnitBase target, EAttackType type)
+	protected override IEnumerator Co_PlayMotion(string animationName, CUnitBase target, EAttackType type, AudioClip castAudio = null, AudioClip hitAudio = null)
 	{
 		if (string.IsNullOrEmpty(animationName))
 		{
@@ -49,6 +49,10 @@ public class HeroNami : NoEffectHeroBase
 
 		SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
 		SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
+		if (castAudio != null)
+		{
+			SoundManager.Instance.PlayUnitSFX(castAudio); // 공격 오디오 재생
+		}
 
 		if (type == EAttackType.Critical)
 		{
@@ -71,6 +75,10 @@ public class HeroNami : NoEffectHeroBase
 					continue;
 				}
 
+				if (target != null && hitAudio != null)
+				{
+					SoundManager.Instance.PlayUnitSFX(hitAudio); // Hit 오디오 재생
+				}
 				ProcessHit(target, type);
 			}
 		}
@@ -78,12 +86,20 @@ public class HeroNami : NoEffectHeroBase
 		{
 			yield return new WaitForSeconds(SkillPreDelay / AttackSpeedMultiplier);
 
+			if (target != null && hitAudio != null)
+			{
+				SoundManager.Instance.PlayUnitSFX(hitAudio); // Hit 오디오 재생
+			}
 			ProcessHit(target, type);
 		}
 		else
 		{
 			yield return new WaitForSeconds(0.3f / AttackSpeedMultiplier);
 
+			if (target != null && hitAudio != null)
+			{
+				SoundManager.Instance.PlayUnitSFX(hitAudio); // Hit 오디오 재생
+			}
 			ProcessHit(target, type);
 		}
 
