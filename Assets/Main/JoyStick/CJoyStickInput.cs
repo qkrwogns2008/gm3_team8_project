@@ -12,13 +12,18 @@ public class CJoyStickInput : MonoBehaviour, IDragHandler, IPointerUpHandler, IP
 	[SerializeField] private RectTransform _bgRect;
 	[Header("조이스틱 손잡이")]
 	[SerializeField] private RectTransform _handleRect;
-	[Header("조이스틱 투명도")]
-	[SerializeField] private CanvasGroup _canvasGroup; 
-	[Header("입력 값")]
-	[SerializeField] private Vector2 _inputVector;
-
-	[Header("설정")]
-	[SerializeField] private float _longPressDelay = 0.15f;
+    [Header("입력 값")]
+    [SerializeField] private Vector2 _inputVector;
+    [Header("설정")]
+    [SerializeField] private float _longPressDelay = 0.15f;
+    [Header("조이스틱 투명도")]
+	[SerializeField] private CanvasGroup _canvasGroup;
+	[Header("활성화")]
+	[Range(0f, 1f)]
+	[SerializeField] private float _activeAlpha = 1.0f;
+	[Header("비활성화")]
+	[Range(0f, 1f)]
+	[SerializeField] private float _inactiveAlpha = 0f;
 	#endregion
 		
 	public Vector2 InputVector => _inputVector;
@@ -31,7 +36,7 @@ public class CJoyStickInput : MonoBehaviour, IDragHandler, IPointerUpHandler, IP
 		// 시작할 때 조이스틱 숨기기
         if(_canvasGroup != null)
 		{
-			_canvasGroup.alpha = 0f;
+			_canvasGroup.alpha = _inactiveAlpha;
 		}
     }
 
@@ -55,13 +60,19 @@ public class CJoyStickInput : MonoBehaviour, IDragHandler, IPointerUpHandler, IP
 		// 설정한 시간이 지나면 조이스틱 활성화
 		_isJoystickActive = true;
 
-        // 조이스틱 세트를 터치한 화면 좌표로 이동
-        _visualContainer.position = eventData.position;
+		// 조이스틱 세트를 터치한 화면 좌표로 이동
+		Vector2 localPos;
+		RectTransform parentRect = _visualContainer.parent as RectTransform;
+
+		if(RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRect, eventData.position, eventData.pressEventCamera, out localPos))
+		{
+			_visualContainer.anchoredPosition = localPos;
+		}
 
         // 조이스틱 보여주기
         if (_canvasGroup != null)
         {
-            _canvasGroup.alpha = 1f;
+            _canvasGroup.alpha = _activeAlpha;
         }
 
         // 핸들 위치 리셋
@@ -113,7 +124,7 @@ public class CJoyStickInput : MonoBehaviour, IDragHandler, IPointerUpHandler, IP
 		// 조이스틱 숨기기
 		if(_canvasGroup != null)
 		{
-			_canvasGroup.alpha = 0f;
+			_canvasGroup.alpha = _inactiveAlpha;
 		}
 	}
 
