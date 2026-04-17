@@ -96,6 +96,7 @@ public class CHero : CUnitBase
 	public event System.Action OnDead;
 	public virtual BuffSystem BuffSystem => buffSystem;
 	public EHeroID HeroID => heroID;
+	public bool IsAttacking => MotionRoutine != null;
 	public virtual bool EnableAttack => enableAttack;
 	public virtual bool EnableCriticalAttack => enableCriticalAttack;
 	public virtual bool EnableUseSkill => enableUseSkill;
@@ -349,6 +350,10 @@ public class CHero : CUnitBase
 
 	public void ChangeState(EHeroState state)
 	{
+		if(IsAttacking)
+		{
+			return;
+		}
 		if (CurrentState == state && state != EHeroState.Combat)
 		{
 			return;
@@ -627,7 +632,8 @@ public class CHero : CUnitBase
 		}
 
 		SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
-		SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
+		// Idle 강제전환 지워두겠습니다.
+		// SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
 		if (castAudio != null)
 		{
 			SoundManager.Instance.PlayUnitSFX(castAudio); // 공격 오디오 재생
@@ -680,6 +686,18 @@ public class CHero : CUnitBase
 		if (IsPendingDead)
 		{
 			DeathSequence();
+		}
+		else
+		{
+			// 조이스틱 작동 중인지 체크
+			if(CGroupManager.instance != null && CGroupManager.instance.IsJoystickActive)
+			{
+				ChangeState(EHeroState.Move);
+			}
+			else
+			{
+				ChangeState(EHeroState.Idle);
+			}
 		}
 	}
 
