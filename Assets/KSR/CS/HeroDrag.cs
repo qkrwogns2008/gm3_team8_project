@@ -6,21 +6,24 @@ public class HeroDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     // 드래그 시작 전 부모 슬롯 저장
     private Transform originalParent;
 
-    // 최상위 캔버스
-    private Canvas rootCanvas;
+    // 최상위 캔버스 (Inspector에서 직접 연결)
+    [SerializeField] private Canvas rootCanvas;
 
     // Raycast 제어용
     private CanvasGroup canvasGroup;
 
     void Awake()
     {
-        // 최상위 Canvas 찾기
-        rootCanvas = GetComponentInParent<Canvas>();
-
         // CanvasGroup 가져오기 (없으면 추가)
         canvasGroup = GetComponent<CanvasGroup>();
         if (canvasGroup == null)
             canvasGroup = gameObject.AddComponent<CanvasGroup>();
+    }
+
+    void Start()
+    {
+        // 부모가 확정된 이후 저장
+        originalParent = transform.parent;
     }
 
     // 드래그 시작
@@ -35,14 +38,14 @@ public class HeroDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         // 드롭 이벤트가 슬롯까지 전달되도록 Raycast 비활성화
         canvasGroup.blocksRaycasts = false;
 
-        // 최상위로 이동
-        transform.SetParent(rootCanvas.transform);
+        // 캔버스로 이동
+        if (rootCanvas != null)
+            transform.SetParent(rootCanvas.transform);
     }
 
     // 드래그 중
     public void OnDrag(PointerEventData eventData)
     {
-        // 마우스 위치 따라 이동
         transform.position = eventData.position;
     }
 
@@ -53,22 +56,23 @@ public class HeroDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         canvasGroup.blocksRaycasts = true;
 
         // 드롭 실패 시 원래 자리로 복귀
-        if (transform.parent == rootCanvas.transform)
+        if (transform.parent == rootCanvas.transform && originalParent != null)
         {
             transform.SetParent(originalParent);
             transform.localPosition = Vector3.zero;
         }
 
-        // 현재 필드 상태를 기준으로 JSON 갱신
         UpdateJSON();
     }
 
-    // 현재 필드 상태를 기준으로 JSON 데이터 초기화 후 재기록
+    // 필드 상태 기준 JSON 갱신
     private void UpdateJSON()
     {
         if (CDataManager.Instance == null) return;
+        if (originalParent == null) return;
 
         Transform fieldParent = originalParent.parent;
+        if (fieldParent == null) return;
 
         // 전체 초기화
         for (int i = 0; i < 16; i++)
@@ -78,7 +82,7 @@ public class HeroDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             CDataManager.Instance.AddUserHeroArray(x, y, (EHeroID)0);
         }
 
-        // 슬롯 기준으로 재기록
+        // 슬롯 기준 재기록
         for (int i = 0; i < fieldParent.childCount; i++)
         {
             Transform slot = fieldParent.GetChild(i);

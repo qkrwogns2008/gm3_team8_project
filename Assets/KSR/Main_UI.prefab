@@ -4964,7 +4964,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4348200050594901808}
   - component: {fileID: 6417896416716543217}
-  - component: {fileID: 1745144605551780124}
+  - component: {fileID: 6180276020774699293}
   m_Layer: 0
   m_Name: Jak
   m_TagString: Untagged
@@ -5006,7 +5006,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heroDataSO: {fileID: 11400000, guid: f1e116eae0a94d44f9befeb3adf0d621, type: 2}
---- !u!114 &1745144605551780124
+--- !u!114 &6180276020774699293
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5015,9 +5015,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 566138207048876881}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe6493ce13379574e82cb482314165c2, type: 3}
+  m_Script: {fileID: 11500000, guid: e94d556dffddfcb46a3c66b463097db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rootCanvas: {fileID: 1455775735500506554}
 --- !u!1 &576844861764274896
 GameObject:
   m_ObjectHideFlags: 0
@@ -11536,7 +11537,7 @@ GameObject:
   m_Component:
   - component: {fileID: 566781161980612174}
   - component: {fileID: 4291923349851157322}
-  - component: {fileID: 7223810027183266954}
+  - component: {fileID: 1114040604259875550}
   m_Layer: 0
   m_Name: alice
   m_TagString: Untagged
@@ -11578,7 +11579,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heroDataSO: {fileID: 11400000, guid: dce03fc2e3cad924d855d614802c8a87, type: 2}
---- !u!114 &7223810027183266954
+--- !u!114 &1114040604259875550
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11587,9 +11588,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1278316973346833364}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe6493ce13379574e82cb482314165c2, type: 3}
+  m_Script: {fileID: 11500000, guid: e94d556dffddfcb46a3c66b463097db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rootCanvas: {fileID: 1455775735500506554}
 --- !u!1 &1288251764142086422
 GameObject:
   m_ObjectHideFlags: 0
@@ -12696,7 +12698,7 @@ GameObject:
   m_Component:
   - component: {fileID: 107054724036501108}
   - component: {fileID: 2560728701878285126}
-  - component: {fileID: 191415304401190827}
+  - component: {fileID: 8046367917527849419}
   m_Layer: 0
   m_Name: Yeonhee
   m_TagString: Untagged
@@ -12738,7 +12740,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heroDataSO: {fileID: 11400000, guid: 7a4a9fd1fa1fc264b8b55caebb897584, type: 2}
---- !u!114 &191415304401190827
+--- !u!114 &8046367917527849419
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -12747,9 +12749,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1396010522837178231}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe6493ce13379574e82cb482314165c2, type: 3}
+  m_Script: {fileID: 11500000, guid: e94d556dffddfcb46a3c66b463097db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rootCanvas: {fileID: 1455775735500506554}
 --- !u!1 &1408367878438610720
 GameObject:
   m_ObjectHideFlags: 0
@@ -13852,9 +13855,41 @@ MonoBehaviour:
   slots:
   - heroID: 1
     slotIndex: 0
-  parentB: {fileID: 0}
-  idPrefabs: []
-  cards: []
+  parentB: {fileID: 6110666787722835922}
+  idPrefabs:
+  - {fileID: 1566803621228203394}
+  - {fileID: 1278316973346833364}
+  - {fileID: 4655319138168436599}
+  - {fileID: 6736068296123773680}
+  - {fileID: 4709339861597680823}
+  - {fileID: 566138207048876881}
+  - {fileID: 6764667704118767536}
+  - {fileID: 3976421621580389306}
+  - {fileID: 3138330310006069527}
+  - {fileID: 7029402647387403318}
+  - {fileID: 3901407186343256766}
+  - {fileID: 6739026455031053729}
+  - {fileID: 2876792262746555562}
+  - {fileID: 1396010522837178231}
+  - {fileID: 1846796771284180249}
+  - {fileID: 8253636717683131216}
+  cards:
+  - {fileID: 634369658197748121}
+  - {fileID: 5471660831953838739}
+  - {fileID: 3617831904571021600}
+  - {fileID: 4288744290907899515}
+  - {fileID: 877091034356849565}
+  - {fileID: 1742004514682904953}
+  - {fileID: 4611439417836964988}
+  - {fileID: 8763788328961280923}
+  - {fileID: 4651457479329697860}
+  - {fileID: 3931036110318130151}
+  - {fileID: 5808205677609536916}
+  - {fileID: 5826539219965259992}
+  - {fileID: 8774576009153202641}
+  - {fileID: 736887465831869493}
+  - {fileID: 8555525163212165799}
+  - {fileID: 5161857276341197322}
 --- !u!1 &1471413858637755466
 GameObject:
   m_ObjectHideFlags: 0
@@ -14792,7 +14827,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7514039717340220100}
   - component: {fileID: 3628156424038768799}
-  - component: {fileID: 3255312117380605396}
+  - component: {fileID: 2249686315297900260}
   m_Layer: 0
   m_Name: Teo
   m_TagString: Untagged
@@ -14834,7 +14869,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heroDataSO: {fileID: 11400000, guid: 9c752abebd1754e4f98bd68cb06cf613, type: 2}
---- !u!114 &3255312117380605396
+--- !u!114 &2249686315297900260
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -14843,9 +14878,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1566803621228203394}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe6493ce13379574e82cb482314165c2, type: 3}
+  m_Script: {fileID: 11500000, guid: e94d556dffddfcb46a3c66b463097db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rootCanvas: {fileID: 1455775735500506554}
 --- !u!1 &1593871252679187127
 GameObject:
   m_ObjectHideFlags: 0
@@ -17185,7 +17221,7 @@ GameObject:
   m_Component:
   - component: {fileID: 812597229164459464}
   - component: {fileID: 8466473394223918226}
-  - component: {fileID: 7466690250577232951}
+  - component: {fileID: 7564403140769577806}
   m_Layer: 0
   m_Name: Radgrid
   m_TagString: Untagged
@@ -17227,7 +17263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heroDataSO: {fileID: 11400000, guid: 9c752abebd1754e4f98bd68cb06cf613, type: 2}
---- !u!114 &7466690250577232951
+--- !u!114 &7564403140769577806
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -17236,9 +17272,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1846796771284180249}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe6493ce13379574e82cb482314165c2, type: 3}
+  m_Script: {fileID: 11500000, guid: e94d556dffddfcb46a3c66b463097db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rootCanvas: {fileID: 1455775735500506554}
 --- !u!1 &1858131951554406015
 GameObject:
   m_ObjectHideFlags: 0
@@ -26632,7 +26669,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3668575328186443220}
   - component: {fileID: 3468606207225354445}
-  - component: {fileID: 3954146208302276108}
+  - component: {fileID: 2797801024564580477}
   m_Layer: 0
   m_Name: Snipper
   m_TagString: Untagged
@@ -26674,7 +26711,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heroDataSO: {fileID: 11400000, guid: df2ee70120676f545a50332e76f349d4, type: 2}
---- !u!114 &3954146208302276108
+--- !u!114 &2797801024564580477
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -26683,9 +26720,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2876792262746555562}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe6493ce13379574e82cb482314165c2, type: 3}
+  m_Script: {fileID: 11500000, guid: e94d556dffddfcb46a3c66b463097db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rootCanvas: {fileID: 1455775735500506554}
 --- !u!1 &2883655865339807484
 GameObject:
   m_ObjectHideFlags: 0
@@ -28289,7 +28327,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5493566260546798600}
   - component: {fileID: 2488931186732636317}
-  - component: {fileID: 1370775812621658618}
+  - component: {fileID: 3083586309180793137}
   m_Layer: 0
   m_Name: Nami
   m_TagString: Untagged
@@ -28331,7 +28369,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heroDataSO: {fileID: 11400000, guid: 8444271bf49951b4786dc16e3f9fb0b3, type: 2}
---- !u!114 &1370775812621658618
+--- !u!114 &3083586309180793137
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -28340,9 +28378,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3138330310006069527}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe6493ce13379574e82cb482314165c2, type: 3}
+  m_Script: {fileID: 11500000, guid: e94d556dffddfcb46a3c66b463097db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rootCanvas: {fileID: 1455775735500506554}
 --- !u!1 &3138937999654817795
 GameObject:
   m_ObjectHideFlags: 0
@@ -35273,7 +35312,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1442124986880454419}
   - component: {fileID: 9126045926415636371}
-  - component: {fileID: 54896771543150254}
+  - component: {fileID: 8415403422669295698}
   m_Layer: 0
   m_Name: Sarah
   m_TagString: Untagged
@@ -35315,7 +35354,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heroDataSO: {fileID: 11400000, guid: ea4e2e77537dcf6459e2f949b3f3707a, type: 2}
---- !u!114 &54896771543150254
+--- !u!114 &8415403422669295698
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -35324,9 +35363,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3901407186343256766}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe6493ce13379574e82cb482314165c2, type: 3}
+  m_Script: {fileID: 11500000, guid: e94d556dffddfcb46a3c66b463097db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rootCanvas: {fileID: 1455775735500506554}
 --- !u!1 &3924397802302568624
 GameObject:
   m_ObjectHideFlags: 0
@@ -35980,7 +36020,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3768701657592054644}
   - component: {fileID: 7088934683526551028}
-  - component: {fileID: 8317007954271549265}
+  - component: {fileID: 2629796781832158022}
   m_Layer: 0
   m_Name: Loto
   m_TagString: Untagged
@@ -36022,7 +36062,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heroDataSO: {fileID: 11400000, guid: 45470d908973fa6429def0cace9d8c56, type: 2}
---- !u!114 &8317007954271549265
+--- !u!114 &2629796781832158022
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -36031,9 +36071,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3976421621580389306}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe6493ce13379574e82cb482314165c2, type: 3}
+  m_Script: {fileID: 11500000, guid: e94d556dffddfcb46a3c66b463097db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rootCanvas: {fileID: 1455775735500506554}
 --- !u!1 &3990145096583788836
 GameObject:
   m_ObjectHideFlags: 0
@@ -42880,7 +42921,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8631973345191928216}
   - component: {fileID: 7993107495340792463}
-  - component: {fileID: 5752991892574011686}
+  - component: {fileID: 3337043508527134952}
   m_Layer: 0
   m_Name: Baskin
   m_TagString: Untagged
@@ -42922,7 +42963,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heroDataSO: {fileID: 11400000, guid: 44ba4f97f886dac409f00347762cf8f3, type: 2}
---- !u!114 &5752991892574011686
+--- !u!114 &3337043508527134952
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42931,9 +42972,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4655319138168436599}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe6493ce13379574e82cb482314165c2, type: 3}
+  m_Script: {fileID: 11500000, guid: e94d556dffddfcb46a3c66b463097db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rootCanvas: {fileID: 1455775735500506554}
 --- !u!1 &4656798627283997971
 GameObject:
   m_ObjectHideFlags: 0
@@ -43453,7 +43495,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1669257808766535511}
   - component: {fileID: 2027312962097414426}
-  - component: {fileID: 2169587156168010157}
+  - component: {fileID: 6323244300267257880}
   m_Layer: 0
   m_Name: Evan
   m_TagString: Untagged
@@ -43495,7 +43537,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heroDataSO: {fileID: 11400000, guid: 94a8f5d25a79afd4c9200204152b5a6c, type: 2}
---- !u!114 &2169587156168010157
+--- !u!114 &6323244300267257880
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43504,9 +43546,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4709339861597680823}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe6493ce13379574e82cb482314165c2, type: 3}
+  m_Script: {fileID: 11500000, guid: e94d556dffddfcb46a3c66b463097db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rootCanvas: {fileID: 1455775735500506554}
 --- !u!1 &4711716307512593126
 GameObject:
   m_ObjectHideFlags: 0
@@ -61225,7 +61268,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6363409128885020640}
   - component: {fileID: 5243522858066377304}
-  - component: {fileID: 3221486780900827961}
+  - component: {fileID: 6695740736943824496}
   m_Layer: 0
   m_Name: Elga
   m_TagString: Untagged
@@ -61267,7 +61310,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heroDataSO: {fileID: 11400000, guid: e67f0fe7071dee74295e16b90bca3bb8, type: 2}
---- !u!114 &3221486780900827961
+--- !u!114 &6695740736943824496
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -61276,9 +61319,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6736068296123773680}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe6493ce13379574e82cb482314165c2, type: 3}
+  m_Script: {fileID: 11500000, guid: e94d556dffddfcb46a3c66b463097db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rootCanvas: {fileID: 1455775735500506554}
 --- !u!1 &6738489499770981805
 GameObject:
   m_ObjectHideFlags: 0
@@ -61328,7 +61372,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8571633949998018884}
   - component: {fileID: 5593269916383333821}
-  - component: {fileID: 1203335825722674573}
+  - component: {fileID: 5066134492033591610}
   m_Layer: 0
   m_Name: Shane
   m_TagString: Untagged
@@ -61370,7 +61414,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heroDataSO: {fileID: 11400000, guid: 4229f5894d780c74db83dcf39191cbbe, type: 2}
---- !u!114 &1203335825722674573
+--- !u!114 &5066134492033591610
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -61379,9 +61423,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6739026455031053729}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe6493ce13379574e82cb482314165c2, type: 3}
+  m_Script: {fileID: 11500000, guid: e94d556dffddfcb46a3c66b463097db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rootCanvas: {fileID: 1455775735500506554}
 --- !u!1 &6741641551134247107
 GameObject:
   m_ObjectHideFlags: 0
@@ -61677,7 +61722,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2035860235236025145}
   - component: {fileID: 3406730613437246150}
-  - component: {fileID: 7033164279613339975}
+  - component: {fileID: 3629788070763277847}
   m_Layer: 0
   m_Name: Karon
   m_TagString: Untagged
@@ -61719,7 +61764,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heroDataSO: {fileID: 11400000, guid: e61084fa433763945883801ee365ba34, type: 2}
---- !u!114 &7033164279613339975
+--- !u!114 &3629788070763277847
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -61728,9 +61773,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6764667704118767536}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe6493ce13379574e82cb482314165c2, type: 3}
+  m_Script: {fileID: 11500000, guid: e94d556dffddfcb46a3c66b463097db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rootCanvas: {fileID: 1455775735500506554}
 --- !u!1 &6764714209268628696
 GameObject:
   m_ObjectHideFlags: 0
@@ -63551,7 +63597,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3003189036584085534}
   - component: {fileID: 7842401316023046426}
-  - component: {fileID: 8194060608520929605}
+  - component: {fileID: 8324490570088826156}
   m_Layer: 0
   m_Name: Rook
   m_TagString: Untagged
@@ -63593,7 +63639,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heroDataSO: {fileID: 11400000, guid: 0d0e6876ae682794dab41264936d2d49, type: 2}
---- !u!114 &8194060608520929605
+--- !u!114 &8324490570088826156
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -63602,9 +63648,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7029402647387403318}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe6493ce13379574e82cb482314165c2, type: 3}
+  m_Script: {fileID: 11500000, guid: e94d556dffddfcb46a3c66b463097db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rootCanvas: {fileID: 1455775735500506554}
 --- !u!1 &7036305792266102257
 GameObject:
   m_ObjectHideFlags: 0
@@ -76404,7 +76451,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8888964637252842763}
   - component: {fileID: 5489381065604988264}
-  - component: {fileID: 6939261747912788580}
+  - component: {fileID: 2592610786697989875}
   m_Layer: 0
   m_Name: Ecila
   m_TagString: Untagged
@@ -76446,7 +76493,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   heroDataSO: {fileID: 11400000, guid: 9c752abebd1754e4f98bd68cb06cf613, type: 2}
---- !u!114 &6939261747912788580
+--- !u!114 &2592610786697989875
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -76455,9 +76502,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8253636717683131216}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe6493ce13379574e82cb482314165c2, type: 3}
+  m_Script: {fileID: 11500000, guid: e94d556dffddfcb46a3c66b463097db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rootCanvas: {fileID: 1455775735500506554}
 --- !u!1 &8253667606744123456
 GameObject:
   m_ObjectHideFlags: 0
