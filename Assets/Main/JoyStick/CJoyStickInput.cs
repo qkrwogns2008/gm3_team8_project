@@ -60,8 +60,14 @@ public class CJoyStickInput : MonoBehaviour, IDragHandler, IPointerUpHandler, IP
 		// 설정한 시간이 지나면 조이스틱 활성화
 		_isJoystickActive = true;
 
-        // 조이스틱 세트를 터치한 화면 좌표로 이동
-        _visualContainer.position = eventData.position;
+		// 조이스틱 세트를 터치한 화면 좌표로 이동
+		Vector2 localPos;
+		RectTransform parentRect = _visualContainer.parent as RectTransform;
+
+		if(RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRect, eventData.position, eventData.pressEventCamera, out localPos))
+		{
+			_visualContainer.anchoredPosition = localPos;
+		}
 
         // 조이스틱 보여주기
         if (_canvasGroup != null)
