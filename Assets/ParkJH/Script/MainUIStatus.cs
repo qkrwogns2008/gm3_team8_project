@@ -11,8 +11,6 @@ public class MainUIStatus : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _DiamondText;
     [SerializeField] private TextMeshProUGUI _RubyText;
 
-    [Header("영웅 SO 데이터")]
-    [SerializeField] private HeroDataSO _heroDataSO;
 
     void Start()
     {
@@ -20,22 +18,19 @@ public class MainUIStatus : MonoBehaviour
     }
     void Update()
     {
-        GetMainUIDataInText(_heroDataSO);
+        GetMainUIDataInText();
     }
 
 
 
-    public void GetMainUIDataInText(HeroDataSO heroSO)
+    public void GetMainUIDataInText()
     {
         EHeroID HeroID;
-        HeroID = heroSO.HeroID;
         UserHeroData userHeroData;
-        userHeroData = CDataManager.Instance.GetHeroData(HeroID);
-        FinalHeroStatus finalStats = CDataManager.Instance.GetHeroFinalStatus(HeroID, heroSO);
 
         // 전투력
         if (_TeamForceText != null)
-            _TeamForceText.text = finalStats.HeroHP.ToString("N0");
+            //_TeamForceText.text = finalStats.HeroHP.ToString("N0");
         // 다이아
         if (_DiamondText != null)
             _DiamondText.text = CDataManager.Instance.UserData.Diamond.ToString("N0");

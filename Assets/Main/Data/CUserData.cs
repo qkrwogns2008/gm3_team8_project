@@ -29,7 +29,7 @@ public class CUserData
     public int GoldDungeonLevel = 1;
     public int EXPDungeonLevel = 1;
     // 강화 UI 관련 함수
-    public int Atk_Level = 1; // ATK
+    public int Atk_Level = 1;
     public int Atk_Stat = 1;
     public int Atk_Cost = 1;
     public int Def_Level = 1;
