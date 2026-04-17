@@ -194,9 +194,11 @@ MonoBehaviour:
   _visualContainer: {fileID: 2085750535474306124}
   _bgRect: {fileID: 7547971191516884937}
   _handleRect: {fileID: 8585029264437455784}
-  _canvasGroup: {fileID: 0}
   _inputVector: {x: 0, y: 0}
   _longPressDelay: 0.15
+  _canvasGroup: {fileID: 6490771884830656785}
+  _activeAlpha: 0.25
+  _inactiveAlpha: 0
 --- !u!1 &6104831878521280056
 GameObject:
   m_ObjectHideFlags: 0
@@ -357,7 +359,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2085750535474306124}
-  - component: {fileID: 342889759203774729}
   - component: {fileID: 6490771884830656785}
   m_Layer: 5
   m_Name: joystick
@@ -386,24 +387,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0.00012207031}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &342889759203774729
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7316533636474791022}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae5230f631330ca4db26e1d1679c4628, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _visualContainer: {fileID: 0}
-  _bgRect: {fileID: 0}
-  _handleRect: {fileID: 0}
-  _canvasGroup: {fileID: 6490771884830656785}
-  _inputVector: {x: 0, y: 0}
-  _longPressDelay: 0.15
 --- !u!225 &6490771884830656785
 CanvasGroup:
   m_ObjectHideFlags: 0
