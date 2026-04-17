@@ -54,8 +54,7 @@ public class SoundManager : MonoBehaviour
     public void PlayUnitSFX(AudioClip clip)
     {
         if (clip == null) return;
-		
-
+		_unitSfxSource.pitch = Random.Range(0.9f, 1.1f);
 		_unitSfxSource.PlayOneShot(clip);
     }
 }

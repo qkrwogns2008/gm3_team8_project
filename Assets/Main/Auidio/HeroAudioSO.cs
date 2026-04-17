@@ -9,9 +9,6 @@ public class HeroAudioSO : ScriptableObject
     public AudioClip CriticalDamaged;
     public AudioClip Skill;
     public AudioClip SkillDamaged;
-
-    public AudioClip hit;
-
      /*
      AudioSO 활용법
         1. 모객체에 관련 SO 데이터 변수 선언 및 인스펙터에서 드래그 앤 드롭

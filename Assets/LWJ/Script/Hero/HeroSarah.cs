@@ -16,6 +16,9 @@ public class HeroSarah : CHero
 	[SerializeField] protected float TeleportOffset = 5.0f;
 	[SerializeField] protected float TeleportWaitTime = 0.5f;
 
+	[SerializeField] protected AudioClip Skill2;
+	[SerializeField] protected AudioClip SkillDamaged2;
+
 	[SerializeField] protected float AreaRadius = 3f;
 
 	[SerializeField] protected bool PrintSkillLog = false;
@@ -43,7 +46,6 @@ public class HeroSarah : CHero
 		}
 
 		SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
-		SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
 		if (castAudio != null)
 		{
 			SoundManager.Instance.PlayUnitSFX(castAudio); // 공격 오디오 재생
@@ -91,6 +93,7 @@ public class HeroSarah : CHero
 						SoundManager.Instance.PlayUnitSFX(hitAudio); // Hit 오디오 재생
 					}
 					ProcessTeleportHit(target);
+					yield break;
 				}
 				else
 				{
@@ -99,12 +102,6 @@ public class HeroSarah : CHero
 						SoundManager.Instance.PlayUnitSFX(hitAudio); // Hit 오디오 재생
 					}
 					ProcessHit(target, type);
-
-					if (type == EAttackType.Skill)
-					{
-						MotionRoutine = null;
-						yield break;
-					}
 				}
 			}
 		}
@@ -130,6 +127,18 @@ public class HeroSarah : CHero
 			if (IsPendingDead)
 			{
 				DeathSequence();
+			}
+			else
+			{
+				// 조이스틱 작동 중인지 체크
+				if (CGroupManager.instance != null && CGroupManager.instance.IsJoystickActive)
+				{
+					ChangeState(EHeroState.Move);
+				}
+				else
+				{
+					ChangeState(EHeroState.Idle);
+				}
 			}
 		}
 	}
@@ -173,7 +182,7 @@ public class HeroSarah : CHero
 			Debug.Log($"[{UnitName}] 무적 {isInvincible}");
 		}
 
-		yield return StartCoroutine(Co_PlayMotion(SkillEffect2, SkillAnimation2, target, EAttackType.Skill));
+		yield return StartCoroutine(Co_PlayMotion(SkillEffect2, SkillAnimation2, target, EAttackType.Skill, Skill2, SkillDamaged2));
 
 		isSkillUsing = false;
 		MotionRoutine = null;
@@ -181,6 +190,18 @@ public class HeroSarah : CHero
 		if (IsPendingDead)
 		{
 			DeathSequence();
+		}
+		else
+		{
+			// 조이스틱 작동 중인지 체크
+			if (CGroupManager.instance != null && CGroupManager.instance.IsJoystickActive)
+			{
+				ChangeState(EHeroState.Move);
+			}
+			else
+			{
+				ChangeState(EHeroState.Idle);
+			}
 		}
 	}
 

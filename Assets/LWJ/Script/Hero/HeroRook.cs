@@ -26,7 +26,6 @@ public class HeroRook : CHero
 		}
 
 		SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
-		SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
 		if (castAudio != null)
 		{
 			SoundManager.Instance.PlayUnitSFX(castAudio); // 공격 오디오 재생
@@ -86,6 +85,18 @@ public class HeroRook : CHero
 		if (IsPendingDead)
 		{
 			DeathSequence();
+		}
+		else
+		{
+			// 조이스틱 작동 중인지 체크
+			if (CGroupManager.instance != null && CGroupManager.instance.IsJoystickActive)
+			{
+				ChangeState(EHeroState.Move);
+			}
+			else
+			{
+				ChangeState(EHeroState.Idle);
+			}
 		}
 	}
 

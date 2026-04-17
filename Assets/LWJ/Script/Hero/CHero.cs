@@ -632,8 +632,6 @@ public class CHero : CUnitBase
 		}
 
 		SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
-		// Idle 강제전환 지워두겠습니다.
-		// SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
 		if (castAudio != null)
 		{
 			SoundManager.Instance.PlayUnitSFX(castAudio); // 공격 오디오 재생
