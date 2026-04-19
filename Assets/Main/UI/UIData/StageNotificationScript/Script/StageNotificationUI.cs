@@ -89,7 +89,7 @@ public class StageNotificationUI : MonoBehaviour
 
     public void StageNotificationUIOn()
     {
-        SetAlpha(_mainCanvasGroup, 1f);
+        this.gameObject.SetActive(true);
         _currentStage  = CDataManager.Instance.UserData.CurrentStageLevel;
         _MaxStage = CDataManager.Instance.UserData.MainStageLevel;
         if (_buttonSpawner != null)
@@ -107,7 +107,7 @@ public class StageNotificationUI : MonoBehaviour
             CDataManager.Instance.UserData.CurrentStageLevel = selectedStage;
 
             Debug.Log($"[이동] {selectedStage} 스테이지로 설정을 변경했습니다!");
-
+            this.gameObject.SetActive(false);
             // 2. 실제 스테이지 씬으로 이동하거나 팝업을 닫는 로직 추가
             // SceneManager.LoadScene("GameScene"); 혹은 UI 닫기
         }
