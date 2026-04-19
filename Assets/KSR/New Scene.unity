@@ -122,6 +122,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &24634690 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6010361603364612089, guid: aea89d2064eb07c489468c3084c76157, type: 3}
+  m_PrefabInstance: {fileID: 9131083610616761628}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53a78607afad934498de4e5d98a0f9dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &860251876
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -285,6 +296,18 @@ PrefabInstance:
     - target: {fileID: 8744101500398470719, guid: 317a39a3650f1204a9c8637c2ad51ee0, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9180099775373633976, guid: 317a39a3650f1204a9c8637c2ad51ee0, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 30862fb2398b96f4389e02841b89f956, type: 2}
+    - target: {fileID: 9180099775373633976, guid: 317a39a3650f1204a9c8637c2ad51ee0, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 5965254643539967526, guid: 30862fb2398b96f4389e02841b89f956, type: 2}
+    - target: {fileID: 9180099775373633976, guid: 317a39a3650f1204a9c8637c2ad51ee0, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -871,6 +894,10 @@ PrefabInstance:
       propertyPath: disableTarget
       value: 
       objectReference: {fileID: 860251878}
+    - target: {fileID: 6069288178683683394, guid: aea89d2064eb07c489468c3084c76157, type: 3}
+      propertyPath: upManager
+      value: 
+      objectReference: {fileID: 24634690}
     - target: {fileID: 6134711031398701820, guid: aea89d2064eb07c489468c3084c76157, type: 3}
       propertyPath: targetParent
       value: 
@@ -879,6 +906,22 @@ PrefabInstance:
       propertyPath: disableTarget
       value: 
       objectReference: {fileID: 860251878}
+    - target: {fileID: 6184097495966874640, guid: aea89d2064eb07c489468c3084c76157, type: 3}
+      propertyPath: offPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184097495966874640, guid: aea89d2064eb07c489468c3084c76157, type: 3}
+      propertyPath: offPrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6184097495966874640, guid: aea89d2064eb07c489468c3084c76157, type: 3}
+      propertyPath: offPrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6271246795760591658, guid: aea89d2064eb07c489468c3084c76157, type: 3}
+      propertyPath: upManager
+      value: 
+      objectReference: {fileID: 24634690}
     - target: {fileID: 6601201735487912760, guid: aea89d2064eb07c489468c3084c76157, type: 3}
       propertyPath: m_Name
       value: Main_UI
@@ -891,6 +934,10 @@ PrefabInstance:
       propertyPath: disableTarget
       value: 
       objectReference: {fileID: 860251878}
+    - target: {fileID: 7435283054795304966, guid: aea89d2064eb07c489468c3084c76157, type: 3}
+      propertyPath: upManager
+      value: 
+      objectReference: {fileID: 24634690}
     - target: {fileID: 7516930515643393930, guid: aea89d2064eb07c489468c3084c76157, type: 3}
       propertyPath: targetParent
       value: 
@@ -907,6 +954,10 @@ PrefabInstance:
       propertyPath: disableTarget
       value: 
       objectReference: {fileID: 860251878}
+    - target: {fileID: 8285764819950668156, guid: aea89d2064eb07c489468c3084c76157, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8319284123542555400, guid: aea89d2064eb07c489468c3084c76157, type: 3}
       propertyPath: targetParent
       value: 
