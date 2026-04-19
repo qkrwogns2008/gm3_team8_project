@@ -127,6 +127,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5415365114344402667, guid: 43e5e3b9b45d752488ba9351890bbf4b, type: 3}
   m_PrefabInstance: {fileID: 183923234}
   m_PrefabAsset: {fileID: 0}
+--- !u!225 &56400750 stripped
+CanvasGroup:
+  m_CorrespondingSourceObject: {fileID: 6490771884830656785, guid: 4a37a1663d958a447946e783c1907a69, type: 3}
+  m_PrefabInstance: {fileID: 4235561175637950413}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &90535083
 GameObject:
   m_ObjectHideFlags: 0
@@ -724,6 +729,10 @@ PrefabInstance:
       propertyPath: _joystick
       value: 
       objectReference: {fileID: 1429107866}
+    - target: {fileID: 1764106787800585470, guid: 89b2522f873c7d542a151663ec3bce30, type: 3}
+      propertyPath: _groupSpeed
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 2673728002869998683, guid: 89b2522f873c7d542a151663ec3bce30, type: 3}
       propertyPath: m_Name
       value: HeroSpawner
@@ -1201,9 +1210,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 342889759203774729, guid: 4a37a1663d958a447946e783c1907a69, type: 3}
+      propertyPath: _activeAlpha
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1384345393041020996, guid: 4a37a1663d958a447946e783c1907a69, type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 3114906474615880132, guid: 4a37a1663d958a447946e783c1907a69, type: 3}
+      propertyPath: _activeAlpha
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3114906474615880132, guid: 4a37a1663d958a447946e783c1907a69, type: 3}
+      propertyPath: _canvasGroup
+      value: 
+      objectReference: {fileID: 56400750}
+    - target: {fileID: 3203254921362412391, guid: 4a37a1663d958a447946e783c1907a69, type: 3}
+      propertyPath: m_Color.a
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7028866466481810596, guid: 4a37a1663d958a447946e783c1907a69, type: 3}
       propertyPath: m_Pivot.x
@@ -1285,7 +1310,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 342889759203774729, guid: 4a37a1663d958a447946e783c1907a69, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

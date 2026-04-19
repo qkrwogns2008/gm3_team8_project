@@ -91,9 +91,18 @@ public class CAutoPlayerMove : MonoBehaviour
         // 상태 변경
         PlayerHero.ChangeState(EHeroState.Move);
 
-        // 지정 대열 좌표로 이동
-        float moveSpeed = PlayerHero.FinalMoveSpeed;
-        transform.position = Vector3.MoveTowards(transform.position, _groupTargetPos, PlayerHero.FinalMoveSpeed * Time.deltaTime);
+        // 복귀 속도 보정
+        float baseSpeed = PlayerHero.FinalMoveSpeed;
+
+        // 현 위치와 대열 목적지 사이의 거리 계산
+        float distance = Vector3.Distance(transform.position, _groupTargetPos);
+
+        // 거리가 2.0 이상 멀어지면 기본속도의 1.5배, 가까우면 1.1배
+        float returnSpeedMultiplier = (distance > 2.0f) ? 1.5f : 1.1f;
+        float finalMoveSpeed = baseSpeed * returnSpeedMultiplier;
+
+        // 지정 좌표 이동
+        transform.position = Vector3.MoveTowards(transform.position, _groupTargetPos, finalMoveSpeed * Time.deltaTime);
 
         // 이동방향 바라보기
         float joystickX = CGroupManager.instance.JoystickX;

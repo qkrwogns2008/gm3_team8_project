@@ -201,7 +201,7 @@ public class CDataManager : MonoBehaviour
     // 공격력 강화
     public void UpgradeBaseDamage(int amount)
     {
-        UserData.Atk_Level += amount;
+        UserData.Atk_Level = amount;
         if (isDebugMode)
         {
             Debug.Log($"[강화] 기본 공격력 상승 현재: {UserData.Atk_Level}");
@@ -212,7 +212,7 @@ public class CDataManager : MonoBehaviour
     // 방어력 강화
     public void UpgradeBaseShield(int amount)
     {
-        UserData.Def_Level += amount;
+        UserData.Def_Level = amount;
         if (isDebugMode)
         {
             Debug.Log($"[강화] 기본 방어력 상승 현재: {UserData.Def_Level}");
@@ -220,10 +220,11 @@ public class CDataManager : MonoBehaviour
         SaveUserData();
     }
 
+
     // 체력 강화
     public void UpgradeBaseHP(int amount)
     {
-        UserData.Life_Level += amount;
+        UserData.Life_Level = amount;
         if (isDebugMode)
         {
             Debug.Log($"[강화] 기본 체력 상승 현재: {UserData.Life_Level}");
