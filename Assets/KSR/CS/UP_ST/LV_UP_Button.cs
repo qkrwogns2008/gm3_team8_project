@@ -6,11 +6,13 @@ using UnityEngine.UI;
 public class LV_UP_Button : MonoBehaviour
 {
     [Header("플레이어 데이터")]
-    public Dummy_Player DummyPlayer;
+    public Dummy_Player DummyPlayer; // 플레이어 참조
+
+    [Header("매니저 참조")]
+    public Up_Manager upManager; // 스테이지 참조용 매니저
 
     [Header("기본 상태")]
-    public int currentLevel = 1;
-    public int currentStage = 0;
+    public int currentLevel = 1; // 현재 레벨
 
     [Header("능력치")]
     public float currentStat = 0;   // 전체 누적값
@@ -26,7 +28,7 @@ public class LV_UP_Button : MonoBehaviour
     public enum CostType { Add, Multiply }
     public CostType costType = CostType.Add;
 
-    [Header("현재 비용 (핵심)")]
+    [Header("현재 비용")]
     public float currentCost;
 
     [Header("레벨 증가 배수")]
@@ -55,27 +57,46 @@ public class LV_UP_Button : MonoBehaviour
     public GameObject originalImage;
     public GameObject changedImage;
 
-    // =============================
+    [Header("능력치 타입")]
+    public StatType statType; // Attack / Defense / HP 구분
 
     void Start()
     {
         currentCost = baseCost;
+
+        if (S_UP_Manger.Instance != null)
+        {
+            S_UP_Manger.Instance.Load();
+
+            StatData data = S_UP_Manger.Instance.GetData(statType);
+
+            if (data != null)
+            {
+                currentLevel = data.currentLevel;
+                currentStat = data.currentStat;
+                stageStat = data.stageStat;
+                currentCost = data.currentCost;
+            }
+        }
+
         UpdateUI();
     }
 
-    // =============================
-    // 단계별 능력치 가져오기
+    int GetCurrentStage()
+    {
+        if (upManager == null) return 0;
+        return upManager.GetCurrentStage();
+    }
 
     float GetStatPerLevel()
     {
-        if (currentStage < statPerLevelByStage.Count)
-            return statPerLevelByStage[currentStage];
+        int stage = GetCurrentStage();
+
+        if (stage < statPerLevelByStage.Count)
+            return statPerLevelByStage[stage];
 
         return statPerLevelByStage[statPerLevelByStage.Count - 1];
     }
-
-    // =============================
-    // 비용 계산
 
     float GetPreviewCost(out float afterCost, out int levelGained)
     {
@@ -129,18 +150,55 @@ public class LV_UP_Button : MonoBehaviour
         float statValue = GetStatPerLevel();
         float gainedStat = statValue * levelGained;
 
-        stageStat += gainedStat;   // 현재 단계 표시용
-        currentStat += gainedStat; // 전체 누적
+        stageStat += gainedStat;
+        currentStat += gainedStat;
 
         currentCost = afterCost;
 
         UpdateUI();
 
         FindObjectOfType<Up_Manager>()?.OnLevelChanged();
-    }
 
-    // =============================
-    // UI 갱신
+        // =============================
+        // CDataManager에 최종 능력치 반영 (덮어쓰기)
+
+        if (CDataManager.Instance != null)
+        {
+            switch (statType)
+            {
+                case StatType.Attack:
+                    CDataManager.Instance.UserData.Atk_Level = (int)currentStat; // 공격력 반영
+                    break;
+
+                case StatType.Defense:
+                    CDataManager.Instance.UserData.Def_Level = (int)currentStat; // 방어력 반영
+                    break;
+
+                case StatType.HP:
+                    CDataManager.Instance.UserData.Life_Level = (int)currentStat; // 체력 반영
+                    break;
+            }
+
+            CDataManager.Instance.SaveUserData(); // 즉시 저장
+        }
+
+        // =============================
+
+        if (S_UP_Manger.Instance != null)
+        {
+            StatData data = S_UP_Manger.Instance.GetData(statType);
+
+            if (data != null)
+            {
+                data.currentLevel = currentLevel;
+                data.currentStat = currentStat;
+                data.stageStat = stageStat;
+                data.currentCost = currentCost;
+            }
+
+            S_UP_Manger.Instance.Save();
+        }
+    }
 
     public void UpdateUI()
     {
@@ -154,7 +212,6 @@ public class LV_UP_Button : MonoBehaviour
         if (levelText != null)
             levelText.text = $"Lv.{currentLevel}";
 
-        //  
         if (statText != null)
             statText.text = $"+{stageStat:F0}";
 
@@ -172,7 +229,8 @@ public class LV_UP_Button : MonoBehaviour
                 costText.color = Color.white;
         }
 
-        int displayStage = currentStage + 1;
+        int stage = GetCurrentStage();
+        int displayStage = stage + 1;
 
         if (stageTextA != null)
             stageTextA.text = $"영향력 {displayStage}단계";
@@ -196,13 +254,10 @@ public class LV_UP_Button : MonoBehaviour
             changedImage.SetActive(isMax);
     }
 
-    // =============================
-
     public void ResetLevel()
     {
         currentLevel = 1;
-
-        stageStat = 0; //단계 넘어가면 표시만 초기화
+        stageStat = 0;
 
         if (levelUpButton != null)
             levelUpButton.gameObject.SetActive(true);
@@ -217,11 +272,7 @@ public class LV_UP_Button : MonoBehaviour
             changedImage.SetActive(false);
 
         UpdateUI();
-
-        FindObjectOfType<Up_Manager>()?.OnLevelChanged();
     }
-
-    // =============================
 
     string FormatGold(float value)
     {
@@ -242,12 +293,12 @@ public class LV_UP_Button : MonoBehaviour
         }
     }
 
-    // =============================
-
     int GetMaxLevel()
     {
-        if (currentStage < stageMaxLevels.Count)
-            return stageMaxLevels[currentStage];
+        int stage = GetCurrentStage();
+
+        if (stage < stageMaxLevels.Count)
+            return stageMaxLevels[stage];
 
         return stageMaxLevels[stageMaxLevels.Count - 1];
     }
