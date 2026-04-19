@@ -44,7 +44,7 @@ public class StageButton : MonoBehaviour
             _backgroundImage.sprite = _CurrentSprite;
             GetComponent<Button>().interactable = true;
         }
-        else if (_stageNum < mainStage)
+        else if (_stageNum <= mainStage)
         {
             // 이전 스테이지: 파란색
             _backgroundImage.sprite = _beforeMainSprite;

@@ -15,6 +15,7 @@ public class ButtonSpawner : MonoBehaviour
 
     private List<StageButton> _allButtons = new List<StageButton>();
     private StageButton _currentFocusedButton;
+    private bool _isAutoScrolling = false; // 자동 스크롤 중인지 여부
 
     void Start()
     {
@@ -27,10 +28,32 @@ public class ButtonSpawner : MonoBehaviour
     void Update()
     {
         // 실시간으로 중앙에 가장 가까운 버튼을 찾습니다.
+        if (!_isAutoScrolling)
+        {
+            FindCenterButton();
+        }
+    }
+    public IEnumerator CoScrollToStage(int targetStageNum)
+    {
+        _isAutoScrolling = true;
+        yield return new WaitForSeconds(0.1f); // 약간의 딜레이를 줘서 UI가 먼저 업데이트되도록 함
+
+
+        // 1. 전체 스테이지 중 목표 스테이지의 위치 비율 계산 (0~1)
+        // (현재번호 - 1) / (전체개수 - 1)
+        float targetPos = (float)(targetStageNum - 1) / (_totalStageCount - 1);
+
+        // 2. 스크롤 위치 적용
+        // 바로 순간이동시키려면 아래 코드 사용
+        _scrollRect.horizontalNormalizedPosition = targetPos;
+        _stageNotificationUI._currentStage = targetStageNum;
+        // 3. 테두리 강제 갱신을 위해 FindCenterButton() 호출
         FindCenterButton();
+        _isAutoScrolling = false;
+
     }
 
-    void FindCenterButton()
+        void FindCenterButton()
     {
         if (_allButtons.Count == 0) return;
 
@@ -60,7 +83,7 @@ public class ButtonSpawner : MonoBehaviour
 
             _currentFocusedButton = closestButton;
             _currentFocusedButton.SetSelect(true);
-
+            _stageNotificationUI._currentStage = _currentFocusedButton._stageNum;
             // 여기서 현재 선택된 스테이지 번호를 데이터 매니저에 갱신할 수도 있습니다.
             Debug.Log($"현재 포커스 스테이지: {_currentFocusedButton.name }");
         }

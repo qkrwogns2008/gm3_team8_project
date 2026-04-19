@@ -11,8 +11,8 @@ public class StageNotificationUI : MonoBehaviour
     [SerializeField] private ButtonSpawner _buttonSpawner;
     private CanvasGroup _currentCanvasGroup;
 
-    public  int _currentStage = 1;
-    private int _MaxStage = 1;
+    public  int _currentStage;
+    private int _MaxStage;
     void Start()
     {
         
@@ -95,21 +95,26 @@ public class StageNotificationUI : MonoBehaviour
         if (_buttonSpawner != null)
         {
             _buttonSpawner.SpawnStageButtons();
-            _buttonSpawner.ScrollToStage(_currentStage);
+            StartCoroutine(_buttonSpawner.CoScrollToStage(_currentStage));
         }
     }
     public void OnClickStageMove()
     {
-        if (_currentStage != null)
+        if (_currentStage > _MaxStage)
         {
+            Debug.Log($"{_currentStage} 는 아직 클리어하지 못했습니다!");
+            return;
+        }
             // 1. 현재 포커스된 스테이지 번호를 가져와서 UserData에 저장
             int selectedStage = _currentStage; // StageButton에 이 함수가 있어야 합니다.
             CDataManager.Instance.UserData.CurrentStageLevel = selectedStage;
-
+            CDataManager.Instance.SaveUserData();
+            CGameManager.Instance.ChangeState(GameState.MainStage);
+            MainStageController.Instance.SetMainStageTheme();
             Debug.Log($"[이동] {selectedStage} 스테이지로 설정을 변경했습니다!");
             this.gameObject.SetActive(false);
             // 2. 실제 스테이지 씬으로 이동하거나 팝업을 닫는 로직 추가
             // SceneManager.LoadScene("GameScene"); 혹은 UI 닫기
-        }
+        
     }
 }
