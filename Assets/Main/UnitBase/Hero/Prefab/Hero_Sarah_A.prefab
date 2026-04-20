@@ -72,8 +72,11 @@ MonoBehaviour:
   CriticalAttackCount: 2
   SkillAnimation2: Active_A-2
   SkillEffect2: {fileID: 11400000, guid: a7565d50bf0c8514ebc5f4f069ecc4e7, type: 2}
-  TeleportBehindOffset: 5
+  TeleportOffset: 5
   TeleportWaitTime: 0.5
+  Skill2: {fileID: 8300000, guid: 9777ee0aea6979d4b9cda04f1ffa838d, type: 3}
+  SkillDamaged2: {fileID: 0}
+  AreaRadius: 3
   PrintSkillLog: 0
 --- !u!114 &1385575880346748945
 MonoBehaviour:

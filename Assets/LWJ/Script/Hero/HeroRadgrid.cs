@@ -116,7 +116,7 @@ public class HeroRadgrid : CHero
 			yield break;
 		}
 
-		// 목록의 이펙트를 순차 출력
+		// Multi Attack
 		for (int i = 0; i < MultiHitPredelay.Count; i++)
 		{
 			bool IsHit = false;
@@ -153,42 +153,6 @@ public class HeroRadgrid : CHero
 
 		SkillRoutine = null;
 	}
-
-	protected virtual void CircleAreaAttack(CUnitBase originTarget, float radius, IReadOnlyList<CUnitBase> targetList)
-	{
-		Vector2 areaCenterPos = originTarget.transform.position;
-		float sqrRadius = radius * radius;
-
-		for (int i = 0; i < targetList.Count; i++)
-		{
-			CUnitBase target = targetList[i];
-
-			if (target == null)
-			{
-				continue;
-			}
-			if (target.IsUnitDead)
-			{
-				continue;
-			}
-
-			Vector2 targetPos = target.transform.position;
-			Vector2 toTarget = targetPos - areaCenterPos;
-
-			if (toTarget.sqrMagnitude > sqrRadius)
-			{
-				continue;
-			}
-
-			target.TakeDamage(FinalSkillDamage, this, false);
-		}
-
-		if (PrintSkillLog)
-		{
-			Debug.Log($"원형 범위 피해 발생. 피해량 : [{FinalSkillDamage}]");
-		}
-	}
-
 	
 	protected virtual void OnDrawGizmosSelected()
 	{
