@@ -15,10 +15,15 @@ public class CGachaPresenter : MonoBehaviour
     [SerializeField] private List<CGachaCategorySO> _gachaCategoryList;         // 소환 리스트 SO (영웅SO : 0, 펫SO : 1)
     [SerializeField] private CTabChange _tabChange;                             // 카테고리 탭 변경
     [SerializeField] private int _currentCategoryIndex = 0;                     // 카테고리 현재 인덱스
+    [SerializeField] private Sprite _petBackSprite;                             // 펫 전용 이미지
 
     [Header("Card 프리팹 설정")]
     [SerializeField] private GameObject _cardPrefab;                            // 카드 프리팹
     [SerializeField] private GameObject _miniCardPrefab;                        // 카드 프리팹
+
+    [Header("Card 오디오 설정")]
+    [SerializeField] private UIAudioSO _cardAudioSet;                           // 카드 두는 오디오
+    [SerializeField] private UIAudioSO _buttonAudioSet;                         // 버튼 두는 오디오
     #endregion
 
     #region 내부 변수
@@ -29,6 +34,7 @@ public class CGachaPresenter : MonoBehaviour
     private bool _isAutoRoll = false;                                           // 자동 소환 유무
     private bool _isLegendShow = false;                                         // 레전드 연출 중 유무
     private int _currentCount = 0;                                              // 뽑기중인 개수
+    private bool _isFirstInit = true;                                           // 처음 갱신
     #endregion
 
     private void Awake()
@@ -102,13 +108,22 @@ public class CGachaPresenter : MonoBehaviour
     // 인덱스에 따라 소환 카테고리 변경
     private void ChangeCatergory(int index)
     {
+        if (!_isRolling && !_isFirstInit)
+        {
+            SoundManager.Instance.PlayUISFX(_buttonAudioSet.uiOn);
+        }
+
+        // 소리 체크 끝
+        _isFirstInit = false;
+
         // 현재 인덱스 선택
         _currentCategoryIndex = index;
         // 카테고리 선택
         CGachaCategorySO select = _gachaCategoryList[index];
 
         // 카테고리 세팅
-        _gachaModel.SetCategory(select);
+        _gachaModel.SetCategory(select, index);
+
         // 배너 이미지 교체
         _gachaView.MainShopImage.sprite = select.MainShopImage;
 
@@ -119,6 +134,10 @@ public class CGachaPresenter : MonoBehaviour
     // 뽑기 버튼 클릭
     private void OnClickButton(int count)
     {
+        SoundManager.Instance.PlayUISFX(_buttonAudioSet.buttonClick);
+
+
+        Debug.Log($"버튼 클릭됨! 현재 count: {count}, isRolling: {_isRolling}");
         if (_isRolling)
         {
             return;
@@ -140,6 +159,7 @@ public class CGachaPresenter : MonoBehaviour
     // 자동 뽑기 토글 함수
     private void ToggleAutoRoll()
     {
+        SoundManager.Instance.PlayUISFX(_buttonAudioSet.buttonClick);
         _isAutoRoll = !_isAutoRoll;
 
         if (_gachaView.AutoGachaCheckIcon != null)
@@ -162,6 +182,8 @@ public class CGachaPresenter : MonoBehaviour
     // 결과 창 닫고 초기화
     private void OnClickClose()
     {
+        SoundManager.Instance.PlayUISFX(_buttonAudioSet.buttonClick);
+
         // 자동 소환
         if (_isAutoRoll)
         {
@@ -180,6 +202,8 @@ public class CGachaPresenter : MonoBehaviour
     {
         _gachaView.MsgPopupText.text = "재화가 부족하여 자동 소환을 종료합니다.";
         CanvasGroup canvasGroup = _gachaView.MsgPopupPanel.GetComponent<CanvasGroup>();
+
+        SoundManager.Instance.PlayUISFX(_buttonAudioSet.buttonClick);
 
         if (canvasGroup != null)
         {
@@ -431,8 +455,10 @@ public class CGachaPresenter : MonoBehaviour
 
                     // 미니 카드 즉시 보여 주기
                     cardUI.ShowVisual();
+
                 }
             }
+            SoundManager.Instance.PlayUISFX(_cardAudioSet.uiOff);
 
             _isRolling = false;
 
@@ -485,8 +511,15 @@ public class CGachaPresenter : MonoBehaviour
                 // 카드 UI에 데이터 세팅
                 if (cardUI != null)
                 {
+
                     // 뒷면 카드 세팅
                     cardUI.SetHidden(results[i]);
+
+                    // 펫 소환 이면 뒷면 변경
+                    if (_currentCategoryIndex == 1 && _petBackSprite != null)
+                    {
+                        cardUI.SetBackSprite(_petBackSprite);
+                    }
 
                     // 카드 위치 먼저 세팅
                     cardUI.HideVisual();
@@ -496,6 +529,11 @@ public class CGachaPresenter : MonoBehaviour
 
                     // 이벤트 구독
                     cardUI.OnFliped += FilpLegendCard;
+
+                    cardUI.OnFlipStart = () =>
+                    {
+                        SoundManager.Instance.PlayUISFX(_cardAudioSet.uiOff);
+                    };
 
                     _cardList.Add(cardUI);
                 }
@@ -507,6 +545,8 @@ public class CGachaPresenter : MonoBehaviour
                 _cardList[i].ShowVisual();
                 // 카드 내려오는 이펙트
                 _cardList[i].SpawnEffect();
+
+                SoundManager.Instance.PlayUISFX(_cardAudioSet.buttonClick);
 
                 // 순번으로 출력
                 yield return new WaitForSeconds(0.05f);
@@ -581,6 +621,8 @@ public class CGachaPresenter : MonoBehaviour
     // 모두 열기 기능 함수
     private IEnumerator CO_OpenAllCard()
     {
+        SoundManager.Instance.PlayUISFX(_buttonAudioSet.buttonClick);
+
         _gachaView.OpenAllCard.gameObject.SetActive(false);
 
         for (int i = 0; i < _cardList.Count; i++)
@@ -593,13 +635,15 @@ public class CGachaPresenter : MonoBehaviour
 
             // 카드 뒤집기 로직
             _cardList[i].ReverseCard();
+            SoundManager.Instance.PlayUISFX(_cardAudioSet.uiOff);
 
-            bool isLegend = _cardList[i].CurrentData.Rarity == CGachaDataSO.ERarity.Legend;
+            bool isLegend = _currentCategoryIndex == 0 && _cardList[i].CurrentData.Rarity == CGachaDataSO.ERarity.Legend;
 
             // 레전드 카드
             if (isLegend)
             {
                 yield return new WaitForSeconds(0.15f);
+                SoundManager.Instance.PlayUISFX(_cardAudioSet.heroPickUp);
 
                 // 팝업 띄워진동안 대기
                 while (_isLegendShow)
@@ -631,7 +675,7 @@ public class CGachaPresenter : MonoBehaviour
     // 레전드 카드 판정 함수
     private void FilpLegendCard(CGachaResultCard card)
     {
-        if (card.CurrentData.Rarity == CGachaDataSO.ERarity.Legend)
+        if (_currentCategoryIndex == 0 && card.CurrentData.Rarity == CGachaDataSO.ERarity.Legend)
         {
             _isLegendShow = true;
             StartCoroutine(CO_ShowLegendEffect(card.CurrentData));
@@ -700,9 +744,11 @@ public class CGachaPresenter : MonoBehaviour
     {
         CGachaCategorySO current = _gachaCategoryList[_currentCategoryIndex];
 
-        int totalExp = (current.CategoryName == "영웅") ?
+        int totalExp = (_currentCategoryIndex == 0) ?
             CDataManager.Instance.UserData.HeroPickUpLevel :
             CDataManager.Instance.UserData.PetPickUpLevel;
+
+        Debug.Log($"[Gacha] 현재 카테고리: {current.CategoryName}, 누적 경험치: {totalExp}");
 
         int currentLevel = current.GetLevel(totalExp);
         int currentExp = current.GetCurrentExp(totalExp);

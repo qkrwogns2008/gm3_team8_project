@@ -52,6 +52,9 @@ public class CGachaResultCard : MonoBehaviour
     // 뒤집힘 이벤트
     public Action<CGachaResultCard> OnFliped;
 
+    // 뒤집힘 시작 이벤트
+    public Action OnFlipStart;
+
     private void Awake()
     {
         // 카드 뒤집기 함수 연결
@@ -173,6 +176,15 @@ public class CGachaResultCard : MonoBehaviour
         }
     }
 
+    public void SetBackSprite(Sprite BackCard)
+    {
+        if (_backCardImage == null)
+        {
+            _backCardImage.sprite = BackCard;
+            _originBackSprite = BackCard;
+        }
+    }
+
     // 모든 이펙트 초기화
     private void ResetEffect()
     {
@@ -256,6 +268,8 @@ public class CGachaResultCard : MonoBehaviour
 
         _isReversed = true;
 
+        OnFlipStart?.Invoke();
+
         // 카드 뒤집히는 연출
         StartCoroutine(CO_FilpCard());
     }
@@ -279,8 +293,6 @@ public class CGachaResultCard : MonoBehaviour
                     effect.transform.localScale = Vector3.one;
 
                     effect.SetActive(true);
-
-                    Destroy(effect, 2f);
                 }
                 break;
             }
