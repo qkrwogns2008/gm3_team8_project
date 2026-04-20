@@ -175,6 +175,10 @@ public class CBoss : CEnemyBase
 
     protected override void Die()
     {
+        if(CDataManager.Instance != null && CDataManager.Instance.UserData != null)
+        {
+            CDataManager.Instance.UserData.MainStageLevel++;
+        }
         base.Die();
     }
 
