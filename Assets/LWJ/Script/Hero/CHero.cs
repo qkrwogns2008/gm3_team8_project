@@ -374,7 +374,7 @@ public class CHero : CUnitBase
 		}
 	}
 
-	// for Test
+	/*
 	protected override void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.Alpha1) && enableAttack)
@@ -398,6 +398,7 @@ public class CHero : CUnitBase
 			TakeDamage(Random.Range(5f, 20f), this);
 		}
 	}
+	*/
 
 	#region 전투 전처리
 	public override void TryAttack(CUnitBase target)
