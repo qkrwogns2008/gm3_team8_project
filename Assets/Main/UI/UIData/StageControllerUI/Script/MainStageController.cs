@@ -90,7 +90,7 @@ public class MainStageController : MonoBehaviour
     }
     public void MainStageUp()
     {
-        CO_SafeStageTransition();
+        StartCoroutine(CO_SafeStageTransition());
     }
     private IEnumerator CO_SafeStageTransition()
     {
