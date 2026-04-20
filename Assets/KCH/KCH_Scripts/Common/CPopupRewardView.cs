@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -50,7 +49,7 @@ public class CPopupRewardView : MonoBehaviour
     public void SetPopup(string title, Sprite icon, int amount)
     {
         // 제목 설정
-        if(TitleText != null)
+        if (TitleText != null)
         {
             TitleText.text = title;
         }
@@ -93,7 +92,6 @@ public class CPopupRewardView : MonoBehaviour
             Destroy(PopupGroup.GetChild(i).gameObject);
         }
 
-
         // 중복체크
         Dictionary<EQuestReward, int> rewardsDict = new Dictionary<EQuestReward, int>();
 
@@ -123,22 +121,19 @@ public class CPopupRewardView : MonoBehaviour
 
             // 프리팹 캐싱 컴포넌트 사용
             GameObject item = Instantiate(MultiPrefab, PopupGroup);
-
-            RectTransform rect = item.GetComponent<RectTransform>();
-            if (rect != null)
-            {
-                rect.localScale = Vector3.one;
-                rect.anchoredPosition3D = Vector3.zero;
-            }
-
             CRewardItemSlot slot = item.GetComponent<CRewardItemSlot>();
 
             if (slot != null)
             {
-
                 var rewardData = data.GetRewardData(reward.Key);
+
                 // 아이템 세팅
-                slot.SetItem(data.GetIcon(reward.Key), reward.Value, slot.Background.sprite, slot.Outline.sprite);
+                slot.SetItem(
+                    rewardData.Icon,
+                    reward.Value,
+                    rewardData.Background,
+                    rewardData.Outline
+                );
             }
         }
 

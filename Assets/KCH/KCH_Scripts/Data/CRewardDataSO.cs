@@ -11,7 +11,6 @@ public class CRewardDataSO : ScriptableObject
     {
         public EQuestReward Type;           // 보상 타입
         public Sprite Icon;                 // 보상 아이콘
-        public string Name;                 // 보상 이름
         public Sprite Background;           // 보상 배경
         public Sprite Outline;              // 보상 테두리
     }
@@ -41,6 +40,7 @@ public class CRewardDataSO : ScriptableObject
                 return data[i];
             }
         }
+
         return default;
     }
 }

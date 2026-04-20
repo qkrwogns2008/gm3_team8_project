@@ -570,10 +570,15 @@ public class CGachaPresenter : MonoBehaviour
 
         }
 
-        // 퀘스트 매니저 진행도 업데이트
-        //CQuestManager.Instance.QuestProgress(EQuestType.GachaSummon, count);
-        CQuestEvent.Publish(EQuestType.GachaSummon, count);
-        CQuestEvent.Publish(EQuestType.PetSummon, count);
+        // 이벤트 전달
+        if (_currentCategoryIndex == 0)
+        {
+            CQuestEvent.Publish(EQuestType.GachaSummon, count);
+        }
+        else
+        {
+            CQuestEvent.Publish(EQuestType.PetSummon, count);
+        }
 
         // 자동 뽑기 시 재 시작
         if (_isAutoRoll)
