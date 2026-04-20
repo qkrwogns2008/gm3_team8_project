@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2c5149fbef31bd4e9215a708d837e49, type: 3}
   m_Name: AudioSO_Snipper
   m_EditorClassIdentifier: 
-  Attack: {fileID: 0}
-  AttackDamaged: {fileID: 0}
-  Critical: {fileID: 0}
-  CriticalDamaged: {fileID: 0}
-  Skill: {fileID: 0}
-  SkillDamaged: {fileID: 0}
-  hit: {fileID: 0}
+  _attack: {fileID: 8300000, guid: aaefdc8156fc3844cbbc72fa06df7391, type: 3}
+  _attackDamaged: {fileID: 0}
+  _critical: {fileID: 0}
+  _criticalDamaged: {fileID: 8300000, guid: 72d852ac1d4950c49b75defb05297e89, type: 3}
+  _skill: {fileID: 8300000, guid: 88cf19b2df0180b48a59c3cb2fd297f6, type: 3}
+  _skillDamaged: {fileID: 8300000, guid: 72d852ac1d4950c49b75defb05297e89, type: 3}
