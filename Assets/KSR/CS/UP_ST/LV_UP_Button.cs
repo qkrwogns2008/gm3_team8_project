@@ -5,9 +5,6 @@ using UnityEngine.UI;
 
 public class LV_UP_Button : MonoBehaviour
 {
-    [Header("플레이어 데이터")]
-    public Dummy_Player DummyPlayer; // 플레이어 참조
-
     [Header("매니저 참조")]
     public Up_Manager upManager; // 스테이지 참조용 매니저
 
@@ -130,20 +127,23 @@ public class LV_UP_Button : MonoBehaviour
 
     public void TryLevelUp()
     {
-        if (DummyPlayer == null) return;
+        if (CDataManager.Instance == null) return;
 
         float afterCost;
         int levelGained;
 
         float totalCost = GetPreviewCost(out afterCost, out levelGained);
 
-        if (DummyPlayer.gold < totalCost)
+        int currentGold = CDataManager.Instance.UserData.Gold;
+
+        if (currentGold < totalCost)
         {
             Debug.Log("골드 부족");
             return;
         }
 
-        DummyPlayer.gold -= totalCost;
+        // 골드 차감 (데이터 매니저 사용)
+        CDataManager.Instance.SpendGold((int)totalCost);
 
         currentLevel += levelGained;
 
@@ -160,26 +160,26 @@ public class LV_UP_Button : MonoBehaviour
         FindObjectOfType<Up_Manager>()?.OnLevelChanged();
 
         // =============================
-        // CDataManager에 최종 능력치 반영 (덮어쓰기)
+        // 능력치 저장
 
         if (CDataManager.Instance != null)
         {
             switch (statType)
             {
                 case StatType.Attack:
-                    CDataManager.Instance.UserData.Atk_Level = (int)currentStat; // 공격력 반영
+                    CDataManager.Instance.UserData.Atk_Level = (int)currentStat;
                     break;
 
                 case StatType.Defense:
-                    CDataManager.Instance.UserData.Def_Level = (int)currentStat; // 방어력 반영
+                    CDataManager.Instance.UserData.Def_Level = (int)currentStat;
                     break;
 
                 case StatType.HP:
-                    CDataManager.Instance.UserData.Life_Level = (int)currentStat; // 체력 반영
+                    CDataManager.Instance.UserData.Life_Level = (int)currentStat;
                     break;
             }
 
-            CDataManager.Instance.SaveUserData(); // 즉시 저장
+            CDataManager.Instance.SaveUserData();
         }
 
         // =============================
@@ -202,9 +202,9 @@ public class LV_UP_Button : MonoBehaviour
 
     public void UpdateUI()
     {
-        if (DummyPlayer == null) return;
+        if (CDataManager.Instance == null) return;
 
-        float currentGold = DummyPlayer.gold;
+        float currentGold = CDataManager.Instance.UserData.Gold;
 
         if (goldText != null)
             goldText.text = FormatGold(currentGold);
