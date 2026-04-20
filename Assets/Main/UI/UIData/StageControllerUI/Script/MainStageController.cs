@@ -90,9 +90,104 @@ public class MainStageController : MonoBehaviour
     }
     public void MainStageUp()
     {
-        ClearEnemies();
+        CO_SafeStageTransition();
+    }
+    private IEnumerator CO_SafeStageTransition()
+    {
+        // 생성 우선 중단
+        StopAllSpawnersOnly();
+
+        // 타겟팅 막기
+        if(CEnemyManager.Instance != null )
+        {
+            CEnemyManager.Instance.ClearEnemyList();
+        }
+
+        
+        if(CGroupManager.instance != null)
+        {
+            CGroupManager.instance.BroadcastSharedTarget(null);
+        }
+
+        // 애니메이션 종료 대기시간
+        yield return new WaitForSeconds(1f);
+
+        // 몬스터 정리
+        ClearAllMonsters();
+
+        // 보스 스포너 참조 정리
+        if(CBossSpawner.Instance != null )
+        {
+            CBossSpawner.Instance.ClearActiveBoss();
+        }
+
         CDataManager.Instance.MainStageLevelUP(1);
         SetMainStageTheme();
+        
+        
     }
 
+    // 다음 스테이지 스포너 돌리기
+    private void RestartNewStageSpawner()
+    {
+        int currentStage = CDataManager.Instance.UserData.CurrentStageLevel;
+
+        if(currentStage >= 41)
+        {
+            if(_spawnArea3)
+            {
+                _spawnArea3.ReStartStage();
+            }
+        }
+        if (currentStage >= 21)
+        {
+            if (_spawnArea2)
+            {
+                _spawnArea2.ReStartStage();
+            }
+        }
+        if (currentStage >= 0)
+        {
+            if (_spawnArea1)
+            {
+                _spawnArea1.ReStartStage();
+            }
+        }
+    }
+
+    #region 코루틴 정지용
+
+    private void StopAllSpawnersOnly()
+    {
+        if (_spawnArea1 != null)
+        {
+            _spawnArea1.StopSpawning();
+        }
+        if (_spawnArea2 != null)
+        {
+            _spawnArea2.StopSpawning();
+        }
+        if (_spawnArea3 != null)
+        {
+            _spawnArea3.StopSpawning();
+        }
+    }
+
+    private void ClearAllMonsters()
+    {
+        if (_spawnArea1 != null)
+        {
+            _spawnArea1.ClearAllMonsters();
+        }
+        if (_spawnArea2 != null)
+        {
+            _spawnArea2.ClearAllMonsters();
+        }
+        if (_spawnArea3 != null)
+        {
+            _spawnArea3.ClearAllMonsters();
+        }
+    }
+    
+    #endregion
 }

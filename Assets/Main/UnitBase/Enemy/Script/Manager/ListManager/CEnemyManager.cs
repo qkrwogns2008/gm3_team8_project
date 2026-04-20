@@ -37,4 +37,9 @@ public class CEnemyManager : MonoBehaviour
             _activeEnemies.Remove(enemy);
         }
     }
+
+    public void ClearEnemyList()
+    {
+        _activeEnemies.Clear();
+    }
 }

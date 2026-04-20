@@ -22,6 +22,8 @@ public class CBoss : CEnemyBase
     [Header("스킬 애니메이션")]
     [SpineAnimation(dataField = "SkeletonAni")]
     [SerializeField] protected string _skillAnimation;
+    [Header("보스 UI")]
+    [SerializeField] private GameObject _myHealthBar;
     #endregion
     #region 내부 변수
     private float _nextSkillTime;              // 다음 스킬 가능 시간
@@ -183,6 +185,12 @@ public class CBoss : CEnemyBase
         }
         IsDead = true;
 
+        // 보스 체력바 비활성화
+        if(_myHealthBar != null)
+        {
+            _myHealthBar.SetActive(false);
+        }
+
         if(CEnemyManager.Instance != null)
         {
             CEnemyManager.Instance.UnregisterEnemy(this);
@@ -192,9 +200,17 @@ public class CBoss : CEnemyBase
         {
             MainStageController.Instance.MainStageUp();
         }
+
+        if(CBossSpawner.Instance != null)
+        {
+            CBossSpawner.Instance.ClearActiveBoss();
+        }
         base.Die();
 
-        StartCoroutine(CO_DestroyBoss());
+        if(gameObject.activeInHierarchy)
+        {
+            StartCoroutine(CO_DestroyBoss());
+        }
         
 
     }
