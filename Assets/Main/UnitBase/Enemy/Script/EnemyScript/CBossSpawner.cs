@@ -85,7 +85,11 @@ public class CBossSpawner : MonoBehaviour
         CBoss bossScript = _activeBoss.GetComponent<CBoss>();
         if (bossScript != null)
         {
-            /// 보스 등장시 로직 필요시 추가
+            // 리스트에 보스 등록
+            if(CEnemyManager.Instance != null)
+            {
+                CEnemyManager.Instance.RegisterEnemy(bossScript);
+            }
         }
     }
 
