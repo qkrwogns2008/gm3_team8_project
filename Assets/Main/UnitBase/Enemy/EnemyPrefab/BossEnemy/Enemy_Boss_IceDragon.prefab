@@ -179,6 +179,7 @@ GameObject:
   - component: {fileID: 4555792972297042494}
   - component: {fileID: -8094208882258679801}
   - component: {fileID: 226226769574675676}
+  - component: {fileID: -303970948274238325}
   m_Layer: 0
   m_Name: Enemy_Boss_IceDragon
   m_TagString: Untagged
@@ -274,6 +275,18 @@ MonoBehaviour:
   _cameraTr: {fileID: 0}
   _useX: 1
   _useY: 1
+--- !u!210 &-303970948274238325
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3899819637224094853}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &6541709915626172389
 GameObject:
   m_ObjectHideFlags: 0
