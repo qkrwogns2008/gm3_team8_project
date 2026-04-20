@@ -226,8 +226,11 @@ public abstract class CUnitBase : MonoBehaviour
 		{
 			return;
 		}
-
-		if (HitAudio != null)
+        if (!gameObject.activeInHierarchy)
+        {
+            return;
+        }
+        if (HitAudio != null)
 		{
 			SoundManager.Instance.PlayUnitSFX(HitAudio);
 		}
@@ -328,13 +331,18 @@ public abstract class CUnitBase : MonoBehaviour
 	protected virtual void Die()
 	{
 		IsDead = true;
-		// 사망 애니메이션 등 추가
-	}
+        if (IsDead || !gameObject.activeInHierarchy)
+        {
+            return;
+        }
 
-	/// <summary>
-	/// X축으로 knockbackRange만큼 밀림.
-	/// </summary>
-	public virtual void OnKnockbackX(float knockbackRange)
+        // 사망 애니메이션 등 추가
+    }
+
+    /// <summary>
+    /// X축으로 knockbackRange만큼 밀림.
+    /// </summary>
+    public virtual void OnKnockbackX(float knockbackRange)
 	{
 		Vector3 pos, posPrev;
 		posPrev = pos = transform.position;
