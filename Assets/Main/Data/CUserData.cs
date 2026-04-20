@@ -43,6 +43,7 @@ public class CUserData
     //영웅 카메라 배치 변수
     public int Hero_Camera_Array = 0;
 
+    public bool IsHeroArrayChanged = false;
 
     // 보유 중인 영웅ID, 레벨 정보
     public List<UserHeroData> HeroList = new List<UserHeroData>();

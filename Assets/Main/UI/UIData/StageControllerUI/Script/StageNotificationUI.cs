@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StageNotificationUI : MonoBehaviour
 {
@@ -110,8 +111,15 @@ public class StageNotificationUI : MonoBehaviour
             CDataManager.Instance.UserData.CurrentStageLevel = selectedStage;
             CDataManager.Instance.SaveUserData();
             CGameManager.Instance.ChangeState(GameState.MainStage);
-            MainStageController.Instance.SetMainStageTheme();
-            Debug.Log($"[이동] {selectedStage} 스테이지로 설정을 변경했습니다!");
+        // MainStageController.Instance.SetMainStageTheme();
+
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
+
+
+        Debug.Log($"[이동] {selectedStage} 스테이지로 설정을 변경했습니다!");
+            
+        
             this.gameObject.SetActive(false);
             // 2. 실제 스테이지 씬으로 이동하거나 팝업을 닫는 로직 추가
             // SceneManager.LoadScene("GameScene"); 혹은 UI 닫기

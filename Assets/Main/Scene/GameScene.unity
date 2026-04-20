@@ -215,6 +215,10 @@ PrefabInstance:
       propertyPath: _spawnArea3
       value: 
       objectReference: {fileID: 123360667}
+    - target: {fileID: 6741158424955622822, guid: 147b278ccf1d7d140a24329f0a36f6ea, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7227882653990175179, guid: 147b278ccf1d7d140a24329f0a36f6ea, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -680,7 +684,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3450323617168134684, guid: 2618f05665310df408c068a229e8086a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1049046570}
   m_SourcePrefab: {fileID: 100100000, guid: 2618f05665310df408c068a229e8086a, type: 3}
 --- !u!114 &535599314 stripped
 MonoBehaviour:
@@ -1218,6 +1225,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3450323617168134684, guid: 2618f05665310df408c068a229e8086a, type: 3}
   m_PrefabInstance: {fileID: 535599313}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1049046570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049046568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e88a484d8e7d214295fc5922388dc28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1124599898
 GameObject:
   m_ObjectHideFlags: 0
@@ -1533,6 +1552,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 2039014291255567271, guid: 317a39a3650f1204a9c8637c2ad51ee0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2311637066947501598, guid: 317a39a3650f1204a9c8637c2ad51ee0, type: 3}
       propertyPath: myPrefab
       value: 
@@ -1569,6 +1592,10 @@ PrefabInstance:
       propertyPath: targetPrefabs.Array.data[0]
       value: 
       objectReference: {fileID: 968259657}
+    - target: {fileID: 2509897477929994187, guid: 317a39a3650f1204a9c8637c2ad51ee0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2729592908105293789, guid: 317a39a3650f1204a9c8637c2ad51ee0, type: 3}
       propertyPath: myPrefab
       value: 
@@ -2120,7 +2147,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1938227939}
-  - component: {fileID: 1938227941}
+  - component: {fileID: 1938227940}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -2143,14 +2170,14 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1938227941
+--- !u!114 &1938227940
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1938227937}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f39b1c65bbc1c9d49bcbd29c5c0f7bf7, type: 3}
   m_Name: 

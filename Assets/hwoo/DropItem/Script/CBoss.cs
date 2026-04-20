@@ -1,6 +1,7 @@
 using Spine.Unity;
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CBoss : CEnemyBase
 {
@@ -194,13 +195,17 @@ public class CBoss : CEnemyBase
         base.Die();
 
         StartCoroutine(CO_DestroyBoss());
+        
+
     }
 
     private IEnumerator CO_DestroyBoss()
     {
         yield return new WaitForSeconds(3.0f);
 
-        Destroy(gameObject);
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
+        // Destroy(gameObject);
     }
 
     private void OnDestroy()

@@ -168,6 +168,8 @@ public class Hero_Forming : MonoBehaviour
             int x = i % 4;
             int y = i / 4;
 
+
+            CDataManager.Instance.UserData.IsHeroArrayChanged = true; // 변경 플래그 설정
             CDataManager.Instance.AddUserHeroArray(x, y, connect.heroDataSO.HeroID);
         }
     }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainStageController : MonoBehaviour
 {
@@ -26,10 +27,7 @@ public class MainStageController : MonoBehaviour
 
     public void SetMainStageTheme()
     {
-        if(CGameManager.Instance.CurrentState != GameState.MainStage)
-        {
-            return; // 메인 스테이지가 아닐 때는 함수 종료
-        }
+        Debug.Log($"SetMainStageTheme 작동");
         if (CDataManager.Instance.UserData.CurrentStageLevel >= 41)
         {
             ClearEnemies();
@@ -37,6 +35,12 @@ public class MainStageController : MonoBehaviour
             _mainStageTheme1.gameObject.SetActive(false);
             _mainStageTheme2.gameObject.SetActive(false);
             _mainStageTheme3.gameObject.SetActive(true);
+
+
+            Debug.Log($"메인스테이지3 전환");
+
+            Scene currentScene = SceneManager.GetActiveScene();
+            Time.timeScale = 1f;
             _spawnArea3.ReStartStage();
 
         }
@@ -47,6 +51,10 @@ public class MainStageController : MonoBehaviour
             _mainStageTheme1.gameObject.SetActive(false);
             _mainStageTheme2.gameObject.SetActive(true);
             _mainStageTheme3.gameObject.SetActive(false);
+            Debug.Log($"메인스테이지2 전환");
+
+            Scene currentScene = SceneManager.GetActiveScene();
+            Time.timeScale = 1f;
             _spawnArea2.ReStartStage();
 
         }
@@ -57,6 +65,10 @@ public class MainStageController : MonoBehaviour
             _mainStageTheme1.gameObject.SetActive(true);
             _mainStageTheme2.gameObject.SetActive(false);
             _mainStageTheme3.gameObject.SetActive(false);
+            Debug.Log($"메인스테이지1 전환");
+
+            Scene currentScene = SceneManager.GetActiveScene();
+            Time.timeScale = 1f;
             _spawnArea1.ReStartStage();
 
         }

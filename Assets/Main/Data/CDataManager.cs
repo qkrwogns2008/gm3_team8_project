@@ -26,9 +26,31 @@ public class CDataManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
         else { Destroy(gameObject); }
+
+        CDataManager.Instance.AddHeroDummy(EHeroID.Baskin);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Nami);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Loto);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Jak);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Sarah);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Elga);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Karon);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Rook);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Snipper);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Shane);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Evan);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Alice);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Teo);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Yeonhee);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Radgrid);
+        CDataManager.Instance.AddHeroDummy(EHeroID.Ecila);
     }
     // [저장] 데이터 -> JSON -> 파
     // 일
+
+    private void Start()
+    {
+        
+    }
     public void SaveUserData()
     {
         UserData.LastLogoutTime = System.DateTime.Now.Ticks;
@@ -506,7 +528,17 @@ public class CDataManager : MonoBehaviour
         UserHeroData hero = GetHeroData(id);
         if (hero == null)
         {
-            UserData.HeroList.Add(new UserHeroData { HeroID = id, Quantity = 0 });
+            if (id == EHeroID.Elga)
+            {
+                UserData.HeroList.Add(new UserHeroData { HeroID = id, Quantity = 1 });
+                AddUserHeroArray(0, 0, id); // 엘가를 1번 슬롯에 배치
+
+            }
+            else
+            {
+                UserData.HeroList.Add(new UserHeroData { HeroID = id, Quantity = 0 });
+
+            }
             Debug.Log($"[더미] 영웅 데이터 추가 (ID: {id})");
             SaveUserData();
         }
