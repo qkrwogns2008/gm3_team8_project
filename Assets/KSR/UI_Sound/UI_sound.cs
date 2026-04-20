@@ -15,6 +15,7 @@ public class UI_sound : MonoBehaviour
         }
 
         // 2. 사운드 매니저 준비 체크
+        /*
         if (SoundManager.Instance != null)
         {
             SoundManager.Instance.PlayUISFX(_audioData.uiOn);
@@ -23,6 +24,7 @@ public class UI_sound : MonoBehaviour
         {
             StartCoroutine(CoPlaySFXDelayed()); // 딜레이 재생
         }
+        */
     }
 
     // =============================
@@ -40,11 +42,15 @@ public class UI_sound : MonoBehaviour
     }
     public void PlayUISound_OnClick()
     {
+        Debug.Log("UI S1");
         if (_audioData == null) return;
-
+        Debug.Log("UI S2");
         if (SoundManager.Instance != null)
         {
+            Debug.Log("UI S3");
             SoundManager.Instance.PlayUISFX(_audioData.uiOn);
+            Debug.Log("UI S4");
         }
+        Debug.Log("UI S5");
     }
 }

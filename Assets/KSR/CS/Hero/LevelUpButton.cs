@@ -12,6 +12,8 @@ public class LevelUpButton : MonoBehaviour
     [Header("경험치 표시 텍스트 (보유 / 요구 또는 MAX)")]
     [SerializeField] private TextMeshProUGUI expCombinedText;
 
+    [SerializeField] private UIAudioSO _audioData; // 오디오 데이터
+
     void Update()
     {
         UpdateUI();
@@ -60,6 +62,17 @@ public class LevelUpButton : MonoBehaviour
             // 레벨 증가 (외부 시스템 사용)
             CDataManager.Instance.AddHeroLevel(heroDataSO.HeroID, 1);
         }
+        // UI 효과음 재생
+        Debug.Log("UI S1");
+        if (_audioData == null) return;
+        Debug.Log("UI S2");
+        if (SoundManager.Instance != null)
+        {
+            Debug.Log("UI S3");
+            SoundManager.Instance.PlayUISFX(_audioData.uiOn);
+            Debug.Log("UI S4");
+        }
+        Debug.Log("UI S5");
     }
 
     // UI 갱신
