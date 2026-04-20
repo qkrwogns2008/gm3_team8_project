@@ -107,6 +107,10 @@ public class CBossSpawner : MonoBehaviour
 
     public void ClearActiveBoss()
     {
-        _activeBoss = null;
+        if (_activeBoss != null)
+        {
+            Destroy(_activeBoss);
+            _activeBoss = null;
+        }
     }
 }
