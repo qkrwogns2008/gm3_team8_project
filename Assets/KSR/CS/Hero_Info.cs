@@ -10,6 +10,9 @@ public class Hero_Info : MonoBehaviour, IPointerClickHandler
     [SerializeField] private GameObject targetParent;      // 활성화할 오브젝트
     [SerializeField] private GameObject disableTarget;     // 비활성화할 오브젝트
 
+
+    [SerializeField] private UIAudioSO _audioData;
+
     public void OnPointerClick(PointerEventData eventData)
     {
         // Area2 상태일 경우 동작 중단
@@ -32,6 +35,14 @@ public class Hero_Info : MonoBehaviour, IPointerClickHandler
         if (disableTarget != null)
         {
             disableTarget.SetActive(false);
+        }
+
+        // UI 효과음 재생
+        if (_audioData == null) return;
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayUISFX(_audioData.uiOn); // UI 효과음 재생
         }
     }
 }
