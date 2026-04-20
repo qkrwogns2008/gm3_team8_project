@@ -49,7 +49,7 @@ public class MissileBase : MonoBehaviour
 
 	protected virtual void Update()
 	{
-		if (Target == null || Target.IsUnitDead)
+		if (Target == null || Target.IsUnitDead || !Target.gameObject.activeSelf)
 		{
 			ReturnToPool();
 			return;
