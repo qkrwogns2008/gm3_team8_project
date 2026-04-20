@@ -18,7 +18,7 @@ public class CQuestPresenter : MonoBehaviour
     {
         if (_questAllButton)
         {
-            _questAllButton.onClick.AddListener(() => CQuestManager.Instance.RewardAllQuest());
+            _questAllButton.onClick.AddListener(OnClickAllReward);
         }
 
         // 데이터가 바뀌면 RefreshUI 실행
@@ -27,6 +27,15 @@ public class CQuestPresenter : MonoBehaviour
         RefreshUI();
     }
 
+    // 팝업 매니저 연결
+    public void OnClickAllReward()
+    {
+        // 매니저 리스트
+        List<SQuestReward> rewards = CQuestManager.Instance.RewardAllQuest();
+
+        // 팝업 매니저 전달
+        CPopupManager.Instance.ShowRewardPopup(rewards);
+    }
 
     public void RefreshUI()
     {

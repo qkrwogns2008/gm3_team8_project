@@ -16,8 +16,6 @@ public class CGameManager : MonoBehaviour
 
     [Header("게임 상태")]
     public GameState CurrentState;
-
-
     private void Awake()
     {
         if (Instance == null)
@@ -40,6 +38,7 @@ public class CGameManager : MonoBehaviour
     // 상태 변경 함수
     public void ChangeState(GameState newState)
     {
+
         CurrentState = newState;
         if(GameState.Paused != CurrentState && GameState.GameOver != CurrentState)
         {
@@ -53,7 +52,7 @@ public class CGameManager : MonoBehaviour
                 // 타이틀 화면 UI
                 break;
             case GameState.MainStage:
-                Debug.Log("메인 스테이지로 전환");
+                    Debug.Log("메인 스테이지로 전환");
                 // 메인 스테이지 UI 및 활성화
                 break;
             case GameState.Dungeon:

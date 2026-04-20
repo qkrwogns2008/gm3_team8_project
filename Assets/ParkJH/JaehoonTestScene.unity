@@ -828,7 +828,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1229072280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -844,7 +844,6 @@ MonoBehaviour:
   _TeamForceText: {fileID: 1420712469}
   _DiamondText: {fileID: 1703903010}
   _RubyText: {fileID: 187728430}
-  _heroDataSO: {fileID: 0}
 --- !u!114 &1229072281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -981,10 +980,6 @@ PrefabInstance:
     - target: {fileID: 2077889478472809802, guid: 91509bc5af6e2c24ba8a37ce444bf615, type: 3}
       propertyPath: m_Name
       value: EveryManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 4115086518824678804, guid: 91509bc5af6e2c24ba8a37ce444bf615, type: 3}
-      propertyPath: isDebugMode
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1388,6 +1383,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &3320122057991934273
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1573658284181130365, guid: 7692c6576a764674fa08c8305effd1a7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1573658284181130365, guid: 7692c6576a764674fa08c8305effd1a7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1573658284181130365, guid: 7692c6576a764674fa08c8305effd1a7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1573658284181130365, guid: 7692c6576a764674fa08c8305effd1a7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1573658284181130365, guid: 7692c6576a764674fa08c8305effd1a7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1573658284181130365, guid: 7692c6576a764674fa08c8305effd1a7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1573658284181130365, guid: 7692c6576a764674fa08c8305effd1a7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1573658284181130365, guid: 7692c6576a764674fa08c8305effd1a7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1573658284181130365, guid: 7692c6576a764674fa08c8305effd1a7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1573658284181130365, guid: 7692c6576a764674fa08c8305effd1a7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2989557678935336082, guid: 7692c6576a764674fa08c8305effd1a7, type: 3}
+      propertyPath: m_Name
+      value: ChangeStageUI
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7692c6576a764674fa08c8305effd1a7, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1402,3 +1454,4 @@ SceneRoots:
   - {fileID: 718541622}
   - {fileID: 1229072284}
   - {fileID: 2065256768}
+  - {fileID: 3320122057991934273}
