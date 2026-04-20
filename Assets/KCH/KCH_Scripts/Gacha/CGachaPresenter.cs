@@ -1,11 +1,8 @@
-using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-
 
 public class CGachaPresenter : MonoBehaviour
 {
@@ -530,7 +527,8 @@ public class CGachaPresenter : MonoBehaviour
         }
 
         // 퀘스트 매니저 진행도 업데이트
-        CQuestManager.Instance.QuestProgress(EQuestType.GachaSummon, count);
+        //CQuestManager.Instance.QuestProgress(EQuestType.GachaSummon, count);
+        CQuestEvent.Publish(EQuestType.GachaSummon, count);
 
         // 자동 뽑기 시 재 시작
         if (_isAutoRoll)

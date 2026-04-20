@@ -21,6 +21,7 @@ public enum EQuestReward
     Ruby = 0,                   // 루비 보상
     Ticket = 1,                 // 티켓 보상
     Exp = 2,                    // 경험치 보상
+    Hero = 3,                   // 영웅 보상
 }
 
 public enum EQuestState
@@ -34,4 +35,12 @@ public struct SQuestReward
 {
     public EQuestReward Type;   // 퀘스트 보상 타입
     public int Amount;          // 퀘스트 보상 수량
+    public string Title;        // 퀘스트 타이틀
+
+    public SQuestReward(EQuestReward type, int amount, string title = "보상 획득")
+    {
+        this.Type = type;
+        this.Amount = amount;
+        this.Title = title;
+    }
 }
