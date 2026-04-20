@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2c5149fbef31bd4e9215a708d837e49, type: 3}
   m_Name: AudioSO_Karon
   m_EditorClassIdentifier: 
-  Attack: {fileID: 0}
-  AttackDamaged: {fileID: 0}
-  Critical: {fileID: 0}
-  CriticalDamaged: {fileID: 0}
-  Skill: {fileID: 0}
-  SkillDamaged: {fileID: 0}
-  hit: {fileID: 0}
+  _attack: {fileID: 8300000, guid: d1ba50ebe71da62459742f10a088a303, type: 3}
+  _attackDamaged: {fileID: 8300000, guid: 72d852ac1d4950c49b75defb05297e89, type: 3}
+  _critical: {fileID: 8300000, guid: 5233773ac231ddf4a98aed6610b9722c, type: 3}
+  _criticalDamaged: {fileID: 0}
+  _skill: {fileID: 0}
+  _skillDamaged: {fileID: 0}

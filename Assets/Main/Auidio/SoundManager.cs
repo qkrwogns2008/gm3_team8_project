@@ -38,9 +38,11 @@ public class SoundManager : MonoBehaviour
     // 배경음 멈투
     public void StopBGM(AudioClip clip, bool loop = false)
     {
-        _bgmSource.clip = clip;
-        _bgmSource.loop = loop;
-        _bgmSource.Play();
+        if (_bgmSource != null)
+        {
+            _bgmSource.Stop();
+            _bgmSource.clip = null;
+        }
     }
 
     // UI 사운드
@@ -54,7 +56,7 @@ public class SoundManager : MonoBehaviour
     public void PlayUnitSFX(AudioClip clip)
     {
         if (clip == null) return;
-		_unitSfxSource.pitch = Random.Range(0.9f, 1.1f);
+		_unitSfxSource.pitch = Random.Range(0.95f, 1.05f);
 		_unitSfxSource.PlayOneShot(clip);
     }
 }

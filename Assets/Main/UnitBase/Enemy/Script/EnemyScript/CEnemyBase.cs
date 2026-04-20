@@ -52,7 +52,7 @@ public class CEnemyBase : CUnitBase
 
         if (EnemyData != null && CDataManager.Instance != null)
         {
-            int stage = CDataManager.Instance.UserData.MainStageLevel;
+            int stage = CDataManager.Instance.UserData.CurrentStageLevel;
 
             #region 성장공식 이후 수정 필요
 

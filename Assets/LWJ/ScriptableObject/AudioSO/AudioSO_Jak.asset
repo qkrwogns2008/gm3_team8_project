@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2c5149fbef31bd4e9215a708d837e49, type: 3}
   m_Name: AudioSO_Jak
   m_EditorClassIdentifier: 
-  Attack: {fileID: 0}
-  AttackDamaged: {fileID: 0}
-  Critical: {fileID: 0}
-  CriticalDamaged: {fileID: 0}
-  Skill: {fileID: 0}
-  SkillDamaged: {fileID: 0}
-  hit: {fileID: 0}
+  _attack: {fileID: 0}
+  _attackDamaged: {fileID: 8300000, guid: cac7e01006b867044bf4c3e6dc5b25a4, type: 3}
+  _critical: {fileID: 0}
+  _criticalDamaged: {fileID: 8300000, guid: b9ea75839ee70c3499b2089c92714bd6, type: 3}
+  _skill: {fileID: 8300000, guid: 8ece1c4c64e7ec348b6a4919362635ac, type: 3}
+  _skillDamaged: {fileID: 8300000, guid: e1131ce5bf7d8354d8035e35003545b4, type: 3}

@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitName: 
-  CurrentHp: 0
+  currentHp: 0
   OriginData: {fileID: 11400000, guid: df2ee70120676f545a50332e76f349d4, type: 2}
   TeamType: 0
   centerTransform: {fileID: 8331120324585134367}
@@ -68,8 +68,10 @@ MonoBehaviour:
   enableCriticalAttack: 1
   enableUseSkill: 1
   buffSystem: {fileID: 8177186180137121409}
+  isInvincible: 0
   MissilePrefab: {fileID: 114243736805655561, guid: da7681deed3b6f54eb4f07548757d618, type: 3}
   MissileData: {fileID: 11400000, guid: 09e2dc7bb0af9554382cb73ea5251127, type: 2}
+  MissileDamaged: {fileID: 8300000, guid: 72d852ac1d4950c49b75defb05297e89, type: 3}
   SkillAttackCount: 3
   CriticalHitEffect: {fileID: 11400000, guid: 802fbade7ebfe6844b0604647c7b3303, type: 2}
   SkillHitEffect: {fileID: 11400000, guid: 944ca67ecc820db49948bb576be30ebd, type: 2}
@@ -87,6 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8458d08ebfd40524ebe51fdf3782d5bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isAutoMove: 1
 --- !u!114 &8177186180137121409
 MonoBehaviour:
   m_ObjectHideFlags: 0

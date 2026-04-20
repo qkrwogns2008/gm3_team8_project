@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2c5149fbef31bd4e9215a708d837e49, type: 3}
   m_Name: AudioSO_Elga
   m_EditorClassIdentifier: 
-  Attack: {fileID: 0}
-  AttackDamaged: {fileID: 0}
-  Critical: {fileID: 0}
-  CriticalDamaged: {fileID: 0}
-  Skill: {fileID: 0}
-  SkillDamaged: {fileID: 0}
-  hit: {fileID: 0}
+  _attack: {fileID: 8300000, guid: b7096d81e50263d4fa11d147dfa922ba, type: 3}
+  _attackDamaged: {fileID: 0}
+  _critical: {fileID: 8300000, guid: 05a7070f7afe46142aa1debac9859cc7, type: 3}
+  _criticalDamaged: {fileID: 0}
+  _skill: {fileID: 8300000, guid: e9e30da93b98ad147886d7f203e01a77, type: 3}
+  _skillDamaged: {fileID: 8300000, guid: e66f17681fd3a014c8d98547e26f1963, type: 3}

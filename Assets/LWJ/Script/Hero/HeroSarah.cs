@@ -135,7 +135,14 @@ public class HeroSarah : CHero
 	{
 		if (target != null)
 		{
-			target.TakeDamage(CriticalDamage / CriticalAttackCount, this);
+			if (AudioSO != null)
+			{
+				target.TakeDamage(CriticalDamage / CriticalAttackCount, this, true, AudioSO.CriticalDamaged);
+			}
+			else
+			{
+				target.TakeDamage(CriticalDamage / CriticalAttackCount, this, true);
+			}
 		}
 	}
 

@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitName: 
-  CurrentHp: 0
+  currentHp: 0
   OriginData: {fileID: 11400000, guid: e67f0fe7071dee74295e16b90bca3bb8, type: 2}
   TeamType: 0
   centerTransform: {fileID: 8331120324585134367}
@@ -68,11 +68,15 @@ MonoBehaviour:
   enableCriticalAttack: 1
   enableUseSkill: 1
   buffSystem: {fileID: 8177186180137121409}
+  isInvincible: 0
   MissilePrefab: {fileID: 114587765826080250, guid: e6087f6a9f210c54b8b40cbf7f87522a, type: 3}
   MissileData: {fileID: 11400000, guid: e21ba98d20748d04c8a192368de82ceb, type: 2}
+  MissileDamaged: {fileID: 8300000, guid: ee64c3740f7aba6479d00df9687a4939, type: 3}
   CriticalMissilePrefab: {fileID: 114587765826080250, guid: 4d450eb9825a802489ea270ab3ab5805, type: 3}
   CriticalMissileData: {fileID: 11400000, guid: e21ba98d20748d04c8a192368de82ceb, type: 2}
+  CriticalMissileDamaged: {fileID: 8300000, guid: ee64c3740f7aba6479d00df9687a4939, type: 3}
   SkillHitEffect: {fileID: 11400000, guid: c15ed13fdbd37c140afcff439d9a3d2a, type: 2}
+  SkillDropPreDelay: 0.5
   AreaRadius: 3
   PrintSkillLog: 0
 --- !u!114 &1385575880346748945

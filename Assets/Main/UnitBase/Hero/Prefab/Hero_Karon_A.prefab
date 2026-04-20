@@ -68,8 +68,10 @@ MonoBehaviour:
   enableCriticalAttack: 1
   enableUseSkill: 1
   buffSystem: {fileID: 8177186180137121409}
+  isInvincible: 0
   MissilePrefab: {fileID: 114709867586078768, guid: c43ee240324dfef46872f9faa411b9de, type: 3}
   MissileData: {fileID: 11400000, guid: ad1fdb733de44784d803e054c30030a9, type: 2}
+  MissileDamaged: {fileID: 8300000, guid: ee64c3740f7aba6479d00df9687a4939, type: 3}
   CriticalHitEffect: {fileID: 11400000, guid: 7ea92b9f402500f40a86910227fdfb9d, type: 2}
   PrintSkillLog: 0
 --- !u!114 &1385575880346748945

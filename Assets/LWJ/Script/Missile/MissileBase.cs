@@ -10,6 +10,7 @@ public class MissileBase : MonoBehaviour
 
 	protected float MoveSpeed;
 	protected float Damage;
+	protected AudioClip HitAudio;
 
 	protected bool LookAtTarget;
 
@@ -28,10 +29,11 @@ public class MissileBase : MonoBehaviour
 		Attacker = null;
 		MoveSpeed = 0f;
 		Damage = 0f;
+		HitAudio = null;
 		Rot = Vector3.zero;
 	}
 
-	public virtual void Init(MissileBase origin, MissileDataSO data, float damage, CUnitBase target, CUnitBase attacker)
+	public virtual void Init(MissileBase origin, MissileDataSO data, float damage, CUnitBase target, CUnitBase attacker, AudioClip hitAudio = null)
 	{
 		OriginPrefab = origin;
 
@@ -39,6 +41,7 @@ public class MissileBase : MonoBehaviour
 		LookAtTarget = data.LookAtTarget;
 
 		Damage = damage;
+		HitAudio = hitAudio;
 
 		Target = target;
 		Attacker = attacker;
@@ -97,6 +100,10 @@ public class MissileBase : MonoBehaviour
 	{
 		if (Target != null)
 		{
+			if (HitAudio != null)
+			{
+				SoundManager.Instance.PlayUnitSFX(HitAudio); // Hit 오디오 재생
+			}
 			Target.TakeDamage(Damage, Attacker);
 		}
 		ReturnToPool();
