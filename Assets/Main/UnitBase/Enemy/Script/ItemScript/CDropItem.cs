@@ -27,7 +27,7 @@ public class CDropItem : MonoBehaviour
 	}
     private void OnEnable()
     {
-		transform.localScale = Vector3.one;
+		//transform.localScale = Vector3.one;
 		_flySpeed = _initialFlySpeed;
 
 		StartCoroutine(Co_ItemRoutine());

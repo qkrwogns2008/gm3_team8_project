@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1485979797248975328}
   - component: {fileID: 7392322905214309496}
+  - component: {fileID: 7072598393802408397}
   m_Layer: 0
   m_Name: Ruby
   m_TagString: Untagged
@@ -27,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -475.76483, y: 1202.0573, z: -15.174243}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8299934475372477415}
@@ -48,6 +49,21 @@ MonoBehaviour:
   _originPrefab: {fileID: 0}
   _bounceHeight: 1.5
   _flySpeed: 10
+--- !u!114 &7072598393802408397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6639312363153707150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cfb411ede0678442808700649116a53, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cameraTr: {fileID: 0}
+  _useX: 1
+  _useY: 1
 --- !u!1 &8083851599608103543
 GameObject:
   m_ObjectHideFlags: 0
@@ -58,6 +74,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8299934475372477415}
   - component: {fileID: 2583645769200145621}
+  - component: {fileID: 8583530600653974590}
   m_Layer: 0
   m_Name: Icon_Ruby
   m_TagString: Untagged
@@ -132,3 +149,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8583530600653974590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8083851599608103543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2621b222c1d268940a34cfe6fcfda1f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factorX: 0
+  factorY: 0.0095
