@@ -177,8 +177,7 @@ public class CBoss : CEnemyBase
     {
         if(CDataManager.Instance != null && CDataManager.Instance.UserData != null)
         {
-            CDataManager.Instance.UserData.MainStageLevel++;
-        }
+            CDataManager.Instance.MainStageLevelUP(1);
         base.Die();
     }
 
