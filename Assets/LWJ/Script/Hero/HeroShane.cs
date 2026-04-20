@@ -7,6 +7,11 @@ public class HeroShane : CHero
 	[Header("Multi Attack 설정")]
 	[SerializeField] protected int CriticalAttackCount = 2;
 	[SerializeField] protected int SkillAttackCount = 3;
+	[SerializeField] protected AudioClip CriticalDamaged2;
+	#endregion
+
+	#region 내부 변수
+	protected int CriticalAttackIndex = 0;
 	#endregion
 
 	protected override IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type, AudioClip castAudio = null)
@@ -19,6 +24,11 @@ public class HeroShane : CHero
 		}
 
 		SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
+
+		if (castAudio != null)
+		{
+			SoundManager.Instance.PlayUnitSFX(castAudio); // 공격 오디오 재생
+		}
 
 		if (effectData != null)
 		{
@@ -39,11 +49,6 @@ public class HeroShane : CHero
 					continue;
 				}
 
-				if (castAudio != null)
-				{
-					SoundManager.Instance.PlayUnitSFX(castAudio); // 공격 오디오 재생
-				}
-
 				yield return new WaitForSeconds(fxData.PreDelay / AttackSpeedMultiplier);
 
 				if (fxData.Prefab == null)
@@ -58,6 +63,10 @@ public class HeroShane : CHero
 					Debug.LogWarning($"{name} : {effectData.Name} 이펙트 생성 실패");
 					MotionRoutine = null;
 					yield break;
+				}
+				if (type == EAttackType.Critical)
+				{
+					CriticalAttackIndex = i;
 				}
 
 				ProcessHit(target, type);
@@ -95,6 +104,10 @@ public class HeroShane : CHero
 	{
 		if (target != null)
 		{
+			if (AudioSO.CriticalDamaged != null)
+			{
+				SoundManager.Instance.PlayUnitSFX(AudioSO.CriticalDamaged); // 공격 오디오 재생
+			}
 			target.TakeDamage(CriticalDamage / CriticalAttackCount, this);
 		}
 	}
@@ -103,6 +116,20 @@ public class HeroShane : CHero
 	{
 		if (target != null)
 		{
+			if (CriticalAttackIndex == 0)
+			{
+				if (AudioSO.CriticalDamaged != null)
+				{
+					SoundManager.Instance.PlayUnitSFX(AudioSO.CriticalDamaged); // 공격 오디오 재생
+				}
+			}
+			else if (CriticalAttackIndex == 1)
+			{
+				if (CriticalDamaged2 != null)
+				{
+					SoundManager.Instance.PlayUnitSFX(CriticalDamaged2);
+				}
+			}
 			target.TakeDamage(FinalSkillDamage / SkillAttackCount, this);
 		}
 	}
