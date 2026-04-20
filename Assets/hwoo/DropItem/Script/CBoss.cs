@@ -4,7 +4,7 @@ using System.Collections;
 
 public class CBoss : CEnemyBase
 {
-    protected enum EAttackType { Normal, Critical, Skill}
+    protected enum EAttackType { Normal, Critical, Skill }
 
     #region 인스펙터
 
@@ -40,7 +40,7 @@ public class CBoss : CEnemyBase
     {
         base.InitUnitStats();
 
-        if(EnemyData != null && CDataManager.Instance != null)
+        if (EnemyData != null && CDataManager.Instance != null)
         {
             int stage = CDataManager.Instance.UserData.MainStageLevel;
 
@@ -61,13 +61,13 @@ public class CBoss : CEnemyBase
 
     public void ChangeState(EHeroState state)
     {
-        if(CurrentState == state && state != EHeroState.Combat)
+        if (CurrentState == state && state != EHeroState.Combat)
         {
             return;
         }
         CurrentState = state;
 
-        if(IsAttacking && state != EHeroState.Death)
+        if (IsAttacking && state != EHeroState.Death)
         {
             return;
         }
@@ -90,12 +90,12 @@ public class CBoss : CEnemyBase
 
     public override void TryAttack(CUnitBase target)
     {
-        if(!IsAvailable() || target == null)
+        if (!IsAvailable() || target == null)
         {
             return;
         }
 
-        if(_enableUseSkill && Time.time >= _nextSkillTime)
+        if (_enableUseSkill && Time.time >= _nextSkillTime)
         {
             OnSkill(target);
         }
@@ -107,7 +107,7 @@ public class CBoss : CEnemyBase
 
     protected virtual void OnSkill(CUnitBase target)
     {
-        if(MotionRoutine != null)
+        if (MotionRoutine != null)
         {
             return;
         }
@@ -123,7 +123,7 @@ public class CBoss : CEnemyBase
 
         MotionRoutine = StartCoroutine(Co_PlayMotion(_skillAnimation, target, finalSkillDamage));
 
-        if(PrintLog)
+        if (PrintLog)
         {
             Debug.Log("보스 스킬 발동");
         }
@@ -132,7 +132,7 @@ public class CBoss : CEnemyBase
 
     protected override void OnAttack(CUnitBase target)
     {
-        if(MotionRoutine != null)
+        if (MotionRoutine != null)
         {
             return;
         }
@@ -146,7 +146,7 @@ public class CBoss : CEnemyBase
     {
         var trackEntry = SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
 
-        if(trackEntry != null)
+        if (trackEntry != null)
         {
             yield return new WaitForSeconds(trackEntry.Animation.Duration);
         }
@@ -155,14 +155,14 @@ public class CBoss : CEnemyBase
             yield return new WaitForSeconds(0.5f);
         }
 
-        if(target != null && !target.IsUnitDead)
+        if (target != null && !target.IsUnitDead)
         {
             target.TakeDamage(damage, this);
         }
 
         MotionRoutine = null;
 
-        if(CurrentState == EHeroState.Move)
+        if (CurrentState == EHeroState.Move)
         {
             SetAnimation("Move", true);
         }
@@ -175,12 +175,13 @@ public class CBoss : CEnemyBase
 
     protected override void Die()
     {
-        if(CDataManager.Instance != null && CDataManager.Instance.UserData != null)
+        if (CDataManager.Instance != null && CDataManager.Instance.UserData != null)
         {
             CDataManager.Instance.MainStageLevelUP(1);
-        base.Die();
+            base.Die();
+        }
+
+        #endregion
+
     }
-
-    #endregion
-
 }
