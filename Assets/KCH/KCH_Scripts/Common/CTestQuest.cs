@@ -26,7 +26,7 @@ public class CTestQuest : MonoBehaviour
         // 숫자 3을 누르면 10번 퀘스트(루비 테스트) 보상 받기 시도
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-        CQuestManager.Instance.RewardQuest(10); // ID 10번 보상 수령
+            CQuestManager.Instance.RewardQuest(10); // ID 10번 보상 수령
         }
     }
 }

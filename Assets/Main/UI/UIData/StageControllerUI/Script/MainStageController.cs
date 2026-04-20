@@ -33,6 +33,7 @@ public class MainStageController : MonoBehaviour
         if (CDataManager.Instance.UserData.CurrentStageLevel >= 41)
         {
             ClearEnemies();
+            CBossSpawner.Instance.ClearActiveBoss();
             _mainStageTheme1.gameObject.SetActive(false);
             _mainStageTheme2.gameObject.SetActive(false);
             _mainStageTheme3.gameObject.SetActive(true);
@@ -42,6 +43,7 @@ public class MainStageController : MonoBehaviour
         else if (CDataManager.Instance.UserData.CurrentStageLevel >= 21)
         {
             ClearEnemies();
+            CBossSpawner.Instance.ClearActiveBoss();
             _mainStageTheme1.gameObject.SetActive(false);
             _mainStageTheme2.gameObject.SetActive(true);
             _mainStageTheme3.gameObject.SetActive(false);
@@ -51,6 +53,7 @@ public class MainStageController : MonoBehaviour
         else if (CDataManager.Instance.UserData.CurrentStageLevel >= 1)
         {
             ClearEnemies();
+            CBossSpawner.Instance.ClearActiveBoss();
             _mainStageTheme1.gameObject.SetActive(true);
             _mainStageTheme2.gameObject.SetActive(false);
             _mainStageTheme3.gameObject.SetActive(false);

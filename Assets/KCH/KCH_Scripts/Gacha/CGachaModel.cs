@@ -11,9 +11,11 @@ public class CGachaModel : MonoBehaviour
     public int RubyCount => CDataManager.Instance.UserData.Ruby;                // 현재 루비
     public int TicketCount => CDataManager.Instance.UserData.PickUpTicket;      // 현재 소환권
 
+    #region 내부 함수
     private CGachaCategorySO _currentCategory;                                  // 현재 카테고리
-
     private System.Random GachaRandom;                                          // 시스템 랜덤 생성
+    private int _currentCategoryIndex;                                          // 현재 카테고리 인덱스
+    #endregion
 
     // 시드 리셋 기능 함수
     public void ResetSeed(int seed)
@@ -22,9 +24,10 @@ public class CGachaModel : MonoBehaviour
     }
 
     // 카테고리 세팅
-    public void SetCategory(CGachaCategorySO category)
+    public void SetCategory(CGachaCategorySO category, int index)
     {
         _currentCategory = category;
+        _currentCategoryIndex = index;
 
         // 랜덤 시드 값
         GachaRandom = new System.Random(12345);
@@ -36,9 +39,9 @@ public class CGachaModel : MonoBehaviour
         // 결과 값 리스트
         List<CGachaDataSO> result = new List<CGachaDataSO>();
 
-        int totalExp = (_currentCategory.CategoryName == "영웅") ? 
+        int totalExp = (_currentCategoryIndex == 0) ? 
             CDataManager.Instance.UserData.HeroPickUpLevel : 
-            CDataManager.Instance.UserData.PetPickUpLevel; ;
+            CDataManager.Instance.UserData.PetPickUpLevel;
 
         // 현재 레벨 계산
         int currentLevel = _currentCategory.GetLevel(totalExp);
@@ -53,11 +56,15 @@ public class CGachaModel : MonoBehaviour
             // 횟수 만큼 실행후 값 추가
             result.Add(data);
 
-            // 영웅 데이터 증가
-            CDataManager.Instance.AddHeroData(data.HeroID);
+
+            if (_currentCategoryIndex == 0)
+            {
+                // 영웅 데이터 증가
+                CDataManager.Instance.AddHeroData(data.HeroID);
+            }
         }
 
-        if (_currentCategory.CategoryName == "영웅")
+        if (_currentCategoryIndex == 0)
         {
             CDataManager.Instance.UserData.HeroPickUpLevel += count;
         }

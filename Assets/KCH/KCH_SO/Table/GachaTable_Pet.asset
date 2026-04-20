@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3098a48eca07a61409b0b1077116b78c, type: 3}
+  m_Name: GachaTable_Pet
+  m_EditorClassIdentifier: 
+  GachaList:
+  - {fileID: 11400000, guid: 0e7eba7f7111b8b4db85f48b707effe8, type: 2}
+  - {fileID: 11400000, guid: 7f397f7a13b6f9c44b136761ee71fcb1, type: 2}
+  - {fileID: 11400000, guid: 454e1bb8c167a1148940cec1048b078b, type: 2}
+  - {fileID: 11400000, guid: 0abde414541196a40a832f138cf91ec6, type: 2}
+  - {fileID: 11400000, guid: 5b034be5242c0184cb5a20b339210232, type: 2}
+  - {fileID: 11400000, guid: e878136d0d2268f4ea612f064292390a, type: 2}
+  - {fileID: 11400000, guid: 2c714937414c95540af19ef358ce7f20, type: 2}
+  - {fileID: 11400000, guid: 06bffa4a2f090354099396ac9d27509e, type: 2}
+  - {fileID: 11400000, guid: 56e42067ffb2dfb428c81292c38988e6, type: 2}
+  - {fileID: 11400000, guid: 0cbf3961c7d46f4489394ad0f5034f42, type: 2}
+  - {fileID: 11400000, guid: 0d55fcee3452a0c468cb90b963721e18, type: 2}
+  - {fileID: 11400000, guid: c1c50a7e83581da4d9fd863acde9dee2, type: 2}
+  - {fileID: 11400000, guid: 197abf6f38e1b9045a391a1e15f365ee, type: 2}
+  - {fileID: 11400000, guid: d1c95dbf5cfe9234cad81b733dc30ba1, type: 2}
+  - {fileID: 11400000, guid: 04d9fada86d716542aab6804d69ae3e9, type: 2}
+  - {fileID: 11400000, guid: f35d2e93812f72445b1bbdca59aef85f, type: 2}
+  RarityWeightList:
+  - Normal: 80
+    Rare: 60
+    Epic: 50
+    Unique: 10
+    Legend: 1
+  - Normal: 75
+    Rare: 60
+    Epic: 50
+    Unique: 15
+    Legend: 2
+  - Normal: 70
+    Rare: 55
+    Epic: 50
+    Unique: 20
+    Legend: 3
+  - Normal: 65
+    Rare: 55
+    Epic: 45
+    Unique: 25
+    Legend: 4
+  - Normal: 60
+    Rare: 50
+    Epic: 45
+    Unique: 30
+    Legend: 5
+  - Normal: 55
+    Rare: 50
+    Epic: 45
+    Unique: 35
+    Legend: 6
+  - Normal: 50
+    Rare: 45
+    Epic: 40
+    Unique: 40
+    Legend: 7
+  - Normal: 45
+    Rare: 45
+    Epic: 40
+    Unique: 40
+    Legend: 8
+  - Normal: 40
+    Rare: 40
+    Epic: 40
+    Unique: 45
+    Legend: 9
+  - Normal: 35
+    Rare: 40
+    Epic: 35
+    Unique: 50
+    Legend: 50

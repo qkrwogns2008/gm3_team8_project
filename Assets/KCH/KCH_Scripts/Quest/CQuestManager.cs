@@ -13,6 +13,9 @@ public class CQuestManager : MonoBehaviour
     [Header("퀘스트 SO 리스트")]
     public List<CQuestDataSO> QuestDataList = new List<CQuestDataSO>();
     public List<UserQuestData> UserQuestList => CDataManager.Instance.UserData.QuestList;
+
+    [Header("퀘스트 사운드 설정")]
+    [SerializeField] private UIAudioSO _buttonAudioSet;     // 오디오 버튼 셋 
     #endregion
 
     #region 내부 변수
@@ -228,7 +231,7 @@ public class CQuestManager : MonoBehaviour
                     progress.CurrentGague += value;
                     isChanged = true;
 
-                    Debug.Log($"{questSO.QuestName} 진행도 증가: {value} (현재: { progress.CurrentGague}/{ questSO.QuestGoal})");
+                    Debug.Log($" ID: {questSO.QuestID} | 이름: {questSO.QuestName}| 타입: { questSO.QuestType} | 증가량: { value}");
                     while (progress.CurrentGague >= questSO.QuestGoal)
                     {
                         progress.CurrentGague -= questSO.QuestGoal;
@@ -251,6 +254,11 @@ public class CQuestManager : MonoBehaviour
     // 유저 보상 지급
     public void RewardQuest(int questID)
     {
+        if (_buttonAudioSet != null)
+        {
+            SoundManager.Instance.PlayUISFX(_buttonAudioSet.buttonClick);
+        }
+
         for (int i = 0; i < UserQuestList.Count; i++)
         {
             var progress = UserQuestList[i];
@@ -285,6 +293,11 @@ public class CQuestManager : MonoBehaviour
     // 보상 모두 받기
     public List<SQuestReward> RewardAllQuest()
     {
+        if (_buttonAudioSet != null)
+        {
+            SoundManager.Instance.PlayUISFX(_buttonAudioSet.buttonClick);
+        }
+
         // 보상 저장소 딕셔너리
         Dictionary<EQuestReward, int> rewardDict = new Dictionary<EQuestReward, int>();
         bool isAllReward = false;
