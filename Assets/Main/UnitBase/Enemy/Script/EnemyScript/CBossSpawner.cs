@@ -15,9 +15,12 @@ public class CBossSpawner : MonoBehaviour
     [SerializeField] private Transform _spawnPoint;
 
     [Header("에너미스포너 참조")]
-    [SerializeField] private CSpawnArea _spawnArea;
-
+    [SerializeField] private CSpawnArea _spawnArea1;     // 1~20
+    [SerializeField] private CSpawnArea _spawnArea2;     // 21~40
+    [SerializeField] private CSpawnArea _spawnArea3;     // 41~60
     #endregion
+
+    private GameObject _activeBoss = null;
 
     private void Awake()
     {
@@ -27,7 +30,7 @@ public class CBossSpawner : MonoBehaviour
         }
         else
         {
-            Destroy(Instance);
+            Destroy(gameObject);
         }
     }
 
@@ -41,8 +44,17 @@ public class CBossSpawner : MonoBehaviour
     {
         if(CDataManager.Instance == null || _bossPrefabs.Length == 0)
         {
+            Debug.LogWarning("데이터 매니저가 없거나 보스 프리펩 미싱");
             return;
         }
+
+        // 기존에 있던 보스 제거
+        if (_activeBoss != null)
+        {
+            Destroy(_activeBoss);
+            _activeBoss = null;
+        }
+        StopAndClearSpawners();
 
         // 현재 스테이지 레벨 확인
         int currentStage = CDataManager.Instance.UserData.CurrentStageLevel;
@@ -62,23 +74,39 @@ public class CBossSpawner : MonoBehaviour
         {
             return;
         }
-
-        // 기존 소환 몹들 정리
-        if(_spawnArea != null)
-        {
-            _spawnArea.ClearAllMonsters();
-        }
+       
 
         // 보스 소환
         Vector3 spawnPos = (_spawnPoint != null) ? _spawnPoint.position : Vector3.zero;
-        GameObject bossObj = PoolManager.Instance.Pop(selectedBossPrefab, spawnPos, Quaternion.identity);
 
-        CBoss bossScript = bossObj.GetComponent<CBoss>();
 
+        _activeBoss = Instantiate(selectedBossPrefab, spawnPos, Quaternion.identity);
+
+        CBoss bossScript = _activeBoss.GetComponent<CBoss>();
         if (bossScript != null)
         {
             /// 보스 등장시 로직 필요시 추가
         }
     }
 
+    private void StopAndClearSpawners()
+    {
+        if(_spawnArea1 != null)
+        {
+            _spawnArea1.ClearAllMonsters();
+        }
+        if(_spawnArea2 != null)
+        {
+            _spawnArea2.ClearAllMonsters();
+        }    
+        if(_spawnArea3 != null)
+        {
+            _spawnArea3.ClearAllMonsters();
+        }
+    }
+
+    public void ClearActiveBoss()
+    {
+        _activeBoss = null;
+    }
 }
