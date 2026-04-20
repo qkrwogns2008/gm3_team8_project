@@ -576,6 +576,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2509897477929994187, guid: 317a39a3650f1204a9c8637c2ad51ee0, type: 3}
   m_PrefabInstance: {fileID: 860251876}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1038963008 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4881479732285634536, guid: 317a39a3650f1204a9c8637c2ad51ee0, type: 3}
+  m_PrefabInstance: {fileID: 860251876}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1086924730 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 205394592121176520, guid: 317a39a3650f1204a9c8637c2ad51ee0, type: 3}
@@ -993,6 +1004,10 @@ PrefabInstance:
       propertyPath: disableTarget
       value: 
       objectReference: {fileID: 860251878}
+    - target: {fileID: 1147816443010200118, guid: aea89d2064eb07c489468c3084c76157, type: 3}
+      propertyPath: powerTexts.Array.data[3]
+      value: 
+      objectReference: {fileID: 1038963008}
     - target: {fileID: 1168716776844291817, guid: aea89d2064eb07c489468c3084c76157, type: 3}
       propertyPath: targetParent
       value: 

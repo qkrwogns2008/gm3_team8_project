@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/* 
 public class ToggleSpawnOnImage : MonoBehaviour, IPointerClickHandler
 {
     [Header("프리팹")]
@@ -66,3 +67,4 @@ public class ToggleSpawnOnImage : MonoBehaviour, IPointerClickHandler
         isActive = false; // 상태 변경
     }
 }
+*/
