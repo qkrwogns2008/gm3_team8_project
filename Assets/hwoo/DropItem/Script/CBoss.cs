@@ -28,6 +28,7 @@ public class CBoss : CEnemyBase
     private float _scaledMaxAtk;
     #endregion
 
+    
     // 공격중인지 확인
     public new bool IsAttacking => MotionRoutine != null;
 
@@ -178,10 +179,13 @@ public class CBoss : CEnemyBase
         if (CDataManager.Instance != null && CDataManager.Instance.UserData != null)
         {
             CDataManager.Instance.MainStageLevelUP(1);
+            if(MainStageController.Instance != null)
+            {
+                MainStageController.Instance.MainStageUp();
+            }
             base.Die();
+            
         }
-
-        #endregion
-
     }
+    #endregion
 }
