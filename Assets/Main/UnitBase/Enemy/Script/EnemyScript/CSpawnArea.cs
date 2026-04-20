@@ -30,7 +30,7 @@ public class CSpawnArea : MonoBehaviour
 	#endregion
 
 	private List<GameObject> _spawnedEnemy = new List<GameObject>();
-
+	private Coroutine[] _respawnCoroutines = new Coroutine[3];
 
 	private void Start()
 	{
@@ -127,7 +127,14 @@ public class CSpawnArea : MonoBehaviour
 	// 스테이지 종료 혹은 스포너 정지 필요시 호출.
 	public void StopSpawning()
 	{
-		StopAllCoroutines();
+		for(int i = 0; i < _respawnCoroutines.Length; i++)
+		{
+			if (_respawnCoroutines[i] != null)
+			{
+				StopCoroutine(_respawnCoroutines[i]);
+				_respawnCoroutines[i] = null;
+			}
+		}
 	}
 	#region 스테이지 이동 관련
 	
@@ -135,7 +142,7 @@ public class CSpawnArea : MonoBehaviour
 	public void ClearAllMonsters()
 	{
 		// 리스폰 타이머 코루틴 모두 정지
-		StopAllCoroutines();
+		StopSpawning();
 
 		// 리스트 역순 순회 모든 몬스터 Pool로 반환
 		for(int i = _spawnedEnemy.Count - 1; i >= 0; i--)
