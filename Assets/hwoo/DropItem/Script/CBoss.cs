@@ -176,13 +176,39 @@ public class CBoss : CEnemyBase
 
     protected override void Die()
     {
-        if (CDataManager.Instance != null && CDataManager.Instance.UserData != null)
+        if(IsDead)
         {
-            if(MainStageController.Instance != null)
-            {
-                MainStageController.Instance.MainStageUp();
-            }
-            base.Die();
+            return;
+        }
+        IsDead = true;
+
+        if(CEnemyManager.Instance != null)
+        {
+            CEnemyManager.Instance.UnregisterEnemy(this);
+        }
+
+        if(MainStageController.Instance != null)
+        {
+            MainStageController.Instance.MainStageUp();
+        }
+        base.Die();
+
+        StartCoroutine(CO_DestroyBoss());
+    }
+
+    private IEnumerator CO_DestroyBoss()
+    {
+        yield return new WaitForSeconds(3.0f);
+
+        Destroy(gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        // 강제 파괴되었을때도 리스트에서 빼주기
+        if(CEnemyManager.Instance != null)
+        {
+            CEnemyManager.Instance.UnregisterEnemy(this);
         }
     }
     #endregion
