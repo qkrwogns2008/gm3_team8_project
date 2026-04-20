@@ -23,14 +23,32 @@ public class CRewardItemSlot : MonoBehaviour
             AmountText.text = count.ToString();
         }
 
-        //if (Background)
-        //{
-        //    Background.sprite = background;
-        //}
+        if (Background)
+        {
+            if (background == null)
+            {
+                Background.enabled = false;
+            }
 
-        //if(Outline)
-        //{
-        //    Outline.sprite = outLine;
-        //}
+            else
+            {
+                Background.enabled = true;
+                Background.sprite = background;
+            }
+        }
+
+        if (Outline)
+        {
+            if (background == null)
+            {
+                Outline.enabled = false;
+            }
+
+            else
+            {
+                Outline.enabled = true;
+                Outline.sprite = outLine;
+            }
+        }
     }
 }
