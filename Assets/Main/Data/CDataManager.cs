@@ -61,6 +61,7 @@ public class CDataManager : MonoBehaviour
     public void MainStageLevelUP(int amount) // 보통 1로 쓸것
     {
         UserData.MainStageLevel += amount;
+        UserData.CurrentStageLevel = UserData.MainStageLevel; // 메인 스테이지 레벨업 시 현재 스테이지도 같이 변경
         SaveUserData();
         if (isDebugMode)
         {
@@ -502,7 +503,7 @@ public class CDataManager : MonoBehaviour
     public void AddHeroDummy(EHeroID id)
     {
         // 보유 여부 확인
-        var hero = GetHeroData(id);
+        UserHeroData hero = GetHeroData(id);
         if (hero == null)
         {
             UserData.HeroList.Add(new UserHeroData { HeroID = id, Quantity = 0 });

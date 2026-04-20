@@ -1183,6 +1183,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5181856070530939329, guid: 7f51d691815df764797c3641b7ae4840, type: 3}
+      propertyPath: QuestDataList.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: e060cc4f528735e42b830045a56bc6d1, type: 2}
+    - target: {fileID: 5181856070530939329, guid: 7f51d691815df764797c3641b7ae4840, type: 3}
+      propertyPath: QuestDataList.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: a3dc43f727c312849806d899cde7f1fd, type: 2}
+    - target: {fileID: 5181856070530939329, guid: 7f51d691815df764797c3641b7ae4840, type: 3}
+      propertyPath: QuestDataList.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: d27091c2f90d88845ac0e0822821c33c, type: 2}
+    - target: {fileID: 5181856070530939329, guid: 7f51d691815df764797c3641b7ae4840, type: 3}
+      propertyPath: QuestDataList.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 8ed0fde6f2f0cf54492d69c394b59762, type: 2}
     - target: {fileID: 5489736798085508941, guid: 7f51d691815df764797c3641b7ae4840, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -1964,6 +1980,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1764106787800585470, guid: 89b2522f873c7d542a151663ec3bce30, type: 3}
+      propertyPath: _heroDatabase.Array.data[14].prefab
+      value: 
+      objectReference: {fileID: 7709099329454955064, guid: 60167d6bdba144a4ca92382a2013b7de, type: 3}
+    - target: {fileID: 1764106787800585470, guid: 89b2522f873c7d542a151663ec3bce30, type: 3}
+      propertyPath: _heroDatabase.Array.data[15].prefab
+      value: 
+      objectReference: {fileID: 4301002584450693452, guid: 74be5c6231cdaaf43b4ed790f5f2bce8, type: 3}
     - target: {fileID: 2673728002869998683, guid: 89b2522f873c7d542a151663ec3bce30, type: 3}
       propertyPath: m_Name
       value: HeroGroup

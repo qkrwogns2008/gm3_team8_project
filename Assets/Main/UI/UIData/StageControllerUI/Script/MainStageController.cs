@@ -57,10 +57,18 @@ public class MainStageController : MonoBehaviour
 
         foreach (CEnemyBase enemy in enemies)
         {
+            
             // 적 오브젝트 삭제
-            Destroy(enemy.gameObject);
+
         }
 
         Debug.Log($"[정리] 기존 적 {enemies.Length}마리를 제거했습니다.");
     }
+    public void MainStageUp()
+    {
+        ClearEnemies();
+        CDataManager.Instance.MainStageLevelUP(1);
+        SetMainStageTheme();
+    }
+
 }
