@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2c5149fbef31bd4e9215a708d837e49, type: 3}
   m_Name: AudioSO_Ecila
   m_EditorClassIdentifier: 
-  Attack: {fileID: 0}
-  AttackDamaged: {fileID: 0}
-  Critical: {fileID: 0}
-  CriticalDamaged: {fileID: 0}
-  Skill: {fileID: 0}
-  SkillDamaged: {fileID: 0}
-  hit: {fileID: 0}
+  _attack: {fileID: 8300000, guid: b98abedcc6f59614aa8a63baeb00a2c6, type: 3}
+  _attackDamaged: {fileID: 8300000, guid: e1131ce5bf7d8354d8035e35003545b4, type: 3}
+  _critical: {fileID: 8300000, guid: 238588b74cd99a842930a172ce82b101, type: 3}
+  _criticalDamaged: {fileID: 8300000, guid: b9ea75839ee70c3499b2089c92714bd6, type: 3}
+  _skill: {fileID: 8300000, guid: f29f5e7a88a80b642915bfab3d411ce5, type: 3}
+  _skillDamaged: {fileID: 8300000, guid: b9ea75839ee70c3499b2089c92714bd6, type: 3}
