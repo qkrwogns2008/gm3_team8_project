@@ -30,8 +30,14 @@ public class CGroupManager : MonoBehaviour
     [SerializeField] private Vector3[] _slotOffsets;
     #endregion
 
+    private bool _isTargetingPaused = false;
+
+
     public bool IsJoystickActive => _joystick != null && _joystick.InputVector.sqrMagnitude > 0.01f;
     public float JoystickX => _joystick != null ? _joystick.InputVector.x : 0;
+    
+    
+
     private void Awake()
     {
         instance = this;
@@ -150,7 +156,7 @@ public class CGroupManager : MonoBehaviour
         BroadcastSharedTarget(targetEnemy);
     }
 
-    private void BroadcastSharedTarget(CUnitBase target)
+    public void BroadcastSharedTarget(CUnitBase target)
     {
         foreach (var pair in _activeHeroes)
         {
@@ -160,10 +166,20 @@ public class CGroupManager : MonoBehaviour
             }
         }
     }
+
+    public void SetTargetingPause(bool pause)
+    {
+        _isTargetingPaused = pause;
+    }
     #endregion
 
     private void Update()
     {
+
+        if(_isTargetingPaused)
+        {
+            return;
+        }
         Vector3 currentPos = transform.position;
 
         // Mathf.Clamp(현재값, 최소값, 최대값)
