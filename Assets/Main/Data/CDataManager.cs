@@ -507,6 +507,8 @@ public class CDataManager : MonoBehaviour
         if (hero == null)
         {
             UserData.HeroList.Add(new UserHeroData { HeroID = id, Quantity = 0 });
+            Debug.Log($"[더미] 영웅 데이터 추가 (ID: {id})");
+            SaveUserData();
         }
 
     }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "HeroAudioSO", menuName = "Audio/UIAudioSO")]
+[CreateAssetMenu(fileName = "UIAudioSO", menuName = "Audio/UIAudioSO")]
 public class UIAudioSO : ScriptableObject
 {
     public AudioClip buttonClick;

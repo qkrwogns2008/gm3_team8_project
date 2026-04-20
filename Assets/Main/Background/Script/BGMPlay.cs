@@ -5,7 +5,6 @@ using UnityEngine;
 public class BGMPlay : MonoBehaviour
 {
     [SerializeField] private BackgroundAudioSo _audioData;
-
     private void OnEnable()
     {// 1. 데이터 자체가 없는지 먼저 체크
         if (_audioData == null)
