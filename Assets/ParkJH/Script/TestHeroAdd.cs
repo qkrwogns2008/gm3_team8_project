@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class TestHeroAdd : MonoBehaviour
 {
-    void Awake()
-    {
-
-    }
     IEnumerator Start()
     {
         yield return null; // 한 프레임 대기 (모든 Awake/Start 완료 보장)
@@ -35,6 +31,7 @@ public class TestHeroAdd : MonoBehaviour
         CDataManager.Instance.AddHeroDummy(EHeroID.Yeonhee);
         CDataManager.Instance.AddHeroDummy(EHeroID.Radgrid);
         CDataManager.Instance.AddHeroDummy(EHeroID.Ecila);
+        MainStageController.Instance.SetMainStageTheme();
         CGroupManager.instance.SetUpGroupFromDB();
     }
 }
