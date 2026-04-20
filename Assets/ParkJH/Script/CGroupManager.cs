@@ -30,8 +30,14 @@ public class CGroupManager : MonoBehaviour
     [SerializeField] private Vector3[] _slotOffsets;
     #endregion
 
+    private bool _isTargetingPaused = false;
+
+
     public bool IsJoystickActive => _joystick != null && _joystick.InputVector.sqrMagnitude > 0.01f;
     public float JoystickX => _joystick != null ? _joystick.InputVector.x : 0;
+    
+    
+
     private void Awake()
     {
         instance = this;
@@ -42,6 +48,7 @@ public class CGroupManager : MonoBehaviour
         // 데이터 매니저가 초기화 되었는지 확인 후 실행을 위해 코루틴 사용
         StartCoroutine(CoWaitAndSetup());
     }
+
 
    IEnumerator CoWaitAndSetup()
     {
@@ -149,7 +156,7 @@ public class CGroupManager : MonoBehaviour
         BroadcastSharedTarget(targetEnemy);
     }
 
-    private void BroadcastSharedTarget(CUnitBase target)
+    public void BroadcastSharedTarget(CUnitBase target)
     {
         foreach (var pair in _activeHeroes)
         {
@@ -159,10 +166,30 @@ public class CGroupManager : MonoBehaviour
             }
         }
     }
+
+    public void SetTargetingPause(bool pause)
+    {
+        _isTargetingPaused = pause;
+    }
     #endregion
 
     private void Update()
     {
+
+        if(_isTargetingPaused)
+        {
+            return;
+        }
+        Vector3 currentPos = transform.position;
+
+        // Mathf.Clamp(현재값, 최소값, 최대값)
+        // X축과 Y축이 -300에서 300 사이를 벗어나지 못하게 꽉 잡습니다.
+        currentPos.x = Mathf.Clamp(currentPos.x, -300f, 300f);
+        currentPos.y = Mathf.Clamp(currentPos.y, -300f, 300f);
+
+        // 제한된 위치를 다시 적용합니다.
+        transform.position = currentPos;
+
         if (IsJoystickActive)
         {
             Vector3 moveDir = new Vector3(_joystick.InputVector.x, _joystick.InputVector.y, 0);
