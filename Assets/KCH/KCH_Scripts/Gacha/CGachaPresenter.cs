@@ -63,6 +63,10 @@ public class CGachaPresenter : MonoBehaviour
         _gachaView.CloseButton.onClick.AddListener(OnClickClose);
         _gachaView.MiniCardButton.onClick.AddListener(OnClickClose);
 
+        // 화살표
+        _gachaView.HeroCategoryButtonR.onClick.AddListener(SwitchCategory);
+        _gachaView.HeroCategoryButtonL.onClick.AddListener(SwitchCategory);
+
         // 재화 이미지
         _ticketSprite = _gachaView.SummonCard.transform.parent.GetComponentInChildren<Image>().sprite;
         _rubySprite = _gachaView.SummonRuby.transform.parent.GetComponentInChildren<Image>().sprite;
@@ -775,6 +779,8 @@ public class CGachaPresenter : MonoBehaviour
             _gachaView.LevelTextHero.text = current.CategoryName + "소환 레벨 " + currentLevel;
             _gachaView.ExpFillImageHero.fillAmount = fillAmount;
             _gachaView.ExpTextHero.text = expStr;
+            _gachaView.HeroTab.gameObject.SetActive(true);
+            
         }
 
         if (_currentCategoryIndex == 1)
@@ -782,6 +788,11 @@ public class CGachaPresenter : MonoBehaviour
             _gachaView.LevelTextPet.text = current.CategoryName + "소환 레벨 " + currentLevel;
             _gachaView.ExpFillImagePet.fillAmount = fillAmount;
             _gachaView.ExpTextPet.text = expStr;
+
+            if (_gachaView.HeroTab != null && _gachaView.HeroTab.gameObject.activeSelf)
+            {
+                _gachaView.HeroTab.gameObject.SetActive(false);
+            }
         }
 
         _gachaView.HeroTabGroup.alpha = (_currentCategoryIndex == 0) ? 1.0f : 0.0f;
@@ -866,5 +877,28 @@ public class CGachaPresenter : MonoBehaviour
         }
     }
 
+    // 화살표 스위칭
+    private void SwitchCategory()
+    {
+        SoundManager.Instance.PlayUISFX(_buttonAudioSet.buttonClick);
+
+        if (_isRolling)
+        {
+            return;
+        }
+
+        int nextIndex = (_currentCategoryIndex == 0) ? 1 : 0;
+
+        if (_tabChange != null)
+        {
+            _tabChange.SelectTab(nextIndex);
+        }
+        else
+        {
+            ChangeCatergory(nextIndex);
+        }
+
+        UpdateCategoryUI();
+    }
     
 }
