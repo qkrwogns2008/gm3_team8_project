@@ -195,7 +195,10 @@ public class CEnemyBase : CUnitBase
             return;
         }
 
-
+        if(!gameObject.activeInHierarchy)
+        {
+            return;
+        }
         AddThreat(attacker, damage);
         UpdateBestTarget();
         
