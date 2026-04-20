@@ -43,6 +43,7 @@ public class CGroupManager : MonoBehaviour
         StartCoroutine(CoWaitAndSetup());
     }
 
+
    IEnumerator CoWaitAndSetup()
     {
         yield return new WaitUntil(() => CDataManager.Instance != null && CDataManager.Instance.UserData != null);
@@ -163,6 +164,16 @@ public class CGroupManager : MonoBehaviour
 
     private void Update()
     {
+        Vector3 currentPos = transform.position;
+
+        // Mathf.Clamp(현재값, 최소값, 최대값)
+        // X축과 Y축이 -300에서 300 사이를 벗어나지 못하게 꽉 잡습니다.
+        currentPos.x = Mathf.Clamp(currentPos.x, -300f, 300f);
+        currentPos.y = Mathf.Clamp(currentPos.y, -300f, 300f);
+
+        // 제한된 위치를 다시 적용합니다.
+        transform.position = currentPos;
+
         if (IsJoystickActive)
         {
             Vector3 moveDir = new Vector3(_joystick.InputVector.x, _joystick.InputVector.y, 0);
