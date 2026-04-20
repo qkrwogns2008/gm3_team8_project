@@ -43,7 +43,7 @@ public class CBoss : CEnemyBase
 
         if (EnemyData != null && CDataManager.Instance != null)
         {
-            int stage = CDataManager.Instance.UserData.MainStageLevel;
+            int stage = CDataManager.Instance.UserData.CurrentStageLevel;
 
             // 스테이지당 체력 15% 공격력 10%
             float hpGrowth = Mathf.Pow(1.15f, stage - 1);
