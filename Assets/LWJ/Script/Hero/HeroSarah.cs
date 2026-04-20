@@ -36,7 +36,7 @@ public class HeroSarah : CHero
 		isSkillUsing = false;
 	}
 
-	protected override IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type, AudioClip castAudio = null, AudioClip hitAudio = null)
+	protected override IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type, AudioClip castAudio = null)
 	{
 		if (string.IsNullOrEmpty(animationName))
 		{
@@ -88,19 +88,11 @@ public class HeroSarah : CHero
 
 				if (isSkillUsing)
 				{
-					if (target != null && hitAudio != null)
-					{
-						SoundManager.Instance.PlayUnitSFX(hitAudio); // Hit 오디오 재생
-					}
 					ProcessTeleportHit(target);
 					yield break;
 				}
 				else
 				{
-					if (target != null && hitAudio != null)
-					{
-						SoundManager.Instance.PlayUnitSFX(hitAudio); // Hit 오디오 재생
-					}
 					ProcessHit(target, type);
 				}
 			}
@@ -112,10 +104,6 @@ public class HeroSarah : CHero
 
 			if (type != EAttackType.Skill)
 			{
-				if (target != null && hitAudio != null)
-				{
-					SoundManager.Instance.PlayUnitSFX(hitAudio); // Hit 오디오 재생
-				}
 				ProcessHit(target, type);
 			}
 		}
@@ -182,7 +170,7 @@ public class HeroSarah : CHero
 			Debug.Log($"[{UnitName}] 무적 {isInvincible}");
 		}
 
-		yield return StartCoroutine(Co_PlayMotion(SkillEffect2, SkillAnimation2, target, EAttackType.Skill, Skill2, SkillDamaged2));
+		yield return StartCoroutine(Co_PlayMotion(SkillEffect2, SkillAnimation2, target, EAttackType.Skill, Skill2));
 
 		isSkillUsing = false;
 		MotionRoutine = null;
@@ -209,6 +197,10 @@ public class HeroSarah : CHero
 	{
 		IReadOnlyList<CUnitBase> targetList = CEnemyManager.Instance.ActiveEnemies;
 		CircleAreaAttack(target, ScaledAreaRadius, targetList, FinalSkillDamage);
+		if (target != null && !target.IsUnitDead && SkillDamaged2)
+		{
+			SoundManager.Instance.PlayUnitSFX(SkillDamaged2);
+		}
 	}
 
 	protected virtual void CircleAreaAttack(CUnitBase originTarget, float radius, IReadOnlyList<CUnitBase> targetList, float damage)

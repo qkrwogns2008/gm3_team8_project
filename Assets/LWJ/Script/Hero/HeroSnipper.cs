@@ -103,7 +103,7 @@ public class HeroSnipper : RangedHeroBase
 	}
 
 	// 스킬 재정의
-	protected override IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type, AudioClip castAudio = null, AudioClip hitAudio = null)
+	protected override IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type, AudioClip castAudio = null)
 	{
 		if (string.IsNullOrEmpty(animationName))
 		{

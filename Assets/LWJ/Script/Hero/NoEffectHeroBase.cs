@@ -21,7 +21,7 @@ public class NoEffectHeroBase : CHero
 			return;
 		}
 
-		MotionRoutine = StartCoroutine(Co_PlayMotion(AttackAnimation, target, EAttackType.Normal, AudioSO.Attack, AudioSO.AttackDamaged));
+		MotionRoutine = StartCoroutine(Co_PlayMotion(AttackAnimation, target, EAttackType.Normal, AudioSO.Attack));
 		if (PrintLog)
 		{
 			Debug.Log($"{UnitName}의 일반 공격!");
@@ -43,14 +43,14 @@ public class NoEffectHeroBase : CHero
 			return;
 		}
 
-		MotionRoutine = StartCoroutine(Co_PlayMotion(CriticalAnimation, target, EAttackType.Critical, AudioSO.Critical, AudioSO.CriticalDamaged));
+		MotionRoutine = StartCoroutine(Co_PlayMotion(CriticalAnimation, target, EAttackType.Critical, AudioSO.Critical));
 		if (PrintLog)
 		{
 			Debug.Log($"{UnitName}의 치명타 공격!");
 		}
 	}
 
-	protected virtual IEnumerator Co_PlayMotion(string animationName, CUnitBase target, EAttackType type, AudioClip castAudio = null, AudioClip hitAudio = null)
+	protected virtual IEnumerator Co_PlayMotion(string animationName, CUnitBase target, EAttackType type, AudioClip castAudio = null)
 	{
 		if (string.IsNullOrEmpty(animationName))
 		{
@@ -67,10 +67,6 @@ public class NoEffectHeroBase : CHero
 
 		yield return new WaitForSeconds(0.3f / AttackSpeedMultiplier);
 
-		if (target != null && hitAudio != null)
-		{
-			SoundManager.Instance.PlayUnitSFX(hitAudio); // Hit 오디오 재생
-		}
 		ProcessHit(target, type);
 
 		MotionRoutine = null;

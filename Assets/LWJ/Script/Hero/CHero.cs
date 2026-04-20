@@ -501,8 +501,7 @@ public class CHero : CUnitBase
 				AttackAnimation,
 				target,
 				EAttackType.Normal,
-				AudioSO.Attack,
-				AudioSO.AttackDamaged
+				AudioSO.Attack
 				));
 		if (PrintLog)
 		{
@@ -531,8 +530,8 @@ public class CHero : CUnitBase
 				CriticalAnimation, 
 				target, 
 				EAttackType.Critical,
-				AudioSO.Critical,
-				AudioSO.CriticalDamaged));
+				AudioSO.Critical
+				));
 		if (PrintLog)
 		{
 			Debug.Log($"{UnitName}의 치명타 공격!");
@@ -561,8 +560,8 @@ public class CHero : CUnitBase
 				SkillAnimation,
 				target,
 				EAttackType.Skill,
-				AudioSO.Skill,
-				AudioSO.SkillDamaged));
+				AudioSO.Skill
+				));
 		if (PrintLog)
 		{
 			Debug.Log($"{UnitName}의 스킬 발동!");
@@ -596,7 +595,14 @@ public class CHero : CUnitBase
 	{
 		if (target != null)
 		{
-			target.TakeDamage(FinalNormalAttackDamage, this);
+			if (AudioSO != null)
+			{
+				target.TakeDamage(FinalNormalAttackDamage, this, true, AudioSO.AttackDamaged);
+			}
+			else
+			{
+				target.TakeDamage(FinalNormalAttackDamage, this, true);
+			}
 		}
 	}
 
@@ -604,7 +610,14 @@ public class CHero : CUnitBase
 	{
 		if (target != null)
 		{
-			target.TakeDamage(CriticalDamage, this);
+			if (AudioSO != null)
+			{
+				target.TakeDamage(CriticalDamage, this, true, AudioSO.CriticalDamaged);
+			}
+			else
+			{
+				target.TakeDamage(CriticalDamage, this, true);
+			}
 		}
 	}
 
@@ -613,7 +626,14 @@ public class CHero : CUnitBase
 	{
 		if (target != null)
 		{
-			target.TakeDamage(FinalSkillDamage, this);
+			if (AudioSO != null)
+			{
+				target.TakeDamage(FinalSkillDamage, this, true, AudioSO.SkillDamaged);
+			}
+			else
+			{
+				target.TakeDamage(FinalSkillDamage, this, true);
+			}
 		}
 	}
 	#endregion
@@ -622,7 +642,7 @@ public class CHero : CUnitBase
 	/// <summary>
 	/// 스파인 애니메이션을 재생하고, effectData의 PreDelay 값에 따라 시간차로 이펙트를 생성합니다. 성공적으로 종료되면 피해를 적용합니다.
 	/// </summary>
-	protected virtual IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type, AudioClip castAudio = null, AudioClip hitAudio = null)
+	protected virtual IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type, AudioClip castAudio = null)
 	{
 		if (string.IsNullOrEmpty(animationName))
 		{
@@ -672,11 +692,7 @@ public class CHero : CUnitBase
 			Debug.LogWarning($"{UnitName}) effectData null");
 			yield return new WaitForSeconds(0.3f / AttackSpeedMultiplier);
 		}
-
-		if (target != null && hitAudio != null)
-		{
-			SoundManager.Instance.PlayUnitSFX(hitAudio); // Hit 오디오 재생
-		}
+		
 		ProcessHit(target, type);
 
 		MotionRoutine = null;
@@ -723,7 +739,7 @@ public class CHero : CUnitBase
 	#endregion
 
 	#region 체력 변화 / 사망
-	public override void TakeDamage(float damage, CUnitBase attacker, bool summonNormalHitEffect = true)
+	public override void TakeDamage(float damage, CUnitBase attacker, bool summonNormalHitEffect = true, AudioClip HitAudio = null)
 	{
 		if (IsDead)
 		{
@@ -769,6 +785,10 @@ public class CHero : CUnitBase
 		// 최소 피해 1f 보장
 		finalDamage = Mathf.Max(1f, finalDamage);
 
+		if (HitAudio != null)
+		{
+			SoundManager.Instance.PlayUnitSFX(HitAudio);
+		}
 		// 체력 0 미만 보정
 		currentHp = Mathf.Max(currentHp - finalDamage, 0);
 

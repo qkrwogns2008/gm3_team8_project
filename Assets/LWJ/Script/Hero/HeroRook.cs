@@ -16,7 +16,7 @@ public class HeroRook : CHero
 	protected virtual float ScaledKnockbackPower => KnockbackPower * SpineScale;
 	#endregion
 
-	protected override IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type, AudioClip castAudio = null, AudioClip hitAudio = null)
+	protected override IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type, AudioClip castAudio = null)
 	{
 		if (string.IsNullOrEmpty(animationName))
 		{
@@ -74,10 +74,6 @@ public class HeroRook : CHero
 			yield return new WaitForSeconds(0.3f / AttackSpeedMultiplier);
 		}
 
-		if (target != null && hitAudio != null)
-		{
-			SoundManager.Instance.PlayUnitSFX(hitAudio); // Hit 오디오 재생
-		}
 		ProcessHit(target, type);
 
 		MotionRoutine = null;

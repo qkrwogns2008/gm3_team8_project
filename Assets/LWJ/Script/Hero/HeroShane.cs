@@ -9,7 +9,7 @@ public class HeroShane : CHero
 	[SerializeField] protected int SkillAttackCount = 3;
 	#endregion
 
-	protected override IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type, AudioClip castAudio = null, AudioClip hitAudio = null)
+	protected override IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type, AudioClip castAudio = null)
 	{
 		if (string.IsNullOrEmpty(animationName))
 		{
@@ -19,10 +19,6 @@ public class HeroShane : CHero
 		}
 
 		SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
-		if (castAudio != null)
-		{
-			SoundManager.Instance.PlayUnitSFX(castAudio); // 공격 오디오 재생
-		}
 
 		if (effectData != null)
 		{
@@ -43,6 +39,11 @@ public class HeroShane : CHero
 					continue;
 				}
 
+				if (castAudio != null)
+				{
+					SoundManager.Instance.PlayUnitSFX(castAudio); // 공격 오디오 재생
+				}
+
 				yield return new WaitForSeconds(fxData.PreDelay / AttackSpeedMultiplier);
 
 				if (fxData.Prefab == null)
@@ -59,10 +60,6 @@ public class HeroShane : CHero
 					yield break;
 				}
 
-				if (target != null && hitAudio != null)
-				{
-					SoundManager.Instance.PlayUnitSFX(hitAudio); // Hit 오디오 재생
-				}
 				ProcessHit(target, type);
 			}
 		}
@@ -71,10 +68,6 @@ public class HeroShane : CHero
 			Debug.LogWarning($"{UnitName}) 이펙트 null");
 			yield return new WaitForSeconds(0.3f / AttackSpeedMultiplier);
 
-			if (target != null && hitAudio != null)
-			{
-				SoundManager.Instance.PlayUnitSFX(hitAudio); // Hit 오디오 재생
-			}
 			ProcessHit(target, type);
 		}
 
