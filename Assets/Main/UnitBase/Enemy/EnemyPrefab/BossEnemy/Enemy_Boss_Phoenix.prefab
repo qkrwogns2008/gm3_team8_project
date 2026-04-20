@@ -161,8 +161,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8361872433212783006}
-  - component: {fileID: 6236160786848009556}
   - component: {fileID: 4555792972297042494}
+  - component: {fileID: 4060825430615307741}
   m_Layer: 0
   m_Name: Enemy_Boss_Phoenix
   m_TagString: Untagged
@@ -189,36 +189,6 @@ Transform:
   - {fileID: 6976374957925658929}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6236160786848009556
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3899819637224094853}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aaf0ade6caff01747a997d1da3281e48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  unitName: 
-  CurrentHp: 0
-  OriginData: {fileID: 11400000, guid: 9a9d933482e7e4744b590a33e83a3c68, type: 2}
-  TeamType: 1
-  centerTransform: {fileID: 6976374957925658929}
-  SkeletonAni: {fileID: 2369539481592780547}
-  AttackAnimation: Attack_A
-  AttackEffect: {fileID: 0}
-  DeathAnimation: Death
-  DeathDisableTime: 0
-  PrintLog: 0
-  _effectPos: {fileID: 0}
-  _giveupRange: 15
-  _walkRange: 5
-  _switchThreshold: 1.2
-  _minTargetStayTime: 1
-  _finalMaxHP: 0
-  _finalMaxAtk: 0
 --- !u!114 &4555792972297042494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237,6 +207,42 @@ MonoBehaviour:
   _forcedAggroTimer: 0
   AggroDuration: 5
   _canAttack: 0
+--- !u!114 &4060825430615307741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3899819637224094853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e09829f3d648b4341b428e1a689e4b3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitName: 
+  currentHp: 0
+  OriginData: {fileID: 11400000, guid: 9a9d933482e7e4744b590a33e83a3c68, type: 2}
+  TeamType: 1
+  centerTransform: {fileID: 6976374957925658929}
+  SkeletonAni: {fileID: 2369539481592780547}
+  AttackAnimation: Attack_A
+  AttackEffect: {fileID: 0}
+  DeathAnimation: Death
+  DeathDisableTime: 0
+  PrintLog: 0
+  _effectPos: {fileID: 0}
+  _giveupRange: 15
+  _walkRange: 5
+  _switchThreshold: 1.2
+  _minTargetStayTime: 1
+  _finalMaxHP: 0
+  _finalMaxAtk: 0
+  BossData: {fileID: 11400000, guid: 9a9d933482e7e4744b590a33e83a3c68, type: 2}
+  CurrentState: 0
+  _enableUseSkill: 1
+  _skillCooldown: 7
+  _skillDamageMultiplier: 2.5
+  _skillAnimation: Appear
 --- !u!1 &6541709915626172389
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,10 +351,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: BossHud
       objectReference: {fileID: 0}
-    - target: {fileID: 3055544990279211356, guid: b5470fc1029f41d40be36231da79d4e5, type: 3}
-      propertyPath: _base
-      value: 
-      objectReference: {fileID: 6236160786848009556}
     - target: {fileID: 8622079302333472130, guid: b5470fc1029f41d40be36231da79d4e5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
