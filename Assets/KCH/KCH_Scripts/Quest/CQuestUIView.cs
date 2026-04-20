@@ -24,14 +24,10 @@ public class CQuestUIView : MonoBehaviour
     // UI 갱신 함수
     public void SetUI(CQuestDataSO data, UserQuestData progress)
     {
-        QuestIcon.sprite = data.QuestIcon;
         QusetText.text = data.QuestName;
-
-        // 보상 누적 수량
-        RewardIcon.sprite = data.RewardIcon;
+        RewardIcon.sprite = CPopupManager.Instance.RewardDataSO.GetIcon(data.QuestReward);
 
         QuestButton.onClick.RemoveAllListeners();
-        QuestButton.onClick.AddListener(() => CQuestManager.Instance.RewardQuest(progress.QuestID));
 
         // 버튼 상태 제어
         // 진행도 게이지
@@ -42,7 +38,9 @@ public class CQuestUIView : MonoBehaviour
 
             QuestButtonText.text = "받기";
             QuestButton.interactable = true;
-        }
+
+            QuestButton.onClick.AddListener(() => CQuestManager.Instance.RewardQuest(data.QuestID));
+        } 
         else
         {
             ProgressText.text = $"{progress.CurrentGague} / {data.QuestGoal}";
