@@ -220,13 +220,17 @@ public abstract class CUnitBase : MonoBehaviour
 	}
 
 	// 데미지 받을 시 호출
-	public virtual void TakeDamage(float damage, CUnitBase attacker, bool summonCommonHitEffect = true)
+	public virtual void TakeDamage(float damage, CUnitBase attacker, bool summonCommonHitEffect = true, AudioClip HitAudio = null)
 	{
 		if (IsDead)
 		{
 			return;
 		}
 
+		if (HitAudio != null)
+		{
+			SoundManager.Instance.PlayUnitSFX(HitAudio);
+		}
 		currentHp = Mathf.Max(currentHp - damage, 0);
 
 		if (PrintLog)

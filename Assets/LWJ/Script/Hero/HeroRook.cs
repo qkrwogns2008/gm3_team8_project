@@ -16,7 +16,7 @@ public class HeroRook : CHero
 	protected virtual float ScaledKnockbackPower => KnockbackPower * SpineScale;
 	#endregion
 
-	protected override IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type)
+	protected override IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type, AudioClip castAudio = null)
 	{
 		if (string.IsNullOrEmpty(animationName))
 		{
@@ -26,7 +26,10 @@ public class HeroRook : CHero
 		}
 
 		SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
-		SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
+		if (castAudio != null)
+		{
+			SoundManager.Instance.PlayUnitSFX(castAudio); // 공격 오디오 재생
+		}
 
 		if (effectData != null)
 		{
@@ -78,6 +81,18 @@ public class HeroRook : CHero
 		if (IsPendingDead)
 		{
 			DeathSequence();
+		}
+		else
+		{
+			// 조이스틱 작동 중인지 체크
+			if (CGroupManager.instance != null && CGroupManager.instance.IsJoystickActive)
+			{
+				ChangeState(EHeroState.Move);
+			}
+			else
+			{
+				ChangeState(EHeroState.Idle);
+			}
 		}
 	}
 

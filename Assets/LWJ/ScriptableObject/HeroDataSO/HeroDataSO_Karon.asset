@@ -15,7 +15,7 @@ MonoBehaviour:
   _unitName: Karon
   _baseMaxHp: 220
   _baseAttackDamage: 12
-  _baseAttackInterval: 1
+  _baseAttackInterval: 0.7
   _normalAttackDamageRatio: 1.5
   _attackRange: 10
   _baseMoveSpeed: 5
@@ -26,6 +26,7 @@ MonoBehaviour:
   _detectionRange: 50
   _commonHitEffect: {fileID: 11400000, guid: dbde6631557447c4d9774e24dba0e4f0, type: 2}
   _heroId: 2003
+  _audioSO: {fileID: 11400000, guid: 9f34cc6ebf549ce49a02e2f97c9326f8, type: 2}
   _baseDefense: 0
   _defenseMultiplier: 1
   _damageReductionChance: 0

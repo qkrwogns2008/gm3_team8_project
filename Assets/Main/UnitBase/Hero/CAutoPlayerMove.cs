@@ -1,8 +1,4 @@
-using Spine;
 using Spine.Unity;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 public class CAutoPlayerMove : MonoBehaviour

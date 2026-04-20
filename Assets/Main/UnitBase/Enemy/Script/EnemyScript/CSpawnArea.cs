@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CSpawnArea : MonoBehaviour
@@ -27,6 +28,8 @@ public class CSpawnArea : MonoBehaviour
 	[SerializeField] private int _currentMonsterCount = 0;
 
 	#endregion
+
+	private List<GameObject> _spawnedEnemy = new List<GameObject>();
 
 
 	private void Start()
@@ -88,10 +91,21 @@ public class CSpawnArea : MonoBehaviour
 		return obj;
 	}
 
-	public void OnMonsterDeath(int index)
+	public void OnMonsterDeath(int index, GameObject monsterObj)
 	{
 		_currentMonsterCount --;
 
+		if(_spawnedEnemy.Contains(monsterObj))
+		{
+			_spawnedEnemy.Remove(monsterObj);
+		}
+
+		StartCoroutine(RespawnTimer(index));
+	}
+
+	public void OnMonsterDeath(int index)
+	{
+		_currentMonsterCount--;
 		StartCoroutine(RespawnTimer(index));
 	}
 
@@ -110,16 +124,70 @@ public class CSpawnArea : MonoBehaviour
 	{
 		StopAllCoroutines();
 	}
+	#region 스테이지 이동 관련
+	
+	// 모든 몬스터 지우고 스폰 중단
+	public void ClearAllMonsters()
+	{
+		// 리스폰 타이머 코루틴 모두 정지
+		StopAllCoroutines();
 
-    private void OnDrawGizmosSelected()
-    {
-		Gizmos.color = Color.blue;
-		foreach(var sp in _spawnPoints)
+		// 리스트 역순 순회 모든 몬스터 Pool로 반환
+		for(int i = _spawnedEnemy.Count - 1; i >= 0; i--)
 		{
-			if(sp.point != null)
+			GameObject obj = _spawnedEnemy[i];
+			if(obj != null)
 			{
-				Gizmos.DrawWireSphere(sp.point.position, sp.range);
+				CEnemyBase enemy = obj.GetComponent<CEnemyBase>();
+				if(enemy != null && enemy.OriginPrefab != null)
+				{
+					PoolManager.Instance.Push(enemy.OriginPrefab, obj);
+				}
+				else
+				{
+					obj.SetActive(false);
+				}
 			}
 		}
+
+		_spawnedEnemy.Clear();
+		_currentMonsterCount = 0;
+
+	}
+
+	// 스포너 재실행
+	public void ReStartStage()
+	{
+		ClearAllMonsters();
+
+		SelectRoundMonsters();
+
+		for(int i = 0; i < _maxMonsterCount; i++)
+		{
+			SpawnMonsterAtPoint(i % 3);
+		}
+	}
+	
+	// 테마 변경시 SO를 주입하고 재시작 할 때 사용
+	public void ChangeTheme(SpawnTemeSO newTheme, string newName)
+	{
+		_currentTheme = newTheme;
+		_themeName = newName;
+		ReStartStage();
+	}
+	#endregion
+	#region 기즈모
+	private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.blue;
+        foreach (var sp in _spawnPoints)
+        {
+            if (sp.point != null)
+            {
+                Gizmos.DrawWireSphere(sp.point.position, sp.range);
+            }
+        }
     }
+    #endregion
+
 }

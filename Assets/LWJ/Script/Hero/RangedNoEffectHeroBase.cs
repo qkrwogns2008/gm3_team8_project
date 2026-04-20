@@ -18,7 +18,7 @@ public class RangedNoEffectHeroBase : RangedHeroBase
 			return;
 		}
 
-		MotionRoutine = StartCoroutine(Co_PlayMotion(AttackAnimation, target, EAttackType.Normal));
+		MotionRoutine = StartCoroutine(Co_PlayMotion(AttackAnimation, target, EAttackType.Normal, AudioSO.Attack));
 		if (PrintLog)
 		{
 			Debug.Log($"{UnitName}의 일반 공격!");
@@ -40,14 +40,14 @@ public class RangedNoEffectHeroBase : RangedHeroBase
 			return;
 		}
 
-		MotionRoutine = StartCoroutine(Co_PlayMotion(CriticalAnimation, target, EAttackType.Critical));
+		MotionRoutine = StartCoroutine(Co_PlayMotion(CriticalAnimation, target, EAttackType.Critical, AudioSO.Critical));
 		if (PrintLog)
 		{
 			Debug.Log($"{UnitName}의 치명타 공격!");
 		}
 	}
 
-	protected virtual IEnumerator Co_PlayMotion(string animationName, CUnitBase target, EAttackType type)
+	protected virtual IEnumerator Co_PlayMotion(string animationName, CUnitBase target, EAttackType type, AudioClip castAudio = null)
 	{
 		if (string.IsNullOrEmpty(animationName))
 		{
@@ -57,7 +57,10 @@ public class RangedNoEffectHeroBase : RangedHeroBase
 		}
 
 		SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
-		SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
+		if (castAudio != null)
+		{
+			SoundManager.Instance.PlayUnitSFX(castAudio); // 공격 오디오 재생
+		}
 
 		yield return new WaitForSeconds(0.3f / AttackSpeedMultiplier);
 
@@ -68,6 +71,18 @@ public class RangedNoEffectHeroBase : RangedHeroBase
 		if (IsPendingDead)
 		{
 			DeathSequence();
+		}
+		else
+		{
+			// 조이스틱 작동 중인지 체크
+			if (CGroupManager.instance != null && CGroupManager.instance.IsJoystickActive)
+			{
+				ChangeState(EHeroState.Move);
+			}
+			else
+			{
+				ChangeState(EHeroState.Idle);
+			}
 		}
 	}
 }

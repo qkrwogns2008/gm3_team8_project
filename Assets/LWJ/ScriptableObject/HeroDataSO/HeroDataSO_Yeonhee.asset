@@ -15,7 +15,7 @@ MonoBehaviour:
   _unitName: Yeonhee
   _baseMaxHp: 400
   _baseAttackDamage: 50
-  _baseAttackInterval: 1
+  _baseAttackInterval: 0.7
   _normalAttackDamageRatio: 1.75
   _attackRange: 10
   _baseMoveSpeed: 5
@@ -26,6 +26,7 @@ MonoBehaviour:
   _detectionRange: 50
   _commonHitEffect: {fileID: 11400000, guid: dbde6631557447c4d9774e24dba0e4f0, type: 2}
   _heroId: 4002
+  _audioSO: {fileID: 11400000, guid: 41d58de6e92508c44a22f23c5e8188aa, type: 2}
   _baseDefense: 2
   _defenseMultiplier: 1
   _damageReductionChance: 0

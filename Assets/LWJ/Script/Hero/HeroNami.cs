@@ -38,7 +38,7 @@ public class HeroNami : NoEffectHeroBase
 	}
 
 	// multi attack
-	protected override IEnumerator Co_PlayMotion(string animationName, CUnitBase target, EAttackType type)
+	protected override IEnumerator Co_PlayMotion(string animationName, CUnitBase target, EAttackType type, AudioClip castAudio = null)
 	{
 		if (string.IsNullOrEmpty(animationName))
 		{
@@ -48,7 +48,7 @@ public class HeroNami : NoEffectHeroBase
 		}
 
 		SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
-		SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
+		
 
 		if (type == EAttackType.Critical)
 		{
@@ -64,6 +64,10 @@ public class HeroNami : NoEffectHeroBase
 
 			for (int i = 0; i < count; i++)
 			{
+				if (castAudio != null)
+				{
+					SoundManager.Instance.PlayUnitSFX(castAudio); // 공격 오디오 재생
+				}
 				yield return new WaitForSeconds(predelay[i] / AttackSpeedMultiplier);
 
 				if (target.IsUnitDead)
@@ -76,12 +80,20 @@ public class HeroNami : NoEffectHeroBase
 		}
 		else if (type == EAttackType.Skill)
 		{
+			if (castAudio != null)
+			{
+				SoundManager.Instance.PlayUnitSFX(castAudio); // 공격 오디오 재생
+			}
 			yield return new WaitForSeconds(SkillPreDelay / AttackSpeedMultiplier);
 
 			ProcessHit(target, type);
 		}
 		else
 		{
+			if (castAudio != null)
+			{
+				SoundManager.Instance.PlayUnitSFX(castAudio); // 공격 오디오 재생
+			}
 			yield return new WaitForSeconds(0.3f / AttackSpeedMultiplier);
 
 			ProcessHit(target, type);
@@ -92,6 +104,18 @@ public class HeroNami : NoEffectHeroBase
 		if (IsPendingDead)
 		{
 			DeathSequence();
+		}
+		else
+		{
+			// 조이스틱 작동 중인지 체크
+			if (CGroupManager.instance != null && CGroupManager.instance.IsJoystickActive)
+			{
+				ChangeState(EHeroState.Move);
+			}
+			else
+			{
+				ChangeState(EHeroState.Idle);
+			}
 		}
 	}
 

@@ -33,7 +33,7 @@ public class HeroLoto : NoEffectHeroBase
 			return;
 		}
 
-		MotionRoutine = StartCoroutine(Co_PlayMotion(SkillAnimation, target, EAttackType.Skill));
+		MotionRoutine = StartCoroutine(Co_PlayMotion(SkillAnimation, target, EAttackType.Skill, AudioSO.Skill));
 		if (PrintLog)
 		{
 			Debug.Log($"{UnitName}의 스킬 발동!");
@@ -41,7 +41,7 @@ public class HeroLoto : NoEffectHeroBase
 	}
 
 	// multi attack
-	protected override IEnumerator Co_PlayMotion(string animationName, CUnitBase target, EAttackType type)
+	protected override IEnumerator Co_PlayMotion(string animationName, CUnitBase target, EAttackType type, AudioClip castAudio = null)
 	{
 		if (string.IsNullOrEmpty(animationName))
 		{
@@ -51,7 +51,6 @@ public class HeroLoto : NoEffectHeroBase
 		}
 
 		SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
-		SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
 
 		int count = (type == EAttackType.Normal) ? AttackCount : CriticalAttackCount;
 		List<float> predelay = (type == EAttackType.Normal) ? MultiHitPredelay : MultiHitPredelayCritical;
@@ -65,6 +64,11 @@ public class HeroLoto : NoEffectHeroBase
 
 		for (int i = 0; i < count; i++)
 		{
+			if (castAudio != null)
+			{
+				SoundManager.Instance.PlayUnitSFX(castAudio); // 공격 오디오 재생
+			}
+
 			yield return new WaitForSeconds(predelay[i] / AttackSpeedMultiplier);
 
 			if (target.IsUnitDead)
@@ -80,6 +84,18 @@ public class HeroLoto : NoEffectHeroBase
 		if (IsPendingDead)
 		{
 			DeathSequence();
+		}
+		else
+		{
+			// 조이스틱 작동 중인지 체크
+			if (CGroupManager.instance != null && CGroupManager.instance.IsJoystickActive)
+			{
+				ChangeState(EHeroState.Move);
+			}
+			else
+			{
+				ChangeState(EHeroState.Idle);
+			}
 		}
 	}
 

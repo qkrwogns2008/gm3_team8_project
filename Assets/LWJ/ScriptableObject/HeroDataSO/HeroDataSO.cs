@@ -39,6 +39,9 @@ public class HeroDataSO : UnitDataSO
 	[Header("ID")]
 	[SerializeField] private EHeroID _heroId;
 
+	[Header("AudioSO")]
+	[SerializeField] private HeroAudioSO _audioSO;
+
 	[Header("능력치")]
 	[SerializeField] private float _baseDefense;
 	[SerializeField] private float _defenseMultiplier = 1.0f;
@@ -70,6 +73,7 @@ public class HeroDataSO : UnitDataSO
 
 	#region 프로퍼티
 	public EHeroID HeroID => _heroId;
+	public HeroAudioSO AudioSO => _audioSO;
 	public float BaseDefense => _baseDefense;
 	public float DefenseMultiplier => _defenseMultiplier;
 	public float DamageReductionChance => _damageReductionChance;

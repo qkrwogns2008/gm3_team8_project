@@ -9,7 +9,7 @@ public class HeroShane : CHero
 	[SerializeField] protected int SkillAttackCount = 3;
 	#endregion
 
-	protected override IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type)
+	protected override IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type, AudioClip castAudio = null)
 	{
 		if (string.IsNullOrEmpty(animationName))
 		{
@@ -19,7 +19,6 @@ public class HeroShane : CHero
 		}
 
 		SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
-		SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
 
 		if (effectData != null)
 		{
@@ -38,6 +37,11 @@ public class HeroShane : CHero
 				{
 					Debug.LogWarning($"CHero) 이펙트 NONE. {effectData.Name} 이펙트 목록 확인");
 					continue;
+				}
+
+				if (castAudio != null)
+				{
+					SoundManager.Instance.PlayUnitSFX(castAudio); // 공격 오디오 재생
 				}
 
 				yield return new WaitForSeconds(fxData.PreDelay / AttackSpeedMultiplier);
@@ -72,6 +76,18 @@ public class HeroShane : CHero
 		if (IsPendingDead)
 		{
 			DeathSequence();
+		}
+		else
+		{
+			// 조이스틱 작동 중인지 체크
+			if (CGroupManager.instance != null && CGroupManager.instance.IsJoystickActive)
+			{
+				ChangeState(EHeroState.Move);
+			}
+			else
+			{
+				ChangeState(EHeroState.Idle);
+			}
 		}
 	}
 
