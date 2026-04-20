@@ -8,6 +8,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -2383315907551695118, guid: cbf82088eb5e35f49a6b6110136a088c, type: 3}
+      propertyPath: MultiHitPredelay.Array.data[0]
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: -2383315907551695118, guid: cbf82088eb5e35f49a6b6110136a088c, type: 3}
+      propertyPath: MultiHitPredelay.Array.data[1]
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 2209794903314683923, guid: cbf82088eb5e35f49a6b6110136a088c, type: 3}
       propertyPath: m_Name
       value: Hero_Radgrid_A Variant

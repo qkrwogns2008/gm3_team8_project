@@ -178,13 +178,11 @@ public class CBoss : CEnemyBase
     {
         if (CDataManager.Instance != null && CDataManager.Instance.UserData != null)
         {
-            CDataManager.Instance.MainStageLevelUP(1);
             if(MainStageController.Instance != null)
             {
                 MainStageController.Instance.MainStageUp();
             }
             base.Die();
-            
         }
     }
     #endregion

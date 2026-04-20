@@ -246,6 +246,7 @@ public class HeroSnipper : RangedHeroBase
 			// 목록의 이펙트를 순차 출력
 			for (int i = 0; i < effectData.Catalog.Count; i++)
 			{
+				bool IsHit = false;
 				EffectInfo fxData = effectData.Catalog[i];
 
 				if (fxData == null)
@@ -286,12 +287,15 @@ public class HeroSnipper : RangedHeroBase
 
 					if (i != 0) // 조준 이펙트가 아니면
 					{
-						AudioClip clip = AudioSO.SkillDamaged;
-						if (target != null && clip != null)
-						{
-							SoundManager.Instance.PlayUnitSFX(clip); // 공격 오디오 재생
-						}
 						target.TakeDamage(damage, this, false);
+						IsHit = true;
+					}
+				}
+				if (IsHit) // 타격에 성공했으면
+				{
+					if (AudioSO.SkillDamaged != null)
+					{
+						SoundManager.Instance.PlayUnitSFX(AudioSO.SkillDamaged); // 공격 오디오 재생
 					}
 				}
 			}

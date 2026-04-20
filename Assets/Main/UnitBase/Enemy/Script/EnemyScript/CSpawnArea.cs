@@ -82,6 +82,11 @@ public class CSpawnArea : MonoBehaviour
 
 		_currentMonsterCount++;
 
+		if(!_spawnedEnemy.Contains(obj))
+		{
+			_spawnedEnemy.Add(obj);
+		}
+
 		CEnemyBase enemy = obj.GetComponent<CEnemyBase>();
 		if(enemy != null)
 		{

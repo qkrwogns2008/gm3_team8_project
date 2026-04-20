@@ -66,6 +66,12 @@ public class HeroRook : CHero
 					MotionRoutine = null;
 					yield break;
 				}
+
+				if (type == EAttackType.Skill)
+				{
+					ProcessHit(target, type);
+					yield return new WaitForSeconds(0.7f / AttackSpeedMultiplier);
+				}
 			}
 		}
 		else
@@ -74,7 +80,10 @@ public class HeroRook : CHero
 			yield return new WaitForSeconds(0.3f / AttackSpeedMultiplier);
 		}
 
-		ProcessHit(target, type);
+		if (type != EAttackType.Skill)
+		{
+			ProcessHit(target, type);
+		}
 
 		MotionRoutine = null;
 

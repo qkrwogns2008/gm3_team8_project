@@ -9,6 +9,7 @@ public class RangedHeroBase : CHero
 	[Header("원거리 세팅")]
 	[SerializeField] protected MissileBase MissilePrefab;
 	[SerializeField] protected MissileDataSO MissileData;
+	[SerializeField] protected AudioClip MissileDamaged;
 	#endregion
 
 	protected override void ProcessNormalHit(CUnitBase target)
@@ -22,6 +23,6 @@ public class RangedHeroBase : CHero
 		Quaternion rot = Quaternion.Euler(-42f, 0f, 0f);
 
 		MissileBase missile = PoolManager.Instance.Pop(MissilePrefab, CenterPos, rot);
-		missile.Init(MissilePrefab, MissileData, FinalNormalAttackDamage, target, this);
+		missile.Init(MissilePrefab, MissileData, FinalNormalAttackDamage, target, this, MissileDamaged);
 	}
 }

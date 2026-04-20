@@ -103,7 +103,14 @@ public class HeroLoto : NoEffectHeroBase
 	{
 		if (target != null)
 		{
-			target.TakeDamage(FinalNormalAttackDamage / AttackCount, this);
+			if (AudioSO != null)
+			{
+				target.TakeDamage(FinalNormalAttackDamage / AttackCount, this, true, AudioSO.AttackDamaged);
+			}
+			else
+			{
+				target.TakeDamage(FinalNormalAttackDamage / AttackCount, this, true);
+			}
 		}
 	}
 
@@ -111,7 +118,14 @@ public class HeroLoto : NoEffectHeroBase
 	{
 		if (target != null)
 		{
-			target.TakeDamage(CriticalDamage / CriticalAttackCount, this);
+			if (AudioSO != null)
+			{
+				target.TakeDamage(CriticalDamage / AttackCount, this, true, AudioSO.CriticalDamaged);
+			}
+			else
+			{
+				target.TakeDamage(CriticalDamage / AttackCount, this, true);
+			}
 		}
 	}
 
@@ -132,7 +146,7 @@ public class HeroLoto : NoEffectHeroBase
 		Vector3 pos = target.transform.position + new Vector3(offsetX, 0, 0);
 
 		transform.position = pos;
-		
+
 		ProcessTeleportHit(target);
 
 		MotionRoutine = null;
@@ -147,7 +161,7 @@ public class HeroLoto : NoEffectHeroBase
 	{
 		if (target != null)
 		{
-			target.TakeDamage(FinalSkillDamage, this);
+			target.TakeDamage(FinalSkillDamage, this, true);
 		}
 	}
 }
