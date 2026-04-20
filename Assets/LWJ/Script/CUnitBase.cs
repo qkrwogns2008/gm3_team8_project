@@ -119,6 +119,13 @@ public abstract class CUnitBase : MonoBehaviour
 	protected virtual void OnDisable()
 	{
 		UnRegisterFromManager();
+
+		if (MotionRoutine != null)
+		{
+			StopCoroutine(MotionRoutine);
+			MotionRoutine = null;
+		}
+		StopAllCoroutines();
 	}
 
     #region ListManager

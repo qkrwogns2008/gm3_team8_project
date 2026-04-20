@@ -34,6 +34,7 @@ public class HeroSarah : CHero
 	{
 		base.OnDisable();
 		isSkillUsing = false;
+		isInvincible = false;
 	}
 
 	protected override IEnumerator Co_PlayMotion(EffectDataSO effectData, string animationName, CUnitBase target, EAttackType type, AudioClip castAudio = null)
