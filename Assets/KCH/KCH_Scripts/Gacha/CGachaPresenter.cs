@@ -573,6 +573,7 @@ public class CGachaPresenter : MonoBehaviour
         // 퀘스트 매니저 진행도 업데이트
         //CQuestManager.Instance.QuestProgress(EQuestType.GachaSummon, count);
         CQuestEvent.Publish(EQuestType.GachaSummon, count);
+        CQuestEvent.Publish(EQuestType.PetSummon, count);
 
         // 자동 뽑기 시 재 시작
         if (_isAutoRoll)
@@ -780,6 +781,8 @@ public class CGachaPresenter : MonoBehaviour
             _gachaView.ExpFillImageHero.fillAmount = fillAmount;
             _gachaView.ExpTextHero.text = expStr;
             _gachaView.HeroTab.gameObject.SetActive(true);
+            _gachaView.PetTab.gameObject.SetActive(false);
+
             
         }
 
@@ -791,6 +794,7 @@ public class CGachaPresenter : MonoBehaviour
 
             if (_gachaView.HeroTab != null && _gachaView.HeroTab.gameObject.activeSelf)
             {
+                _gachaView.PetTab.gameObject.SetActive(true);
                 _gachaView.HeroTab.gameObject.SetActive(false);
             }
         }
