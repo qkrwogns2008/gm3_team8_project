@@ -36,7 +36,7 @@ public class HeroRankUI : MonoBehaviour
         int rank = 0;
         int current = ownedCount;
 
-        int[] need = { 3, 4, 5, 6, 7 };
+        int[] need = { 1, 1, 1, 1, 1 };
 
         // 단계별 차감
         for (int i = 0; i < need.Length; i++)
