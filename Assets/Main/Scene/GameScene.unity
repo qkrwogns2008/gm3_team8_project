@@ -306,11 +306,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2509897477929994187, guid: 317a39a3650f1204a9c8637c2ad51ee0, type: 3}
   m_PrefabInstance: {fileID: 1345801179}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &267384716 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4636475225063928796, guid: 7f51d691815df764797c3641b7ae4840, type: 3}
-  m_PrefabInstance: {fileID: 891184576}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &348992228
 GameObject:
   m_ObjectHideFlags: 0
@@ -605,6 +600,10 @@ PrefabInstance:
       propertyPath: disableTarget
       value: 
       objectReference: {fileID: 234260335}
+    - target: {fileID: 6026338446002129236, guid: 2618f05665310df408c068a229e8086a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 591
+      objectReference: {fileID: 0}
     - target: {fileID: 6307938938948677586, guid: 2618f05665310df408c068a229e8086a, type: 3}
       propertyPath: targetParent
       value: 
@@ -617,6 +616,10 @@ PrefabInstance:
       propertyPath: heroDataSO
       value: 
       objectReference: {fileID: 11400000, guid: 0d7b170f331439f418ef1284d6ff8462, type: 2}
+    - target: {fileID: 6850451664191740516, guid: 2618f05665310df408c068a229e8086a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7044598163731426928, guid: 2618f05665310df408c068a229e8086a, type: 3}
       propertyPath: heroDataSO
       value: 
@@ -1411,7 +1414,7 @@ PrefabInstance:
     - target: {fileID: 74629884162789227, guid: 317a39a3650f1204a9c8637c2ad51ee0, type: 3}
       propertyPath: otherPrefabs.Array.data[6]
       value: 
-      objectReference: {fileID: 267384716}
+      objectReference: {fileID: 0}
     - target: {fileID: 74629884162789227, guid: 317a39a3650f1204a9c8637c2ad51ee0, type: 3}
       propertyPath: targetPrefabs.Array.data[0]
       value: 
