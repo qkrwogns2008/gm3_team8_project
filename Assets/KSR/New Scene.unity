@@ -406,6 +406,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6237583460394234772, guid: 317a39a3650f1204a9c8637c2ad51ee0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 860251880}
+    - target: {fileID: 6237583460394234772, guid: 317a39a3650f1204a9c8637c2ad51ee0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 854298658}
@@ -414,8 +418,16 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6237583460394234772, guid: 317a39a3650f1204a9c8637c2ad51ee0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 6237583460394234772, guid: 317a39a3650f1204a9c8637c2ad51ee0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: PlayUISound_OnClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 6237583460394234772, guid: 317a39a3650f1204a9c8637c2ad51ee0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Button_Return, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6237583460394234772, guid: 317a39a3650f1204a9c8637c2ad51ee0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
@@ -576,6 +588,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2509897477929994187, guid: 317a39a3650f1204a9c8637c2ad51ee0, type: 3}
   m_PrefabInstance: {fileID: 860251876}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &860251880 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7643595426976436288, guid: 317a39a3650f1204a9c8637c2ad51ee0, type: 3}
+  m_PrefabInstance: {fileID: 860251876}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 860251877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4198e919c883ba94b9776384e9b4f6cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1038963008 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4881479732285634536, guid: 317a39a3650f1204a9c8637c2ad51ee0, type: 3}

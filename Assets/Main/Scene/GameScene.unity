@@ -540,6 +540,10 @@ PrefabInstance:
       propertyPath: disableTarget
       value: 
       objectReference: {fileID: 234260335}
+    - target: {fileID: 2288231137176537150, guid: 2618f05665310df408c068a229e8086a, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2450132690038350126, guid: 2618f05665310df408c068a229e8086a, type: 3}
       propertyPath: powerTexts.Array.data[3]
       value: 
@@ -691,6 +695,10 @@ PrefabInstance:
     - target: {fileID: 8534721836288944160, guid: 2618f05665310df408c068a229e8086a, type: 3}
       propertyPath: m_Name
       value: Main_UI Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 9055347193163361085, guid: 2618f05665310df408c068a229e8086a, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3112761482868035, guid: 2618f05665310df408c068a229e8086a, type: 3}
@@ -1436,10 +1444,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 91430789}
     - target: {fileID: 74629884162789227, guid: 317a39a3650f1204a9c8637c2ad51ee0, type: 3}
-      propertyPath: otherPrefabs.Array.data[6]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 74629884162789227, guid: 317a39a3650f1204a9c8637c2ad51ee0, type: 3}
       propertyPath: targetPrefabs.Array.data[0]
       value: 
       objectReference: {fileID: 968259657}
@@ -1918,10 +1922,6 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -472.5
       objectReference: {fileID: 0}
-    - target: {fileID: 2572004145362043034, guid: 037dff8a37844bb40a960933765171be, type: 3}
-      propertyPath: m_SortingOrder
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 5552107802986422172, guid: 037dff8a37844bb40a960933765171be, type: 3}
       propertyPath: m_UiScaleMode
       value: 1
@@ -2092,14 +2092,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 658814030687187001, guid: 7692c6576a764674fa08c8305effd1a7, type: 3}
-      propertyPath: m_SortingOrder
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 868019549672865211, guid: 7692c6576a764674fa08c8305effd1a7, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1573658284181130365, guid: 7692c6576a764674fa08c8305effd1a7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2155,10 +2147,6 @@ PrefabInstance:
     - target: {fileID: 3104398275157817172, guid: 7692c6576a764674fa08c8305effd1a7, type: 3}
       propertyPath: _mainStageTheme3
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 8384858344578389189, guid: 7692c6576a764674fa08c8305effd1a7, type: 3}
-      propertyPath: m_SortingOrder
-      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

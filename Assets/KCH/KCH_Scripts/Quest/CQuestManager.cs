@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditorInternal.Profiling;
+using Coffee.UIExtensions;
 using System.Collections;
 
 public class CQuestManager : MonoBehaviour
