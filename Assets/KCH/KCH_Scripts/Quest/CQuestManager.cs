@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditorInternal.Profiling;
+using Coffee.UIExtensions;
 using System.Collections;
 
 public class CQuestManager : MonoBehaviour
@@ -26,6 +28,7 @@ public class CQuestManager : MonoBehaviour
     private int _lastDefLevel;              // 마지막 방어력 레벨 데이터
     private int _lastLifeLevel;             // 마지막 생명력 레벨 데이터
     private int _lastTotalHeroLevel;        // 마지막 영웅 레벨 데이터
+    private int _lastTotalItem;             // 마지막 아이템 데이터
     #endregion
 
     // 옵저버 알림
@@ -33,9 +36,9 @@ public class CQuestManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null) 
-        { 
-            Instance = this; 
+        if (Instance == null)
+        {
+            Instance = this;
         }
 
         else
@@ -55,7 +58,7 @@ public class CQuestManager : MonoBehaviour
         // 데이터 수치 백업
         SyncLastData();
 
-        if (_monitorCoroutine != null) 
+        if (_monitorCoroutine != null)
         {
             StopCoroutine(_monitorCoroutine);
         }
@@ -73,6 +76,7 @@ public class CQuestManager : MonoBehaviour
         _lastDefLevel = userData.Def_Level;
         _lastLifeLevel = userData.Life_Level;
         _lastTotalHeroLevel = GetTotalHeroLevel();
+        _lastTotalItem = GetTotalItem();
     }
 
     private void InitProgress()
@@ -121,9 +125,9 @@ public class CQuestManager : MonoBehaviour
         {
             var userData = CDataManager.Instance.UserData;
 
-            if (userData == null) 
-            { 
-                yield return delay; 
+            if (userData == null)
+            {
+                yield return delay;
                 continue;
             }
 
@@ -138,13 +142,23 @@ public class CQuestManager : MonoBehaviour
                 isChanged = true;
             }
 
+            int currentTotalItem = GetTotalItem();
+            // 아이템 획득 (Type 3)
+            if (currentTotalItem > _lastTotalItem)
+            {
+                // 증가량 계산
+                int diff = currentTotalItem - _lastTotalItem;
+                HandleQuestProgress(EQuestType.UseItem, diff);
+                // 백업 갱신
+                _lastTotalItem = currentTotalItem;
+                isChanged = true;
+            }
+
             // 공격력 영향력 레벨 (Type 4)
             if (userData.Atk_Level > _lastAtkLevel)
             {
-                // 증가량 계산
                 int diff = userData.Atk_Level - _lastAtkLevel;
                 HandleQuestProgress(EQuestType.AtkLevel, diff);
-                // 백업 갱신
                 _lastAtkLevel = userData.Atk_Level;
                 isChanged = true;
             }
@@ -199,6 +213,25 @@ public class CQuestManager : MonoBehaviour
         return total;
     }
 
+    private int GetTotalItem()
+    {
+        int total = 0;
+
+        var inventory = CDataManager.Instance.UserData.Inventory;
+
+        if (inventory == null)
+        {
+            return 0;
+        }
+
+        int count = inventory.Count;
+        for (int i = 0; i < count; i++)
+        {
+            total += inventory[i].Quantity;
+        }
+        return total;
+    }
+
     // 딕셔너리 캐싱
     private void BuildQuestMap()
     {
@@ -221,7 +254,7 @@ public class CQuestManager : MonoBehaviour
 
         for (int i = 0; i < count; i++)
         {
-            UserQuestData progress = UserQuestList[i]; 
+            UserQuestData progress = UserQuestList[i];
             if (_questDict.TryGetValue(progress.QuestID, out CQuestDataSO questSO))
             {
                 if (questSO.QuestType == type)
@@ -229,13 +262,13 @@ public class CQuestManager : MonoBehaviour
                     progress.CurrentGague += value;
                     isChanged = true;
 
-                    Debug.Log($" ID: {questSO.QuestID} | 이름: {questSO.QuestName}| 타입: { questSO.QuestType} | 증가량: { value}");
+                    Debug.Log($" ID: {questSO.QuestID} | 이름: {questSO.QuestName}| 타입: {questSO.QuestType} | 증가량: {value}");
                     while (progress.CurrentGague >= questSO.QuestGoal)
                     {
                         progress.CurrentGague -= questSO.QuestGoal;
                         progress.ReewardCount++;
 
-                        Debug.Log($"{questSO.QuestName} 목표 달성 / 수령 가능횟수: { progress.ReewardCount}");
+                        Debug.Log($"{questSO.QuestName} 목표 달성 / 수령 가능횟수: {progress.ReewardCount}");
                     }
                 }
             }
@@ -248,7 +281,7 @@ public class CQuestManager : MonoBehaviour
             Debug.Log("퀘스트 업데이트 완료");
         }
     }
-  
+
     // 유저 보상 지급
     public void RewardQuest(int questID)
     {
@@ -327,7 +360,7 @@ public class CQuestManager : MonoBehaviour
 
                 // 보상 횟수 초기화
                 progress.ReewardCount = 0;
-                isAllReward = true; 
+                isAllReward = true;
             }
         }
 
@@ -355,7 +388,7 @@ public class CQuestManager : MonoBehaviour
     {
         switch (type)
         {
-            case EQuestReward.Ruby: 
+            case EQuestReward.Ruby:
                 CDataManager.Instance.AddRubby(amount);
                 break;
             case EQuestReward.Ticket:

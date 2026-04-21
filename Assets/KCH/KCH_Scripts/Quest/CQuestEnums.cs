@@ -8,7 +8,7 @@ public enum EQuestType
     GachaSummon = 0,            // 영웅 소환
     PetSummon = 1,              // 펫소환
     StateUp = 2,                // 스테이지 업
-    UseItem = 3,                // 아이템 사용
+    UseItem = 3,                // 아이템 획득
     AtkLevel = 4,               // 공격력 영향력 레벨업 
     DefLevel = 5,               // 방어력 영향력 레벨업 
     LifeLevel = 6,              // 생명력 영향력 레벨업 
