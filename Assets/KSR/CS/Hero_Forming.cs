@@ -105,8 +105,8 @@ public class Hero_Forming : MonoBehaviour
                 currentCount++;
         }
 
-        // 최대 5개 제한
-        if (currentCount >= 5)
+        // 최대 7개 제한
+        if (currentCount >= 7)
         {
             if (warningPrefab != null)
                 Instantiate(warningPrefab, parentB);
