@@ -306,8 +306,11 @@ public class CDataManager : MonoBehaviour
                 Debug.Log($"»õ·Î¿î ¿µ¿õ È¹µæ! (ID: {id})");
             }   
         }
-
-    }
+		if (CHeroManager.Instance != null)
+		{
+			CHeroManager.Instance.RefreshUpgradeStat(id);
+		}
+	}
 
     // ¿µ¿õ µ¥ÀÌÅÍ Á¶È¸
 
@@ -341,7 +344,12 @@ public class CDataManager : MonoBehaviour
         if (hero != null)
         {
             hero.Level += level;
-        }
+			
+			if (CHeroManager.Instance != null)
+			{
+				CHeroManager.Instance.RefreshUpgradeStat(id);
+			}
+		}
         else
         {
             // ¿µ¿õ ¹Ìº¸À¯½Ã
@@ -532,13 +540,12 @@ public class CDataManager : MonoBehaviour
             {
                 UserData.HeroList.Add(new UserHeroData { HeroID = id, Quantity = 1 });
                 AddUserHeroArray(0, 0, id); // ¿¤°¡¸¦ 1¹ø ½½·Ô¿¡ ¹èÄ¡
-                SetHeroLevel(id,  1);
 
             }
             else
             {
                 UserData.HeroList.Add(new UserHeroData { HeroID = id, Quantity = 0 });
-                SetHeroLevel(id, 1);
+
             }
             Debug.Log($"[´õ¹Ì] ¿µ¿õ µ¥ÀÌÅÍ Ãß°¡ (ID: {id})");
             SaveUserData();

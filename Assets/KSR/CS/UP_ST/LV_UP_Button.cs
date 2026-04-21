@@ -180,6 +180,10 @@ public class LV_UP_Button : MonoBehaviour
             }
 
             CDataManager.Instance.SaveUserData();
+			if (CHeroManager.Instance != null)
+			{
+				CHeroManager.Instance.RefreshUpgradeStatAllHero();
+			}
         }
 
         // =============================

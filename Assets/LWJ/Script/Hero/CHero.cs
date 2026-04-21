@@ -298,21 +298,10 @@ public class CHero : CUnitBase
 				Debug.LogWarning($"{UnitName} AudioSO null.");
 			}
 
-			FinalHeroStatus stat;
 			if (CDataManager.Instance != null)
 			{
-				stat = CDataManager.Instance.GetHeroFinalStatus(HeroID, HeroData);
-
-				BaseMaxHp = stat.HeroHP;
-				BaseAtkDamage = stat.HeroAtk;
-				BaseDefense = stat.HeroDef;
-				CriticalChance = stat.HeroCriticalRatio;
-
+				RefreshUpgrade();
 				currentHp = FinalMaxHP;
-				if (PrintLog)
-				{
-					Debug.Log($"[{UnitName}] userData 적용 완료. {stat.HeroHP}/{stat.HeroAtk}/{stat.HeroDef}/{stat.HeroCriticalRatio}");
-				}
 			}
 			else
 			{
@@ -345,6 +334,42 @@ public class CHero : CUnitBase
 
 			BarrierEffect = HeroData.BarrierEffect;
 			TakeHealEffect = HeroData.TakeHealEffect;
+		}
+	}
+
+	/// <summary>
+	/// 업그레이드 상태에 맞게 스탯을 재계산합니다.
+	/// </summary>
+	public virtual void RefreshUpgrade()
+	{
+		if (IsUnitDead)
+		{
+			return;
+		}
+
+		if (CDataManager.Instance == null)
+		{
+			return;
+		}
+
+		float prevHPRatio = (FinalMaxHP > 0.01f) ? currentHp / FinalMaxHP : 0f;
+
+		FinalHeroStatus stat = CDataManager.Instance.GetHeroFinalStatus(HeroID, HeroData);
+
+		BaseMaxHp = stat.HeroHP;
+		BaseAtkDamage = stat.HeroAtk;
+		BaseDefense = stat.HeroDef;
+		CriticalChance = stat.HeroCriticalRatio;
+
+		if (prevHPRatio > 0)
+		{
+			currentHp = FinalMaxHP * prevHPRatio;
+			NotifyHpChange();
+		}
+
+		if (PrintLog)
+		{
+			Debug.Log($"[{UnitName}] userData 적용 완료. {stat.HeroHP}/{stat.HeroAtk}/{stat.HeroDef}/{stat.HeroCriticalRatio}");
 		}
 	}
 
