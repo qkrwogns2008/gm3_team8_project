@@ -37,7 +37,14 @@ public class CBossSpawner : MonoBehaviour
 
     public void OnClickBossSpawn()
     {
-        SpawnBossByCurrentStage();
+        if (CDataManager.Instance.UserData.CurrentStageLevel == CDataManager.Instance.UserData.MainStageLevel)
+        {
+            SpawnBossByCurrentStage();
+        }
+        else
+        {
+            Debug.LogWarning("최대 스테이지에서 보스 소환이 가능합니다.");
+        }
     }
 
     public void SpawnBossByCurrentStage()

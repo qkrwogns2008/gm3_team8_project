@@ -1922,6 +1922,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -472.5
       objectReference: {fileID: 0}
+    - target: {fileID: 2572004145362043034, guid: 037dff8a37844bb40a960933765171be, type: 3}
+      propertyPath: m_SortingOrder
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 5552107802986422172, guid: 037dff8a37844bb40a960933765171be, type: 3}
       propertyPath: m_UiScaleMode
       value: 1
@@ -2092,6 +2096,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 658814030687187001, guid: 7692c6576a764674fa08c8305effd1a7, type: 3}
+      propertyPath: m_SortingOrder
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 1573658284181130365, guid: 7692c6576a764674fa08c8305effd1a7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2147,6 +2155,10 @@ PrefabInstance:
     - target: {fileID: 3104398275157817172, guid: 7692c6576a764674fa08c8305effd1a7, type: 3}
       propertyPath: _mainStageTheme3
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8384858344578389189, guid: 7692c6576a764674fa08c8305effd1a7, type: 3}
+      propertyPath: m_SortingOrder
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
