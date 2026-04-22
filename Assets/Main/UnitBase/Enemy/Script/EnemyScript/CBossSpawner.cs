@@ -37,6 +37,10 @@ public class CBossSpawner : MonoBehaviour
 
     public void OnClickBossSpawn()
     {
+        if(_activeBoss != null)
+        {
+            return;
+        }
         if (CDataManager.Instance.UserData.CurrentStageLevel == CDataManager.Instance.UserData.MainStageLevel)
         {
             SpawnBossByCurrentStage();
