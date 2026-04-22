@@ -55,6 +55,13 @@ public class CBossSpawner : MonoBehaviour
         {
             IsBossMode = true;
 
+            CSpawnArea[] spawners = FindObjectsOfType<CSpawnArea>();
+
+            foreach(CSpawnArea spawner in spawners)
+            {
+                spawner.ClearAllMonsters();
+            }
+
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
         else

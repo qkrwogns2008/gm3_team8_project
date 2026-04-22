@@ -34,6 +34,11 @@ public class CSpawnArea : MonoBehaviour
 
 	private void Start()
 	{
+		if(CBossSpawner.IsBossMode)
+		{
+			gameObject.SetActive(false);
+			return;
+		}
 		if (_spawnPoints.Length != 3)
 		{
 			Debug.Log("Spawn Point가 정확히 3개가 아님");
