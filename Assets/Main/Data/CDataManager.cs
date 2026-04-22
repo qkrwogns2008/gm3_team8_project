@@ -540,11 +540,12 @@ public class CDataManager : MonoBehaviour
             {
                 UserData.HeroList.Add(new UserHeroData { HeroID = id, Quantity = 1 });
                 AddUserHeroArray(0, 0, id); // 엘가를 1번 슬롯에 배치
-
+                SetHeroLevel(id, 1);
             }
             else
             {
                 UserData.HeroList.Add(new UserHeroData { HeroID = id, Quantity = 0 });
+                SetHeroLevel(id, 1);
 
             }
             Debug.Log($"[더미] 영웅 데이터 추가 (ID: {id})");

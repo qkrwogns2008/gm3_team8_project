@@ -55,6 +55,23 @@ public class TestHeroAdd : MonoBehaviour
                 }
             }
         }
-        
+        int stage = CDataManager.Instance.UserData.CurrentStageLevel;
+        string stageName ;
+        if(CDataManager.Instance.UserData.CurrentStageLevel >=41)
+        {
+            stageName = "복수자의 지옥";
+        }
+        else if(CDataManager.Instance.UserData.CurrentStageLevel >= 21)
+        {
+            stageName = "눈보라의 대지";
+        }
+        else
+        {
+            stageName = "신비의 숲";
+        }
+        string text = "stage. " + stage + " " + stageName ; 
+        MainNotification.Instance.StartMainNotification(text);
+
+
     }
 }
