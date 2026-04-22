@@ -35,7 +35,7 @@ public class CGroupManager : MonoBehaviour
 
     public bool IsJoystickActive => _joystick != null && _joystick.InputVector.sqrMagnitude > 0.01f;
     public float JoystickX => _joystick != null ? _joystick.InputVector.x : 0;
-    
+    public float GroupSpeed => _groupSpeed;
     
 
     private void Awake()
@@ -196,9 +196,10 @@ public class CGroupManager : MonoBehaviour
             transform.position += moveDir * _groupSpeed * Time.deltaTime;
         }
 
-        HandleTargetSharing();
-
         // 대열 유지
         HeroGroupMoving();
+
+        HandleTargetSharing();
+
     }
 }

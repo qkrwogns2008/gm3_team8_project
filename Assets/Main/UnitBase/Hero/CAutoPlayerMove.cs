@@ -87,18 +87,12 @@ public class CAutoPlayerMove : MonoBehaviour
         // 상태 변경
         PlayerHero.ChangeState(EHeroState.Move);
 
-        // 복귀 속도 보정
-        float baseSpeed = PlayerHero.FinalMoveSpeed;
+        Vector3 targetPos = _groupTargetPos;
 
-        // 현 위치와 대열 목적지 사이의 거리 계산
-        float distance = Vector3.Distance(transform.position, _groupTargetPos);
+        float followSpeed = CGroupManager.instance.GroupSpeed * 1.5f;
 
-        // 거리가 2.0 이상 멀어지면 기본속도의 1.5배, 가까우면 1.1배
-        float returnSpeedMultiplier = (distance > 2.0f) ? 1.5f : 1.1f;
-        float finalMoveSpeed = baseSpeed * returnSpeedMultiplier;
-
-        // 지정 좌표 이동
-        transform.position = Vector3.MoveTowards(transform.position, _groupTargetPos, finalMoveSpeed * Time.deltaTime);
+        // 현 위치에서 대열 위치로 따라잡기
+        transform.position = Vector3.MoveTowards(transform.position, _groupTargetPos, followSpeed * Time.deltaTime);
 
         // 이동방향 바라보기
         float joystickX = CGroupManager.instance.JoystickX;
@@ -110,6 +104,7 @@ public class CAutoPlayerMove : MonoBehaviour
 
         // 수동 이동중에 공격대상 비우기
         _targetEnemy = null;
+        _sharedTarget = null;
     }
 
     public void SetGroupTarget(Vector3 pos)
