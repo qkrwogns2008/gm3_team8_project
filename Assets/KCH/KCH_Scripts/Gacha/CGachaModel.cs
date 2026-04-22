@@ -29,8 +29,8 @@ public class CGachaModel : MonoBehaviour
         _currentCategory = category;
         _currentCategoryIndex = index;
 
-        // 랜덤 시드 값
-        GachaRandom = new System.Random(12345);
+        // 랜덤 시드 값 랜덤
+        GachaRandom = new System.Random();
     }
 
     // 가차 실행 함수
