@@ -192,30 +192,15 @@ public class CBoss : CEnemyBase
         }
         IsDead = true;
 
-        if (_myHealthBar != null)
-        {
-            _myHealthBar.SetActive(false);
-        }
-        if (MainStageController.Instance != null)
-        {
-            MainStageController.Instance.MainStageUp();
-        }
-        if (CEnemyManager.Instance != null)
+        if(CEnemyManager.Instance != null)
         {
             CEnemyManager.Instance.UnregisterEnemy(this);
         }
-        if (CBossSpawner.Instance != null)
-        {
-            CBossSpawner.Instance.ClearActiveBoss();
-        }
+        base.Die();
         if (gameObject.activeInHierarchy)
         {
             StartCoroutine(CO_DestroyBoss());
         }
-
-        base.Die();
-
-        
     }
 
     private IEnumerator CO_DestroyBoss()
@@ -223,6 +208,18 @@ public class CBoss : CEnemyBase
         yield return new WaitForSeconds(3.0f);
         // 보스 체력바 비활성화
         
+        if(_myHealthBar != null)
+        {
+            _myHealthBar.SetActive(false);
+        }
+
+        CBossSpawner.IsBossMode = false;
+
+        if(MainStageController.Instance != null)
+        {
+            MainStageController.Instance.MainStageUp();
+        }
+
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.name);
         //Destroy(gameObject);
