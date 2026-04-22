@@ -248,7 +248,7 @@ MonoBehaviour:
   DeathDisableTime: 0
   PrintLog: 0
   _effectPos: {fileID: 6976374957925658929}
-  _giveupRange: 15
+  _giveupRange: 40
   _walkRange: 5
   _switchThreshold: 1.2
   _minTargetStayTime: 1
@@ -407,9 +407,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8361872433212783006}
     m_Modifications:
+    - target: {fileID: 536024547356969052, guid: b5470fc1029f41d40be36231da79d4e5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1100
+      objectReference: {fileID: 0}
     - target: {fileID: 1327286099882530057, guid: b5470fc1029f41d40be36231da79d4e5, type: 3}
       propertyPath: m_Name
       value: BossHud
+      objectReference: {fileID: 0}
+    - target: {fileID: 2367659839365335566, guid: b5470fc1029f41d40be36231da79d4e5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3008273577622419707, guid: b5470fc1029f41d40be36231da79d4e5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7544276820629016995, guid: b5470fc1029f41d40be36231da79d4e5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1100
       objectReference: {fileID: 0}
     - target: {fileID: 8622079302333472130, guid: b5470fc1029f41d40be36231da79d4e5, type: 3}
       propertyPath: m_LocalPosition.x

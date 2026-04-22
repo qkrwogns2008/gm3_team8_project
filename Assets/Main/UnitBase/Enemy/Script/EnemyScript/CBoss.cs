@@ -40,17 +40,24 @@ public class CBoss : CEnemyBase
         base.Awake();
     }
 
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        InitUnitStats();
+    }
+
     protected override void InitUnitStats()
     {
         base.InitUnitStats();
+        
 
         if (EnemyData != null && CDataManager.Instance != null)
         {
             int stage = CDataManager.Instance.UserData.CurrentStageLevel;
 
-            // 스테이지당 체력 15% 공격력 10%
+            // 스테이지당 체력 15% 공격력 15%
             float hpGrowth = Mathf.Pow(1.15f, stage - 1);
-            float atkGrowth = Mathf.Pow(1.1f, stage - 1);
+            float atkGrowth = Mathf.Pow(1.15f, stage - 1);
 
             unitName = EnemyData.UnitName;
 
@@ -185,43 +192,40 @@ public class CBoss : CEnemyBase
         }
         IsDead = true;
 
-        // 보스 체력바 비활성화
-        if(_myHealthBar != null)
+        if (_myHealthBar != null)
         {
             _myHealthBar.SetActive(false);
         }
-
-        if(CEnemyManager.Instance != null)
-        {
-            CEnemyManager.Instance.UnregisterEnemy(this);
-        }
-
-        if(MainStageController.Instance != null)
+        if (MainStageController.Instance != null)
         {
             MainStageController.Instance.MainStageUp();
         }
-
-        if(CBossSpawner.Instance != null)
+        if (CEnemyManager.Instance != null)
+        {
+            CEnemyManager.Instance.UnregisterEnemy(this);
+        }
+        if (CBossSpawner.Instance != null)
         {
             CBossSpawner.Instance.ClearActiveBoss();
         }
-        base.Die();
-
-        if(gameObject.activeInHierarchy)
+        if (gameObject.activeInHierarchy)
         {
             StartCoroutine(CO_DestroyBoss());
         }
-        
 
+        base.Die();
+
+        
     }
 
     private IEnumerator CO_DestroyBoss()
     {
         yield return new WaitForSeconds(3.0f);
-
+        // 보스 체력바 비활성화
+        
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.name);
-        // Destroy(gameObject);
+        //Destroy(gameObject);
     }
 
     private void OnDestroy()
