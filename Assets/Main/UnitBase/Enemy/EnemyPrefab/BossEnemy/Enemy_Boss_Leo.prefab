@@ -238,7 +238,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitName: 
   currentHp: 0
-  OriginData: {fileID: 0}
+  OriginData: {fileID: 11400000, guid: 3a32dc46c4ae78f4485a1af3b0b7704b, type: 2}
   TeamType: 1
   centerTransform: {fileID: 6976374957925658929}
   SkeletonAni: {fileID: 6322888189428476727}
@@ -248,7 +248,7 @@ MonoBehaviour:
   DeathDisableTime: 0
   PrintLog: 0
   _effectPos: {fileID: 0}
-  _giveupRange: 15
+  _giveupRange: 40
   _walkRange: 5
   _switchThreshold: 1.2
   _minTargetStayTime: 1
@@ -454,30 +454,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1327286099882530057, guid: b5470fc1029f41d40be36231da79d4e5, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7118636840695169999}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b5470fc1029f41d40be36231da79d4e5, type: 3}
 --- !u!1 &4426476289241008098 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1327286099882530057, guid: b5470fc1029f41d40be36231da79d4e5, type: 3}
   m_PrefabInstance: {fileID: 3388245237350109931}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7118636840695169999
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4426476289241008098}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2621b222c1d268940a34cfe6fcfda1f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  factorX: 0
-  factorY: 0.0095
 --- !u!4 &6386861177472552809 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8622079302333472130, guid: b5470fc1029f41d40be36231da79d4e5, type: 3}

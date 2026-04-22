@@ -13,17 +13,17 @@ MonoBehaviour:
   m_Name: MonsterBossDataSO
   m_EditorClassIdentifier: 
   _unitName: 
-  _baseMaxHp: 100000
-  _baseAttackDamage: 15
+  _baseMaxHp: 1000
+  _baseAttackDamage: 150
   _baseAttackInterval: 1
   _normalAttackDamageRatio: 1
   _attackRange: 1
-  _baseMoveSpeed: 1
+  _baseMoveSpeed: 10
   _maxHPMultiplier: 1
   _attackDamageMultiplier: 1
   _attackSpeedMultiplier: 1
   _moveSpeedMultiplier: 1
-  _detectionRange: 15
+  _detectionRange: 30
   _commonHitEffect: {fileID: 11400000, guid: dbde6631557447c4d9774e24dba0e4f0, type: 2}
   _goldReward: 0
   _expReward: 0
