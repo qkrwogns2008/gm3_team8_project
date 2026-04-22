@@ -524,6 +524,10 @@ PrefabInstance:
       propertyPath: disableTarget
       value: 
       objectReference: {fileID: 234260335}
+    - target: {fileID: 1893642193387479908, guid: 2618f05665310df408c068a229e8086a, type: 3}
+      propertyPath: m_SortingOrder
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 2214357731671413894, guid: 2618f05665310df408c068a229e8086a, type: 3}
       propertyPath: targetParent
       value: 
@@ -542,7 +546,7 @@ PrefabInstance:
       objectReference: {fileID: 234260335}
     - target: {fileID: 2288231137176537150, guid: 2618f05665310df408c068a229e8086a, type: 3}
       propertyPath: m_SortingOrder
-      value: 0
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2450132690038350126, guid: 2618f05665310df408c068a229e8086a, type: 3}
       propertyPath: powerTexts.Array.data[3]
@@ -698,7 +702,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9055347193163361085, guid: 2618f05665310df408c068a229e8086a, type: 3}
       propertyPath: m_SortingOrder
-      value: 0
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3112761482868035, guid: 2618f05665310df408c068a229e8086a, type: 3}
@@ -1242,7 +1246,8 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 1988147251147207344, guid: 7f51d691815df764797c3641b7ae4840, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f51d691815df764797c3641b7ae4840, type: 3}
@@ -1924,7 +1929,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2572004145362043034, guid: 037dff8a37844bb40a960933765171be, type: 3}
       propertyPath: m_SortingOrder
-      value: 15
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5552107802986422172, guid: 037dff8a37844bb40a960933765171be, type: 3}
       propertyPath: m_UiScaleMode
@@ -2158,7 +2163,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8384858344578389189, guid: 7692c6576a764674fa08c8305effd1a7, type: 3}
       propertyPath: m_SortingOrder
-      value: 15
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
