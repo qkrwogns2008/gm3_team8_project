@@ -33,6 +33,7 @@ public class EnemyBaseSO : UnitDataSO
     [Header("드랍 테이블")]
     public List<CMonsterItemData> _dropTable = new List<CMonsterItemData>();
 
+	[SerializeField] protected EnemyAudioSO _audioSO;
 
     public int GoldReward => _goldReward;
     public int ExpReward => _expReward;
@@ -45,4 +46,5 @@ public class EnemyBaseSO : UnitDataSO
     public float AttackSpeed => _attackSpeed;
     public GameObject AttackEffectPrefab => _attackEffectPrefab;
    
+	public EnemyAudioSO AudioSO => _audioSO;
 }

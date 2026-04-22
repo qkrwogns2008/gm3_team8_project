@@ -27,6 +27,7 @@ public class CEnemyBase : CUnitBase
     protected Dictionary<CUnitBase, float> _threatTable = new Dictionary<CUnitBase, float>();
     private float _lastTargetSwitchTime = -900f;    // 마지막으로 타겟이 바뀐 시간. (첫 타겟을 바로 잡기 위해 작은값지정)
     private int _mySpawnIndex;
+	protected EnemyAudioSO AudioSO;
     
 
     public override bool IsUnitDead => IsDead;
@@ -52,6 +53,7 @@ public class CEnemyBase : CUnitBase
 
         if (EnemyData != null && CDataManager.Instance != null)
         {
+			AudioSO = EnemyData.AudioSO;
             int stage = CDataManager.Instance.UserData.CurrentStageLevel;
 
             #region 성장공식 이후 수정 필요
@@ -120,22 +122,39 @@ public class CEnemyBase : CUnitBase
     // 공격
     protected override void OnAttack(CUnitBase target)
     {
-        base.OnAttack(target);
-        if(SkeletonAni == null || MotionRoutine != null)
-        {
-            return;
-        }
+		ApplyAttackCooldown();
+
+		if (SkeletonAni == null)
+		{
+			return;
+		}
+
+		if (MotionRoutine != null)
+		{
+			return;
+		}
+
+		MotionRoutine = StartCoroutine(Co_PlayMotion(AttackAnimation, target, BaseAtkDamage, AudioSO.Attack));
+
+		if (PrintLog)
+		{
+			Debug.Log($"{UnitName}의 일반 공격!");
+		}
     }
 
-    protected override IEnumerator Co_PlayMotion(string animationName, CUnitBase target, float damage)
+    protected virtual IEnumerator Co_PlayMotion(string animationName, CUnitBase target, float damage, AudioClip castAudio = null)
     {
         //공격시 이동 차단
         IsAttacking = true;
 
         var trackEntry = SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
-        SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
+        //SkeletonAni.AnimationState.AddAnimation(0, "Idle", true, 0);
+		if (castAudio != null)
+		{
+			SoundManager.Instance.PlayUnitSFX(castAudio); // 공격 오디오 재생
+		}
 
-        if(trackEntry != null)
+		if (trackEntry != null)
         {
             // 애니메이션 재생되는동안 기다리기
             // 중복 실행 방지
@@ -300,7 +319,7 @@ public class CEnemyBase : CUnitBase
             _moveScript.enabled = true;
         }
     }
-    protected override void Die()
+    protected override void Die(AudioClip deathAudio = null)
     {
         
         if(_mySpawner != null)
@@ -315,8 +334,8 @@ public class CEnemyBase : CUnitBase
 
         base.Die();
         SetAnimation("Death", false);
-
-        StopAllCoroutines();
+		
+		StopAllCoroutines();
 
         StartCoroutine(CoReturnToPool());
     }

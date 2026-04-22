@@ -132,7 +132,7 @@ public class CBoss : CEnemyBase
         // 데미지
         float finalSkillDamage = _scaledMaxAtk * _skillDamageMultiplier;
 
-        MotionRoutine = StartCoroutine(Co_PlayMotion(_skillAnimation, target, finalSkillDamage));
+        MotionRoutine = StartCoroutine(Co_PlayMotion(_skillAnimation, target, finalSkillDamage, AudioSO.skillSound));
 
         if (PrintLog)
         {
@@ -149,15 +149,19 @@ public class CBoss : CEnemyBase
         }
         ApplyAttackCooldown();
 
-        MotionRoutine = StartCoroutine(Co_PlayMotion(AttackAnimation, target, _scaledMaxAtk));
+        MotionRoutine = StartCoroutine(Co_PlayMotion(AttackAnimation, target, _scaledMaxAtk, AudioSO.Attack));
 
     }
 
-    protected override IEnumerator Co_PlayMotion(string animationName, CUnitBase target, float damage)
+    protected override IEnumerator Co_PlayMotion(string animationName, CUnitBase target, float damage, AudioClip castAudio = null)
     {
         var trackEntry = SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
+		if (castAudio != null)
+		{
+			SoundManager.Instance.PlayUnitSFX(castAudio); // 공격 오디오 재생
+		}
 
-        if (trackEntry != null)
+		if (trackEntry != null)
         {
             yield return new WaitForSeconds(trackEntry.Animation.Duration);
         }
@@ -184,7 +188,7 @@ public class CBoss : CEnemyBase
 
     }
 
-    protected override void Die()
+    protected override void Die(AudioClip deathAudio = null)
     {
         if(IsDead)
         {
@@ -196,8 +200,12 @@ public class CBoss : CEnemyBase
         {
             CEnemyManager.Instance.UnregisterEnemy(this);
         }
-        base.Die();
-        if (gameObject.activeInHierarchy)
+        //base.Die(deathAudio);
+		if (deathAudio != null)
+		{
+			SoundManager.Instance.PlayUnitSFX(deathAudio); // 사망 오디오 재생
+		}
+		if (gameObject.activeInHierarchy)
         {
             StartCoroutine(CO_DestroyBoss());
         }
