@@ -200,10 +200,7 @@ public class CBoss : CEnemyBase
 		{
 			SoundManager.Instance.PlayUnitSFX(deathAudio); // 사망 오디오 재생
 		}
-		if (gameObject.activeInHierarchy)
-        {
-            StartCoroutine(CO_DestroyBoss());
-        }
+        StartCoroutine(CO_DestroyBoss());
     }
 
     private IEnumerator CO_DestroyBoss()
