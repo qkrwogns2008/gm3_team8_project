@@ -36,7 +36,7 @@ public class MainNotification : MonoBehaviour
             Debug.LogError("CanvasGroup 컴포넌트가 누락되었습니다!");
         }
     }
-    public void StartMainNotification(string text,string text2)
+    public void StartMainNotification(string text,string text2, float duration)
     {
 
         if (_textUI1 != null)
@@ -44,9 +44,9 @@ public class MainNotification : MonoBehaviour
         if (_textUI2 != null)
             _textUI2.text = text2;
         StopAllCoroutines();
-        StartCoroutine(FadeInOutRoutine());
+        StartCoroutine(FadeInOutRoutine(duration));
     }
-    private IEnumerator FadeInOutRoutine()
+    private IEnumerator FadeInOutRoutine(float DurationTime)
     {
         float timer = 0f;
         /* Fade In (1초)
@@ -58,7 +58,7 @@ public class MainNotification : MonoBehaviour
         }
         */
         SetAlpha(1f);
-
+        _stayDuration = DurationTime;
         // 대기 (2초)
         yield return new WaitForSeconds(_stayDuration);
 
