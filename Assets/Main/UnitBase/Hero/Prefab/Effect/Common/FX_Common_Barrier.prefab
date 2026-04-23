@@ -4686,7 +4686,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4884547391421755}
   - component: {fileID: 114099118695303065}
-  - component: {fileID: 6382903055182801457}
+  - component: {fileID: 8014732930698419260}
   m_Layer: 0
   m_Name: FX_Common_Barrier
   m_TagString: Untagged
@@ -4729,7 +4729,7 @@ MonoBehaviour:
   IsLooping: 1
   EnableParticleBaseScaleMultiplier: 1
   BaseScaleMultiplier: 1
---- !u!114 &6382903055182801457
+--- !u!114 &8014732930698419260
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7123,7 +7123,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 1
+  moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0

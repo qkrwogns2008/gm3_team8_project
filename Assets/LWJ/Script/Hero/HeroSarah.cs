@@ -168,6 +168,31 @@ public class HeroSarah : CHero
 
 		yield return new WaitForSeconds(TeleportWaitTime);
 
+		// 텔레포트 이후 타겟이 없으면 코루틴 종료
+		if (target == null)
+		{
+			isSkillUsing = false;
+			MotionRoutine = null;
+
+			if (IsPendingDead)
+			{
+				DeathSequence();
+			}
+			else
+			{
+				// 조이스틱 작동 중인지 체크
+				if (CGroupManager.instance != null && CGroupManager.instance.IsJoystickActive)
+				{
+					ChangeState(EHeroState.Move);
+				}
+				else
+				{
+					ChangeState(EHeroState.Idle);
+				}
+			}
+			yield break;
+		}
+
 		float offsetX = target.IsFacingRight ? -TeleportOffset : TeleportOffset;
 		Vector3 pos = target.transform.position + new Vector3(offsetX, 0, 0);
 

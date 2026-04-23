@@ -335,7 +335,7 @@ public abstract class CUnitBase : MonoBehaviour
 	}
 
 	// 사망 시 호출
-	protected virtual void Die()
+	protected virtual void Die(AudioClip deathAudio = null)
 	{
 		IsDead = true;
         if (IsDead || !gameObject.activeInHierarchy)
@@ -431,7 +431,6 @@ public abstract class CUnitBase : MonoBehaviour
 		if (PrintLog)
 		{
 			Debug.Log($"{UnitName}의 일반 공격!");
-			Debug.Log("CUnitBase) OnAttack 호출");
 		}
 	}
 

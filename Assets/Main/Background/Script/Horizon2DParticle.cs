@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Horizon2DParticle : MonoBehaviour
 {
@@ -22,8 +21,8 @@ public class Horizon2DParticle : MonoBehaviour
             _cameraTr = Camera.main.transform;
 
         // 자식들 가져오기
-        _layers = GetComponentsInChildren<ParallaxLayerElement>(true);
-        
+        _layers = GetComponentsInChildren<ParallaxLayerElement>();
+
         // 초기 위치 캐싱 (누적 오차 방지)
         // _initialLocalPositions = new Vector3[_layers.Length];
         for (int i = 0; i < _layers.Length; i++)
@@ -67,7 +66,7 @@ public class Horizon2DParticle : MonoBehaviour
             // X축 LayerElement 비례 parallax
             if (_useX)
             {
-                //ChildrenPos.x = -layer.factorX * dist * totalDelta.x;
+                ChildrenPos.x = -layer.factorX * dist * totalDelta.x;
             }
 
             // Y축: 지평선 효과 (카메라와의 거리에 반비례하여 속도 감소)
@@ -77,7 +76,7 @@ public class Horizon2DParticle : MonoBehaviour
                 {
                     dist = -555;
                 }
-                ChildrenPos.z = layer.factorY * dist * dist - 1f;
+                ChildrenPos.z = layer.factorY * dist * dist - 5f;
             }
             // 초기 위치에서 ChildrenPos 더해줌
             layer.transform.position = ParentPos + ChildrenPos;

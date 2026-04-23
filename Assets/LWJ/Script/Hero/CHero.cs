@@ -850,7 +850,7 @@ public class CHero : CUnitBase
 		}
 	}
 
-	protected override void Die()
+	protected override void Die(AudioClip deathAudio = null)
 	{
 		base.Die();
 

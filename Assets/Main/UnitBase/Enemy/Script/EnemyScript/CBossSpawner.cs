@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CBossSpawner : MonoBehaviour
 {
@@ -22,6 +23,8 @@ public class CBossSpawner : MonoBehaviour
 
     private GameObject _activeBoss = null;
 
+    public static bool IsBossMode = false;
+
     private void Awake()
     {
         if(Instance == null)
@@ -34,21 +37,55 @@ public class CBossSpawner : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        if(IsBossMode)
+        {
+            SetupBossBattle();
+        }
+    }
 
     public void OnClickBossSpawn()
     {
-        if(_activeBoss != null)
+        if(IsBossMode)
         {
             return;
         }
         if (CDataManager.Instance.UserData.CurrentStageLevel == CDataManager.Instance.UserData.MainStageLevel)
         {
-            SpawnBossByCurrentStage();
+            IsBossMode = true;
+
+            CSpawnArea[] spawners = FindObjectsOfType<CSpawnArea>();
+
+            foreach(CSpawnArea spawner in spawners)
+            {
+                spawner.ClearAllMonsters();
+            }
+
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
         else
         {
             Debug.LogWarning("최대 스테이지에서 보스 소환이 가능합니다.");
         }
+    }
+
+    private void SetupBossBattle()
+    {
+        if(_spawnArea1 != null)
+        {
+            _spawnArea1.gameObject.SetActive(false);
+        }
+        if (_spawnArea2 != null)
+        {
+            _spawnArea2.gameObject.SetActive(false);
+        }
+        if (_spawnArea3 != null)
+        {
+            _spawnArea3.gameObject.SetActive(false);
+        }
+
+        SpawnBossByCurrentStage();
     }
 
     public void SpawnBossByCurrentStage()
