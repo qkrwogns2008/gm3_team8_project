@@ -24,6 +24,26 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (_bgmSource != null && CDataManager.Instance != null && CDataManager.Instance.UserData != null)
+        {
+            // 매 프레임마다 슬라이더와 연결된 데이터 값을 체크해서 적용합니다.
+            _bgmSource.volume = CDataManager.Instance.UserData.BGMVolume;
+        }
+        if (_uiSfxSource != null && CDataManager.Instance != null && CDataManager.Instance.UserData != null)
+        {
+            // 매 프레임마다 슬라이더와 연결된 데이터 값을 체크해서 적용합니다.
+            _uiSfxSource.volume = CDataManager.Instance.UserData.UIVolume;
+        }
+        if (_unitSfxSource != null && CDataManager.Instance != null && CDataManager.Instance.UserData != null)
+        {
+            // 매 프레임마다 슬라이더와 연결된 데이터 값을 체크해서 적용합니다.
+            _unitSfxSource.volume = CDataManager.Instance.UserData.SFXVolume;
+        }
+
+
+    }
     // 배경음 재생
     public void PlayBGM(AudioClip clip, bool loop = true)
     {
@@ -35,7 +55,7 @@ public class SoundManager : MonoBehaviour
         _bgmSource.loop = loop;
         _bgmSource.Play();
     }
-    // 배경음 멈투
+    // 배경음 멈춤
     public void StopBGM(AudioClip clip, bool loop = false)
     {
         _bgmSource.volume =  CDataManager.Instance.UserData.BGMVolume;
@@ -64,4 +84,6 @@ public class SoundManager : MonoBehaviour
 		_unitSfxSource.pitch = Random.Range(0.95f, 1.05f);
 		_unitSfxSource.PlayOneShot(clip);
     }
+
+
 }
