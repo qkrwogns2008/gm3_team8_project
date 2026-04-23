@@ -134,13 +134,18 @@ public class CEnemyBase : CUnitBase
 			return;
 		}
 
-		MotionRoutine = StartCoroutine(Co_PlayMotion(AttackAnimation, target, BaseAtkDamage, AudioSO.Attack));
+		AudioClip castAudio = (AudioSO == null) ? AudioSO.Attack : null;
+
+		MotionRoutine = StartCoroutine(Co_PlayMotion(AttackAnimation,
+			target, 
+			BaseAtkDamage,
+			castAudio));
 
 		if (PrintLog)
 		{
 			Debug.Log($"{UnitName}의 일반 공격!");
 		}
-    }
+	}
 
     protected virtual IEnumerator Co_PlayMotion(string animationName, CUnitBase target, float damage, AudioClip castAudio = null)
     {
