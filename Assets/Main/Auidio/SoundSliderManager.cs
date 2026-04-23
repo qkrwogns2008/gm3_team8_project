@@ -11,6 +11,10 @@ public class SoundSliderManager : MonoBehaviour
 
     void OnEnable()
     {
+        if(CDataManager.Instance == null)
+        {
+            return;
+        }
         if (_bgmSlider != null)
         {
             _bgmSlider.value = CDataManager.Instance.UserData.BGMVolume;
@@ -23,5 +27,22 @@ public class SoundSliderManager : MonoBehaviour
         {
             _unitSfxSlider.value = CDataManager.Instance.UserData.SFXVolume;
         }
+    }
+
+    public void SetBGMVolume(float volume)
+    {
+        CDataManager.Instance.UserData.BGMVolume = volume;
+        PlayerPrefs.SetFloat("BGM_Volume", volume);
+
+    }
+    public void SFXSoundVolume(float volume)
+    {
+        CDataManager.Instance.UserData.SFXVolume = volume;
+        PlayerPrefs.SetFloat("SoundEffect_Volume", volume);
+    }
+    public void UISFXSoundVolume(float volume)
+    {
+        CDataManager.Instance.UserData.UIVolume = volume;
+        PlayerPrefs.SetFloat("SoundEffect_Volume", volume);
     }
 }
