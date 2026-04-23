@@ -7,6 +7,7 @@ public class RestartScript : MonoBehaviour
 {
 	public void OnClickRestartScene()
 	{
+		CBossSpawner.IsBossMode = false;
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.name);
     }
