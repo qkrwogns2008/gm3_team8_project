@@ -4,15 +4,16 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainNotification : MonoBehaviour
+public class GameOverNotification : MonoBehaviour
 {
-    public static MainNotification Instance { get; private set; }
+    public static GameOverNotification Instance { get; private set; }
     [SerializeField] float _fadeDuration = 1f;
+    [SerializeField] float _blackfadeDuration = 1f;
     [SerializeField] float _stayDuration = 2f;
     [SerializeField] TextMeshProUGUI _textUI1;
     [SerializeField] TextMeshProUGUI _textUI2;
     private CanvasGroup _canvasGroup;
-     void Awake()
+    void Awake()
     {
         if (Instance == null)
         {
@@ -36,7 +37,7 @@ public class MainNotification : MonoBehaviour
             Debug.LogError("CanvasGroup 컴포넌트가 누락되었습니다!");
         }
     }
-    public void StartMainNotification(string text,string text2)
+    public void StartMainNotification(string text, string text2)
     {
 
         if (_textUI1 != null)
@@ -53,7 +54,7 @@ public class MainNotification : MonoBehaviour
         while (timer < _fadeDuration)
         {
             timer += Time.deltaTime;
-            _canvasGroup.alpha = Mathf.Lerp(0f, 1f, timer/ _fadeDuration);
+            _canvasGroup.alpha = Mathf.Lerp(0f, 1f, timer / _fadeDuration);
             yield return null;
         }
         SetAlpha(1f);

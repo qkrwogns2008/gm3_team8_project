@@ -134,7 +134,7 @@ public class CEnemyBase : CUnitBase
 			return;
 		}
 
-		AudioClip castAudio = (AudioSO == null) ? AudioSO.Attack : null;
+		AudioClip castAudio = (AudioSO != null) ? AudioSO.Attack : null;
 
 		MotionRoutine = StartCoroutine(Co_PlayMotion(AttackAnimation,
 			target, 

@@ -13,7 +13,7 @@ public class PJHTestSCript : MonoBehaviour
     {
         yield return new WaitForSeconds(1f); if (MainNotification.Instance != null)
         {
-            MainNotification.Instance.StartMainNotification("¾È³ç");
+            MainNotification.Instance.StartMainNotification("¾È³ç","¾È³ç1");
         }
         else
         {
