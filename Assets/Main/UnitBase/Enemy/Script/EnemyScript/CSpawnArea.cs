@@ -32,7 +32,7 @@ public class CSpawnArea : MonoBehaviour
 	private List<GameObject> _spawnedEnemy = new List<GameObject>();
 	private Coroutine[] _respawnCoroutines = new Coroutine[3];
 
-	private void Start()
+	private void OnEnable()
 	{
 		if(CBossSpawner.IsBossMode)
 		{
@@ -85,7 +85,8 @@ public class CSpawnArea : MonoBehaviour
 
 		GameObject obj = PoolManager.Instance.Pop(prefab, spawnPos, Quaternion.identity);
 
-		_currentMonsterCount++;
+
+        _currentMonsterCount++;
 
 		if(!_spawnedEnemy.Contains(obj))
 		{

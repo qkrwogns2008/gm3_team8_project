@@ -31,7 +31,10 @@ public class MainStageController : MonoBehaviour
         if (CDataManager.Instance.UserData.CurrentStageLevel >= 41)
         {
             ClearEnemies();
-            CBossSpawner.Instance.ClearActiveBoss();
+            if (!CBossSpawner.IsBossMode)
+            {
+                CBossSpawner.Instance.ClearActiveBoss();
+            }
             _mainStageTheme1.gameObject.SetActive(false);
             _mainStageTheme2.gameObject.SetActive(false);
             _mainStageTheme3.gameObject.SetActive(true);
@@ -41,13 +44,20 @@ public class MainStageController : MonoBehaviour
 
             Scene currentScene = SceneManager.GetActiveScene();
             Time.timeScale = 1f;
-            _spawnArea3.ReStartStage();
+            if (!CBossSpawner.IsBossMode && _spawnArea3.gameObject.activeInHierarchy)
+            {
+                _spawnArea3.ReStartStage();
+            }
+
 
         }
         else if (CDataManager.Instance.UserData.CurrentStageLevel >= 21)
         {
             ClearEnemies();
-            CBossSpawner.Instance.ClearActiveBoss();
+            if (!CBossSpawner.IsBossMode)
+            {
+                CBossSpawner.Instance.ClearActiveBoss();
+            }
             _mainStageTheme1.gameObject.SetActive(false);
             _mainStageTheme2.gameObject.SetActive(true);
             _mainStageTheme3.gameObject.SetActive(false);
@@ -55,13 +65,19 @@ public class MainStageController : MonoBehaviour
 
             Scene currentScene = SceneManager.GetActiveScene();
             Time.timeScale = 1f;
-            _spawnArea2.ReStartStage();
+            if (!CBossSpawner.IsBossMode && _spawnArea2.gameObject.activeInHierarchy)
+            {
+                _spawnArea2.ReStartStage();
+            }
 
         }
         else if (CDataManager.Instance.UserData.CurrentStageLevel >= 1)
         {
             ClearEnemies();
-            CBossSpawner.Instance.ClearActiveBoss();
+            if (!CBossSpawner.IsBossMode)
+            {
+                CBossSpawner.Instance.ClearActiveBoss();
+            }
             _mainStageTheme1.gameObject.SetActive(true);
             _mainStageTheme2.gameObject.SetActive(false);
             _mainStageTheme3.gameObject.SetActive(false);
@@ -69,8 +85,10 @@ public class MainStageController : MonoBehaviour
 
             Scene currentScene = SceneManager.GetActiveScene();
             Time.timeScale = 1f;
-            _spawnArea1.ReStartStage();
-
+            if (!CBossSpawner.IsBossMode && _spawnArea1.gameObject.activeInHierarchy)
+            {
+                _spawnArea1.ReStartStage();
+            }
         }
     }
     private void ClearEnemies()
