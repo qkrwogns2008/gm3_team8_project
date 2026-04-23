@@ -300,7 +300,7 @@ public class CDataManager : MonoBehaviour
         else
         {
             // ½Å±Ô È¹µæ
-            UserData.HeroList.Add(new UserHeroData { HeroID = id, Quantity = 1 });
+            UserData.HeroList.Add(new UserHeroData { HeroID = id, Level = 1, Quantity = 1 });
             if (isDebugMode)
             {
                 Debug.Log($"»õ·Î¿î ¿µ¿õ È¹µæ! (ID: {id})");
@@ -538,7 +538,7 @@ public class CDataManager : MonoBehaviour
         {
             if (id == EHeroID.Elga)
             {
-                UserData.HeroList.Add(new UserHeroData { HeroID = id, Quantity = 1 });
+                UserData.HeroList.Add(new UserHeroData { HeroID = id, Level = 1, Quantity = 1 });
                 AddUserHeroArray(0, 0, id); // ¿¤°¡¸¦ 1¹ø ½½·Ô¿¡ ¹èÄ¡
 
             }
