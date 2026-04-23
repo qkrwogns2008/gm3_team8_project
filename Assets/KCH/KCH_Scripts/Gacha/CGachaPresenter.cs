@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CGachaPresenter : MonoBehaviour
 {
+    public static CGachaPresenter Instance { get; private set; }
+
     #region 인스펙터
     [Header("Gacha 시스템 연결")]
     [SerializeField] private CGachaModel _gachaModel;                           // 모델 연결 
@@ -37,8 +40,16 @@ public class CGachaPresenter : MonoBehaviour
     private bool _isFirstInit = true;                                           // 처음 갱신
     #endregion
 
+    public bool IsRolling => _isRolling;
+    public bool IsLegendShow => _isLegendShow;
+
+    public bool IsClickCard => !_isRolling && !_isLegendShow;
+
+
     private void Awake()
     {
+        Instance = this;
+
         // 버튼 리스너 연결
         // 뽑기 버튼
         _gachaView.GachaOneButton.onClick.AddListener(() => OnClickButton(1));
@@ -204,7 +215,16 @@ public class CGachaPresenter : MonoBehaviour
     // 재화 부족 팝업
     private void NotEnoughMoneyPopup()
     {
-        _gachaView.MsgPopupText.text = "재화가 부족하여 자동 소환을 종료합니다.";
+
+        if (_isAutoRoll)
+        {
+            _gachaView.MsgPopupText.text = "재화가 부족하여 자동 소환을 종료합니다.";
+        }
+
+        else
+        {
+            _gachaView.MsgPopupText.text = "소환의 필요한 재화가 부족 합니다.";
+        }
         CanvasGroup canvasGroup = _gachaView.MsgPopupPanel.GetComponent<CanvasGroup>();
 
         SoundManager.Instance.PlayUISFX(_buttonAudioSet.buttonClick);
@@ -223,33 +243,122 @@ public class CGachaPresenter : MonoBehaviour
     // 레전드 이펙트 팝업
     private IEnumerator CO_ShowLegendEffect(CGachaDataSO data)
     {
-        _isLegendShow = true;
-
         yield return new WaitForSeconds(0.5f);
+
+        _gachaView.LegendPopup.SetActive(true);
+
+        _gachaView.LegendTimerText.text = "";
+
+        float nameTargetY = -250f;
+        float nameStartY = nameTargetY + 50f;
 
         if (data != null)
         {
+            // 초기 세팅
             _gachaView.LegendIllust.skeletonDataAsset = data.IllustAsset;
             _gachaView.LegendSD.skeletonDataAsset = data.SDAsset;
 
             _gachaView.LegendIllust.Initialize(true);
             _gachaView.LegendSD.Initialize(true);
 
-            RectTransform rect = _gachaView.LegendIllust.rectTransform;
-            rect.anchoredPosition = data.IllustOffset;
-            rect.localScale = new Vector3(data.IllustScale, data.IllustScale, 1f);
+            Vector2 targetPos = data.IllustOffset;
+            Vector2 startPos = targetPos + new Vector2(0, -100f);
 
-            _gachaView.LegendIllust.AnimationState.SetAnimation(0, "Idle", true);
+            _gachaView.LegendIllust.rectTransform.anchoredPosition = startPos;
+            _gachaView.LegendIllust.rectTransform.localScale = Vector3.one * (data.IllustScale * 1.1f);
+            _gachaView.LegendIllust.color = Color.black;
+
+            // UI 그룹 안보이게
+            if (_gachaView.LegendNameGroup != null)
+            {
+                _gachaView.LegendNameGroup.gameObject.SetActive(false);
+                _gachaView.LegendNameGroup.alpha = 0f;
+            }
+
+            if (_gachaView.LegendBottomGroup != null)
+            {
+                _gachaView.LegendBottomGroup.gameObject.SetActive(false);
+                _gachaView.LegendBottomGroup.alpha = 0f;
+            }
+
+            yield return new WaitForSeconds(0.1f);
+
+            // 일러스트 줌 아웃, 점점 밝아짐
+            float mainDuration = 0.6f;
+            float mainTimer = 0f;
+
+            while (mainTimer < mainDuration)
+            {
+                mainTimer += Time.deltaTime;
+
+                float ratio = mainTimer / mainDuration;
+                float curve = Mathf.SmoothStep(0, 1, ratio);
+
+                _gachaView.LegendIllust.rectTransform.localScale = Vector3.Lerp(Vector3.one * (data.IllustScale * 1.1f), Vector3.one * data.IllustScale, curve);
+                _gachaView.LegendIllust.color = Color.Lerp(Color.black, Color.white, curve);
+
+                yield return null;
+            }
+
+            // 일러스트 위로 이동
+            float bottomDuration = 0.25f;
+            float bottomTimer = 0f;
+
+            while (bottomTimer < bottomDuration)
+            {
+                bottomTimer += Time.deltaTime;
+                float ratio = bottomTimer / bottomDuration;
+                float curve = Mathf.SmoothStep(0, 1, ratio);
+
+                _gachaView.LegendIllust.rectTransform.anchoredPosition = Vector2.Lerp(startPos, targetPos, curve);
+
+                yield return null;  
+            }
+
+            _gachaView.LegendIllust.rectTransform.anchoredPosition = targetPos;
+
+            // 이름, 하단 그룹 활성화
+            if (_gachaView.LegendBottomGroup != null)
+            {
+                _gachaView.LegendNameText.text = $"{data.UnitName}";
+                _gachaView.LegendNameGroup.gameObject.SetActive(true);
+                _gachaView.LegendNameGroup.alpha = 0f;
+            }
+
+            if (_gachaView.LegendBottomGroup != null)
+            {
+                _gachaView.LegendBottomGroup.gameObject.SetActive(true);
+                _gachaView.LegendBottomGroup.alpha = 1f;
+            }
+
+            // 이름표 내려오는 애니메이션
+            float nameDuration = 0.3f;
+            float nameTimer = 0f;
+            while (nameTimer < nameDuration)
+            {
+                nameTimer += Time.deltaTime;
+                float ratio = nameTimer / nameDuration;
+                float curve = Mathf.SmoothStep(0, 1, ratio);
+
+                if (_gachaView.LegendNameGroup != null)
+                {
+                    _gachaView.LegendNameGroup.alpha = ratio;
+                    float currentY = Mathf.Lerp(nameStartY, nameTargetY, curve);
+                    _gachaView.LegendNameGroup.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, currentY);
+                }
+
+                yield return null;
+            }
+
             var AnimSpeed = _gachaView.LegendSD.AnimationState.SetAnimation(0, "Appear", false);
             AnimSpeed.TimeScale = 0.3f;
 
             _gachaView.LegendSD.AnimationState.AddAnimation(0, "Idle", true, 0.2f);
         }
 
-        _gachaView.LegendPopup.SetActive(true);
-        _gachaView.LegendNameText.text = $"{data.UnitName}";
+        yield return new WaitForSeconds(0.1f);
 
-        for(int i = 1; i <= 10; i++)
+        for (int i = 1; i <= 10; i++)
         {
             _gachaView.LegendTimerText.text = $"{11 - i}초 후 다음 결과로 넘어갑니다.";
 
@@ -266,11 +375,15 @@ public class CGachaPresenter : MonoBehaviour
 
                 yield return null;
             }
+
+            if (!_gachaView.LegendPopup.activeSelf || Input.GetMouseButtonDown(0))
+            {
+                break;
+            }
         }
 
         _gachaView.LegendPopup.SetActive(false);
         _isLegendShow = false;
-
     }
 
     // 팝업을 점점 투명하게 변경 코루틴
@@ -635,6 +748,8 @@ public class CGachaPresenter : MonoBehaviour
 
         _gachaView.OpenAllCard.gameObject.SetActive(false);
 
+        _isRolling = true;
+
         for (int i = 0; i < _cardList.Count; i++)
         {
             // 뒤집힌 카드 스킵
@@ -644,7 +759,7 @@ public class CGachaPresenter : MonoBehaviour
             }
 
             // 카드 뒤집기 로직
-            _cardList[i].ReverseCard();
+            _cardList[i].AllReverseCard();
             SoundManager.Instance.PlayUISFX(_cardAudioSet.uiOff);
 
             bool isLegend = _currentCategoryIndex == 0 && _cardList[i].CurrentData.Rarity == CGachaDataSO.ERarity.Legend;
@@ -680,6 +795,8 @@ public class CGachaPresenter : MonoBehaviour
             // 슬라이드로 메뉴 활성화
             StartCoroutine(CO_SlideUpMenu(_gachaView.GachaMenu));
         }
+
+        _isRolling = false;
     }
 
     // 레전드 카드 판정 함수
@@ -688,6 +805,7 @@ public class CGachaPresenter : MonoBehaviour
         if (_currentCategoryIndex == 0 && card.CurrentData.Rarity == CGachaDataSO.ERarity.Legend)
         {
             _isLegendShow = true;
+
             StartCoroutine(CO_ShowLegendEffect(card.CurrentData));
         }
 

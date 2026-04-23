@@ -266,11 +266,30 @@ public class CGachaResultCard : MonoBehaviour
             return;
         }
 
+        if (CGachaPresenter.Instance != null && !CGachaPresenter.Instance.IsClickCard)
+        {
+            return;
+        }
+
         _isReversed = true;
 
         OnFlipStart?.Invoke();
 
         // 카드 뒤집히는 연출
+        StartCoroutine(CO_FilpCard());
+    }
+
+    public void AllReverseCard()
+    {
+        if (_isReversed)
+        {
+            return;
+        }
+
+        _isReversed = true;
+
+        OnFlipStart?.Invoke();
+
         StartCoroutine(CO_FilpCard());
     }
 

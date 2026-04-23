@@ -91,6 +91,8 @@ public class CGachaView : MonoBehaviour
     public SkeletonGraphic LegendIllust;                // 레전드 SD 스파인
     public SkeletonGraphic LegendSD;                    // 레전드 일러스트 스파인
     public GameObject LegendPopup;                      // 레전드 뽑기 연출 팝업
+    public CanvasGroup LegendNameGroup;                 // 레전드 이름 그룹
+    public CanvasGroup LegendBottomGroup;               // 레전드 아래 그룹
     public TMP_Text LegendNameText;                     // 레전드 이름 텍스트
     public TMP_Text LegendTimerText;                    // 레전드 타이머 텍스트
 }
