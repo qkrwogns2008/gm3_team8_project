@@ -40,9 +40,10 @@ public class CTitleScene_FiveKnight : MonoBehaviour
     {
         _titleText.text = "리소스 확인 중...";
 
+
         for (int i = 0; i < 3; i++)
         {
-            _titleText.text = $"리소스 확인 중.";
+            //_titleText.text = $"리소스 확인 중.";
             yield return new WaitForSeconds(1.5f);
         }
 

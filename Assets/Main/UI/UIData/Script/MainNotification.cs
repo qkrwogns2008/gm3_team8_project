@@ -29,7 +29,7 @@ public class MainNotification : MonoBehaviour
         }
         if (_canvasGroup != null)
         {
-            SetAlpha(0f);
+            SetAlpha(1f);
         }
         else
         {
