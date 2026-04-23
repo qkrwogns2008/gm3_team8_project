@@ -66,7 +66,7 @@ public class Horizon2DUnit : MonoBehaviour
             // X축 LayerElement 비례 parallax
             if (_useX)
             {
-                ChildrenPos.x = -layer.factorX * dist * totalDelta.x;
+                //ChildrenPos.x = -layer.factorX * dist * totalDelta.x;
             }
 
             // Y축: 지평선 효과 (카메라와의 거리에 반비례하여 속도 감소)

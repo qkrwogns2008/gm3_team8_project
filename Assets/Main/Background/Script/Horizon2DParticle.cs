@@ -12,6 +12,8 @@ public class Horizon2DParticle : MonoBehaviour
     #region 내부변수
     private ParallaxLayerElement[] _layers;
     private Vector3 _startCamPos;
+    Vector3 camPos;
+    Vector3 ParentPos;
     // private Vector3[] _initialLocalPositions; // 자식들의 초기 위치 저장용
     #endregion
 
@@ -31,9 +33,11 @@ public class Horizon2DParticle : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        _startCamPos = _cameraTr.position;
+        //_startCamPos = _cameraTr.position;
+        camPos = _cameraTr.position;
+        ParentPos = transform.position;
     }
 
     private void Update()
@@ -43,8 +47,8 @@ public class Horizon2DParticle : MonoBehaviour
         {
             return;
         }
-        Vector3 camPos = _cameraTr.position;
-        Vector3 ParentPos = transform.position;
+        camPos = _cameraTr.position;
+        ParentPos = transform.position;
 
         for (int i = 0; i < _layers.Length; i++)
         {
@@ -66,7 +70,7 @@ public class Horizon2DParticle : MonoBehaviour
             // X축 LayerElement 비례 parallax
             if (_useX)
             {
-                ChildrenPos.x = -layer.factorX * dist * totalDelta.x;
+                //ChildrenPos.x = -layer.factorX * dist * totalDelta.x;
             }
 
             // Y축: 지평선 효과 (카메라와의 거리에 반비례하여 속도 감소)
@@ -76,7 +80,7 @@ public class Horizon2DParticle : MonoBehaviour
                 {
                     dist = -555;
                 }
-                ChildrenPos.z = layer.factorY * dist * dist - 5f;
+                ChildrenPos.z = layer.factorY * dist * dist - 1f;
             }
             // 초기 위치에서 ChildrenPos 더해줌
             layer.transform.position = ParentPos + ChildrenPos;
