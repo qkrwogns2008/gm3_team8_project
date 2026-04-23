@@ -48,14 +48,15 @@ public class MainNotification : MonoBehaviour
     }
     private IEnumerator FadeInOutRoutine()
     {
-        // Fade In (1초)
         float timer = 0f;
+        /* Fade In (1초)
         while (timer < _fadeDuration)
         {
             timer += Time.deltaTime;
             _canvasGroup.alpha = Mathf.Lerp(0f, 1f, timer/ _fadeDuration);
             yield return null;
         }
+        */
         SetAlpha(1f);
 
         // 대기 (2초)
