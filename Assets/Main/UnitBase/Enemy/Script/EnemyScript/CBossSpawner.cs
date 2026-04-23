@@ -102,7 +102,7 @@ public class CBossSpawner : MonoBehaviour
             Destroy(_activeBoss);
             _activeBoss = null;
         }
-        StopAndClearSpawners();
+        // StopAndClearSpawners();
 
         // 현재 스테이지 레벨 확인
         int currentStage = CDataManager.Instance.UserData.CurrentStageLevel;
