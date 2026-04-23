@@ -282,8 +282,8 @@ public class CDataManager : MonoBehaviour
 
         if (hero != null)
         {
-            // 이미 보유 중
-            if(hero.Quantity >= 5)
+			// 이미 보유 중
+			if (hero.Quantity >= 5)
             {
                 if (isDebugMode)
                 {
@@ -300,7 +300,7 @@ public class CDataManager : MonoBehaviour
         else
         {
             // 신규 획득
-            UserData.HeroList.Add(new UserHeroData { HeroID = id, Level = 1, Quantity = 1 });
+            UserData.HeroList.Add(new UserHeroData { HeroID = id, Level = 1, Quantity = 0 });
             if (isDebugMode)
             {
                 Debug.Log($"새로운 영웅 획득! (ID: {id})");
@@ -457,6 +457,10 @@ public class CDataManager : MonoBehaviour
         // 유저의 강화/레벨 데이터 로드
         UserUpgradeStatus upgrade = GetUserUpgradeStatus();
         UserHeroData heroData = GetHeroData(heroID);
+		if (heroData == null)
+		{
+			heroData = new UserHeroData { Level = 1, Quantity = 0 };
+		}
         HeroDataSO heroSO;
         heroSO = unitSO as HeroDataSO;
         if (heroSO != null)
@@ -540,14 +544,12 @@ public class CDataManager : MonoBehaviour
             {
                 UserData.HeroList.Add(new UserHeroData { HeroID = id, Level = 1, Quantity = 1 });
                 AddUserHeroArray(0, 0, id); // 엘가를 1번 슬롯에 배치
-
             }
-            else
-            {
-                UserData.HeroList.Add(new UserHeroData { HeroID = id, Quantity = 0 });
-
-            }
-            Debug.Log($"[더미] 영웅 데이터 추가 (ID: {id})");
+			else
+			{
+                UserData.HeroList.Add(new UserHeroData { HeroID = id, Level = 1, Quantity = 0 });
+			}
+			Debug.Log($"[더미] 영웅 데이터 추가 (ID: {id})");
             SaveUserData();
         }
 
