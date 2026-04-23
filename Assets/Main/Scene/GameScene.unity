@@ -2023,6 +2023,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainStageBossButton
       objectReference: {fileID: 0}
+    - target: {fileID: 6835353486297142042, guid: 037dff8a37844bb40a960933765171be, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 8197989704371336313}
+    - target: {fileID: 6835353486297142042, guid: 037dff8a37844bb40a960933765171be, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleTeamAutoMode
+      objectReference: {fileID: 0}
+    - target: {fileID: 6835353486297142042, guid: 037dff8a37844bb40a960933765171be, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: CGroupManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6835353486297142042, guid: 037dff8a37844bb40a960933765171be, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 7313905470727700763, guid: 037dff8a37844bb40a960933765171be, type: 3}
       propertyPath: _spawnArea1
       value: 
@@ -2494,6 +2510,17 @@ PrefabInstance:
       addedObject: {fileID: 1670482876}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89b2522f873c7d542a151663ec3bce30, type: 3}
+--- !u!114 &8197989704371336313 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1764106787800585470, guid: 89b2522f873c7d542a151663ec3bce30, type: 3}
+  m_PrefabInstance: {fileID: 8197989704371336312}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c96aa3c906a66d4bb081ed846dd6275, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

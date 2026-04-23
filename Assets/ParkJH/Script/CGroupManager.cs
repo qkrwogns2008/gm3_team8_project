@@ -30,6 +30,7 @@ public class CGroupManager : MonoBehaviour
     [SerializeField] private Vector3[] _slotOffsets;
     #endregion
 
+    public bool IsAutoMode = false;
     private bool _isTargetingPaused = false;
 
 
@@ -49,6 +50,16 @@ public class CGroupManager : MonoBehaviour
         StartCoroutine(CoWaitAndSetup());
     }
 
+    public void ToggleTeamAutoMode()
+    {
+        IsAutoMode = !IsAutoMode;
+
+        CAutoPlayerMove[] allHeros = FindObjectsOfType<CAutoPlayerMove>();
+        foreach(var hero in allHeros)
+        {
+            hero.SyncAutoMode(IsAutoMode);
+        }
+    }
 
    IEnumerator CoWaitAndSetup()
     {
