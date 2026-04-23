@@ -145,18 +145,6 @@ public class CBoss : CEnemyBase
 
     }
 
-    protected override void OnAttack(CUnitBase target)
-    {
-        if (MotionRoutine != null)
-        {
-            return;
-        }
-        ApplyAttackCooldown();
-
-        MotionRoutine = StartCoroutine(Co_PlayMotion(AttackAnimation, target, _scaledMaxAtk, AudioSO.Attack));
-
-    }
-
     protected override IEnumerator Co_PlayMotion(string animationName, CUnitBase target, float damage, AudioClip castAudio = null)
     {
         var trackEntry = SkeletonAni.AnimationState.SetAnimation(0, animationName, false);
