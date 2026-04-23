@@ -48,6 +48,10 @@ public class CBoss : CEnemyBase
 
     protected override void InitUnitStats()
     {
+        if(BossData != null)
+        {
+            OriginData = BossData;
+        }
         base.InitUnitStats();
         
 
@@ -201,7 +205,10 @@ public class CBoss : CEnemyBase
             CEnemyManager.Instance.UnregisterEnemy(this);
         }
         //base.Die(deathAudio);
-		if (deathAudio != null)
+        StopAllCoroutines();
+
+        SetAnimation("Death", false);
+        if (deathAudio != null)
 		{
 			SoundManager.Instance.PlayUnitSFX(deathAudio); // 사망 오디오 재생
 		}
