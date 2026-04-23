@@ -217,9 +217,8 @@ public class CBoss : CEnemyBase
 
         if(MainStageController.Instance != null)
         {
-            MainStageController.Instance.MainStageUp();
+            CDataManager.Instance.MainStageLevelUP(1);
         }
-
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.name);
         //Destroy(gameObject);
