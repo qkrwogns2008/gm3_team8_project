@@ -30,7 +30,7 @@ public class SoundManager : MonoBehaviour
         if (clip == null) return;
         if (_bgmSource == null) return;
         if (_bgmSource.clip == clip) return; // 같은 곡이면 무시
-
+            
         _bgmSource.clip = clip;
         _bgmSource.loop = loop;
         _bgmSource.Play();
@@ -38,6 +38,7 @@ public class SoundManager : MonoBehaviour
     // 배경음 멈투
     public void StopBGM(AudioClip clip, bool loop = false)
     {
+        _bgmSource.volume =  CDataManager.Instance.UserData.BGMVolume;
         if (_bgmSource != null)
         {
             _bgmSource.Stop();
@@ -48,6 +49,8 @@ public class SoundManager : MonoBehaviour
     // UI 사운드
     public void PlayUISFX(AudioClip clip)
     {
+
+        _uiSfxSource.volume = CDataManager.Instance.UserData.UIVolume;
         if (clip == null) return;
         _uiSfxSource.PlayOneShot(clip);
     }
@@ -55,6 +58,8 @@ public class SoundManager : MonoBehaviour
     // 유닛 사운드
     public void PlayUnitSFX(AudioClip clip)
     {
+
+        _unitSfxSource.volume = CDataManager.Instance.UserData.SFXVolume;
         if (clip == null) return;
 		_unitSfxSource.pitch = Random.Range(0.95f, 1.05f);
 		_unitSfxSource.PlayOneShot(clip);
