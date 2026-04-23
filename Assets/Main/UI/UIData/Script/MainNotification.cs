@@ -67,7 +67,8 @@ public class MainNotification : MonoBehaviour
         while (timer < _fadeDuration)
         {
             timer += Time.deltaTime;
-            _canvasGroup.alpha = Mathf.Lerp(1f, 0f, timer / _fadeDuration);
+            float nextAlpha = Mathf.Lerp(1f, 0f, timer / _fadeDuration);
+            SetAlpha(nextAlpha); // 여기서 바로 호출!
             yield return null;
         }
         SetAlpha(0f);
@@ -77,7 +78,7 @@ public class MainNotification : MonoBehaviour
         if (_canvasGroup == null) return;
         _canvasGroup.alpha = alpha;
         // 완전히 불투명(1)할 때만 클릭을 막고, 그 외엔 통과시킴
-        _canvasGroup.interactable = (alpha >= 1f);
-        _canvasGroup.blocksRaycasts = (alpha >= 1f);
+        _canvasGroup.interactable = (alpha > 0.001f);
+        _canvasGroup.blocksRaycasts = (alpha > 0.001f);
     }
 }
