@@ -83,11 +83,8 @@ public class CSpawnArea : MonoBehaviour
 		Vector2 randomOffset = Random.insideUnitCircle * data.range;
 		Vector3 spawnPos = data.point.position + new Vector3(randomOffset.x, randomOffset.y, 0f);
 
-		Debug.Log($"1");
-
 		GameObject obj = PoolManager.Instance.Pop(prefab, spawnPos, Quaternion.identity);
 
-        Debug.Log($"2");
 
         _currentMonsterCount++;
 
@@ -129,11 +126,8 @@ public class CSpawnArea : MonoBehaviour
 
 		if(_currentMonsterCount < _maxMonsterCount)
 		{
-			Debug.Log("3");
 			SpawnMonsterAtPoint(index);
-			Debug.Log("4");
 		}
-		Debug.Log("5");
 	}
 
 	// 스테이지 종료 혹은 스포너 정지 필요시 호출.
@@ -188,10 +182,8 @@ public class CSpawnArea : MonoBehaviour
 
 		for(int i = 0; i < _maxMonsterCount; i++)
 		{
-			Debug.Log("6");
 			SpawnMonsterAtPoint(i % 3);
 		}
-		Debug.Log("7");
 	}
 	
 	// 테마 변경시 SO를 주입하고 재시작 할 때 사용
