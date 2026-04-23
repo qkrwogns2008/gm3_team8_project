@@ -191,11 +191,24 @@ public class CAutoPlayerMove : MonoBehaviour
         }
     }
     #endregion
-    // 버튼 연결
+
+    public void SyncAutoMode(bool isActive)
+    {
+        _isAutoMove = isActive;
+
+        if(!_isAutoMove)
+        {
+            _targetEnemy = null;
+            PlayerHero.ChangeState(EHeroState.Idle);
+        }
+    }
+
     public void ToggleAutoMode()
     {
-        _isAutoMove = !_isAutoMove;
-        _targetEnemy = null;
+        if(CGroupManager.instance != null)
+        {
+            CGroupManager.instance.ToggleTeamAutoMode();
+        }
     }
 
     // 대상 체크
