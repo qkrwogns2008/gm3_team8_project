@@ -5,22 +5,22 @@ using System.Collections.Generic;
 public class CUserData
 {
     // 기본 유저 세팅
-    public float BGMVolume = 1;
-    public float SFXVolume = 1;
-    public float UIVolume = 1;
+    public float BGMVolume = 0.5f;
+    public float SFXVolume = 0.5f;
+    public float UIVolume = 0.5f;
 
     // 재화 및 기본 정보
     public string UserName = "GM3_8Team_FiveKnights_Account";
     public int UserLevel = 100;
     // 재화 관련 함수
-    public int Gold = 0;
+    public int Gold = 100000;
     public int Diamond = 0; // 현금 재화
     public int goldDungeonTicket = 5;
     public int expDungeonTicket = 5;
-    public int expPoint = 10000;
+    public int expPoint = 100000;
     // 픽업 관련 함수
     public int Ruby = 0;
-    public int PickUpTicket = 60;
+    public int PickUpTicket = 360;
     public int HeroPickUpLevel = 0;
     public int PetPickUpLevel = 0;
     // 스테이지 관련 함수
