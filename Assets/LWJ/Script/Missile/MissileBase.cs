@@ -15,6 +15,7 @@ public class MissileBase : MonoBehaviour
 	protected bool LookAtTarget;
 
 	protected Vector3 Rot;
+	protected Vector2 TargetPos;
 	#endregion
 
 	protected virtual void OnEnable()
@@ -31,6 +32,7 @@ public class MissileBase : MonoBehaviour
 		Damage = 0f;
 		HitAudio = null;
 		Rot = Vector3.zero;
+		TargetPos = Vector2.zero;
 	}
 
 	public virtual void Init(MissileBase origin, MissileDataSO data, float damage, CUnitBase target, CUnitBase attacker, AudioClip hitAudio = null)
@@ -44,25 +46,34 @@ public class MissileBase : MonoBehaviour
 		HitAudio = hitAudio;
 
 		Target = target;
+		TargetPos = target != null ? target.CenterPos : transform.position;
+
 		Attacker = attacker;
 	}
 
 	protected virtual void Update()
 	{
-		if (Target == null || Target.IsUnitDead || !Target.gameObject.activeSelf)
+		/*
+		if (Target == null || Target.IsUnitDead
+			//|| !Target.gameObject.activeSelf
+			)
 		{
 			ReturnToPool();
 			return;
 		}
+		*/
 
 		Vector2 pos = transform.position;
-		Vector2 targetPos = Target.CenterPos;
+		if (Target != null)
+		{
+			TargetPos = Target.CenterPos;
+		}
 
-		MoveToTarget(pos, targetPos);
+		MoveToTarget(pos, TargetPos);
 
 		if (LookAtTarget)
 		{
-			RotateToTarget(pos, targetPos);
+			RotateToTarget(pos, TargetPos);
 		}
 	}
 
