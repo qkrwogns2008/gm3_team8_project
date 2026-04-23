@@ -12,6 +12,8 @@ public class CHeroManager : MonoBehaviour
 
     public IReadOnlyList<CUnitBase> ActiveHero => _activeHero;
 
+	public event Action OnAllHeroDead;
+
     private void Awake()
     {
         if(Instance == null)
@@ -29,8 +31,9 @@ public class CHeroManager : MonoBehaviour
         {
             _activeHero.Add(hero);
             Debug.Log($"CHeroManager {hero.name} 등록");
+			
+			OnHeroActived?.Invoke(hero);
         }
-		OnHeroActived?.Invoke(hero);
 	}
 
     public void UnregisterHero(CUnitBase hero)
@@ -39,6 +42,11 @@ public class CHeroManager : MonoBehaviour
         {
             _activeHero.Remove(hero);
             Debug.Log($"CHeroManager {hero.name} 제거");
+
+			if (_activeHero.Count <= 0)
+			{
+				OnAllHeroDead?.Invoke();
+			}
         }
     }
 
@@ -60,7 +68,6 @@ public class CHeroManager : MonoBehaviour
 	/// <summary>
 	/// 특정 ID의 영웅 스탯 상태를 갱신함.
 	/// </summary>
-	/// <param name="id"></param>
 	public void RefreshUpgradeStat(EHeroID id)
 	{
 		for (int i = 0; i < _activeHero.Count; i++)
