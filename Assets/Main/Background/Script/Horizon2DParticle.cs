@@ -21,7 +21,7 @@ public class Horizon2DParticle : MonoBehaviour
             _cameraTr = Camera.main.transform;
 
         // 자식들 가져오기
-        _layers = GetComponentsInChildren<ParallaxLayerElement>();
+        _layers = GetComponentsInChildren<ParallaxLayerElement>(true);
 
         // 초기 위치 캐싱 (누적 오차 방지)
         // _initialLocalPositions = new Vector3[_layers.Length];
