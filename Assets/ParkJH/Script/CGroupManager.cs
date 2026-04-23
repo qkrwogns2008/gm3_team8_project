@@ -183,9 +183,9 @@ public class CGroupManager : MonoBehaviour
         Vector3 currentPos = transform.position;
 
         // Mathf.Clamp(현재값, 최소값, 최대값)
-        // X축과 Y축이 -300에서 300 사이를 벗어나지 못하게 꽉 잡습니다.
-        currentPos.x = Mathf.Clamp(currentPos.x, -300f, 300f);
-        currentPos.y = Mathf.Clamp(currentPos.y, -300f, 300f);
+        // X축과 Y축이 -150에서 150 사이를 벗어나지 못하게 꽉 잡습니다.
+        currentPos.x = Mathf.Clamp(currentPos.x, -175f, 175f);
+        currentPos.y = Mathf.Clamp(currentPos.y, -250f, 125f);
 
         // 제한된 위치를 다시 적용합니다.
         transform.position = currentPos;
