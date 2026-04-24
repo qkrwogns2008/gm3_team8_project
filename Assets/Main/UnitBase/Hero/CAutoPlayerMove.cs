@@ -19,7 +19,6 @@ public class CAutoPlayerMove : MonoBehaviour
     private HeroDataSO _heroData;
 
     private Vector3 _groupTargetPos;                // 내 대열 위치
-    private Vector3 _guardPosition;                 // 수동모드일 경우 고정자리
 
     private float _separationRadius = 6.0f;
     private float _pushForce = 10.0f;
@@ -116,12 +115,6 @@ public class CAutoPlayerMove : MonoBehaviour
         _targetEnemy = null;
         _sharedTarget = null;
 
-        // 조이스틱 이동중일때 내 위치 갱신
-        if(!_isAutoMove)
-        {
-            _guardPosition = transform.position;
-            _guardPosition.z = 0f;
-        }
     }
 
     public void SetGroupTarget(Vector3 pos)
@@ -222,8 +215,6 @@ public class CAutoPlayerMove : MonoBehaviour
             _targetEnemy = null;
             PlayerHero.ChangeState(EHeroState.Idle);
 
-            _guardPosition = transform.position;
-            _guardPosition.z = 0f;
         }
     }
 
