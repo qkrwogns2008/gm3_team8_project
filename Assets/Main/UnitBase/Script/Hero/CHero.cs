@@ -43,6 +43,7 @@ public class CHero : CUnitBase
 
 	[Header("무적")]
 	[SerializeField] protected bool isInvincible = false;
+	[SerializeField] protected bool isDebugMode = false;
 	#endregion
 
 	#region 내부 변수
@@ -399,9 +400,13 @@ public class CHero : CUnitBase
 		}
 	}
 
-	/*
 	protected override void Update()
 	{
+		if (!isDebugMode)
+		{
+			return;
+		}
+
 		if (Input.GetKeyDown(KeyCode.Alpha1) && enableAttack)
 		{
 			OnAttack(Target);
@@ -423,7 +428,6 @@ public class CHero : CUnitBase
 			TakeDamage(Random.Range(5f, 20f), this);
 		}
 	}
-	*/
 
 	#region 전투 전처리
 	public override void TryAttack(CUnitBase target)
