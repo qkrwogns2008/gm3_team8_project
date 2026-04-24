@@ -6,6 +6,7 @@ public class CAutoPlayerMove : MonoBehaviour
     #region 인스펙터
     [Header("On/Off")]
     [SerializeField] private bool _isAutoMove = true;
+    
     #endregion
 
     #region 내부변수
@@ -18,6 +19,9 @@ public class CAutoPlayerMove : MonoBehaviour
     private HeroDataSO _heroData;
 
     private Vector3 _groupTargetPos;                // 내 대열 위치
+
+    private float _separationRadius = 6.0f;
+    private float _pushForce = 10.0f;
     #endregion
 
 
@@ -69,6 +73,11 @@ public class CAutoPlayerMove : MonoBehaviour
         {
             // 그 이외 상황 자동 전투 및 복귀
             HandleAutoCombat();
+
+            if(PlayerHero.CurrentState == EHeroState.Combat || PlayerHero.CurrentState == EHeroState.Idle)
+            {
+                ApplySeparation();
+            }
         }
 
     }
@@ -305,6 +314,50 @@ public class CAutoPlayerMove : MonoBehaviour
                 // 그대로
                 _skeletonAnim.Skeleton.ScaleX = 1f;
             }
+        }
+    }
+
+    // 겹치는 영웅 밀어내기
+    void ApplySeparation()
+    {
+        if(CGroupManager.instance == null)
+        {
+            return;
+        }
+
+        Vector3 pushVector = Vector3.zero;
+
+        foreach(var pair in CGroupManager.instance.ActiveHeroes)
+        {
+            CAutoPlayerMove otherHero = pair.Value;
+
+            if(otherHero == null || otherHero == this)
+            {
+                continue;
+            }
+            if(!otherHero.gameObject.activeInHierarchy || otherHero.PlayerHero.IsUnitDead)
+            {
+                continue;
+            }
+
+            Vector3 diff = transform.position - otherHero.transform.position;
+            float dist = diff.magnitude;
+
+            if (dist < _separationRadius && dist > 0.001f)
+            {
+                float pushWeight = 1f - (dist / _separationRadius);
+
+                pushVector += diff.normalized * pushWeight;
+            }
+        }
+        
+        if(pushVector != Vector3.zero)
+        {
+            transform.position += pushVector * _pushForce * Time.deltaTime;
+
+            Vector3 curPos = transform.position;
+            curPos.z = 0f;
+            transform.position = curPos;
         }
     }
 
