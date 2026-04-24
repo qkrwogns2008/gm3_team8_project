@@ -929,8 +929,8 @@ public class CGachaPresenter : MonoBehaviour
     // 재화 정보  UI 업데이트
     private void UpdateMoneyUI()
     {
-        _gachaView.SummonRuby.text = _gachaModel.RubyCount.ToString("N0");
-        _gachaView.SummonCard.text = _gachaModel.TicketCount.ToString("N0");
+        _gachaView.SummonRuby.text = _gachaModel.RubyCount.ToString("");
+        _gachaView.SummonCard.text = _gachaModel.TicketCount.ToString("");
 
         // 뽑기 별로 비용, 이미지 변경
         SetButtonCostUI(_gachaView.GachaOneButton, 1);
@@ -975,7 +975,7 @@ public class CGachaPresenter : MonoBehaviour
         // 소환권 부족, 루비 충분
         else if (_gachaModel.RubyCount >= rubyPrice)
         {
-            costText.text = rubyPrice.ToString("N0");
+            costText.text = rubyPrice.ToString();
             iconImage.sprite = _rubySprite;
             buttonImage.sprite = _gachaView.NormalGachaButton;
         }
@@ -983,7 +983,7 @@ public class CGachaPresenter : MonoBehaviour
         // 소환권 부족, 루비 부족
         else
         {
-            costText.text = rubyPrice.ToString("N0");
+            costText.text = rubyPrice.ToString();
             iconImage.sprite = _rubySprite;
             buttonImage.sprite = _gachaView.DisableGachaButton;
         }
