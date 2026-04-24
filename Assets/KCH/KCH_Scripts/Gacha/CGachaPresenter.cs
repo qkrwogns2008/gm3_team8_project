@@ -78,10 +78,6 @@ public class CGachaPresenter : MonoBehaviour
         _gachaView.HeroCategoryButtonR.onClick.AddListener(SwitchCategory);
         _gachaView.HeroCategoryButtonL.onClick.AddListener(SwitchCategory);
 
-        // 재화 이미지
-        _ticketSprite = _gachaView.SummonCard.transform.parent.GetComponentInChildren<Image>().sprite;
-        _rubySprite = _gachaView.SummonRuby.transform.parent.GetComponentInChildren<Image>().sprite;
-
         // 처음에는 뽑기창 비활성화
         _gachaView.ResultPanel.SetActive(false);
     }
@@ -577,6 +573,8 @@ public class CGachaPresenter : MonoBehaviour
             }
             SoundManager.Instance.PlayUISFX(_cardAudioSet.uiOff);
 
+            UpdateMoneyUI();
+
             _isRolling = false;
 
             if (!_isAutoRoll)
@@ -674,6 +672,8 @@ public class CGachaPresenter : MonoBehaviour
 
             // 뽑기 중 해제
             _isRolling = false;
+
+            UpdateMoneyUI();
 
             // 모두 열기 버튼 표시
             if (!_isAutoRoll)
@@ -784,6 +784,8 @@ public class CGachaPresenter : MonoBehaviour
             }
         }
 
+        UpdateMoneyUI();
+
         if (!_isAutoRoll && !_gachaView.GachaMenu.gameObject.activeSelf)
         {
             // 버튼 활성화
@@ -835,6 +837,7 @@ public class CGachaPresenter : MonoBehaviour
         }
 
         _gachaView.OpenAllCard.gameObject.SetActive(false);
+        UpdateMoneyUI();
 
         _gachaView.AllOpenAutoGachaButton.gameObject.SetActive(true);
         _gachaView.ReRollTenButton.gameObject.SetActive(true);
@@ -940,6 +943,16 @@ public class CGachaPresenter : MonoBehaviour
 
         SetButtonCostUI(_gachaView.ReRollTenButton, 10);
         SetButtonCostUI(_gachaView.ReRollThirtyButton, 30);
+
+        if (_gachaView.ReRollMiniThirtyButton != null)
+        {
+            SetButtonCostUI(_gachaView.ReRollMiniThirtyButton, 30);
+        }
+
+        if (_gachaView.ReRollMiniHThirtyButton != null)
+        {
+            SetButtonCostUI(_gachaView.ReRollMiniHThirtyButton, 300);
+        }
     }
 
     // 버튼과 재화 상태 변경(소환권 우선 소모)
@@ -968,7 +981,7 @@ public class CGachaPresenter : MonoBehaviour
         if (_gachaModel.TicketCount >= count)
         {
             costText.text = count.ToString();
-            iconImage.sprite = _ticketSprite;
+            iconImage.sprite = _gachaView.TicketIcon;
             buttonImage.sprite = _gachaView.NormalGachaButton;
         }
 
@@ -976,7 +989,7 @@ public class CGachaPresenter : MonoBehaviour
         else if (_gachaModel.RubyCount >= rubyPrice)
         {
             costText.text = rubyPrice.ToString();
-            iconImage.sprite = _rubySprite;
+            iconImage.sprite = _gachaView.RubyIcon;
             buttonImage.sprite = _gachaView.NormalGachaButton;
         }
 
@@ -984,7 +997,7 @@ public class CGachaPresenter : MonoBehaviour
         else
         {
             costText.text = rubyPrice.ToString();
-            iconImage.sprite = _rubySprite;
+            iconImage.sprite = _gachaView.RubyIcon;
             buttonImage.sprite = _gachaView.DisableGachaButton;
         }
 

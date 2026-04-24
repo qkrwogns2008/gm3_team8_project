@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class LevelUpButton : MonoBehaviour
@@ -90,6 +91,9 @@ public class LevelUpButton : MonoBehaviour
             if (disableTarget != null)
                 disableTarget.SetActive(false);
 
+            if (GetComponent<Button>() != null)
+                GetComponent<Button>().interactable = false;
+
             expCombinedText.text = "미보유";
             return;
         }
@@ -101,6 +105,9 @@ public class LevelUpButton : MonoBehaviour
 
             if (disableTarget != null)
                 disableTarget.SetActive(false);
+                
+            if (GetComponent<Button>() != null)
+                GetComponent<Button>().interactable = false;
 
             return;
         }
