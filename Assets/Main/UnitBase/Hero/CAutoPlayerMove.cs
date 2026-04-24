@@ -114,6 +114,7 @@ public class CAutoPlayerMove : MonoBehaviour
         // 수동 이동중에 공격대상 비우기
         _targetEnemy = null;
         _sharedTarget = null;
+
     }
 
     public void SetGroupTarget(Vector3 pos)
@@ -140,6 +141,7 @@ public class CAutoPlayerMove : MonoBehaviour
 
             if(sqrDistance <= sqrAttackRange)
             {
+                // 사거리 내부
                 StopAndAttack();
             }
             else
@@ -150,33 +152,13 @@ public class CAutoPlayerMove : MonoBehaviour
                 }
                 else
                 {
-                    PlayerHero.ChangeState(EHeroState.Idle);
+                    ReturnToGroupTarget(_groupTargetPos);
                 }
             }
         }
         else
         {
-            // 적이 없을때: 대열 위치로 복귀
-            float distToGroup = Vector3.Distance(transform.position, _groupTargetPos);
-            if (distToGroup > 0.5f)
-            {
-                PlayerHero.ChangeState(EHeroState.Move);
-                transform.position = Vector3.MoveTowards(transform.position, _groupTargetPos, PlayerHero.FinalMoveSpeed * Time.deltaTime);
-
-                // 대열 복귀시 바라보는 방향
-                if(_skeletonAnim != null)
-                {
-                    _skeletonAnim.Skeleton.ScaleX = (_groupTargetPos.x > transform.position.x) ? -1f : 1f;
-                }
-
-            }
-            else
-            {
-                if(PlayerHero.CurrentState != EHeroState.Idle)
-                {
-                    PlayerHero.ChangeState(EHeroState.Idle);
-                }
-            }
+            ReturnToGroupTarget(_groupTargetPos);
         }
     }
 
@@ -199,6 +181,29 @@ public class CAutoPlayerMove : MonoBehaviour
             PlayerHero.SetTarget(_targetEnemy);
         }
     }
+
+    // 자리로 복귀
+    void ReturnToGroupTarget(Vector3 destPos)
+    {
+        float dist = Vector3.Distance(transform.position, destPos);
+        if (dist > 0.1f)
+        {
+            PlayerHero.ChangeState(EHeroState.Move);
+            transform.position = Vector3.MoveTowards(transform.position, destPos, PlayerHero.FinalMoveSpeed * Time.deltaTime);
+
+            if (_skeletonAnim != null)
+            {
+                _skeletonAnim.Skeleton.ScaleX = (destPos.x > transform.position.x) ? -1f : 1f;
+            }
+        }
+        else
+        {
+            if(PlayerHero.CurrentState != EHeroState.Idle)
+            {
+                PlayerHero.ChangeState(EHeroState.Idle);
+            }
+        }
+    }
     #endregion
 
     public void SyncAutoMode(bool isActive)
@@ -209,6 +214,7 @@ public class CAutoPlayerMove : MonoBehaviour
         {
             _targetEnemy = null;
             PlayerHero.ChangeState(EHeroState.Idle);
+
         }
     }
 
@@ -230,47 +236,6 @@ public class CAutoPlayerMove : MonoBehaviour
 
         
         if(_targetEnemy.IsUnitDead || !_targetEnemy.gameObject.activeSelf)
-        {
-            _targetEnemy = null;
-            PlayerHero.SetTarget(null);
-        }
-    }
-
-    void FindClosestEnemy()
-    {
-        if(CEnemyManager.Instance == null || CEnemyManager.Instance.ActiveEnemies.Count == 0)
-        {
-            _targetEnemy = null;
-            PlayerHero.SetTarget(null);
-            return;
-        }
-
-        CUnitBase closest = null;
-
-        float detectionRange = PlayerHero.FinalDetectionRange;
-        float minSqrDistance = detectionRange * detectionRange;
-
-        foreach(CUnitBase enemy in CEnemyManager.Instance.ActiveEnemies)
-        {
-            if(enemy == null || !enemy.gameObject.activeSelf || enemy.IsUnitDead)
-            {
-                continue;
-            }
-            float sqrDist = (enemy.transform.position - transform.position).sqrMagnitude;
-
-            if(sqrDist< minSqrDistance)
-            {
-                minSqrDistance = sqrDist;
-                closest = enemy;
-            }
-            
-        }
-        if(closest!=null)
-        {
-            _targetEnemy = closest;
-            PlayerHero.SetTarget(closest);
-        }
-        else
         {
             _targetEnemy = null;
             PlayerHero.SetTarget(null);
