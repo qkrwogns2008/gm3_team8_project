@@ -55,10 +55,44 @@ public class CGroupManager : MonoBehaviour
     {
         IsAutoMode = !IsAutoMode;
 
+        if(!IsAutoMode)
+        {
+            SyncManagerPositionToHeroes();
+        }
+
         CAutoPlayerMove[] allHeros = FindObjectsOfType<CAutoPlayerMove>();
         foreach(var hero in allHeros)
         {
             hero.SyncAutoMode(IsAutoMode);
+        }
+    }
+
+    // 영웅들의 현재 평균 위치(매니저) 를 옮기기
+    private void SyncManagerPositionToHeroes()
+    {
+        if(_activeHeroes.Count == 0)
+        {
+            return;
+        }
+
+        Vector3 sumPos = Vector3.zero;
+        int count = 0;
+
+        foreach(var pair in _activeHeroes)
+        {
+            if(pair.Value != null)
+            {
+                sumPos += pair.Value.transform.position;
+                count++;
+            }
+        }
+        if(count >0)
+        {
+            Vector3 averagePos = sumPos / count;
+            averagePos.z = 0;
+            transform.position = averagePos;
+
+            HeroGroupMoving();
         }
     }
 
@@ -163,6 +197,40 @@ public class CGroupManager : MonoBehaviour
 
         // 스캐너를 통해 카메라 주인 기준 가까운 적 찾기
         CUnitBase targetEnemy = _scanner.ScanTargetFromList();
+
+        // 수동 모드일때 조건
+        if(!IsAutoMode && targetEnemy != null)
+        {
+            // 내 영웅들의 사거리 내에 누군가 접근했는가
+            bool isAnyHeroInRange = false;
+
+            foreach (var pair in _activeHeroes)
+            {
+                if(pair.Value != null)
+                {
+                    CHero hero = pair.Value.GetComponent<CHero>();
+
+                    if(hero != null && !hero.IsUnitDead)
+                    {
+                        // 제곱근 생략 (최적화)
+                        float sqrDist = (hero.transform.position - targetEnemy.transform.position).sqrMagnitude;
+                        float sqrRange = hero.FinalAtkRange * hero.FinalAtkRange;
+
+                        // 한명이라도 사거리내에 적이 들어왔다면
+                        if(sqrDist <= sqrRange)
+                        {
+                            isAnyHeroInRange = true;
+                            // 확인이 되었다면 다른 영웅 검사 X
+                            break;
+                        }
+                    }
+                }
+            }
+            if(!isAnyHeroInRange)
+            {
+                targetEnemy = null;
+            }
+        }
 
         // 영웅에게 해당 타겟 정보 전달
         BroadcastSharedTarget(targetEnemy);
