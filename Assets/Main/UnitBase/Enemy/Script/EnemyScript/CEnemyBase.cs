@@ -38,6 +38,7 @@ public class CEnemyBase : CUnitBase
     private CSpawnArea _mySpawner;
     public virtual float FinalGiveUpRange => _giveupRange * ScaleMultiplier;
     public virtual float FinalWalkRange => _walkRange * ScaleMultiplier;
+    protected override float FinalMaxHP => _finalMaxHP;
 
     public bool IsAttacking { get; protected set; }
 
