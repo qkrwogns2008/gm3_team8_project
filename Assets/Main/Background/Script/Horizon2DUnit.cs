@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Horizon2DUnit : MonoBehaviour
 {
@@ -34,15 +35,18 @@ public class Horizon2DUnit : MonoBehaviour
     private void Start()
     {
         _startCamPos = _cameraTr.position;
+
     }
 
-    private void LateUpdate()
+    private void Update()
     {
         GameState gameState = CGameManager.Instance.CurrentState;
+        
         if (gameState != GameState.MainStage)
         {
             return;
         }
+        
         Vector3 camPos = _cameraTr.position;
         Vector3 ParentPos = transform.position;
 

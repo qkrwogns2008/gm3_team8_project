@@ -14,6 +14,7 @@ public class Horizon2DParticle : MonoBehaviour
     private Vector3 _startCamPos;
     Vector3 camPos;
     Vector3 ParentPos;
+    [SerializeField]bool isFirst = false;
     // private Vector3[] _initialLocalPositions; // 자식들의 초기 위치 저장용
     #endregion
 
@@ -25,19 +26,11 @@ public class Horizon2DParticle : MonoBehaviour
         // 자식들 가져오기
         _layers = GetComponentsInChildren<ParallaxLayerElement>(true);
 
-        // 초기 위치 캐싱 (누적 오차 방지)
-        // _initialLocalPositions = new Vector3[_layers.Length];
-        for (int i = 0; i < _layers.Length; i++)
-        {
-            //    _initialLocalPositions[i] = _layers[i].transform.localPosition;
-        }
     }
 
     private void OnEnable()
     {
         //_startCamPos = _cameraTr.position;
-        camPos = _cameraTr.position;
-        ParentPos = transform.position;
     }
 
     private void Update()
@@ -47,22 +40,24 @@ public class Horizon2DParticle : MonoBehaviour
         {
             return;
         }
+
+        if (camPos == _cameraTr.position && ParentPos == transform.position)
+            return;
+
         camPos = _cameraTr.position;
         ParentPos = transform.position;
-
         for (int i = 0; i < _layers.Length; i++)
         {
             // 카메라와 start X, Y값 차이
             ParallaxLayerElement layer = _layers[i];
             Vector3 totalDelta = camPos - ParentPos;
-
             if (layer == null) continue;
 
             // float factorX = layer.factorX;
             //float factorY = layer.factorY;
             Vector3 ChildrenPos = Vector3.zero;
-
-            float dist = totalDelta.y - 100; // 카메라, Layer 간 거리
+            float dist = 0;
+            dist = totalDelta.y - 100; // 카메라, Layer 간 거리
             if (dist > 0)
             {
                 dist = 0; // 카메라가 레이어보다 아래로 내려가는 경우 보정
@@ -81,6 +76,10 @@ public class Horizon2DParticle : MonoBehaviour
                     dist = -555;
                 }
                 ChildrenPos.z = layer.factorY * dist * dist - 1f;
+            }
+            if (isFirst)
+            {
+                Debug.Log($"카메라Y {camPos.y} 부모Y {ParentPos.y} 거리차이: {dist} Z값 : {ChildrenPos.z}");
             }
             // 초기 위치에서 ChildrenPos 더해줌
             layer.transform.position = ParentPos + ChildrenPos;
