@@ -37,6 +37,7 @@ public class CGroupManager : MonoBehaviour
     public bool IsJoystickActive => _joystick != null && _joystick.InputVector.sqrMagnitude > 0.01f;
     public float JoystickX => _joystick != null ? _joystick.InputVector.x : 0;
     public float GroupSpeed => _groupSpeed;
+    public Dictionary<int, CAutoPlayerMove> ActiveHeroes => _activeHeroes;
     
 
     private void Awake()
