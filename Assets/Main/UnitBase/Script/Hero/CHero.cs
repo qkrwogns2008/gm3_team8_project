@@ -311,7 +311,7 @@ public class CHero : CUnitBase
 				BaseMaxHp = HeroData.BaseMaxHp;
 				BaseAtkDamage = HeroData.BaseAttackDamage;
 				BaseDefense = HeroData.BaseDefense;
-				CriticalChance = HeroData.CriticalChance;
+				FinalCriticalChance = CriticalChance = HeroData.CriticalChance;
 			}
 
 			BaseDefense = HeroData.BaseDefense;
@@ -360,7 +360,7 @@ public class CHero : CUnitBase
 		BaseMaxHp = stat.HeroHP;
 		BaseAtkDamage = stat.HeroAtk;
 		BaseDefense = stat.HeroDef;
-		CriticalChance = stat.HeroCriticalRatio;
+        FinalCriticalChance = CriticalChance = stat.HeroCriticalRatio;
 
 		if (prevHPRatio > 0)
 		{
