@@ -360,9 +360,9 @@ public class CHero : CUnitBase
 		BaseMaxHp = stat.HeroHP;
 		BaseAtkDamage = stat.HeroAtk;
 		BaseDefense = stat.HeroDef;
-        FinalCriticalChance = CriticalChance = stat.HeroCriticalRatio;
-
-		if (prevHPRatio > 0)
+        CriticalChance = stat.HeroCriticalRatio;
+		ApplyBuffCritical(); 
+        if (prevHPRatio > 0)
 		{
 			currentHp = FinalMaxHP * prevHPRatio;
 			NotifyHpChange();
